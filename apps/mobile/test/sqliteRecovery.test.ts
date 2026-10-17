@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest';
 import {
   recoveryContractCases,
+  repairContractCases,
   type RecoveryHarness,
   type SnapshotTamper,
 } from '@sport-sim/sim-core';
@@ -54,6 +55,13 @@ const sqliteHarness = async (): Promise<RecoveryHarness> => {
 
 describe('SqliteCareerStore satisfies the recovery contract', () => {
   for (const c of recoveryContractCases(sqliteHarness)) {
+    it(c.name, async () => {
+      await c.run();
+    });
+  }
+});
+describe('SqliteCareerStore satisfies the repair contract', () => {
+  for (const c of repairContractCases(sqliteHarness)) {
     it(c.name, async () => {
       await c.run();
     });

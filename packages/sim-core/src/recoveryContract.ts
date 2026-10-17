@@ -3,7 +3,8 @@ import { fingerprintWorld } from './world';
 import { createContractCareer, type ContractCase, type ContractCareer } from './persistenceContract';
 import { SCHEMA_VERSION, UnsupportedSchemaVersionError } from './provenance';
 import { verifySnapshot, type CareerStore } from './persistence';
-import { CareerLoadError, loadCareer } from './recovery';
+import { CareerLoadError } from './careerIntegrity';
+import { loadCareer } from './recovery';
 import { sealRuleset, type LeagueRulesetManifest } from './ruleset';
 
 /**
@@ -202,6 +203,102 @@ export const recoveryContractCases = (factory: RecoveryHarnessFactory): Contract
       const err = await expectRejection(() => loadCareer(h.store, { ruleset: other }), 'ruleset mismatch');
       recoveryCheck(err instanceof CareerLoadError && err.code === 'RULESET_MISMATCH', 'RULESET_MISMATCH expected');
       recoveryCheck((await h.store.loadRecoveryLog()).length === 0, 'no recovery logged');
+    },
+  },
+];
+
+/** Repair behaviour: rebuild the latest snapshot from immutable history, or refuse. */
+export const repairContractCases = (factory: RecoveryHarnessFactory): ContractCase[] => [
+  {
+    name: 'repair: a corrupt newest snapshot is rebuilt from history exactly, logged, and then loads cleanly',
+    async run() {
+      const h = await factory();
+      const career = await seedCareer(h);
+      const original = await h.store.loadLatest();
+      await h.tamperSnapshot(4, 'hash');
+      const out = await loadCareer(h.store, { ruleset: career.ruleset, repair: true });
+      recoveryCheck(out.status === 'recovered', `expected recovered, got ${out.status}`);
+      if (out.status !== 'recovered') return;
+      recoveryCheck(out.report.action === 'REPAIRED_LATEST_FROM_REPLAY', 'report names the repair');
+      recoveryCheck(out.snapshot.contentHash === original?.contentHash, 'repaired snapshot equals the original exactly');
+      recoveryCheck(
+        fingerprintWorld(out.kernel.world) === fingerprintWorld(career.kernel.world),
+        'repaired world fingerprint equals live world',
+      );
+      recoveryCheck(out.kernel.chainHead === career.kernel.chainHead, 'repaired audit head equals live head');
+      const next = career.step(3);
+      recoveryCheck(out.kernel.execute(next.commands[0]!.envelope).ok, 'repaired career keeps executing');
+      const log = await h.store.loadRecoveryLog();
+      recoveryCheck(log.length === 1 && log[0]?.action === 'REPAIRED_LATEST_FROM_REPLAY', 'repair logged once');
+    },
+  },
+  {
+    name: 'repair: an unreadable newest snapshot is rebuilt too',
+    async run() {
+      const h = await factory();
+      const career = await seedCareer(h);
+      const original = await h.store.loadLatest();
+      await h.tamperSnapshot(4, 'junk');
+      const out = await loadCareer(h.store, { ruleset: career.ruleset, repair: true });
+      recoveryCheck(out.status === 'recovered', `expected recovered, got ${out.status}`);
+      if (out.status === 'recovered') {
+        recoveryCheck(out.snapshot.contentHash === original?.contentHash, 'repaired snapshot equals the original');
+      }
+    },
+  },
+  {
+    name: 'repair: works from genesis when every other snapshot is damaged',
+    async run() {
+      const h = await factory();
+      const career = await seedCareer(h);
+      const original = await h.store.loadLatest();
+      for (const r of [1, 2, 3, 4]) await h.tamperSnapshot(r, 'hash');
+      const out = await loadCareer(h.store, { ruleset: career.ruleset, repair: true });
+      recoveryCheck(out.status === 'recovered', `expected recovered, got ${out.status}`);
+      if (out.status === 'recovered') {
+        recoveryCheck(out.snapshot.contentHash === original?.contentHash, 'rebuilt from genesis history');
+      }
+    },
+  },
+  {
+    name: 'repair: a repaired career loads as healthy afterwards without new recovery entries',
+    async run() {
+      const h = await factory();
+      const career = await seedCareer(h);
+      await h.tamperSnapshot(4, 'hash');
+      await loadCareer(h.store, { ruleset: career.ruleset, repair: true });
+      const again = await loadCareer(h.store, { ruleset: career.ruleset });
+      recoveryCheck(again.status === 'loaded', `expected loaded, got ${again.status}`);
+      recoveryCheck((await h.store.loadRecoveryLog()).length === 1, 'no further recovery entries');
+    },
+  },
+  {
+    name: 'repair: refused when the event chain is tampered (no fabricated snapshot)',
+    async run() {
+      const h = await factory();
+      const career = await seedCareer(h);
+      await h.tamperEvent(2);
+      await h.tamperSnapshot(4, 'hash');
+      const out = await loadCareer(h.store, { ruleset: career.ruleset, repair: true });
+      recoveryCheck(out.status === 'degraded', `expected degraded, got ${out.status}`);
+      const log = await h.store.loadRecoveryLog();
+      recoveryCheck(
+        log.every((r) => r.action !== 'REPAIRED_LATEST_FROM_REPLAY'),
+        'no repair was recorded',
+      );
+      recoveryCheck(!verifySnapshot(await h.store.loadLatest()).ok, 'the damaged snapshot was left as it was');
+    },
+  },
+  {
+    name: 'repair: refused when history is shorter than the active snapshot (no silent data loss)',
+    async run() {
+      const h = await factory();
+      const career = await seedCareer(h);
+      await h.truncateHistory(1);
+      const out = await loadCareer(h.store, { ruleset: career.ruleset, repair: true });
+      recoveryCheck(out.status === 'degraded', `expected degraded, got ${out.status}`);
+      const log = await h.store.loadRecoveryLog();
+      recoveryCheck(log.every((r) => r.action !== 'REPAIRED_LATEST_FROM_REPLAY'), 'no repair was recorded');
     },
   },
 ];

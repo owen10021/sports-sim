@@ -1,5 +1,6 @@
-import { GENESIS_HASH, verifyEventChain, type EventEnvelope } from './audit';
+import { verifyEventChain } from './audit';
 import { canonicalString } from './canonical';
+import { historySupports, requireMatchingRefs, type LoadOptions } from './careerIntegrity';
 import { WorldKernel } from './kernel';
 import {
   PersistenceError,
@@ -8,33 +9,23 @@ import {
   type CareerStore,
   type RecoveryReport,
 } from './persistence';
-import { rulesetRefOf, type LeagueRulesetManifest } from './ruleset';
-import { seedRefOf, type WorldSeedManifest } from './seed';
-
-export type CareerLoadErrorCode = 'RULESET_MISMATCH' | 'SEED_MISMATCH';
-
-/** The stored career is intact but belongs to a different ruleset/seed than the caller supplied. */
-export class CareerLoadError extends Error {
-  readonly code: CareerLoadErrorCode;
-  constructor(code: CareerLoadErrorCode, message: string) {
-    super(`${code}: ${message}`);
-    this.name = 'CareerLoadError';
-    this.code = code;
-  }
-}
-
-export interface LoadOptions {
-  /** The ruleset manifest the career must have been created with. */
-  readonly ruleset: LeagueRulesetManifest;
-  /** Optional: also pin the world seed the career must descend from. */
-  readonly seed?: WorldSeedManifest;
-}
+import { repairLatestFromHistory } from './replay';
 
 export type LoadOutcome =
   /** Nothing has ever been saved. */
   | { readonly status: 'empty' }
   /** Everything verified; `kernel` continues the career. */
   | { readonly status: 'loaded'; readonly kernel: WorldKernel; readonly snapshot: CareerSnapshot }
+  /**
+   * The newest snapshot was not trustworthy, so it was rebuilt by deterministic replay of
+   * verified history (opt-in via `repair`). `report` records exactly what happened.
+   */
+  | {
+      readonly status: 'recovered';
+      readonly kernel: WorldKernel;
+      readonly snapshot: CareerSnapshot;
+      readonly report: RecoveryReport;
+    }
   /**
    * Stored data was NOT trustworthy as-is. `snapshot` is the newest older snapshot that
    * history still supports. It is read-only: stored history is ahead of it, so it is not a
@@ -43,40 +34,6 @@ export type LoadOutcome =
   | { readonly status: 'degraded'; readonly snapshot: CareerSnapshot; readonly report: RecoveryReport }
   /** No snapshot could be trusted. */
   | { readonly status: 'failed'; readonly report: RecoveryReport };
-
-/** Check a snapshot belongs to the supplied ruleset (and seed, when given). Throws if not. */
-export const requireMatchingRefs = (snapshot: CareerSnapshot, options: LoadOptions): void => {
-  const want = rulesetRefOf(options.ruleset);
-  const have = snapshot.world.ruleset;
-  if (
-    have.rulesetId !== want.rulesetId ||
-    have.rulesetVersion !== want.rulesetVersion ||
-    have.contentHash !== want.contentHash
-  ) {
-    throw new CareerLoadError(
-      'RULESET_MISMATCH',
-      `career uses ${have.rulesetId} v${have.rulesetVersion}, caller supplied ${want.rulesetId} v${want.rulesetVersion}`,
-    );
-  }
-  if (options.seed !== undefined) {
-    const wantSeed = seedRefOf(options.seed);
-    const haveSeed = snapshot.world.seed;
-    if (canonicalString(haveSeed) !== canonicalString(wantSeed)) {
-      throw new CareerLoadError('SEED_MISMATCH', 'career descends from a different world seed');
-    }
-  }
-};
-
-/** Does the verified event prefix support `snapshot` (its count and audit head)? */
-export const historySupports = (
-  snapshot: CareerSnapshot,
-  events: readonly EventEnvelope[],
-  verifiedPrefix: number,
-): boolean => {
-  if (snapshot.eventCount > verifiedPrefix) return false;
-  if (snapshot.eventCount === 0) return snapshot.chainHead === GENESIS_HASH;
-  return events[snapshot.eventCount - 1]?.hash === snapshot.chainHead;
-};
 
 const sameReport = (a: RecoveryReport, b: RecoveryReport): boolean => canonicalString(a) === canonicalString(b);
 
@@ -140,8 +97,17 @@ export const loadCareer = async (store: CareerStore, options: LoadOptions): Prom
     return { status: 'loaded', kernel, snapshot: active };
   }
 
-  // Not trustworthy as-is: pick the newest verified snapshot that history still supports.
   const previousActiveRevision = active?.revision ?? null;
+
+  if (options.repair === true) {
+    const repair = await repairLatestFromHistory(store, { ...options, reasons });
+    if (repair.status === 'repaired') {
+      return { status: 'recovered', kernel: repair.kernel, snapshot: repair.snapshot, report: repair.report };
+    }
+    reasons.push(...repair.reasons.map((r) => `repair refused: ${r}`));
+  }
+
+  // Not trustworthy as-is: pick the newest verified snapshot that history still supports.
   for (const candidate of await store.listVerifiedSnapshots()) {
     if (!historySupports(candidate, events, verifiedPrefix)) continue;
     requireMatchingRefs(candidate, options);
