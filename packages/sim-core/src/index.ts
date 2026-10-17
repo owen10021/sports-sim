@@ -7,3 +7,4 @@ export * from './ruleset';
 export * from './seed';
 export * from './rng';
 export * from './world';
+export * from './audit';
