@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "seedId": "synthetic-empty",
+  "seedVersion": 1,
+  "ruleset": {
+    "rulesetId": "synthetic-minimal",
+    "rulesetVersion": 1,
+    "contentHash": "0776311417c64397f948efe719cbf0ad6648b2011e5c227a62158ee6cb3712ae"
+  },
+  "rngSeed32": 20261016,
+  "startDate": "2026-10-16",
+  "provenance": [
+    {
+      "sourceId": "sport-sim-synthetic-package-a",
+      "sourceKind": "synthetic",
+      "retrievedAt": "2026-10-16T00:00:00Z",
+      "effectiveAsOf": "2026-10-16",
+      "validationStatus": "synthetic",
+      "note": "Synthetic Package A fixture. Contains no real league data."
+    }
+  ],
+  "initialEntities": [],
+  "contentHash": "95b75c540916552ad18c05fd50e158b218254ac909edf8a84d82e26ecc4bf98f"
+}

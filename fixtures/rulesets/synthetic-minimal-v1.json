@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "rulesetId": "synthetic-minimal",
+  "rulesetVersion": 1,
+  "displayName": "Synthetic Minimal Ruleset (Package A)",
+  "provenance": [
+    {
+      "sourceId": "sport-sim-synthetic-package-a",
+      "sourceKind": "synthetic",
+      "retrievedAt": "2026-10-16T00:00:00Z",
+      "effectiveAsOf": "2026-10-16",
+      "validationStatus": "synthetic",
+      "note": "Synthetic Package A fixture. Contains no real league data."
+    }
+  ],
+  "rules": {
+    "maxAdvanceDaysPerCommand": 30
+  },
+  "contentHash": "0776311417c64397f948efe719cbf0ad6648b2011e5c227a62158ee6cb3712ae"
+}
