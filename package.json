@@ -1,24 +1,28 @@
 {
-    "name":  "sport-sim",
-    "private":  true,
-    "version":  "0.0.0",
-    "type":  "module",
-    "description":  "Sport Sim App - iPhone-first pro-football GM career RPG (Package A foundation)",
-    "workspaces":  [
-                       "apps/*",
-                       "packages/*"
-                   ],
-    "engines":  {
-                    "node":  "\u003e=22.13"
-                },
-    "scripts":  {
-                    "test":  "vitest run",
-                    "typecheck":  "npm run typecheck --workspaces --if-present"
-                },
-    "devDependencies":  {
-                            "@types/node":  "26.6.5",
-                            "tsx":  "4.23.15",
-                            "typescript":  "7.0.2",
-                            "vitest":  "5.0.5"
-                        }
+  "name": "sport-sim",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Sport Sim App - iPhone-first pro-football GM career RPG (Package A foundation)",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "golden:check": "tsx packages/headless/src/bin.ts golden",
+    "golden:write": "tsx packages/headless/src/bin.ts golden --write",
+    "export:ios": "npm run export:ios --workspace apps/mobile",
+    "ci": "npm run typecheck && npm test && npm run golden:check && npm run export:ios"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.0.5"
+  }
 }
