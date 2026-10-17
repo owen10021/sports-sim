@@ -1,0 +1,5577 @@
+{
+  "contentHash": "bc1e02d894a0079273d81d382075db6ada93801976d0ed735f0933bfb22dcfd5",
+  "initialEntities": [
+    {
+      "id": "org-northfield",
+      "kind": "organization",
+      "name": "Northfield Ironmen (synthetic)"
+    },
+    {
+      "id": "person-nf-owner",
+      "kind": "person",
+      "name": "Avery Holt (synthetic)"
+    },
+    {
+      "id": "person-nf-gm",
+      "kind": "person",
+      "name": "Jordan Pike (synthetic)"
+    },
+    {
+      "id": "person-nf-scout",
+      "kind": "person",
+      "name": "Casey Dunn (synthetic)"
+    },
+    {
+      "id": "org-southport",
+      "kind": "organization",
+      "name": "Southport Gulls (synthetic)"
+    },
+    {
+      "id": "person-sp-owner",
+      "kind": "person",
+      "name": "Quinn Marlow (synthetic)"
+    },
+    {
+      "id": "person-sp-gm",
+      "kind": "person",
+      "name": "Riley Strand (synthetic)"
+    },
+    {
+      "id": "person-sp-scout",
+      "kind": "person",
+      "name": "Morgan Vale (synthetic)"
+    },
+    {
+      "id": "org-eastbrook",
+      "kind": "organization",
+      "name": "Eastbrook Herons (synthetic)"
+    },
+    {
+      "id": "person-eb-owner",
+      "kind": "person",
+      "name": "Sloane Reid (synthetic)"
+    },
+    {
+      "id": "person-eb-gm",
+      "kind": "person",
+      "name": "Devon Hale (synthetic)"
+    },
+    {
+      "id": "person-eb-scout",
+      "kind": "person",
+      "name": "Parker Lind (synthetic)"
+    },
+    {
+      "id": "org-westlake",
+      "kind": "organization",
+      "name": "Westlake Foxes (synthetic)"
+    },
+    {
+      "id": "person-wl-owner",
+      "kind": "person",
+      "name": "Rowan Cade (synthetic)"
+    },
+    {
+      "id": "person-wl-gm",
+      "kind": "person",
+      "name": "Elliot Frost (synthetic)"
+    },
+    {
+      "id": "person-wl-scout",
+      "kind": "person",
+      "name": "Sam Okoro (synthetic)"
+    },
+    {
+      "id": "person-agent-ashby",
+      "kind": "person",
+      "name": "Taylor Ashby (synthetic)"
+    },
+    {
+      "id": "person-agent-brandt",
+      "kind": "person",
+      "name": "Jules Brandt (synthetic)"
+    },
+    {
+      "id": "player-nf-01",
+      "kind": "person",
+      "name": "Devin Keller (synthetic)"
+    },
+    {
+      "id": "player-nf-02",
+      "kind": "person",
+      "name": "Tyrell Rankin (synthetic)"
+    },
+    {
+      "id": "player-nf-03",
+      "kind": "person",
+      "name": "Cole Everett (synthetic)"
+    },
+    {
+      "id": "player-nf-04",
+      "kind": "person",
+      "name": "Isaiah Lowell (synthetic)"
+    },
+    {
+      "id": "player-nf-05",
+      "kind": "person",
+      "name": "Mateo Sutton (synthetic)"
+    },
+    {
+      "id": "player-sp-01",
+      "kind": "person",
+      "name": "Jamal Fisk (synthetic)"
+    },
+    {
+      "id": "player-sp-02",
+      "kind": "person",
+      "name": "Eli Mercer (synthetic)"
+    },
+    {
+      "id": "player-sp-03",
+      "kind": "person",
+      "name": "Zane Thorne (synthetic)"
+    },
+    {
+      "id": "player-sp-04",
+      "kind": "person",
+      "name": "Kai Garrison (synthetic)"
+    },
+    {
+      "id": "player-sp-05",
+      "kind": "person",
+      "name": "Andre Noble (synthetic)"
+    },
+    {
+      "id": "player-eb-01",
+      "kind": "person",
+      "name": "Rhett Archer (synthetic)"
+    },
+    {
+      "id": "player-eb-02",
+      "kind": "person",
+      "name": "Luca Hollis (synthetic)"
+    },
+    {
+      "id": "player-eb-03",
+      "kind": "person",
+      "name": "Omar Osborne (synthetic)"
+    },
+    {
+      "id": "player-eb-04",
+      "kind": "person",
+      "name": "Dante Bishop (synthetic)"
+    },
+    {
+      "id": "player-wl-01",
+      "kind": "person",
+      "name": "Nico Ingram (synthetic)"
+    },
+    {
+      "id": "player-wl-02",
+      "kind": "person",
+      "name": "Silas Prescott (synthetic)"
+    },
+    {
+      "id": "player-wl-03",
+      "kind": "person",
+      "name": "Jonah Calloway (synthetic)"
+    },
+    {
+      "id": "player-wl-04",
+      "kind": "person",
+      "name": "Bram Jarvis (synthetic)"
+    },
+    {
+      "id": "player-eb-draftee",
+      "kind": "person",
+      "name": "Ty Quade (synthetic)"
+    },
+    {
+      "id": "player-wl-exclusive",
+      "kind": "person",
+      "name": "Marcus Dalton (synthetic)"
+    },
+    {
+      "id": "player-fa-01",
+      "kind": "person",
+      "name": "Devin Keller (synthetic)"
+    },
+    {
+      "id": "player-fa-02",
+      "kind": "person",
+      "name": "Tyrell Rankin (synthetic)"
+    },
+    {
+      "id": "player-fa-03",
+      "kind": "person",
+      "name": "Cole Everett (synthetic)"
+    },
+    {
+      "id": "player-fa-04",
+      "kind": "person",
+      "name": "Isaiah Lowell (synthetic)"
+    },
+    {
+      "id": "player-fa-05",
+      "kind": "person",
+      "name": "Mateo Sutton (synthetic)"
+    },
+    {
+      "id": "player-pr-01",
+      "kind": "person",
+      "name": "Jamal Fisk (synthetic)"
+    },
+    {
+      "id": "player-pr-02",
+      "kind": "person",
+      "name": "Eli Mercer (synthetic)"
+    },
+    {
+      "id": "player-pr-03",
+      "kind": "person",
+      "name": "Zane Thorne (synthetic)"
+    },
+    {
+      "id": "player-pr-04",
+      "kind": "person",
+      "name": "Kai Garrison (synthetic)"
+    },
+    {
+      "id": "player-pr-05",
+      "kind": "person",
+      "name": "Andre Noble (synthetic)"
+    },
+    {
+      "id": "player-pr-06",
+      "kind": "person",
+      "name": "Rhett Archer (synthetic)"
+    },
+    {
+      "id": "player-pr-07",
+      "kind": "person",
+      "name": "Luca Hollis (synthetic)"
+    },
+    {
+      "id": "player-pr-08",
+      "kind": "person",
+      "name": "Omar Osborne (synthetic)"
+    },
+    {
+      "id": "player-pr-09",
+      "kind": "person",
+      "name": "Dante Bishop (synthetic)"
+    },
+    {
+      "id": "player-pr-10",
+      "kind": "person",
+      "name": "Nico Ingram (synthetic)"
+    },
+    {
+      "id": "player-pr-11",
+      "kind": "person",
+      "name": "Silas Prescott (synthetic)"
+    },
+    {
+      "id": "player-pr-12",
+      "kind": "person",
+      "name": "Jonah Calloway (synthetic)"
+    },
+    {
+      "id": "player-pr-13",
+      "kind": "person",
+      "name": "Bram Jarvis (synthetic)"
+    },
+    {
+      "id": "player-pr-14",
+      "kind": "person",
+      "name": "Ty Quade (synthetic)"
+    }
+  ],
+  "organizationSubstrate": {
+    "authorityGrants": [
+      {
+        "category": "organizational_authority",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-owner-organizational_authority",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-owner-organizational_plan",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "acquisition",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-owner-acquisition",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "contract",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-owner-contract",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "roster",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-owner-roster",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "major_trade",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-owner-major_trade",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-gm-organizational_plan",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-nf-owner",
+        "transferable": true
+      },
+      {
+        "category": "acquisition",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-gm-acquisition",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-nf-owner",
+        "transferable": true
+      },
+      {
+        "category": "contract",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-gm-contract",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-nf-owner",
+        "transferable": true
+      },
+      {
+        "category": "roster",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-gm-roster",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-nf-owner",
+        "transferable": true
+      },
+      {
+        "category": "major_trade",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-gm-major_trade",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-nf-owner",
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-scout-organizational_plan",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-scout",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "communicate"
+        ],
+        "sourcePersonId": "person-nf-gm",
+        "transferable": false
+      },
+      {
+        "category": "acquisition",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-nf-scout-acquisition",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-scout",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "communicate"
+        ],
+        "sourcePersonId": "person-nf-gm",
+        "transferable": false
+      },
+      {
+        "category": "organizational_authority",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-owner-organizational_authority",
+        "organizationId": "org-southport",
+        "personId": "person-sp-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-owner-organizational_plan",
+        "organizationId": "org-southport",
+        "personId": "person-sp-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "acquisition",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-owner-acquisition",
+        "organizationId": "org-southport",
+        "personId": "person-sp-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "contract",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-owner-contract",
+        "organizationId": "org-southport",
+        "personId": "person-sp-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "roster",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-owner-roster",
+        "organizationId": "org-southport",
+        "personId": "person-sp-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "major_trade",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-owner-major_trade",
+        "organizationId": "org-southport",
+        "personId": "person-sp-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-gm-organizational_plan",
+        "organizationId": "org-southport",
+        "personId": "person-sp-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-sp-owner",
+        "transferable": true
+      },
+      {
+        "category": "acquisition",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-gm-acquisition",
+        "organizationId": "org-southport",
+        "personId": "person-sp-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-sp-owner",
+        "transferable": true
+      },
+      {
+        "category": "contract",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-gm-contract",
+        "organizationId": "org-southport",
+        "personId": "person-sp-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-sp-owner",
+        "transferable": true
+      },
+      {
+        "category": "roster",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-gm-roster",
+        "organizationId": "org-southport",
+        "personId": "person-sp-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-sp-owner",
+        "transferable": true
+      },
+      {
+        "category": "major_trade",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-gm-major_trade",
+        "organizationId": "org-southport",
+        "personId": "person-sp-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-sp-owner",
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-scout-organizational_plan",
+        "organizationId": "org-southport",
+        "personId": "person-sp-scout",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "communicate"
+        ],
+        "sourcePersonId": "person-sp-gm",
+        "transferable": false
+      },
+      {
+        "category": "acquisition",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-sp-scout-acquisition",
+        "organizationId": "org-southport",
+        "personId": "person-sp-scout",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "communicate"
+        ],
+        "sourcePersonId": "person-sp-gm",
+        "transferable": false
+      },
+      {
+        "category": "organizational_authority",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-owner-organizational_authority",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-owner-organizational_plan",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "acquisition",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-owner-acquisition",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "contract",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-owner-contract",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "roster",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-owner-roster",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "major_trade",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-owner-major_trade",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-gm-organizational_plan",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-eb-owner",
+        "transferable": true
+      },
+      {
+        "category": "acquisition",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-gm-acquisition",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-eb-owner",
+        "transferable": true
+      },
+      {
+        "category": "contract",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-gm-contract",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-eb-owner",
+        "transferable": true
+      },
+      {
+        "category": "roster",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-gm-roster",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-eb-owner",
+        "transferable": true
+      },
+      {
+        "category": "major_trade",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-gm-major_trade",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-eb-owner",
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-scout-organizational_plan",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-scout",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "communicate"
+        ],
+        "sourcePersonId": "person-eb-gm",
+        "transferable": false
+      },
+      {
+        "category": "acquisition",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-eb-scout-acquisition",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-scout",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "communicate"
+        ],
+        "sourcePersonId": "person-eb-gm",
+        "transferable": false
+      },
+      {
+        "category": "organizational_authority",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-owner-organizational_authority",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-owner-organizational_plan",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "acquisition",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-owner-acquisition",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "contract",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-owner-contract",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "roster",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-owner-roster",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "major_trade",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-owner-major_trade",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-gm-organizational_plan",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-wl-owner",
+        "transferable": true
+      },
+      {
+        "category": "acquisition",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-gm-acquisition",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-wl-owner",
+        "transferable": true
+      },
+      {
+        "category": "contract",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-gm-contract",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-wl-owner",
+        "transferable": true
+      },
+      {
+        "category": "roster",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-gm-roster",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-wl-owner",
+        "transferable": true
+      },
+      {
+        "category": "major_trade",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-gm-major_trade",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-wl-owner",
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-scout-organizational_plan",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-scout",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "communicate"
+        ],
+        "sourcePersonId": "person-wl-gm",
+        "transferable": false
+      },
+      {
+        "category": "acquisition",
+        "effectiveFrom": "2027-01-01",
+        "effectiveUntil": null,
+        "id": "grant-wl-scout-acquisition",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-scout",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "communicate"
+        ],
+        "sourcePersonId": "person-wl-gm",
+        "transferable": false
+      }
+    ],
+    "roleEpisodes": [
+      {
+        "endDate": null,
+        "id": "role-nf-owner",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-owner",
+        "role": "owner",
+        "startDate": "2027-01-01",
+        "title": "Owner"
+      },
+      {
+        "endDate": null,
+        "id": "role-nf-gm",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-gm",
+        "role": "general_manager",
+        "startDate": "2027-01-01",
+        "title": "General Manager"
+      },
+      {
+        "endDate": null,
+        "id": "role-nf-scout",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-scout",
+        "role": "scout",
+        "startDate": "2027-01-01",
+        "title": "Scout"
+      },
+      {
+        "endDate": null,
+        "id": "role-sp-owner",
+        "organizationId": "org-southport",
+        "personId": "person-sp-owner",
+        "role": "owner",
+        "startDate": "2027-01-01",
+        "title": "Owner"
+      },
+      {
+        "endDate": null,
+        "id": "role-sp-gm",
+        "organizationId": "org-southport",
+        "personId": "person-sp-gm",
+        "role": "general_manager",
+        "startDate": "2027-01-01",
+        "title": "General Manager"
+      },
+      {
+        "endDate": null,
+        "id": "role-sp-scout",
+        "organizationId": "org-southport",
+        "personId": "person-sp-scout",
+        "role": "scout",
+        "startDate": "2027-01-01",
+        "title": "Scout"
+      },
+      {
+        "endDate": null,
+        "id": "role-eb-owner",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-owner",
+        "role": "owner",
+        "startDate": "2027-01-01",
+        "title": "Owner"
+      },
+      {
+        "endDate": null,
+        "id": "role-eb-gm",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-gm",
+        "role": "general_manager",
+        "startDate": "2027-01-01",
+        "title": "General Manager"
+      },
+      {
+        "endDate": null,
+        "id": "role-eb-scout",
+        "organizationId": "org-eastbrook",
+        "personId": "person-eb-scout",
+        "role": "scout",
+        "startDate": "2027-01-01",
+        "title": "Scout"
+      },
+      {
+        "endDate": null,
+        "id": "role-wl-owner",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-owner",
+        "role": "owner",
+        "startDate": "2027-01-01",
+        "title": "Owner"
+      },
+      {
+        "endDate": null,
+        "id": "role-wl-gm",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-gm",
+        "role": "general_manager",
+        "startDate": "2027-01-01",
+        "title": "General Manager"
+      },
+      {
+        "endDate": null,
+        "id": "role-wl-scout",
+        "organizationId": "org-westlake",
+        "personId": "person-wl-scout",
+        "role": "scout",
+        "startDate": "2027-01-01",
+        "title": "Scout"
+      }
+    ]
+  },
+  "packageCSubstrate": {
+    "agentClients": [
+      {
+        "agentPersonId": "person-agent-ashby",
+        "effectiveFrom": "2026-01-01",
+        "effectiveUntil": null,
+        "id": "client-player-fa-01",
+        "playerPersonId": "player-fa-01"
+      },
+      {
+        "agentPersonId": "person-agent-brandt",
+        "effectiveFrom": "2026-01-01",
+        "effectiveUntil": null,
+        "id": "client-player-fa-02",
+        "playerPersonId": "player-fa-02"
+      },
+      {
+        "agentPersonId": "person-agent-ashby",
+        "effectiveFrom": "2026-01-01",
+        "effectiveUntil": null,
+        "id": "client-player-fa-03",
+        "playerPersonId": "player-fa-03"
+      },
+      {
+        "agentPersonId": "person-agent-brandt",
+        "effectiveFrom": "2026-01-01",
+        "effectiveUntil": null,
+        "id": "client-player-fa-04",
+        "playerPersonId": "player-fa-04"
+      },
+      {
+        "agentPersonId": "person-agent-ashby",
+        "effectiveFrom": "2026-01-01",
+        "effectiveUntil": null,
+        "id": "client-player-fa-05",
+        "playerPersonId": "player-fa-05"
+      },
+      {
+        "agentPersonId": "person-agent-brandt",
+        "effectiveFrom": "2026-01-01",
+        "effectiveUntil": null,
+        "id": "client-player-nf-01",
+        "playerPersonId": "player-nf-01"
+      },
+      {
+        "agentPersonId": "person-agent-ashby",
+        "effectiveFrom": "2026-01-01",
+        "effectiveUntil": null,
+        "id": "client-player-sp-01",
+        "playerPersonId": "player-sp-01"
+      },
+      {
+        "agentPersonId": "person-agent-brandt",
+        "effectiveFrom": "2026-01-01",
+        "effectiveUntil": null,
+        "id": "client-player-eb-01",
+        "playerPersonId": "player-eb-01"
+      },
+      {
+        "agentPersonId": "person-agent-ashby",
+        "effectiveFrom": "2026-01-01",
+        "effectiveUntil": null,
+        "id": "client-player-pr-01",
+        "playerPersonId": "player-pr-01"
+      },
+      {
+        "agentPersonId": "person-agent-brandt",
+        "effectiveFrom": "2026-01-01",
+        "effectiveUntil": null,
+        "id": "client-player-pr-02",
+        "playerPersonId": "player-pr-02"
+      },
+      {
+        "agentPersonId": "person-agent-ashby",
+        "effectiveFrom": "2026-01-01",
+        "effectiveUntil": null,
+        "id": "client-player-pr-03",
+        "playerPersonId": "player-pr-03"
+      },
+      {
+        "agentPersonId": "person-agent-brandt",
+        "effectiveFrom": "2026-01-01",
+        "effectiveUntil": null,
+        "id": "client-player-pr-04",
+        "playerPersonId": "player-pr-04"
+      }
+    ],
+    "contracts": [
+      {
+        "id": "contract-seed-player-eb-01",
+        "organizationId": "org-eastbrook",
+        "playerId": "player-eb-01",
+        "signedAt": "2026-03-01",
+        "signingBonus": 150000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 175000,
+            "guaranteedBase": 175000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 185000,
+            "guaranteedBase": 92500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 195000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-eb-02",
+        "organizationId": "org-eastbrook",
+        "playerId": "player-eb-02",
+        "signedAt": "2026-03-01",
+        "signingBonus": 120000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 200000,
+            "guaranteedBase": 200000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 210000,
+            "guaranteedBase": 105000,
+            "rosterBonus": 0,
+            "season": 2027
+          },
+          {
+            "baseSalary": 220000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-eb-03",
+        "organizationId": "org-eastbrook",
+        "playerId": "player-eb-03",
+        "signedAt": "2026-03-01",
+        "signingBonus": 90000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 225000,
+            "guaranteedBase": 225000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 235000,
+            "guaranteedBase": 117500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 245000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-eb-04",
+        "organizationId": "org-eastbrook",
+        "playerId": "player-eb-04",
+        "signedAt": "2026-03-01",
+        "signingBonus": 60000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 250000,
+            "guaranteedBase": 250000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 260000,
+            "guaranteedBase": 130000,
+            "rosterBonus": 0,
+            "season": 2027
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-nf-01",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-01",
+        "signedAt": "2026-03-01",
+        "signingBonus": 150000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 175000,
+            "guaranteedBase": 175000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 185000,
+            "guaranteedBase": 92500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 195000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-nf-02",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-02",
+        "signedAt": "2026-03-01",
+        "signingBonus": 120000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 200000,
+            "guaranteedBase": 200000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 210000,
+            "guaranteedBase": 105000,
+            "rosterBonus": 0,
+            "season": 2027
+          },
+          {
+            "baseSalary": 220000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-nf-03",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-03",
+        "signedAt": "2026-03-01",
+        "signingBonus": 90000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 225000,
+            "guaranteedBase": 225000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 235000,
+            "guaranteedBase": 117500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 245000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-nf-04",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-04",
+        "signedAt": "2026-03-01",
+        "signingBonus": 60000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 250000,
+            "guaranteedBase": 250000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 260000,
+            "guaranteedBase": 130000,
+            "rosterBonus": 0,
+            "season": 2027
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-nf-05",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-05",
+        "signedAt": "2026-03-01",
+        "signingBonus": 0,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 20000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 25000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2027
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-sp-01",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-01",
+        "signedAt": "2026-03-01",
+        "signingBonus": 150000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 175000,
+            "guaranteedBase": 175000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 185000,
+            "guaranteedBase": 92500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 195000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-sp-02",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-02",
+        "signedAt": "2026-03-01",
+        "signingBonus": 120000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 200000,
+            "guaranteedBase": 200000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 210000,
+            "guaranteedBase": 105000,
+            "rosterBonus": 0,
+            "season": 2027
+          },
+          {
+            "baseSalary": 220000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-sp-03",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-03",
+        "signedAt": "2026-03-01",
+        "signingBonus": 90000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 225000,
+            "guaranteedBase": 225000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 235000,
+            "guaranteedBase": 117500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 245000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-sp-04",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-04",
+        "signedAt": "2026-03-01",
+        "signingBonus": 60000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 250000,
+            "guaranteedBase": 250000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 260000,
+            "guaranteedBase": 130000,
+            "rosterBonus": 0,
+            "season": 2027
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-sp-05",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-05",
+        "signedAt": "2026-03-01",
+        "signingBonus": 0,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 20000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 25000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2027
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-wl-01",
+        "organizationId": "org-westlake",
+        "playerId": "player-wl-01",
+        "signedAt": "2026-03-01",
+        "signingBonus": 150000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 175000,
+            "guaranteedBase": 175000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 185000,
+            "guaranteedBase": 92500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 195000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-wl-02",
+        "organizationId": "org-westlake",
+        "playerId": "player-wl-02",
+        "signedAt": "2026-03-01",
+        "signingBonus": 120000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 200000,
+            "guaranteedBase": 200000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 210000,
+            "guaranteedBase": 105000,
+            "rosterBonus": 0,
+            "season": 2027
+          },
+          {
+            "baseSalary": 220000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-wl-03",
+        "organizationId": "org-westlake",
+        "playerId": "player-wl-03",
+        "signedAt": "2026-03-01",
+        "signingBonus": 90000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 225000,
+            "guaranteedBase": 225000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 235000,
+            "guaranteedBase": 117500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 245000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-wl-04",
+        "organizationId": "org-westlake",
+        "playerId": "player-wl-04",
+        "signedAt": "2026-03-01",
+        "signingBonus": 60000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 250000,
+            "guaranteedBase": 250000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 260000,
+            "guaranteedBase": 130000,
+            "rosterBonus": 0,
+            "season": 2027
+          }
+        ]
+      }
+    ],
+    "draftClasses": [
+      {
+        "eligiblePlayerIds": [
+          "player-pr-01",
+          "player-pr-02",
+          "player-pr-03",
+          "player-pr-04",
+          "player-pr-05",
+          "player-pr-06",
+          "player-pr-07",
+          "player-pr-08",
+          "player-pr-09",
+          "player-pr-10",
+          "player-pr-11",
+          "player-pr-12",
+          "player-pr-13",
+          "player-pr-14"
+        ],
+        "id": "class-2027",
+        "season": 2027
+      }
+    ],
+    "draftPicks": [
+      {
+        "id": "pick-2027-r1-s1",
+        "originalOrganizationId": "org-westlake",
+        "ownerOrganizationId": "org-westlake",
+        "round": 1,
+        "season": 2027,
+        "slot": 1,
+        "status": "available"
+      },
+      {
+        "id": "pick-2027-r1-s2",
+        "originalOrganizationId": "org-eastbrook",
+        "ownerOrganizationId": "org-eastbrook",
+        "round": 1,
+        "season": 2027,
+        "slot": 2,
+        "status": "available"
+      },
+      {
+        "id": "pick-2027-r1-s3",
+        "originalOrganizationId": "org-southport",
+        "ownerOrganizationId": "org-southport",
+        "round": 1,
+        "season": 2027,
+        "slot": 3,
+        "status": "available"
+      },
+      {
+        "id": "pick-2027-r1-s4",
+        "originalOrganizationId": "org-northfield",
+        "ownerOrganizationId": "org-northfield",
+        "round": 1,
+        "season": 2027,
+        "slot": 4,
+        "status": "available"
+      },
+      {
+        "id": "pick-2027-r2-s1",
+        "originalOrganizationId": "org-westlake",
+        "ownerOrganizationId": "org-northfield",
+        "round": 2,
+        "season": 2027,
+        "slot": 1,
+        "status": "available"
+      },
+      {
+        "id": "pick-2027-r2-s2",
+        "originalOrganizationId": "org-eastbrook",
+        "ownerOrganizationId": "org-eastbrook",
+        "round": 2,
+        "season": 2027,
+        "slot": 2,
+        "status": "available"
+      },
+      {
+        "id": "pick-2027-r2-s3",
+        "originalOrganizationId": "org-southport",
+        "ownerOrganizationId": "org-southport",
+        "round": 2,
+        "season": 2027,
+        "slot": 3,
+        "status": "available"
+      },
+      {
+        "id": "pick-2027-r2-s4",
+        "originalOrganizationId": "org-northfield",
+        "ownerOrganizationId": "org-northfield",
+        "round": 2,
+        "season": 2027,
+        "slot": 4,
+        "status": "available"
+      },
+      {
+        "id": "pick-2027-r3-s1",
+        "originalOrganizationId": "org-westlake",
+        "ownerOrganizationId": "org-westlake",
+        "round": 3,
+        "season": 2027,
+        "slot": 1,
+        "status": "available"
+      },
+      {
+        "id": "pick-2027-r3-s2",
+        "originalOrganizationId": "org-eastbrook",
+        "ownerOrganizationId": "org-westlake",
+        "round": 3,
+        "season": 2027,
+        "slot": 2,
+        "status": "available"
+      },
+      {
+        "id": "pick-2027-r3-s3",
+        "originalOrganizationId": "org-southport",
+        "ownerOrganizationId": "org-southport",
+        "round": 3,
+        "season": 2027,
+        "slot": 3,
+        "status": "available"
+      },
+      {
+        "id": "pick-2027-r3-s4",
+        "originalOrganizationId": "org-northfield",
+        "ownerOrganizationId": "org-northfield",
+        "round": 3,
+        "season": 2027,
+        "slot": 4,
+        "status": "available"
+      },
+      {
+        "id": "pick-2028-r1-wl",
+        "originalOrganizationId": "org-westlake",
+        "ownerOrganizationId": "org-westlake",
+        "round": 1,
+        "season": 2028,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2028-r1-eb",
+        "originalOrganizationId": "org-eastbrook",
+        "ownerOrganizationId": "org-eastbrook",
+        "round": 1,
+        "season": 2028,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2028-r1-sp",
+        "originalOrganizationId": "org-southport",
+        "ownerOrganizationId": "org-eastbrook",
+        "round": 1,
+        "season": 2028,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2028-r1-nf",
+        "originalOrganizationId": "org-northfield",
+        "ownerOrganizationId": "org-northfield",
+        "round": 1,
+        "season": 2028,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2028-r2-wl",
+        "originalOrganizationId": "org-westlake",
+        "ownerOrganizationId": "org-westlake",
+        "round": 2,
+        "season": 2028,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2028-r2-eb",
+        "originalOrganizationId": "org-eastbrook",
+        "ownerOrganizationId": "org-eastbrook",
+        "round": 2,
+        "season": 2028,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2028-r2-sp",
+        "originalOrganizationId": "org-southport",
+        "ownerOrganizationId": "org-southport",
+        "round": 2,
+        "season": 2028,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2028-r2-nf",
+        "originalOrganizationId": "org-northfield",
+        "ownerOrganizationId": "org-northfield",
+        "round": 2,
+        "season": 2028,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2028-r3-wl",
+        "originalOrganizationId": "org-westlake",
+        "ownerOrganizationId": "org-westlake",
+        "round": 3,
+        "season": 2028,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2028-r3-eb",
+        "originalOrganizationId": "org-eastbrook",
+        "ownerOrganizationId": "org-eastbrook",
+        "round": 3,
+        "season": 2028,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2028-r3-sp",
+        "originalOrganizationId": "org-southport",
+        "ownerOrganizationId": "org-southport",
+        "round": 3,
+        "season": 2028,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2028-r3-nf",
+        "originalOrganizationId": "org-northfield",
+        "ownerOrganizationId": "org-northfield",
+        "round": 3,
+        "season": 2028,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2029-r1-wl",
+        "originalOrganizationId": "org-westlake",
+        "ownerOrganizationId": "org-westlake",
+        "round": 1,
+        "season": 2029,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2029-r1-eb",
+        "originalOrganizationId": "org-eastbrook",
+        "ownerOrganizationId": "org-eastbrook",
+        "round": 1,
+        "season": 2029,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2029-r1-sp",
+        "originalOrganizationId": "org-southport",
+        "ownerOrganizationId": "org-southport",
+        "round": 1,
+        "season": 2029,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2029-r1-nf",
+        "originalOrganizationId": "org-northfield",
+        "ownerOrganizationId": "org-northfield",
+        "round": 1,
+        "season": 2029,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2029-r2-wl",
+        "originalOrganizationId": "org-westlake",
+        "ownerOrganizationId": "org-westlake",
+        "round": 2,
+        "season": 2029,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2029-r2-eb",
+        "originalOrganizationId": "org-eastbrook",
+        "ownerOrganizationId": "org-eastbrook",
+        "round": 2,
+        "season": 2029,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2029-r2-sp",
+        "originalOrganizationId": "org-southport",
+        "ownerOrganizationId": "org-southport",
+        "round": 2,
+        "season": 2029,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2029-r2-nf",
+        "originalOrganizationId": "org-northfield",
+        "ownerOrganizationId": "org-northfield",
+        "round": 2,
+        "season": 2029,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2029-r3-wl",
+        "originalOrganizationId": "org-westlake",
+        "ownerOrganizationId": "org-westlake",
+        "round": 3,
+        "season": 2029,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2029-r3-eb",
+        "originalOrganizationId": "org-eastbrook",
+        "ownerOrganizationId": "org-eastbrook",
+        "round": 3,
+        "season": 2029,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2029-r3-sp",
+        "originalOrganizationId": "org-southport",
+        "ownerOrganizationId": "org-southport",
+        "round": 3,
+        "season": 2029,
+        "slot": null,
+        "status": "available"
+      },
+      {
+        "id": "pick-2029-r3-nf",
+        "originalOrganizationId": "org-northfield",
+        "ownerOrganizationId": "org-northfield",
+        "round": 3,
+        "season": 2029,
+        "slot": null,
+        "status": "available"
+      }
+    ],
+    "evaluatorProfiles": [
+      {
+        "personId": "person-nf-scout",
+        "riskTolerance": "medium",
+        "strongDimensions": [
+          "processing",
+          "anticipation",
+          "coverage_instincts"
+        ],
+        "weakDimensions": [
+          "burst",
+          "agility",
+          "route_craft"
+        ]
+      },
+      {
+        "personId": "person-sp-scout",
+        "riskTolerance": "high",
+        "strongDimensions": [
+          "strength",
+          "block_technique",
+          "run_stopping"
+        ],
+        "weakDimensions": [
+          "accuracy",
+          "arm_power",
+          "hands"
+        ]
+      },
+      {
+        "personId": "person-eb-scout",
+        "riskTolerance": "low",
+        "strongDimensions": [
+          "burst",
+          "agility",
+          "route_craft"
+        ],
+        "weakDimensions": [
+          "processing",
+          "anticipation",
+          "coverage_instincts"
+        ]
+      },
+      {
+        "personId": "person-wl-scout",
+        "riskTolerance": "medium",
+        "strongDimensions": [
+          "accuracy",
+          "arm_power",
+          "hands"
+        ],
+        "weakDimensions": [
+          "strength",
+          "block_technique",
+          "run_stopping"
+        ]
+      }
+    ],
+    "memberships": [
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-nf-01",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-01",
+        "sourceRecordId": "contract-seed-player-nf-01",
+        "status": "active"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-nf-02",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-02",
+        "sourceRecordId": "contract-seed-player-nf-02",
+        "status": "active"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-nf-03",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-03",
+        "sourceRecordId": "contract-seed-player-nf-03",
+        "status": "active"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-nf-04",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-04",
+        "sourceRecordId": "contract-seed-player-nf-04",
+        "status": "reserve"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-nf-05",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-05",
+        "sourceRecordId": "contract-seed-player-nf-05",
+        "status": "practice_squad"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-sp-01",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-01",
+        "sourceRecordId": "contract-seed-player-sp-01",
+        "status": "active"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-sp-02",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-02",
+        "sourceRecordId": "contract-seed-player-sp-02",
+        "status": "active"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-sp-03",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-03",
+        "sourceRecordId": "contract-seed-player-sp-03",
+        "status": "active"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-sp-04",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-04",
+        "sourceRecordId": "contract-seed-player-sp-04",
+        "status": "reserve"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-sp-05",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-05",
+        "sourceRecordId": "contract-seed-player-sp-05",
+        "status": "practice_squad"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-eb-01",
+        "organizationId": "org-eastbrook",
+        "playerId": "player-eb-01",
+        "sourceRecordId": "contract-seed-player-eb-01",
+        "status": "active"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-eb-02",
+        "organizationId": "org-eastbrook",
+        "playerId": "player-eb-02",
+        "sourceRecordId": "contract-seed-player-eb-02",
+        "status": "active"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-eb-03",
+        "organizationId": "org-eastbrook",
+        "playerId": "player-eb-03",
+        "sourceRecordId": "contract-seed-player-eb-03",
+        "status": "active"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-eb-04",
+        "organizationId": "org-eastbrook",
+        "playerId": "player-eb-04",
+        "sourceRecordId": "contract-seed-player-eb-04",
+        "status": "reserve"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-wl-01",
+        "organizationId": "org-westlake",
+        "playerId": "player-wl-01",
+        "sourceRecordId": "contract-seed-player-wl-01",
+        "status": "active"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-wl-02",
+        "organizationId": "org-westlake",
+        "playerId": "player-wl-02",
+        "sourceRecordId": "contract-seed-player-wl-02",
+        "status": "active"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-wl-03",
+        "organizationId": "org-westlake",
+        "playerId": "player-wl-03",
+        "sourceRecordId": "contract-seed-player-wl-03",
+        "status": "active"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "id": "mem-player-wl-04",
+        "organizationId": "org-westlake",
+        "playerId": "player-wl-04",
+        "sourceRecordId": "contract-seed-player-wl-04",
+        "status": "reserve"
+      }
+    ],
+    "playerPreferences": [
+      {
+        "contenderPreference": "low",
+        "earlyCash": "medium",
+        "flexibility": "medium",
+        "playerPersonId": "player-fa-01",
+        "roleOpportunity": "high",
+        "security": "low"
+      },
+      {
+        "contenderPreference": "high",
+        "earlyCash": "high",
+        "flexibility": "high",
+        "playerPersonId": "player-fa-02",
+        "roleOpportunity": "low",
+        "security": "medium"
+      },
+      {
+        "contenderPreference": "medium",
+        "earlyCash": "low",
+        "flexibility": "low",
+        "playerPersonId": "player-fa-03",
+        "roleOpportunity": "medium",
+        "security": "high"
+      },
+      {
+        "contenderPreference": "low",
+        "earlyCash": "medium",
+        "flexibility": "medium",
+        "playerPersonId": "player-fa-04",
+        "roleOpportunity": "high",
+        "security": "low"
+      },
+      {
+        "contenderPreference": "high",
+        "earlyCash": "high",
+        "flexibility": "high",
+        "playerPersonId": "player-fa-05",
+        "roleOpportunity": "low",
+        "security": "medium"
+      },
+      {
+        "contenderPreference": "medium",
+        "earlyCash": "low",
+        "flexibility": "low",
+        "playerPersonId": "player-nf-01",
+        "roleOpportunity": "medium",
+        "security": "high"
+      },
+      {
+        "contenderPreference": "low",
+        "earlyCash": "medium",
+        "flexibility": "medium",
+        "playerPersonId": "player-sp-01",
+        "roleOpportunity": "high",
+        "security": "low"
+      },
+      {
+        "contenderPreference": "high",
+        "earlyCash": "high",
+        "flexibility": "high",
+        "playerPersonId": "player-eb-01",
+        "roleOpportunity": "low",
+        "security": "medium"
+      },
+      {
+        "contenderPreference": "medium",
+        "earlyCash": "low",
+        "flexibility": "low",
+        "playerPersonId": "player-pr-01",
+        "roleOpportunity": "medium",
+        "security": "high"
+      },
+      {
+        "contenderPreference": "low",
+        "earlyCash": "medium",
+        "flexibility": "medium",
+        "playerPersonId": "player-pr-02",
+        "roleOpportunity": "high",
+        "security": "low"
+      },
+      {
+        "contenderPreference": "high",
+        "earlyCash": "high",
+        "flexibility": "high",
+        "playerPersonId": "player-pr-03",
+        "roleOpportunity": "low",
+        "security": "medium"
+      },
+      {
+        "contenderPreference": "medium",
+        "earlyCash": "low",
+        "flexibility": "low",
+        "playerPersonId": "player-pr-04",
+        "roleOpportunity": "medium",
+        "security": "high"
+      }
+    ],
+    "players": [
+      {
+        "birthDate": "1996-02-02",
+        "capabilities": [
+          {
+            "key": "burst",
+            "valueBp": 8148
+          },
+          {
+            "key": "agility",
+            "valueBp": 4877
+          },
+          {
+            "key": "strength",
+            "valueBp": 7606
+          },
+          {
+            "key": "hands",
+            "valueBp": 4335
+          },
+          {
+            "key": "vision",
+            "valueBp": 7064
+          }
+        ],
+        "personId": "player-nf-01",
+        "primaryRole": "running_back",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "1997-03-03",
+        "capabilities": [
+          {
+            "key": "block_technique",
+            "valueBp": 4067
+          },
+          {
+            "key": "strength",
+            "valueBp": 6796
+          },
+          {
+            "key": "processing",
+            "valueBp": 3525
+          },
+          {
+            "key": "agility",
+            "valueBp": 6254
+          }
+        ],
+        "personId": "player-nf-02",
+        "primaryRole": "offensive_line",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "1998-04-04",
+        "capabilities": [
+          {
+            "key": "tackling",
+            "valueBp": 5986
+          },
+          {
+            "key": "processing",
+            "valueBp": 8715
+          },
+          {
+            "key": "run_stopping",
+            "valueBp": 5444
+          },
+          {
+            "key": "coverage_instincts",
+            "valueBp": 8173
+          },
+          {
+            "key": "burst",
+            "valueBp": 4902
+          }
+        ],
+        "personId": "player-nf-03",
+        "primaryRole": "linebacker",
+        "roleTags": [
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "1999-05-05",
+        "capabilities": [
+          {
+            "key": "coverage_instincts",
+            "valueBp": 7905
+          },
+          {
+            "key": "tackling",
+            "valueBp": 4634
+          },
+          {
+            "key": "processing",
+            "valueBp": 7363
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 4092
+          }
+        ],
+        "personId": "player-nf-04",
+        "primaryRole": "safety",
+        "roleTags": [
+          "rotational",
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "2000-06-06",
+        "capabilities": [
+          {
+            "key": "burst",
+            "valueBp": 3824
+          },
+          {
+            "key": "agility",
+            "valueBp": 6553
+          },
+          {
+            "key": "strength",
+            "valueBp": 9282
+          },
+          {
+            "key": "hands",
+            "valueBp": 6011
+          },
+          {
+            "key": "vision",
+            "valueBp": 8740
+          }
+        ],
+        "personId": "player-nf-05",
+        "primaryRole": "running_back",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "2001-07-07",
+        "capabilities": [
+          {
+            "key": "coverage_instincts",
+            "valueBp": 5743
+          },
+          {
+            "key": "burst",
+            "valueBp": 8472
+          },
+          {
+            "key": "agility",
+            "valueBp": 5201
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 7930
+          },
+          {
+            "key": "tackling",
+            "valueBp": 4659
+          }
+        ],
+        "personId": "player-sp-01",
+        "primaryRole": "cornerback",
+        "roleTags": [
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "1995-08-08",
+        "capabilities": [
+          {
+            "key": "processing",
+            "valueBp": 7662
+          },
+          {
+            "key": "accuracy",
+            "valueBp": 4391
+          },
+          {
+            "key": "arm_power",
+            "valueBp": 7120
+          },
+          {
+            "key": "agility",
+            "valueBp": 3849
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 6578
+          }
+        ],
+        "personId": "player-sp-02",
+        "primaryRole": "quarterback",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "1996-09-09",
+        "capabilities": [
+          {
+            "key": "route_craft",
+            "valueBp": 3581
+          },
+          {
+            "key": "hands",
+            "valueBp": 6310
+          },
+          {
+            "key": "burst",
+            "valueBp": 9039
+          },
+          {
+            "key": "agility",
+            "valueBp": 5768
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 8497
+          }
+        ],
+        "personId": "player-sp-03",
+        "primaryRole": "wide_receiver",
+        "roleTags": [
+          "rotational",
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "1997-10-10",
+        "capabilities": [
+          {
+            "key": "pass_rush",
+            "valueBp": 5500
+          },
+          {
+            "key": "run_stopping",
+            "valueBp": 8229
+          },
+          {
+            "key": "strength",
+            "valueBp": 4958
+          },
+          {
+            "key": "burst",
+            "valueBp": 7687
+          }
+        ],
+        "personId": "player-sp-04",
+        "primaryRole": "defensive_line",
+        "roleTags": [
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "1998-11-11",
+        "capabilities": [
+          {
+            "key": "coverage_instincts",
+            "valueBp": 7419
+          },
+          {
+            "key": "burst",
+            "valueBp": 4148
+          },
+          {
+            "key": "agility",
+            "valueBp": 6877
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 3606
+          },
+          {
+            "key": "tackling",
+            "valueBp": 6335
+          }
+        ],
+        "personId": "player-sp-05",
+        "primaryRole": "cornerback",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "1999-12-12",
+        "capabilities": [
+          {
+            "key": "block_technique",
+            "valueBp": 9338
+          },
+          {
+            "key": "strength",
+            "valueBp": 6067
+          },
+          {
+            "key": "processing",
+            "valueBp": 8796
+          },
+          {
+            "key": "agility",
+            "valueBp": 5525
+          }
+        ],
+        "personId": "player-eb-01",
+        "primaryRole": "offensive_line",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "2000-01-13",
+        "capabilities": [
+          {
+            "key": "tackling",
+            "valueBp": 5257
+          },
+          {
+            "key": "processing",
+            "valueBp": 7986
+          },
+          {
+            "key": "run_stopping",
+            "valueBp": 4715
+          },
+          {
+            "key": "coverage_instincts",
+            "valueBp": 7444
+          },
+          {
+            "key": "burst",
+            "valueBp": 4173
+          }
+        ],
+        "personId": "player-eb-02",
+        "primaryRole": "linebacker",
+        "roleTags": [
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "2001-02-14",
+        "capabilities": [
+          {
+            "key": "coverage_instincts",
+            "valueBp": 7176
+          },
+          {
+            "key": "tackling",
+            "valueBp": 3905
+          },
+          {
+            "key": "processing",
+            "valueBp": 6634
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 9363
+          }
+        ],
+        "personId": "player-eb-03",
+        "primaryRole": "safety",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "1995-03-15",
+        "capabilities": [
+          {
+            "key": "burst",
+            "valueBp": 9095
+          },
+          {
+            "key": "agility",
+            "valueBp": 5824
+          },
+          {
+            "key": "strength",
+            "valueBp": 8553
+          },
+          {
+            "key": "hands",
+            "valueBp": 5282
+          },
+          {
+            "key": "vision",
+            "valueBp": 8011
+          }
+        ],
+        "personId": "player-eb-04",
+        "primaryRole": "running_back",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "1996-04-16",
+        "capabilities": [
+          {
+            "key": "coverage_instincts",
+            "valueBp": 5014
+          },
+          {
+            "key": "tackling",
+            "valueBp": 7743
+          },
+          {
+            "key": "processing",
+            "valueBp": 4472
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 7201
+          }
+        ],
+        "personId": "player-wl-01",
+        "primaryRole": "safety",
+        "roleTags": [
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "1997-05-17",
+        "capabilities": [
+          {
+            "key": "burst",
+            "valueBp": 6933
+          },
+          {
+            "key": "agility",
+            "valueBp": 3662
+          },
+          {
+            "key": "strength",
+            "valueBp": 6391
+          },
+          {
+            "key": "hands",
+            "valueBp": 9120
+          },
+          {
+            "key": "vision",
+            "valueBp": 5849
+          }
+        ],
+        "personId": "player-wl-02",
+        "primaryRole": "running_back",
+        "roleTags": [
+          "rotational",
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "1998-06-18",
+        "capabilities": [
+          {
+            "key": "block_technique",
+            "valueBp": 8852
+          },
+          {
+            "key": "strength",
+            "valueBp": 5581
+          },
+          {
+            "key": "processing",
+            "valueBp": 8310
+          },
+          {
+            "key": "agility",
+            "valueBp": 5039
+          }
+        ],
+        "personId": "player-wl-03",
+        "primaryRole": "offensive_line",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "1999-07-19",
+        "capabilities": [
+          {
+            "key": "tackling",
+            "valueBp": 4771
+          },
+          {
+            "key": "processing",
+            "valueBp": 7500
+          },
+          {
+            "key": "run_stopping",
+            "valueBp": 4229
+          },
+          {
+            "key": "coverage_instincts",
+            "valueBp": 6958
+          },
+          {
+            "key": "burst",
+            "valueBp": 3687
+          }
+        ],
+        "personId": "player-wl-04",
+        "primaryRole": "linebacker",
+        "roleTags": [
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "2003-08-20",
+        "capabilities": [
+          {
+            "key": "pass_rush",
+            "valueBp": 6690
+          },
+          {
+            "key": "run_stopping",
+            "valueBp": 9419
+          },
+          {
+            "key": "strength",
+            "valueBp": 6148
+          },
+          {
+            "key": "burst",
+            "valueBp": 8877
+          }
+        ],
+        "personId": "player-eb-draftee",
+        "primaryRole": "defensive_line",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "1999-09-21",
+        "capabilities": [
+          {
+            "key": "route_craft",
+            "valueBp": 8609
+          },
+          {
+            "key": "hands",
+            "valueBp": 5338
+          },
+          {
+            "key": "burst",
+            "valueBp": 8067
+          },
+          {
+            "key": "agility",
+            "valueBp": 4796
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 7525
+          }
+        ],
+        "personId": "player-wl-exclusive",
+        "primaryRole": "wide_receiver",
+        "roleTags": [
+          "rotational",
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "1998-10-22",
+        "capabilities": [
+          {
+            "key": "coverage_instincts",
+            "valueBp": 4528
+          },
+          {
+            "key": "tackling",
+            "valueBp": 7257
+          },
+          {
+            "key": "processing",
+            "valueBp": 3986
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 6715
+          }
+        ],
+        "personId": "player-fa-01",
+        "primaryRole": "safety",
+        "roleTags": [
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "1999-11-23",
+        "capabilities": [
+          {
+            "key": "route_craft",
+            "valueBp": 6447
+          },
+          {
+            "key": "hands",
+            "valueBp": 9176
+          },
+          {
+            "key": "burst",
+            "valueBp": 5905
+          },
+          {
+            "key": "agility",
+            "valueBp": 8634
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 5363
+          }
+        ],
+        "personId": "player-fa-02",
+        "primaryRole": "wide_receiver",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "2000-12-24",
+        "capabilities": [
+          {
+            "key": "tackling",
+            "valueBp": 8366
+          },
+          {
+            "key": "processing",
+            "valueBp": 5095
+          },
+          {
+            "key": "run_stopping",
+            "valueBp": 7824
+          },
+          {
+            "key": "coverage_instincts",
+            "valueBp": 4553
+          },
+          {
+            "key": "burst",
+            "valueBp": 7282
+          }
+        ],
+        "personId": "player-fa-03",
+        "primaryRole": "linebacker",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "1993-01-25",
+        "capabilities": [
+          {
+            "key": "processing",
+            "valueBp": 4285
+          },
+          {
+            "key": "accuracy",
+            "valueBp": 7014
+          },
+          {
+            "key": "arm_power",
+            "valueBp": 3743
+          },
+          {
+            "key": "agility",
+            "valueBp": 6472
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 9201
+          }
+        ],
+        "personId": "player-fa-04",
+        "primaryRole": "quarterback",
+        "roleTags": [
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "1994-02-26",
+        "capabilities": [
+          {
+            "key": "block_technique",
+            "valueBp": 6204
+          },
+          {
+            "key": "strength",
+            "valueBp": 8933
+          },
+          {
+            "key": "processing",
+            "valueBp": 5662
+          },
+          {
+            "key": "agility",
+            "valueBp": 8391
+          }
+        ],
+        "personId": "player-fa-05",
+        "primaryRole": "offensive_line",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "2004-03-27",
+        "capabilities": [
+          {
+            "key": "route_craft",
+            "valueBp": 8123
+          },
+          {
+            "key": "hands",
+            "valueBp": 4852
+          },
+          {
+            "key": "burst",
+            "valueBp": 7581
+          },
+          {
+            "key": "agility",
+            "valueBp": 4310
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 7039
+          }
+        ],
+        "personId": "player-pr-01",
+        "primaryRole": "wide_receiver",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "2005-04-01",
+        "capabilities": [
+          {
+            "key": "coverage_instincts",
+            "valueBp": 4042
+          },
+          {
+            "key": "tackling",
+            "valueBp": 6771
+          },
+          {
+            "key": "processing",
+            "valueBp": 3500
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 6229
+          }
+        ],
+        "personId": "player-pr-02",
+        "primaryRole": "safety",
+        "roleTags": [
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "2004-05-02",
+        "capabilities": [
+          {
+            "key": "pass_rush",
+            "valueBp": 5961
+          },
+          {
+            "key": "run_stopping",
+            "valueBp": 8690
+          },
+          {
+            "key": "strength",
+            "valueBp": 5419
+          },
+          {
+            "key": "burst",
+            "valueBp": 8148
+          }
+        ],
+        "personId": "player-pr-03",
+        "primaryRole": "defensive_line",
+        "roleTags": [
+          "rotational",
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "2005-06-03",
+        "capabilities": [
+          {
+            "key": "burst",
+            "valueBp": 7880
+          },
+          {
+            "key": "agility",
+            "valueBp": 4609
+          },
+          {
+            "key": "strength",
+            "valueBp": 7338
+          },
+          {
+            "key": "hands",
+            "valueBp": 4067
+          },
+          {
+            "key": "vision",
+            "valueBp": 6796
+          }
+        ],
+        "personId": "player-pr-04",
+        "primaryRole": "running_back",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "2004-07-04",
+        "capabilities": [
+          {
+            "key": "coverage_instincts",
+            "valueBp": 3799
+          },
+          {
+            "key": "burst",
+            "valueBp": 6528
+          },
+          {
+            "key": "agility",
+            "valueBp": 9257
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 5986
+          },
+          {
+            "key": "tackling",
+            "valueBp": 8715
+          }
+        ],
+        "personId": "player-pr-05",
+        "primaryRole": "cornerback",
+        "roleTags": [
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "2005-08-05",
+        "capabilities": [
+          {
+            "key": "block_technique",
+            "valueBp": 5718
+          },
+          {
+            "key": "strength",
+            "valueBp": 8447
+          },
+          {
+            "key": "processing",
+            "valueBp": 5176
+          },
+          {
+            "key": "agility",
+            "valueBp": 7905
+          }
+        ],
+        "personId": "player-pr-06",
+        "primaryRole": "offensive_line",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "2004-09-06",
+        "capabilities": [
+          {
+            "key": "processing",
+            "valueBp": 7637
+          },
+          {
+            "key": "accuracy",
+            "valueBp": 4366
+          },
+          {
+            "key": "arm_power",
+            "valueBp": 7095
+          },
+          {
+            "key": "agility",
+            "valueBp": 3824
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 6553
+          }
+        ],
+        "personId": "player-pr-07",
+        "primaryRole": "quarterback",
+        "roleTags": [
+          "rotational",
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "2005-10-07",
+        "capabilities": [
+          {
+            "key": "tackling",
+            "valueBp": 3556
+          },
+          {
+            "key": "processing",
+            "valueBp": 6285
+          },
+          {
+            "key": "run_stopping",
+            "valueBp": 9014
+          },
+          {
+            "key": "coverage_instincts",
+            "valueBp": 5743
+          },
+          {
+            "key": "burst",
+            "valueBp": 8472
+          }
+        ],
+        "personId": "player-pr-08",
+        "primaryRole": "linebacker",
+        "roleTags": [
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "2004-11-08",
+        "capabilities": [
+          {
+            "key": "route_craft",
+            "valueBp": 5475
+          },
+          {
+            "key": "hands",
+            "valueBp": 8204
+          },
+          {
+            "key": "burst",
+            "valueBp": 4933
+          },
+          {
+            "key": "agility",
+            "valueBp": 7662
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 4391
+          }
+        ],
+        "personId": "player-pr-09",
+        "primaryRole": "wide_receiver",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "2005-12-09",
+        "capabilities": [
+          {
+            "key": "coverage_instincts",
+            "valueBp": 7394
+          },
+          {
+            "key": "tackling",
+            "valueBp": 4123
+          },
+          {
+            "key": "processing",
+            "valueBp": 6852
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 3581
+          }
+        ],
+        "personId": "player-pr-10",
+        "primaryRole": "safety",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "2004-01-10",
+        "capabilities": [
+          {
+            "key": "pass_rush",
+            "valueBp": 9313
+          },
+          {
+            "key": "run_stopping",
+            "valueBp": 6042
+          },
+          {
+            "key": "strength",
+            "valueBp": 8771
+          },
+          {
+            "key": "burst",
+            "valueBp": 5500
+          }
+        ],
+        "personId": "player-pr-11",
+        "primaryRole": "defensive_line",
+        "roleTags": [
+          "special_teams"
+        ]
+      },
+      {
+        "birthDate": "2005-02-11",
+        "capabilities": [
+          {
+            "key": "burst",
+            "valueBp": 5232
+          },
+          {
+            "key": "agility",
+            "valueBp": 7961
+          },
+          {
+            "key": "strength",
+            "valueBp": 4690
+          },
+          {
+            "key": "hands",
+            "valueBp": 7419
+          },
+          {
+            "key": "vision",
+            "valueBp": 4148
+          }
+        ],
+        "personId": "player-pr-12",
+        "primaryRole": "running_back",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "2004-03-12",
+        "capabilities": [
+          {
+            "key": "coverage_instincts",
+            "valueBp": 7151
+          },
+          {
+            "key": "burst",
+            "valueBp": 3880
+          },
+          {
+            "key": "agility",
+            "valueBp": 6609
+          },
+          {
+            "key": "anticipation",
+            "valueBp": 9338
+          },
+          {
+            "key": "tackling",
+            "valueBp": 6067
+          }
+        ],
+        "personId": "player-pr-13",
+        "primaryRole": "cornerback",
+        "roleTags": [
+          "starter_profile"
+        ]
+      },
+      {
+        "birthDate": "2005-04-13",
+        "capabilities": [
+          {
+            "key": "block_technique",
+            "valueBp": 9070
+          },
+          {
+            "key": "strength",
+            "valueBp": 5799
+          },
+          {
+            "key": "processing",
+            "valueBp": 8528
+          },
+          {
+            "key": "agility",
+            "valueBp": 5257
+          }
+        ],
+        "personId": "player-pr-14",
+        "primaryRole": "offensive_line",
+        "roleTags": [
+          "special_teams"
+        ]
+      }
+    ],
+    "rights": [
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-northfield",
+        "id": "right-player-nf-01",
+        "kind": "contract",
+        "playerId": "player-nf-01",
+        "sourceRecordId": "contract-seed-player-nf-01"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-northfield",
+        "id": "right-player-nf-02",
+        "kind": "contract",
+        "playerId": "player-nf-02",
+        "sourceRecordId": "contract-seed-player-nf-02"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-northfield",
+        "id": "right-player-nf-03",
+        "kind": "contract",
+        "playerId": "player-nf-03",
+        "sourceRecordId": "contract-seed-player-nf-03"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-northfield",
+        "id": "right-player-nf-04",
+        "kind": "contract",
+        "playerId": "player-nf-04",
+        "sourceRecordId": "contract-seed-player-nf-04"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-northfield",
+        "id": "right-player-nf-05",
+        "kind": "contract",
+        "playerId": "player-nf-05",
+        "sourceRecordId": "contract-seed-player-nf-05"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-southport",
+        "id": "right-player-sp-01",
+        "kind": "contract",
+        "playerId": "player-sp-01",
+        "sourceRecordId": "contract-seed-player-sp-01"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-southport",
+        "id": "right-player-sp-02",
+        "kind": "contract",
+        "playerId": "player-sp-02",
+        "sourceRecordId": "contract-seed-player-sp-02"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-southport",
+        "id": "right-player-sp-03",
+        "kind": "contract",
+        "playerId": "player-sp-03",
+        "sourceRecordId": "contract-seed-player-sp-03"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-southport",
+        "id": "right-player-sp-04",
+        "kind": "contract",
+        "playerId": "player-sp-04",
+        "sourceRecordId": "contract-seed-player-sp-04"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-southport",
+        "id": "right-player-sp-05",
+        "kind": "contract",
+        "playerId": "player-sp-05",
+        "sourceRecordId": "contract-seed-player-sp-05"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-eastbrook",
+        "id": "right-player-eb-01",
+        "kind": "contract",
+        "playerId": "player-eb-01",
+        "sourceRecordId": "contract-seed-player-eb-01"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-eastbrook",
+        "id": "right-player-eb-02",
+        "kind": "contract",
+        "playerId": "player-eb-02",
+        "sourceRecordId": "contract-seed-player-eb-02"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-eastbrook",
+        "id": "right-player-eb-03",
+        "kind": "contract",
+        "playerId": "player-eb-03",
+        "sourceRecordId": "contract-seed-player-eb-03"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-eastbrook",
+        "id": "right-player-eb-04",
+        "kind": "contract",
+        "playerId": "player-eb-04",
+        "sourceRecordId": "contract-seed-player-eb-04"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-westlake",
+        "id": "right-player-wl-01",
+        "kind": "contract",
+        "playerId": "player-wl-01",
+        "sourceRecordId": "contract-seed-player-wl-01"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-westlake",
+        "id": "right-player-wl-02",
+        "kind": "contract",
+        "playerId": "player-wl-02",
+        "sourceRecordId": "contract-seed-player-wl-02"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-westlake",
+        "id": "right-player-wl-03",
+        "kind": "contract",
+        "playerId": "player-wl-03",
+        "sourceRecordId": "contract-seed-player-wl-03"
+      },
+      {
+        "effectiveFrom": "2026-03-01",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-westlake",
+        "id": "right-player-wl-04",
+        "kind": "contract",
+        "playerId": "player-wl-04",
+        "sourceRecordId": "contract-seed-player-wl-04"
+      },
+      {
+        "effectiveFrom": "2026-04-25",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-eastbrook",
+        "id": "right-player-eb-draftee",
+        "kind": "draft",
+        "playerId": "player-eb-draftee",
+        "sourceRecordId": "seed-draft-2026-eb"
+      },
+      {
+        "effectiveFrom": "2026-03-15",
+        "effectiveUntil": null,
+        "holderOrganizationId": "org-westlake",
+        "id": "right-player-wl-exclusive",
+        "kind": "exclusive",
+        "playerId": "player-wl-exclusive",
+        "sourceRecordId": "seed-exclusive-wl"
+      }
+    ],
+    "waiverPriority": [
+      "org-westlake",
+      "org-eastbrook",
+      "org-southport",
+      "org-northfield"
+    ]
+  },
+  "packageDSubstrate": {
+    "playerProfiles": [
+      {
+        "adaptabilityBp": 5799,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 2831
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 3444
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 4057
+          },
+          {
+            "capabilityKey": "hands",
+            "malleabilityBp": 4670
+          },
+          {
+            "capabilityKey": "vision",
+            "malleabilityBp": 5283
+          }
+        ],
+        "durabilityBp": 3976,
+        "personId": "player-nf-01",
+        "processingBp": 4573,
+        "recoveryBp": 8251
+      },
+      {
+        "adaptabilityBp": 6776,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "block_technique",
+            "malleabilityBp": 3808
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 4421
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 5034
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 5647
+          }
+        ],
+        "durabilityBp": 4953,
+        "personId": "player-nf-02",
+        "processingBp": 5550,
+        "recoveryBp": 3727
+      },
+      {
+        "adaptabilityBp": 7753,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 4785
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 5398
+          },
+          {
+            "capabilityKey": "run_stopping",
+            "malleabilityBp": 6011
+          },
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 6624
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 7237
+          }
+        ],
+        "durabilityBp": 5930,
+        "personId": "player-nf-03",
+        "processingBp": 6527,
+        "recoveryBp": 4704
+      },
+      {
+        "adaptabilityBp": 3229,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 5762
+          },
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 6375
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 6988
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 7601
+          }
+        ],
+        "durabilityBp": 6907,
+        "personId": "player-nf-04",
+        "processingBp": 7504,
+        "recoveryBp": 5681
+      },
+      {
+        "adaptabilityBp": 4206,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 6739
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 7352
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 7965
+          },
+          {
+            "capabilityKey": "hands",
+            "malleabilityBp": 3077
+          },
+          {
+            "capabilityKey": "vision",
+            "malleabilityBp": 3690
+          }
+        ],
+        "durabilityBp": 7884,
+        "personId": "player-nf-05",
+        "processingBp": 8481,
+        "recoveryBp": 6658
+      },
+      {
+        "adaptabilityBp": 5183,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 7716
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 2828
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 3441
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 4054
+          },
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 4667
+          }
+        ],
+        "durabilityBp": 3360,
+        "personId": "player-sp-01",
+        "processingBp": 3957,
+        "recoveryBp": 7635
+      },
+      {
+        "adaptabilityBp": 6160,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 3192
+          },
+          {
+            "capabilityKey": "accuracy",
+            "malleabilityBp": 3805
+          },
+          {
+            "capabilityKey": "arm_power",
+            "malleabilityBp": 4418
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 5031
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 5644
+          }
+        ],
+        "durabilityBp": 4337,
+        "personId": "player-sp-02",
+        "processingBp": 4934,
+        "recoveryBp": 3111
+      },
+      {
+        "adaptabilityBp": 7137,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "route_craft",
+            "malleabilityBp": 4169
+          },
+          {
+            "capabilityKey": "hands",
+            "malleabilityBp": 4782
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 5395
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 6008
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 6621
+          }
+        ],
+        "durabilityBp": 5314,
+        "personId": "player-sp-03",
+        "processingBp": 5911,
+        "recoveryBp": 4088
+      },
+      {
+        "adaptabilityBp": 8114,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "pass_rush",
+            "malleabilityBp": 5146
+          },
+          {
+            "capabilityKey": "run_stopping",
+            "malleabilityBp": 5759
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 6372
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 6985
+          }
+        ],
+        "durabilityBp": 6291,
+        "personId": "player-sp-04",
+        "processingBp": 6888,
+        "recoveryBp": 5065
+      },
+      {
+        "adaptabilityBp": 3590,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 6123
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 6736
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 7349
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 7962
+          },
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 3074
+          }
+        ],
+        "durabilityBp": 7268,
+        "personId": "player-sp-05",
+        "processingBp": 7865,
+        "recoveryBp": 6042
+      },
+      {
+        "adaptabilityBp": 4567,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "block_technique",
+            "malleabilityBp": 7100
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 7713
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 2825
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 3438
+          }
+        ],
+        "durabilityBp": 8245,
+        "personId": "player-eb-01",
+        "processingBp": 3341,
+        "recoveryBp": 7019
+      },
+      {
+        "adaptabilityBp": 5544,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 2576
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 3189
+          },
+          {
+            "capabilityKey": "run_stopping",
+            "malleabilityBp": 3802
+          },
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 4415
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 5028
+          }
+        ],
+        "durabilityBp": 3721,
+        "personId": "player-eb-02",
+        "processingBp": 4318,
+        "recoveryBp": 7996
+      },
+      {
+        "adaptabilityBp": 6521,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 3553
+          },
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 4166
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 4779
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 5392
+          }
+        ],
+        "durabilityBp": 4698,
+        "personId": "player-eb-03",
+        "processingBp": 5295,
+        "recoveryBp": 3472
+      },
+      {
+        "adaptabilityBp": 7498,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 4530
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 5143
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 5756
+          },
+          {
+            "capabilityKey": "hands",
+            "malleabilityBp": 6369
+          },
+          {
+            "capabilityKey": "vision",
+            "malleabilityBp": 6982
+          }
+        ],
+        "durabilityBp": 5675,
+        "personId": "player-eb-04",
+        "processingBp": 6272,
+        "recoveryBp": 4449
+      },
+      {
+        "adaptabilityBp": 8475,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 5507
+          },
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 6120
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 6733
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 7346
+          }
+        ],
+        "durabilityBp": 6652,
+        "personId": "player-wl-01",
+        "processingBp": 7249,
+        "recoveryBp": 5426
+      },
+      {
+        "adaptabilityBp": 3951,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 6484
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 7097
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 7710
+          },
+          {
+            "capabilityKey": "hands",
+            "malleabilityBp": 2822
+          },
+          {
+            "capabilityKey": "vision",
+            "malleabilityBp": 3435
+          }
+        ],
+        "durabilityBp": 7629,
+        "personId": "player-wl-02",
+        "processingBp": 8226,
+        "recoveryBp": 6403
+      },
+      {
+        "adaptabilityBp": 4928,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "block_technique",
+            "malleabilityBp": 7461
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 2573
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 3186
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 3799
+          }
+        ],
+        "durabilityBp": 3105,
+        "personId": "player-wl-03",
+        "processingBp": 3702,
+        "recoveryBp": 7380
+      },
+      {
+        "adaptabilityBp": 5905,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 2937
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 3550
+          },
+          {
+            "capabilityKey": "run_stopping",
+            "malleabilityBp": 4163
+          },
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 4776
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 5389
+          }
+        ],
+        "durabilityBp": 4082,
+        "personId": "player-wl-04",
+        "processingBp": 4679,
+        "recoveryBp": 8357
+      },
+      {
+        "adaptabilityBp": 6882,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "pass_rush",
+            "malleabilityBp": 3914
+          },
+          {
+            "capabilityKey": "run_stopping",
+            "malleabilityBp": 4527
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 5140
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 5753
+          }
+        ],
+        "durabilityBp": 5059,
+        "personId": "player-eb-draftee",
+        "processingBp": 5656,
+        "recoveryBp": 3833
+      },
+      {
+        "adaptabilityBp": 7859,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "route_craft",
+            "malleabilityBp": 4891
+          },
+          {
+            "capabilityKey": "hands",
+            "malleabilityBp": 5504
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 6117
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 6730
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 7343
+          }
+        ],
+        "durabilityBp": 6036,
+        "personId": "player-wl-exclusive",
+        "processingBp": 6633,
+        "recoveryBp": 4810
+      },
+      {
+        "adaptabilityBp": 3335,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 5868
+          },
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 6481
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 7094
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 7707
+          }
+        ],
+        "durabilityBp": 7013,
+        "personId": "player-fa-01",
+        "processingBp": 7610,
+        "recoveryBp": 5787
+      },
+      {
+        "adaptabilityBp": 4312,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "route_craft",
+            "malleabilityBp": 6845
+          },
+          {
+            "capabilityKey": "hands",
+            "malleabilityBp": 7458
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 2570
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 3183
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 3796
+          }
+        ],
+        "durabilityBp": 7990,
+        "personId": "player-fa-02",
+        "processingBp": 3086,
+        "recoveryBp": 6764
+      },
+      {
+        "adaptabilityBp": 5289,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 7822
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 2934
+          },
+          {
+            "capabilityKey": "run_stopping",
+            "malleabilityBp": 3547
+          },
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 4160
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 4773
+          }
+        ],
+        "durabilityBp": 3466,
+        "personId": "player-fa-03",
+        "processingBp": 4063,
+        "recoveryBp": 7741
+      },
+      {
+        "adaptabilityBp": 6266,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 3298
+          },
+          {
+            "capabilityKey": "accuracy",
+            "malleabilityBp": 3911
+          },
+          {
+            "capabilityKey": "arm_power",
+            "malleabilityBp": 4524
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 5137
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 5750
+          }
+        ],
+        "durabilityBp": 4443,
+        "personId": "player-fa-04",
+        "processingBp": 5040,
+        "recoveryBp": 3217
+      },
+      {
+        "adaptabilityBp": 7243,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "block_technique",
+            "malleabilityBp": 4275
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 4888
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 5501
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 6114
+          }
+        ],
+        "durabilityBp": 5420,
+        "personId": "player-fa-05",
+        "processingBp": 6017,
+        "recoveryBp": 4194
+      },
+      {
+        "adaptabilityBp": 8220,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "route_craft",
+            "malleabilityBp": 5252
+          },
+          {
+            "capabilityKey": "hands",
+            "malleabilityBp": 5865
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 6478
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 7091
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 7704
+          }
+        ],
+        "durabilityBp": 6397,
+        "personId": "player-pr-01",
+        "processingBp": 6994,
+        "recoveryBp": 5171
+      },
+      {
+        "adaptabilityBp": 3696,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 6229
+          },
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 6842
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 7455
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 2567
+          }
+        ],
+        "durabilityBp": 7374,
+        "personId": "player-pr-02",
+        "processingBp": 7971,
+        "recoveryBp": 6148
+      },
+      {
+        "adaptabilityBp": 4673,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "pass_rush",
+            "malleabilityBp": 7206
+          },
+          {
+            "capabilityKey": "run_stopping",
+            "malleabilityBp": 7819
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 2931
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 3544
+          }
+        ],
+        "durabilityBp": 8351,
+        "personId": "player-pr-03",
+        "processingBp": 3447,
+        "recoveryBp": 7125
+      },
+      {
+        "adaptabilityBp": 5650,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 2682
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 3295
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 3908
+          },
+          {
+            "capabilityKey": "hands",
+            "malleabilityBp": 4521
+          },
+          {
+            "capabilityKey": "vision",
+            "malleabilityBp": 5134
+          }
+        ],
+        "durabilityBp": 3827,
+        "personId": "player-pr-04",
+        "processingBp": 4424,
+        "recoveryBp": 8102
+      },
+      {
+        "adaptabilityBp": 6627,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 3659
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 4272
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 4885
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 5498
+          },
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 6111
+          }
+        ],
+        "durabilityBp": 4804,
+        "personId": "player-pr-05",
+        "processingBp": 5401,
+        "recoveryBp": 3578
+      },
+      {
+        "adaptabilityBp": 7604,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "block_technique",
+            "malleabilityBp": 4636
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 5249
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 5862
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 6475
+          }
+        ],
+        "durabilityBp": 5781,
+        "personId": "player-pr-06",
+        "processingBp": 6378,
+        "recoveryBp": 4555
+      },
+      {
+        "adaptabilityBp": 3080,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 5613
+          },
+          {
+            "capabilityKey": "accuracy",
+            "malleabilityBp": 6226
+          },
+          {
+            "capabilityKey": "arm_power",
+            "malleabilityBp": 6839
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 7452
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 2564
+          }
+        ],
+        "durabilityBp": 6758,
+        "personId": "player-pr-07",
+        "processingBp": 7355,
+        "recoveryBp": 5532
+      },
+      {
+        "adaptabilityBp": 4057,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 6590
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 7203
+          },
+          {
+            "capabilityKey": "run_stopping",
+            "malleabilityBp": 7816
+          },
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 2928
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 3541
+          }
+        ],
+        "durabilityBp": 7735,
+        "personId": "player-pr-08",
+        "processingBp": 8332,
+        "recoveryBp": 6509
+      },
+      {
+        "adaptabilityBp": 5034,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "route_craft",
+            "malleabilityBp": 7567
+          },
+          {
+            "capabilityKey": "hands",
+            "malleabilityBp": 2679
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 3292
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 3905
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 4518
+          }
+        ],
+        "durabilityBp": 3211,
+        "personId": "player-pr-09",
+        "processingBp": 3808,
+        "recoveryBp": 7486
+      },
+      {
+        "adaptabilityBp": 6011,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 3043
+          },
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 3656
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 4269
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 4882
+          }
+        ],
+        "durabilityBp": 4188,
+        "personId": "player-pr-10",
+        "processingBp": 4785,
+        "recoveryBp": 8463
+      },
+      {
+        "adaptabilityBp": 6988,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "pass_rush",
+            "malleabilityBp": 4020
+          },
+          {
+            "capabilityKey": "run_stopping",
+            "malleabilityBp": 4633
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 5246
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 5859
+          }
+        ],
+        "durabilityBp": 5165,
+        "personId": "player-pr-11",
+        "processingBp": 5762,
+        "recoveryBp": 3939
+      },
+      {
+        "adaptabilityBp": 7965,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 4997
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 5610
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 6223
+          },
+          {
+            "capabilityKey": "hands",
+            "malleabilityBp": 6836
+          },
+          {
+            "capabilityKey": "vision",
+            "malleabilityBp": 7449
+          }
+        ],
+        "durabilityBp": 6142,
+        "personId": "player-pr-12",
+        "processingBp": 6739,
+        "recoveryBp": 4916
+      },
+      {
+        "adaptabilityBp": 3441,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "coverage_instincts",
+            "malleabilityBp": 5974
+          },
+          {
+            "capabilityKey": "burst",
+            "malleabilityBp": 6587
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 7200
+          },
+          {
+            "capabilityKey": "anticipation",
+            "malleabilityBp": 7813
+          },
+          {
+            "capabilityKey": "tackling",
+            "malleabilityBp": 2925
+          }
+        ],
+        "durabilityBp": 7119,
+        "personId": "player-pr-13",
+        "processingBp": 7716,
+        "recoveryBp": 5893
+      },
+      {
+        "adaptabilityBp": 4418,
+        "capabilityResponses": [
+          {
+            "capabilityKey": "block_technique",
+            "malleabilityBp": 6951
+          },
+          {
+            "capabilityKey": "strength",
+            "malleabilityBp": 7564
+          },
+          {
+            "capabilityKey": "processing",
+            "malleabilityBp": 2676
+          },
+          {
+            "capabilityKey": "agility",
+            "malleabilityBp": 3289
+          }
+        ],
+        "durabilityBp": 8096,
+        "personId": "player-pr-14",
+        "processingBp": 3192,
+        "recoveryBp": 6870
+      }
+    ],
+    "readiness": [
+      {
+        "accumulatedLoadUnits": 23,
+        "acuteFatigueBp": 96,
+        "conditioningBp": 5926,
+        "playerId": "player-nf-01"
+      },
+      {
+        "accumulatedLoadUnits": 16,
+        "acuteFatigueBp": 1073,
+        "conditioningBp": 6903,
+        "playerId": "player-nf-02"
+      },
+      {
+        "accumulatedLoadUnits": 9,
+        "acuteFatigueBp": 549,
+        "conditioningBp": 7880,
+        "playerId": "player-nf-03"
+      },
+      {
+        "accumulatedLoadUnits": 2,
+        "acuteFatigueBp": 25,
+        "conditioningBp": 8857,
+        "playerId": "player-nf-04"
+      },
+      {
+        "accumulatedLoadUnits": 36,
+        "acuteFatigueBp": 1002,
+        "conditioningBp": 6333,
+        "playerId": "player-nf-05"
+      },
+      {
+        "accumulatedLoadUnits": 29,
+        "acuteFatigueBp": 478,
+        "conditioningBp": 7310,
+        "playerId": "player-sp-01"
+      },
+      {
+        "accumulatedLoadUnits": 22,
+        "acuteFatigueBp": 1455,
+        "conditioningBp": 8287,
+        "playerId": "player-sp-02"
+      },
+      {
+        "accumulatedLoadUnits": 15,
+        "acuteFatigueBp": 931,
+        "conditioningBp": 5763,
+        "playerId": "player-sp-03"
+      },
+      {
+        "accumulatedLoadUnits": 8,
+        "acuteFatigueBp": 407,
+        "conditioningBp": 6740,
+        "playerId": "player-sp-04"
+      },
+      {
+        "accumulatedLoadUnits": 1,
+        "acuteFatigueBp": 1384,
+        "conditioningBp": 7717,
+        "playerId": "player-sp-05"
+      },
+      {
+        "accumulatedLoadUnits": 35,
+        "acuteFatigueBp": 860,
+        "conditioningBp": 8694,
+        "playerId": "player-eb-01"
+      },
+      {
+        "accumulatedLoadUnits": 28,
+        "acuteFatigueBp": 336,
+        "conditioningBp": 6170,
+        "playerId": "player-eb-02"
+      },
+      {
+        "accumulatedLoadUnits": 21,
+        "acuteFatigueBp": 1313,
+        "conditioningBp": 7147,
+        "playerId": "player-eb-03"
+      },
+      {
+        "accumulatedLoadUnits": 14,
+        "acuteFatigueBp": 789,
+        "conditioningBp": 8124,
+        "playerId": "player-eb-04"
+      },
+      {
+        "accumulatedLoadUnits": 7,
+        "acuteFatigueBp": 265,
+        "conditioningBp": 5600,
+        "playerId": "player-wl-01"
+      },
+      {
+        "accumulatedLoadUnits": 0,
+        "acuteFatigueBp": 1242,
+        "conditioningBp": 6577,
+        "playerId": "player-wl-02"
+      },
+      {
+        "accumulatedLoadUnits": 34,
+        "acuteFatigueBp": 718,
+        "conditioningBp": 7554,
+        "playerId": "player-wl-03"
+      },
+      {
+        "accumulatedLoadUnits": 27,
+        "acuteFatigueBp": 194,
+        "conditioningBp": 8531,
+        "playerId": "player-wl-04"
+      },
+      {
+        "accumulatedLoadUnits": 20,
+        "acuteFatigueBp": 1171,
+        "conditioningBp": 6007,
+        "playerId": "player-eb-draftee"
+      },
+      {
+        "accumulatedLoadUnits": 13,
+        "acuteFatigueBp": 647,
+        "conditioningBp": 6984,
+        "playerId": "player-wl-exclusive"
+      },
+      {
+        "accumulatedLoadUnits": 6,
+        "acuteFatigueBp": 123,
+        "conditioningBp": 7961,
+        "playerId": "player-fa-01"
+      },
+      {
+        "accumulatedLoadUnits": 40,
+        "acuteFatigueBp": 1100,
+        "conditioningBp": 8938,
+        "playerId": "player-fa-02"
+      },
+      {
+        "accumulatedLoadUnits": 33,
+        "acuteFatigueBp": 576,
+        "conditioningBp": 6414,
+        "playerId": "player-fa-03"
+      },
+      {
+        "accumulatedLoadUnits": 26,
+        "acuteFatigueBp": 52,
+        "conditioningBp": 7391,
+        "playerId": "player-fa-04"
+      },
+      {
+        "accumulatedLoadUnits": 19,
+        "acuteFatigueBp": 1029,
+        "conditioningBp": 8368,
+        "playerId": "player-fa-05"
+      },
+      {
+        "accumulatedLoadUnits": 12,
+        "acuteFatigueBp": 505,
+        "conditioningBp": 5844,
+        "playerId": "player-pr-01"
+      },
+      {
+        "accumulatedLoadUnits": 5,
+        "acuteFatigueBp": 1482,
+        "conditioningBp": 6821,
+        "playerId": "player-pr-02"
+      },
+      {
+        "accumulatedLoadUnits": 39,
+        "acuteFatigueBp": 958,
+        "conditioningBp": 7798,
+        "playerId": "player-pr-03"
+      },
+      {
+        "accumulatedLoadUnits": 32,
+        "acuteFatigueBp": 434,
+        "conditioningBp": 8775,
+        "playerId": "player-pr-04"
+      },
+      {
+        "accumulatedLoadUnits": 25,
+        "acuteFatigueBp": 1411,
+        "conditioningBp": 6251,
+        "playerId": "player-pr-05"
+      },
+      {
+        "accumulatedLoadUnits": 18,
+        "acuteFatigueBp": 887,
+        "conditioningBp": 7228,
+        "playerId": "player-pr-06"
+      },
+      {
+        "accumulatedLoadUnits": 11,
+        "acuteFatigueBp": 363,
+        "conditioningBp": 8205,
+        "playerId": "player-pr-07"
+      },
+      {
+        "accumulatedLoadUnits": 4,
+        "acuteFatigueBp": 1340,
+        "conditioningBp": 5681,
+        "playerId": "player-pr-08"
+      },
+      {
+        "accumulatedLoadUnits": 38,
+        "acuteFatigueBp": 816,
+        "conditioningBp": 6658,
+        "playerId": "player-pr-09"
+      },
+      {
+        "accumulatedLoadUnits": 31,
+        "acuteFatigueBp": 292,
+        "conditioningBp": 7635,
+        "playerId": "player-pr-10"
+      },
+      {
+        "accumulatedLoadUnits": 24,
+        "acuteFatigueBp": 1269,
+        "conditioningBp": 8612,
+        "playerId": "player-pr-11"
+      },
+      {
+        "accumulatedLoadUnits": 17,
+        "acuteFatigueBp": 745,
+        "conditioningBp": 6088,
+        "playerId": "player-pr-12"
+      },
+      {
+        "accumulatedLoadUnits": 10,
+        "acuteFatigueBp": 221,
+        "conditioningBp": 7065,
+        "playerId": "player-pr-13"
+      },
+      {
+        "accumulatedLoadUnits": 3,
+        "acuteFatigueBp": 1198,
+        "conditioningBp": 8042,
+        "playerId": "player-pr-14"
+      }
+    ],
+    "roleKnowledge": [
+      {
+        "familiarityBp": 4007,
+        "playerId": "player-nf-01",
+        "responsibilityKey": "run_reads",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "ball_carrier"
+      },
+      {
+        "familiarityBp": 4984,
+        "playerId": "player-nf-02",
+        "responsibilityKey": "protection_scheme",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "blocking"
+      },
+      {
+        "familiarityBp": 5961,
+        "playerId": "player-nf-03",
+        "responsibilityKey": "run_fits",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 6574,
+        "playerId": "player-nf-03",
+        "responsibilityKey": "coverage_drops",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 6938,
+        "playerId": "player-nf-04",
+        "responsibilityKey": "coverage_rules",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 7551,
+        "playerId": "player-nf-04",
+        "responsibilityKey": "run_fits",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 7915,
+        "playerId": "player-nf-05",
+        "responsibilityKey": "run_reads",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "ball_carrier"
+      },
+      {
+        "familiarityBp": 4391,
+        "playerId": "player-sp-01",
+        "responsibilityKey": "coverage_rules",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 5368,
+        "playerId": "player-sp-02",
+        "responsibilityKey": "progression_reads",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "qb_processing"
+      },
+      {
+        "familiarityBp": 5981,
+        "playerId": "player-sp-02",
+        "responsibilityKey": "protection_calls",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "qb_processing"
+      },
+      {
+        "familiarityBp": 6345,
+        "playerId": "player-sp-03",
+        "responsibilityKey": "route_tree",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "route_running"
+      },
+      {
+        "familiarityBp": 7322,
+        "playerId": "player-sp-04",
+        "responsibilityKey": "gap_responsibility",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 3798,
+        "playerId": "player-sp-05",
+        "responsibilityKey": "coverage_rules",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 4775,
+        "playerId": "player-eb-01",
+        "responsibilityKey": "protection_scheme",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "blocking"
+      },
+      {
+        "familiarityBp": 5752,
+        "playerId": "player-eb-02",
+        "responsibilityKey": "run_fits",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 6365,
+        "playerId": "player-eb-02",
+        "responsibilityKey": "coverage_drops",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 6729,
+        "playerId": "player-eb-03",
+        "responsibilityKey": "coverage_rules",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 7342,
+        "playerId": "player-eb-03",
+        "responsibilityKey": "run_fits",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 7706,
+        "playerId": "player-eb-04",
+        "responsibilityKey": "run_reads",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "ball_carrier"
+      },
+      {
+        "familiarityBp": 4182,
+        "playerId": "player-wl-01",
+        "responsibilityKey": "coverage_rules",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 4795,
+        "playerId": "player-wl-01",
+        "responsibilityKey": "run_fits",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 5159,
+        "playerId": "player-wl-02",
+        "responsibilityKey": "run_reads",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "ball_carrier"
+      },
+      {
+        "familiarityBp": 6136,
+        "playerId": "player-wl-03",
+        "responsibilityKey": "protection_scheme",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "blocking"
+      },
+      {
+        "familiarityBp": 7113,
+        "playerId": "player-wl-04",
+        "responsibilityKey": "run_fits",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 7726,
+        "playerId": "player-wl-04",
+        "responsibilityKey": "coverage_drops",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 3589,
+        "playerId": "player-eb-draftee",
+        "responsibilityKey": "gap_responsibility",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 4566,
+        "playerId": "player-wl-exclusive",
+        "responsibilityKey": "route_tree",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "route_running"
+      },
+      {
+        "familiarityBp": 5543,
+        "playerId": "player-fa-01",
+        "responsibilityKey": "coverage_rules",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 6156,
+        "playerId": "player-fa-01",
+        "responsibilityKey": "run_fits",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 6520,
+        "playerId": "player-fa-02",
+        "responsibilityKey": "route_tree",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "route_running"
+      },
+      {
+        "familiarityBp": 7497,
+        "playerId": "player-fa-03",
+        "responsibilityKey": "run_fits",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 3609,
+        "playerId": "player-fa-03",
+        "responsibilityKey": "coverage_drops",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 3973,
+        "playerId": "player-fa-04",
+        "responsibilityKey": "progression_reads",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "qb_processing"
+      },
+      {
+        "familiarityBp": 4586,
+        "playerId": "player-fa-04",
+        "responsibilityKey": "protection_calls",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "qb_processing"
+      },
+      {
+        "familiarityBp": 4950,
+        "playerId": "player-fa-05",
+        "responsibilityKey": "protection_scheme",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "blocking"
+      },
+      {
+        "familiarityBp": 5927,
+        "playerId": "player-pr-01",
+        "responsibilityKey": "route_tree",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "route_running"
+      },
+      {
+        "familiarityBp": 6904,
+        "playerId": "player-pr-02",
+        "responsibilityKey": "coverage_rules",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 7517,
+        "playerId": "player-pr-02",
+        "responsibilityKey": "run_fits",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 7881,
+        "playerId": "player-pr-03",
+        "responsibilityKey": "gap_responsibility",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 4357,
+        "playerId": "player-pr-04",
+        "responsibilityKey": "run_reads",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "ball_carrier"
+      },
+      {
+        "familiarityBp": 5334,
+        "playerId": "player-pr-05",
+        "responsibilityKey": "coverage_rules",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 6311,
+        "playerId": "player-pr-06",
+        "responsibilityKey": "protection_scheme",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "blocking"
+      },
+      {
+        "familiarityBp": 7288,
+        "playerId": "player-pr-07",
+        "responsibilityKey": "progression_reads",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "qb_processing"
+      },
+      {
+        "familiarityBp": 7901,
+        "playerId": "player-pr-07",
+        "responsibilityKey": "protection_calls",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "qb_processing"
+      },
+      {
+        "familiarityBp": 3764,
+        "playerId": "player-pr-08",
+        "responsibilityKey": "run_fits",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 4377,
+        "playerId": "player-pr-08",
+        "responsibilityKey": "coverage_drops",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 4741,
+        "playerId": "player-pr-09",
+        "responsibilityKey": "route_tree",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "route_running"
+      },
+      {
+        "familiarityBp": 5718,
+        "playerId": "player-pr-10",
+        "responsibilityKey": "coverage_rules",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 6331,
+        "playerId": "player-pr-10",
+        "responsibilityKey": "run_fits",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 6695,
+        "playerId": "player-pr-11",
+        "responsibilityKey": "gap_responsibility",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "front_play"
+      },
+      {
+        "familiarityBp": 7672,
+        "playerId": "player-pr-12",
+        "responsibilityKey": "run_reads",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "ball_carrier"
+      },
+      {
+        "familiarityBp": 4148,
+        "playerId": "player-pr-13",
+        "responsibilityKey": "coverage_rules",
+        "schemeKey": "base_defense",
+        "transferFamilyKey": "coverage"
+      },
+      {
+        "familiarityBp": 5125,
+        "playerId": "player-pr-14",
+        "responsibilityKey": "protection_scheme",
+        "schemeKey": "base_offense",
+        "transferFamilyKey": "blocking"
+      }
+    ],
+    "teachingProfiles": []
+  },
+  "provenance": [
+    {
+      "effectiveAsOf": "2027-02-15",
+      "note": "Synthetic Package D world fixture. Contains no real league data or real people, and is NOT validated NFL development or medical data.",
+      "retrievedAt": "2026-10-17T00:00:00Z",
+      "sourceId": "sport-sim-synthetic-package-d-world",
+      "sourceKind": "synthetic",
+      "validationStatus": "synthetic"
+    }
+  ],
+  "rngSeed32": 20261018,
+  "ruleset": {
+    "contentHash": "727aa3d3bc708a0d4596669df891ae1ef7d292cfaa66595c6d9a4844a7f8ca31",
+    "rulesetId": "synthetic-package-d-rules",
+    "rulesetVersion": 1
+  },
+  "schemaVersion": 1,
+  "seedId": "synthetic-package-d-world",
+  "seedVersion": 1,
+  "startDate": "2027-02-15"
+}

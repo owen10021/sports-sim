@@ -29,6 +29,11 @@ import {
   parsePackageCSubstrate,
   type PackageCSubstrateSeed,
 } from './packageCSeedParse';
+import {
+  packageDIssues,
+  parsePackageDSubstrate,
+  type PackageDSubstrateSeed,
+} from './packageDSeedParse';
 import { parseSeedId, parseSeedInterval } from './seedParsing';
 import {
   validateRulesetManifest,
@@ -106,6 +111,8 @@ export interface WorldSeedBody {
   readonly organizationSubstrate?: OrganizationSubstrateSeed;
   /** Absent in Package A/B seeds, whose content hashes therefore never change. */
   readonly packageCSubstrate?: PackageCSubstrateSeed;
+  /** Absent in Package A/B/C seeds, whose content hashes therefore never change. */
+  readonly packageDSubstrate?: PackageDSubstrateSeed;
 }
 
 export interface WorldSeedManifest extends WorldSeedBody {
@@ -299,9 +306,14 @@ const parseBody = (rec: Record<string, unknown>): WorldSeedBody => {
     rec.packageCSubstrate === undefined
       ? {}
       : { packageCSubstrate: parsePackageCSubstrate(rec.packageCSubstrate) };
+  const packageD =
+    rec.packageDSubstrate === undefined
+      ? {}
+      : { packageDSubstrate: parsePackageDSubstrate(rec.packageDSubstrate) };
   return {
     ...substrate,
     ...packageC,
+    ...packageD,
     schemaVersion: SCHEMA_VERSION,
     seedId,
     seedVersion: asSafeInt(rec.seedVersion, 'seed.seedVersion', 1, 1_000_000),
@@ -328,6 +340,9 @@ const bodyOf = (m: WorldSeedBody): WorldSeedBody => ({
   ...(m.packageCSubstrate === undefined
     ? {}
     : { packageCSubstrate: m.packageCSubstrate }),
+  ...(m.packageDSubstrate === undefined
+    ? {}
+    : { packageDSubstrate: m.packageDSubstrate }),
 });
 
 export const sealSeed = (body: WorldSeedBody): WorldSeedManifest => {
@@ -335,7 +350,7 @@ export const sealSeed = (body: WorldSeedBody): WorldSeedManifest => {
   requireExactKeys(
     rec,
     BODY_KEYS,
-    ['organizationSubstrate', 'packageCSubstrate'],
+    ['organizationSubstrate', 'packageCSubstrate', 'packageDSubstrate'],
     'seed body',
   );
   requireSupportedSchema(rec, 'seed');
@@ -349,7 +364,7 @@ export const validateSeedManifest = (value: unknown): WorldSeedManifest => {
   requireExactKeys(
     rec,
     [...BODY_KEYS, 'contentHash'],
-    ['organizationSubstrate', 'packageCSubstrate'],
+    ['organizationSubstrate', 'packageCSubstrate', 'packageDSubstrate'],
     'seed manifest',
   );
   const stored = rec.contentHash;
@@ -503,6 +518,18 @@ export const validateForWorldCreation = (
           seed.packageCSubstrate,
           seed.initialEntities,
           seed.organizationSubstrate?.roleEpisodes ?? [],
+          ruleset,
+        ),
+      );
+    if (seed.packageDSubstrate !== undefined)
+      issues.push(
+        ...packageDIssues(
+          seed.packageDSubstrate,
+          seed.initialEntities,
+          (seed.packageCSubstrate?.players ?? []).map((p) => ({
+            personId: p.personId,
+            capabilityKeys: p.capabilities.map((c) => c.key),
+          })),
           ruleset,
         ),
       );

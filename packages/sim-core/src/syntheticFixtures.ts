@@ -119,3 +119,114 @@ export const SYNTHETIC_PACKAGE_C_RULESET = sealRuleset({
     },
   },
 });
+
+const packageDProvenance: SourceProvenance = {
+  sourceId: 'sport-sim-synthetic-package-d-rules',
+  sourceKind: 'synthetic',
+  retrievedAt: '2026-10-17T00:00:00Z',
+  effectiveAsOf: '2026-10-17',
+  validationStatus: 'synthetic',
+  note: 'Synthetic Package D development and medical calibration. Values are test boundaries, NOT validated NFL empirical development, aging or medical truth.',
+};
+
+const POSITION_SCOPES = [
+  'quarterback',
+  'running_back',
+  'wide_receiver',
+  'offensive_line',
+  'defensive_line',
+  'linebacker',
+  'cornerback',
+  'safety',
+] as const;
+
+const RESOURCE_CAPACITY = [
+  ['first_team_reps', 100],
+  ['development_reps', 60],
+  ['meeting_attention', 40],
+  ['installation_work', 30],
+] as const;
+
+/** Whole-year ages expressed in days (365.25-day years, rounded) for the synthetic curves. */
+const years = (y: number): number => Math.round(y * 365.25);
+
+/**
+ * The explicit synthetic development profile Package D acceptance runs on: Package C's
+ * transaction rules plus ruleset-owned opportunity structure and synthetic calibration.
+ * Nothing here claims to be real player development, aging or medicine. The committed JSON
+ * in /fixtures is generated from this module and tested against it.
+ */
+export const SYNTHETIC_PACKAGE_D_RULESET = sealRuleset({
+  schemaVersion: SCHEMA_VERSION,
+  rulesetId: 'synthetic-package-d-rules',
+  rulesetVersion: 1,
+  displayName: 'Synthetic Package D Development Rules',
+  provenance: [packageDProvenance],
+  rules: {
+    maxAdvanceDaysPerCommand: 30,
+    transactions: SYNTHETIC_PACKAGE_C_RULESET.rules.transactions!,
+    development: {
+      modelVersion: 1,
+      checkpointCadenceDays: 7,
+      opportunityPools: POSITION_SCOPES.flatMap((scopeKey) =>
+        RESOURCE_CAPACITY.map(([resourceKey, capacityUnits]) => ({
+          resourceKey,
+          scopeKey,
+          capacityUnits,
+        })),
+      ),
+      maxPlayerLoadUnitsPerCheckpoint: 100,
+      recoveryUnitsPerDay: 8,
+      roleLearningScaleBp: 2500,
+      conditioningScaleBp: 2000,
+      medicalRecoveryScaleBp: 1500,
+      capabilityFamilies: [
+        {
+          familyKey: 'explosive_athleticism',
+          capabilityKeys: ['burst', 'agility'],
+          maturationMidpointAgeDays: years(22),
+          declineOnsetAgeDays: years(27),
+          adaptationScaleBp: 3000,
+          declineScaleBpPerYear: 250,
+        },
+        {
+          familyKey: 'physical_strength',
+          capabilityKeys: ['strength', 'arm_power'],
+          maturationMidpointAgeDays: years(25),
+          declineOnsetAgeDays: years(31),
+          adaptationScaleBp: 2500,
+          declineScaleBpPerYear: 120,
+        },
+        {
+          familyKey: 'technique',
+          capabilityKeys: [
+            'hands',
+            'block_technique',
+            'tackling',
+            'run_stopping',
+            'route_craft',
+            'pass_rush',
+            'accuracy',
+          ],
+          maturationMidpointAgeDays: years(26),
+          declineOnsetAgeDays: years(33),
+          adaptationScaleBp: 3500,
+          declineScaleBpPerYear: 60,
+        },
+        {
+          familyKey: 'processing_recognition',
+          capabilityKeys: [
+            'processing',
+            'vision',
+            'anticipation',
+            'coverage_instincts',
+          ],
+          maturationMidpointAgeDays: years(27),
+          declineOnsetAgeDays: years(35),
+          adaptationScaleBp: 4000,
+          declineScaleBpPerYear: 30,
+        },
+      ],
+    },
+  },
+});

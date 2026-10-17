@@ -1,0 +1,359 @@
+{
+  "contentHash": "727aa3d3bc708a0d4596669df891ae1ef7d292cfaa66595c6d9a4844a7f8ca31",
+  "displayName": "Synthetic Package D Development Rules",
+  "provenance": [
+    {
+      "effectiveAsOf": "2026-10-17",
+      "note": "Synthetic Package D development and medical calibration. Values are test boundaries, NOT validated NFL empirical development, aging or medical truth.",
+      "retrievedAt": "2026-10-17T00:00:00Z",
+      "sourceId": "sport-sim-synthetic-package-d-rules",
+      "sourceKind": "synthetic",
+      "validationStatus": "synthetic"
+    }
+  ],
+  "rules": {
+    "development": {
+      "capabilityFamilies": [
+        {
+          "adaptationScaleBp": 3000,
+          "capabilityKeys": [
+            "burst",
+            "agility"
+          ],
+          "declineOnsetAgeDays": 9862,
+          "declineScaleBpPerYear": 250,
+          "familyKey": "explosive_athleticism",
+          "maturationMidpointAgeDays": 8036
+        },
+        {
+          "adaptationScaleBp": 2500,
+          "capabilityKeys": [
+            "strength",
+            "arm_power"
+          ],
+          "declineOnsetAgeDays": 11323,
+          "declineScaleBpPerYear": 120,
+          "familyKey": "physical_strength",
+          "maturationMidpointAgeDays": 9131
+        },
+        {
+          "adaptationScaleBp": 3500,
+          "capabilityKeys": [
+            "hands",
+            "block_technique",
+            "tackling",
+            "run_stopping",
+            "route_craft",
+            "pass_rush",
+            "accuracy"
+          ],
+          "declineOnsetAgeDays": 12053,
+          "declineScaleBpPerYear": 60,
+          "familyKey": "technique",
+          "maturationMidpointAgeDays": 9497
+        },
+        {
+          "adaptationScaleBp": 4000,
+          "capabilityKeys": [
+            "processing",
+            "vision",
+            "anticipation",
+            "coverage_instincts"
+          ],
+          "declineOnsetAgeDays": 12784,
+          "declineScaleBpPerYear": 30,
+          "familyKey": "processing_recognition",
+          "maturationMidpointAgeDays": 9862
+        }
+      ],
+      "checkpointCadenceDays": 7,
+      "conditioningScaleBp": 2000,
+      "maxPlayerLoadUnitsPerCheckpoint": 100,
+      "medicalRecoveryScaleBp": 1500,
+      "modelVersion": 1,
+      "opportunityPools": [
+        {
+          "capacityUnits": 100,
+          "resourceKey": "first_team_reps",
+          "scopeKey": "quarterback"
+        },
+        {
+          "capacityUnits": 60,
+          "resourceKey": "development_reps",
+          "scopeKey": "quarterback"
+        },
+        {
+          "capacityUnits": 40,
+          "resourceKey": "meeting_attention",
+          "scopeKey": "quarterback"
+        },
+        {
+          "capacityUnits": 30,
+          "resourceKey": "installation_work",
+          "scopeKey": "quarterback"
+        },
+        {
+          "capacityUnits": 100,
+          "resourceKey": "first_team_reps",
+          "scopeKey": "running_back"
+        },
+        {
+          "capacityUnits": 60,
+          "resourceKey": "development_reps",
+          "scopeKey": "running_back"
+        },
+        {
+          "capacityUnits": 40,
+          "resourceKey": "meeting_attention",
+          "scopeKey": "running_back"
+        },
+        {
+          "capacityUnits": 30,
+          "resourceKey": "installation_work",
+          "scopeKey": "running_back"
+        },
+        {
+          "capacityUnits": 100,
+          "resourceKey": "first_team_reps",
+          "scopeKey": "wide_receiver"
+        },
+        {
+          "capacityUnits": 60,
+          "resourceKey": "development_reps",
+          "scopeKey": "wide_receiver"
+        },
+        {
+          "capacityUnits": 40,
+          "resourceKey": "meeting_attention",
+          "scopeKey": "wide_receiver"
+        },
+        {
+          "capacityUnits": 30,
+          "resourceKey": "installation_work",
+          "scopeKey": "wide_receiver"
+        },
+        {
+          "capacityUnits": 100,
+          "resourceKey": "first_team_reps",
+          "scopeKey": "offensive_line"
+        },
+        {
+          "capacityUnits": 60,
+          "resourceKey": "development_reps",
+          "scopeKey": "offensive_line"
+        },
+        {
+          "capacityUnits": 40,
+          "resourceKey": "meeting_attention",
+          "scopeKey": "offensive_line"
+        },
+        {
+          "capacityUnits": 30,
+          "resourceKey": "installation_work",
+          "scopeKey": "offensive_line"
+        },
+        {
+          "capacityUnits": 100,
+          "resourceKey": "first_team_reps",
+          "scopeKey": "defensive_line"
+        },
+        {
+          "capacityUnits": 60,
+          "resourceKey": "development_reps",
+          "scopeKey": "defensive_line"
+        },
+        {
+          "capacityUnits": 40,
+          "resourceKey": "meeting_attention",
+          "scopeKey": "defensive_line"
+        },
+        {
+          "capacityUnits": 30,
+          "resourceKey": "installation_work",
+          "scopeKey": "defensive_line"
+        },
+        {
+          "capacityUnits": 100,
+          "resourceKey": "first_team_reps",
+          "scopeKey": "linebacker"
+        },
+        {
+          "capacityUnits": 60,
+          "resourceKey": "development_reps",
+          "scopeKey": "linebacker"
+        },
+        {
+          "capacityUnits": 40,
+          "resourceKey": "meeting_attention",
+          "scopeKey": "linebacker"
+        },
+        {
+          "capacityUnits": 30,
+          "resourceKey": "installation_work",
+          "scopeKey": "linebacker"
+        },
+        {
+          "capacityUnits": 100,
+          "resourceKey": "first_team_reps",
+          "scopeKey": "cornerback"
+        },
+        {
+          "capacityUnits": 60,
+          "resourceKey": "development_reps",
+          "scopeKey": "cornerback"
+        },
+        {
+          "capacityUnits": 40,
+          "resourceKey": "meeting_attention",
+          "scopeKey": "cornerback"
+        },
+        {
+          "capacityUnits": 30,
+          "resourceKey": "installation_work",
+          "scopeKey": "cornerback"
+        },
+        {
+          "capacityUnits": 100,
+          "resourceKey": "first_team_reps",
+          "scopeKey": "safety"
+        },
+        {
+          "capacityUnits": 60,
+          "resourceKey": "development_reps",
+          "scopeKey": "safety"
+        },
+        {
+          "capacityUnits": 40,
+          "resourceKey": "meeting_attention",
+          "scopeKey": "safety"
+        },
+        {
+          "capacityUnits": 30,
+          "resourceKey": "installation_work",
+          "scopeKey": "safety"
+        }
+      ],
+      "recoveryUnitsPerDay": 8,
+      "roleLearningScaleBp": 2500
+    },
+    "maxAdvanceDaysPerCommand": 30,
+    "transactions": {
+      "contracts": {
+        "guaranteedFutureBaseOnRelease": true,
+        "maxYears": 5,
+        "minYears": 1,
+        "minimumBaseSalary": 10000,
+        "signingBonusProrationMaxYears": 5,
+        "signingBonusStaysWithOriginalClubOnTrade": true
+      },
+      "draft": {
+        "rookieContractByRound": [
+          {
+            "baseSalaryBySeason": [
+              60000,
+              70000,
+              80000,
+              90000
+            ],
+            "round": 1,
+            "signingBonus": 100000,
+            "years": 4
+          },
+          {
+            "baseSalaryBySeason": [
+              40000,
+              45000,
+              50000,
+              55000
+            ],
+            "round": 2,
+            "signingBonus": 40000,
+            "years": 4
+          },
+          {
+            "baseSalaryBySeason": [
+              20000,
+              22000,
+              24000
+            ],
+            "round": 3,
+            "signingBonus": 10000,
+            "years": 3
+          }
+        ],
+        "rounds": 3
+      },
+      "market": {
+        "defaultOfferValidityDays": 7,
+        "futurePickTradeHorizonSeasons": 2,
+        "resolutionPolicy": "checkpoint"
+      },
+      "moneyUnit": "synthetic-unit",
+      "seasonRules": [
+        {
+          "activeRosterLimit": 10,
+          "draftDate": "2026-04-25",
+          "freeAgencyClose": "2026-07-15",
+          "freeAgencyOpen": "2026-03-10",
+          "practiceSquadLimit": 4,
+          "reserveRosterLimit": 4,
+          "salaryCap": 2000000,
+          "season": 2026,
+          "tradeDeadline": "2026-11-03"
+        },
+        {
+          "activeRosterLimit": 10,
+          "draftDate": "2027-04-25",
+          "freeAgencyClose": "2027-07-15",
+          "freeAgencyOpen": "2027-03-10",
+          "practiceSquadLimit": 4,
+          "reserveRosterLimit": 4,
+          "salaryCap": 2000000,
+          "season": 2027,
+          "tradeDeadline": "2027-11-03"
+        },
+        {
+          "activeRosterLimit": 10,
+          "draftDate": "2028-04-25",
+          "freeAgencyClose": "2028-07-15",
+          "freeAgencyOpen": "2028-03-10",
+          "practiceSquadLimit": 4,
+          "reserveRosterLimit": 4,
+          "salaryCap": 2000000,
+          "season": 2028,
+          "tradeDeadline": "2028-11-03"
+        },
+        {
+          "activeRosterLimit": 10,
+          "draftDate": "2029-04-25",
+          "freeAgencyClose": "2029-07-15",
+          "freeAgencyOpen": "2029-03-10",
+          "practiceSquadLimit": 4,
+          "reserveRosterLimit": 4,
+          "salaryCap": 2000000,
+          "season": 2029,
+          "tradeDeadline": "2029-11-03"
+        },
+        {
+          "activeRosterLimit": 10,
+          "draftDate": "2030-04-25",
+          "freeAgencyClose": "2030-07-15",
+          "freeAgencyOpen": "2030-03-10",
+          "practiceSquadLimit": 4,
+          "reserveRosterLimit": 4,
+          "salaryCap": 2000000,
+          "season": 2030,
+          "tradeDeadline": "2030-11-03"
+        }
+      ],
+      "waivers": {
+        "claimWindowDays": 1,
+        "claimWinnerMovesToEnd": true,
+        "releasedPlayerWaiverPolicy": "all"
+      }
+    }
+  },
+  "rulesetId": "synthetic-package-d-rules",
+  "rulesetVersion": 1,
+  "schemaVersion": 1
+}

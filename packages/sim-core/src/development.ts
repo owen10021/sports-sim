@@ -1,4 +1,5 @@
-import type { EntityId, RecordId } from './ids';
+import { entityId, type EntityId, type RecordId } from './ids';
+import type { PackageDSubstrateSeed } from './packageDSeedParse';
 
 /**
  * Package D development state (world model 4).
@@ -149,3 +150,73 @@ export const emptyDevelopmentState = (): DevelopmentState => ({
   checkpoints: [],
   events: [],
 });
+
+const byText = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
+
+/**
+ * Initial development state from the seed's Package D block, in canonical (stable id)
+ * order. Role knowledge starts with no meaningful rep; readiness starts at the seed date.
+ */
+export const seededDevelopmentState = (
+  sub: PackageDSubstrateSeed | undefined,
+  startDate: string,
+): DevelopmentState => {
+  if (sub === undefined) return emptyDevelopmentState();
+  return {
+    playerProfiles: sub.playerProfiles
+      .map((p) => ({
+        personId: entityId(p.personId),
+        capabilityResponses: p.capabilityResponses
+          .map((r) => ({
+            capabilityKey: r.capabilityKey,
+            malleabilityBp: r.malleabilityBp,
+          }))
+          .sort((a, b) => byText(a.capabilityKey, b.capabilityKey)),
+        processingBp: p.processingBp,
+        adaptabilityBp: p.adaptabilityBp,
+        recoveryBp: p.recoveryBp,
+        durabilityBp: p.durabilityBp,
+      }))
+      .sort((a, b) => byText(a.personId, b.personId)),
+    teachingProfiles: sub.teachingProfiles
+      .map((t) => ({
+        personId: entityId(t.personId),
+        bandwidthUnits: t.bandwidthUnits,
+        expertise: t.expertise
+          .map((e) => ({
+            responsibilityKey: e.responsibilityKey,
+            teachingBp: e.teachingBp,
+          }))
+          .sort((a, b) => byText(a.responsibilityKey, b.responsibilityKey)),
+      }))
+      .sort((a, b) => byText(a.personId, b.personId)),
+    roleKnowledge: sub.roleKnowledge
+      .map((k) => ({
+        playerId: entityId(k.playerId),
+        schemeKey: k.schemeKey,
+        responsibilityKey: k.responsibilityKey,
+        transferFamilyKey: k.transferFamilyKey,
+        familiarityBp: k.familiarityBp,
+        lastMeaningfulRepAt: null,
+      }))
+      .sort(
+        (a, b) =>
+          byText(a.playerId, b.playerId) ||
+          byText(a.schemeKey, b.schemeKey) ||
+          byText(a.responsibilityKey, b.responsibilityKey),
+      ),
+    readiness: sub.readiness
+      .map((r) => ({
+        playerId: entityId(r.playerId),
+        conditioningBp: r.conditioningBp,
+        acuteFatigueBp: r.acuteFatigueBp,
+        accumulatedLoadUnits: r.accumulatedLoadUnits,
+        updatedAt: startDate,
+      }))
+      .sort((a, b) => byText(a.playerId, b.playerId)),
+    opportunityWindows: [],
+    opportunityAllocations: [],
+    checkpoints: [],
+    events: [],
+  };
+};

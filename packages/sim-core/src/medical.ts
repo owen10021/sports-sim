@@ -1,4 +1,5 @@
-import type { EntityId, RecordId } from './ids';
+import { entityId, recordId, type EntityId, type RecordId } from './ids';
+import type { PackageDSubstrateSeed } from './packageDSeedParse';
 
 /**
  * Package D medical state (world model 4).
@@ -121,3 +122,32 @@ export const emptyMedicalState = (): MedicalState => ({
   recommendations: [],
   clearances: [],
 });
+
+const byText = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
+
+/**
+ * Initial medical state from the seed's Package D block: only synthetic-test episodes can
+ * be seeded, in canonical (stable id) order. No progress, report or clearance is invented.
+ */
+export const seededMedicalState = (
+  sub: PackageDSubstrateSeed | undefined,
+): MedicalState => {
+  const episodes = sub?.medicalEpisodes ?? [];
+  return {
+    ...emptyMedicalState(),
+    episodes: episodes
+      .map((e): MedicalEpisode => ({
+        id: recordId(e.id),
+        playerId: entityId(e.playerId),
+        conditionKey: e.conditionKey,
+        onsetAt: e.onsetAt,
+        sourceKind: 'synthetic_test',
+        affectedActionKeys: [...e.affectedActionKeys].sort(byText),
+        initialStructuralSeverityBp: e.initialStructuralSeverityBp,
+        recoveryResponsivenessBp: e.recoveryResponsivenessBp,
+        baselineReinjuryRiskBp: e.baselineReinjuryRiskBp,
+        status: 'open',
+      }))
+      .sort((a, b) => byText(a.id, b.id)),
+  };
+};

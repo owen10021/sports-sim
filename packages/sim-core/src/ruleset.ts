@@ -1,4 +1,8 @@
 import { parseTransactionRulesV1, type TransactionRulesV1 } from './economy';
+import {
+  parseDevelopmentRulesV1,
+  type DevelopmentRulesV1,
+} from './developmentRules';
 import { hashCanonical, isHash } from './hash';
 import { isValidId } from './ids';
 import {
@@ -24,6 +28,12 @@ export interface LeagueRules {
    * when it is absent.
    */
   readonly transactions?: TransactionRulesV1;
+  /**
+   * Package D development rules and SYNTHETIC calibration. OPTIONAL: Package A/B/C
+   * rulesets omit it and keep their content hashes. Package D commands call
+   * `requireDevelopmentRules` and fail closed when it is absent.
+   */
+  readonly development?: DevelopmentRulesV1;
 }
 
 export interface RulesetRef {
@@ -63,7 +73,7 @@ const parseBody = (rec: Record<string, unknown>): LeagueRulesetBody => {
   requireExactKeys(
     rules,
     ['maxAdvanceDaysPerCommand'],
-    ['transactions'],
+    ['transactions', 'development'],
     'ruleset.rules',
   );
   const transactions =
@@ -73,6 +83,10 @@ const parseBody = (rec: Record<string, unknown>): LeagueRulesetBody => {
           rules.transactions,
           'ruleset.rules.transactions',
         );
+  const development =
+    rules.development === undefined
+      ? undefined
+      : parseDevelopmentRulesV1(rules.development, 'ruleset.rules.development');
   return {
     schemaVersion: SCHEMA_VERSION,
     rulesetId: rulesId,
@@ -92,6 +106,7 @@ const parseBody = (rec: Record<string, unknown>): LeagueRulesetBody => {
         3650,
       ),
       ...(transactions === undefined ? {} : { transactions }),
+      ...(development === undefined ? {} : { development }),
     },
   };
 };
