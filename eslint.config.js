@@ -69,6 +69,7 @@ export default defineConfig([
     'evidence/**',
     'fixtures/**',
     'packages/sim-core/src/goldenExpected.ts',
+    'packages/sim-core/src/packageBGoldenExpected.ts',
   ]),
   expoConfig,
   prettierConfig,
