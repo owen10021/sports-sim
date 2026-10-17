@@ -8,6 +8,7 @@ export * from './seed';
 export * from './rng';
 export * from './world';
 export * from './audit';
+export * from './commandRouter';
 export * from './kernel';
 export * from './persistence';
 export * from './memoryCareerStore';

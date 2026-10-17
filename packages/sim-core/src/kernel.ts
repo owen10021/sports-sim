@@ -1,11 +1,18 @@
 import {
   GENESIS_HASH,
-  chainEvent,
+  chainEvents,
   type CommandEnvelope,
+  type CommandPayloadBase,
   type DecisionTrace,
   type EventEnvelope,
   type TraceStep,
 } from './audit';
+import {
+  isRoutableCommandType,
+  routeCommand,
+  type RouteContext,
+  type RouteOutcome,
+} from './commandRouter';
 import { isHash } from './hash';
 import {
   eventId,
@@ -14,13 +21,11 @@ import {
   isValidRevision,
   worldRevision,
 } from './ids';
-import { DeterministicRng } from './rng';
 import {
   rulesetRefOf,
   validateRulesetManifest,
   type LeagueRulesetManifest,
 } from './ruleset';
-import { SimDate } from './simDate';
 import { deepFreeze, type FootballWorld } from './world';
 
 export type RejectionCode =
@@ -52,6 +57,14 @@ export type ExecuteResult =
 export interface KernelOptions {
   /** Fault-injection seam: runs after resolution, before anything is committed. */
   readonly beforeCommit?: () => void;
+  /**
+   * TEST-ONLY seam: replaces the static 
+outeCommand so tests can exercise the commit
+   * path with multi-event or malformed resolutions. Production code never sets this;
+   * authoritative dispatch is always the static, exhaustive 
+outeCommand.
+   */
+  readonly testRouter?: (ctx: RouteContext) => RouteOutcome;
 }
 
 export interface KernelResumeState {
@@ -61,16 +74,6 @@ export interface KernelResumeState {
   readonly eventCount: number;
   readonly knownCommandIds: readonly string[];
 }
-
-/** Actors that may advance the calendar. CPU orgs and delegates may not. */
-const CALENDAR_AUTHORITY: ReadonlySet<string> = new Set([
-  'human_gm',
-  'commissioner',
-  'system',
-  'test_harness',
-]);
-
-const KNOWN_COMMANDS: ReadonlySet<string> = new Set(['AdvanceDays']);
 
 const eventIdFor = (ordinal: number) =>
   eventId(`evt-${String(ordinal).padStart(6, '0')}`);
@@ -88,6 +91,7 @@ export class WorldKernel {
   readonly #events: EventEnvelope[] = [];
   readonly #known: Set<string>;
   readonly #beforeCommit: (() => void) | undefined;
+  readonly #route: (ctx: RouteContext) => RouteOutcome;
 
   private constructor(
     world: FootballWorld,
@@ -116,6 +120,7 @@ export class WorldKernel {
     this.#eventCount = eventCount;
     this.#known = new Set(known);
     this.#beforeCommit = options.beforeCommit;
+    this.#route = options.testRouter ?? routeCommand;
   }
 
   static fromGenesis(
@@ -199,8 +204,11 @@ export class WorldKernel {
       );
     }
     const cid = env.commandId as string;
-    const command = env.command as { type?: unknown; days?: unknown };
-    if (typeof command.type !== 'string' || !KNOWN_COMMANDS.has(command.type)) {
+    const command = env.command as CommandPayloadBase;
+    if (
+      typeof command.type !== 'string' ||
+      !isRoutableCommandType(command.type)
+    ) {
       return reject(
         'validation',
         'SCHEMA_INVALID',
@@ -224,75 +232,64 @@ export class WorldKernel {
         cid,
       );
     }
-    const max = this.#ruleset.rules.maxAdvanceDaysPerCommand;
-    const days = command.days;
-    if (
-      typeof days !== 'number' ||
-      !Number.isSafeInteger(days) ||
-      days < 1 ||
-      days > max
-    ) {
-      return reject(
-        'validation',
-        'INVALID_PAYLOAD',
-        `days must be an integer in 1..${max}`,
-        cid,
-      );
+    const routed = this.#route({
+      world: this.#world,
+      ruleset: this.#ruleset,
+      actor: env.actor as CommandEnvelope['actor'],
+      commandId: env.commandId as CommandEnvelope['commandId'],
+      command,
+    });
+    if (!routed.ok) {
+      if (routed.stage === 'authorization') {
+        steps.push({
+          stage: 'validation',
+          outcome: 'pass',
+          detail: 'envelope, revision and payload valid',
+        });
+      }
+      return reject(routed.stage, routed.code, routed.message, cid);
     }
     steps.push({
       stage: 'validation',
       outcome: 'pass',
       detail: 'envelope, revision and payload valid',
     });
-
-    // --- Authorization ---
-    const actor = env.actor as CommandEnvelope['actor'];
-    if (!CALENDAR_AUTHORITY.has(actor.kind)) {
-      return reject(
-        'authorization',
-        'UNAUTHORIZED_ACTOR',
-        `${actor.kind} cannot advance the calendar`,
-        cid,
-      );
-    }
     steps.push({
       stage: 'authorization',
       outcome: 'pass',
-      detail: `${actor.kind} may advance the calendar`,
+      detail: routed.authorizationDetail,
     });
 
     try {
-      // --- Resolution (pure; works on copies only) ---
-      const world = this.#world;
-      const rng = DeterministicRng.fromState(world.rng);
-      const start = SimDate.parse(world.simDate);
-      const dayRolls: { date: string; roll: number }[] = [];
-      for (let i = 1; i <= days; i++) {
-        dayRolls.push({ date: start.addDays(i).toISO(), roll: rng.nextU32() });
+      // --- Resolution (pure; the router worked on copies only) ---
+      const { nextWorld: resolved, eventSpecs, detail } = routed.resolution;
+      if (eventSpecs.length < 1) {
+        throw new Error('an accepted command must emit at least one event');
       }
-      const toDate = start.addDays(days).toISO();
-      steps.push({
-        stage: 'resolution',
-        outcome: 'pass',
-        detail: `advanced ${days} day(s) to ${toDate}`,
-      });
+      steps.push({ stage: 'resolution', outcome: 'pass', detail });
 
+      // One accepted command = exactly one revision, however many events it emits.
+      const world = this.#world;
       const revision = worldRevision(Number(world.revision) + 1);
-      const event = chainEvent(this.#chainHead, {
-        eventId: eventIdFor(world.nextIds.event),
-        revision,
-        simDate: toDate,
-        actor,
-        commandId: env.commandId as CommandEnvelope['commandId'],
-        type: 'DaysAdvanced',
-        payload: { fromDate: world.simDate, toDate, days, dayRolls },
-      });
+      const events = chainEvents(
+        this.#chainHead,
+        eventSpecs.map((spec, index) => ({
+          eventId: eventIdFor(world.nextIds.event + index),
+          revision,
+          simDate: resolved.simDate,
+          actor: env.actor as CommandEnvelope['actor'],
+          commandId: env.commandId as CommandEnvelope['commandId'],
+          type: spec.type,
+          payload: spec.payload,
+        })),
+      );
       const nextWorld = deepFreeze({
-        ...world,
-        simDate: toDate,
+        ...resolved,
         revision,
-        rng: rng.snapshot(),
-        nextIds: { event: world.nextIds.event + 1 },
+        nextIds: {
+          ...resolved.nextIds,
+          event: world.nextIds.event + events.length,
+        },
       });
 
       this.#beforeCommit?.();
@@ -304,14 +301,14 @@ export class WorldKernel {
         detail: `committed revision ${revision}`,
       });
       this.#world = nextWorld;
-      this.#chainHead = event.hash;
-      this.#eventCount += 1;
-      this.#events.push(event);
+      this.#chainHead = (events[events.length - 1] as EventEnvelope).hash;
+      this.#eventCount += events.length;
+      this.#events.push(...events);
       this.#known.add(cid);
       return {
         ok: true,
         world: nextWorld,
-        events: [event],
+        events,
         trace: deepFreeze({ commandId: cid, steps }),
       };
     } catch (error) {

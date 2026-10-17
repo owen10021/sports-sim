@@ -110,6 +110,24 @@ export const chainEvent = (
   });
 };
 
+/**
+ * Chain several event bodies after `previousHash`, in array order. Each event links to
+ * the one before it; the last element's hash is the new chain head.
+ */
+export const chainEvents = (
+  previousHash: string,
+  bodies: readonly EventBody[],
+): readonly EventEnvelope[] => {
+  const out: EventEnvelope[] = [];
+  let link = previousHash;
+  for (const body of bodies) {
+    const event = chainEvent(link, body);
+    out.push(event);
+    link = event.hash;
+  }
+  return out;
+};
+
 export type ChainFailureReason =
   | 'MALFORMED'
   | 'BROKEN_LINK'
