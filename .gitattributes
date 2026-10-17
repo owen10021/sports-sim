@@ -1,0 +1,4 @@
+* text=auto eol=lf
+# Handoff/canonical documents are hash-verified byte-exact; never normalize them.
+docs/handoff/** -text
+docs/superpowers/** -text
