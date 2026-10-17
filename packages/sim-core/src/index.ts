@@ -8,3 +8,4 @@ export * from './seed';
 export * from './rng';
 export * from './world';
 export * from './audit';
+export * from './kernel';
