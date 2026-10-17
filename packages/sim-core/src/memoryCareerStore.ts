@@ -1,9 +1,10 @@
 import { GENESIS_HASH, type EventEnvelope } from './audit';
 import {
   PersistenceError,
-  SNAPSHOT_RETENTION_NEWEST,
   checkCommitContinuity,
+  checkRepairConsistency,
   cloneData,
+  retainedRevisions,
   verifySnapshot,
   type CareerSnapshot,
   type CareerStore,
@@ -64,7 +65,7 @@ export class MemoryCareerStore implements CareerStore {
     const commit = cloneData(input);
     // Throws UnsupportedSchemaVersionError for a future schema (fail closed).
     verifySnapshot(commit.snapshot);
-    const reason = checkCommitContinuity(this.#active(), commit);
+    const reason = checkCommitContinuity(this.#active(), commit, this.#events.length);
     if (reason !== null) throw new PersistenceError('COMMIT_REJECTED', reason);
     if (this.#failNext) {
       this.#failNext = false;
@@ -72,8 +73,7 @@ export class MemoryCareerStore implements CareerStore {
     }
     // Build the complete next state, then swap it in as one step.
     const snapshots = [...this.#snapshots, commit.snapshot].sort((a, b) => a.revision - b.revision);
-    const keep = new Set<number>([0]);
-    for (const s of snapshots.slice(-SNAPSHOT_RETENTION_NEWEST)) keep.add(s.revision);
+    const keep = retainedRevisions(snapshots.map((s) => s.revision));
     const nextSnapshots = snapshots.filter((s) => keep.has(s.revision));
     const nextCommands = [...this.#commands, ...commit.commands];
     const nextEvents = [...this.#events, ...commit.events];
@@ -116,14 +116,9 @@ export class MemoryCareerStore implements CareerStore {
       return;
     }
     const repaired = cloneData(repairedSnapshot);
-    const verdict = verifySnapshot(repaired);
-    if (!verdict.ok) {
-      throw new PersistenceError('COMMIT_REJECTED', `repaired snapshot invalid: ${verdict.reasons.join('; ')}`);
-    }
     const tail = this.#events.length === 0 ? GENESIS_HASH : (this.#events[this.#events.length - 1] as EventEnvelope).hash;
-    if (repaired.eventCount !== this.#events.length || repaired.chainHead !== tail) {
-      throw new PersistenceError('COMMIT_REJECTED', 'repaired snapshot does not match the stored history tail');
-    }
+    const problem = checkRepairConsistency(repaired, this.#events.length, tail);
+    if (problem !== null) throw new PersistenceError('COMMIT_REJECTED', problem);
     const snapshots = [...this.#snapshots.filter((s) => s.revision !== repaired.revision), repaired].sort(
       (a, b) => a.revision - b.revision,
     );

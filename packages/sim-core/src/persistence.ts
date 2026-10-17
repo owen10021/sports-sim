@@ -195,8 +195,12 @@ export const verifySnapshot = (value: unknown): SnapshotVerification => {
 export const checkCommitContinuity = (
   latest: CareerSnapshot | null,
   commit: CommitRecord,
+  storedEventCount: number,
 ): string | null => {
   const { snapshot, commands, events } = commit;
+  if (storedEventCount !== (latest?.eventCount ?? 0)) {
+    return 'stored history is out of step with the active snapshot; recover before saving';
+  }
   const verdict = verifySnapshot(snapshot);
   if (!verdict.ok) return `snapshot invalid: ${verdict.reasons.join('; ')}`;
   if (commands.length > events.length) {
@@ -234,3 +238,29 @@ export const checkCommitContinuity = (
 
 /** Plain-data deep copy via canonical JSON; frozen so callers cannot alias store state. */
 export const cloneData = <T>(value: T): T => deepFreeze(JSON.parse(canonicalString(value)) as T);
+
+/** Revisions to keep after a save: genesis (0) plus the newest few, so replay can always start at genesis. */
+export const retainedRevisions = (revisions: readonly number[]): Set<number> => {
+  const sorted = [...revisions].sort((a, b) => a - b);
+  const keep = new Set<number>([0]);
+  for (const r of sorted.slice(-SNAPSHOT_RETENTION_NEWEST)) keep.add(r);
+  return keep;
+};
+
+/**
+ * A repaired snapshot may only be installed if it describes the stored history exactly:
+ * it must cover every stored event and carry the audit head of the stored tail.
+ * Returns the reason it is unacceptable, or null.
+ */
+export const checkRepairConsistency = (
+  repaired: CareerSnapshot,
+  storedEventCount: number,
+  storedTailHash: string,
+): string | null => {
+  const verdict = verifySnapshot(repaired);
+  if (!verdict.ok) return `repaired snapshot invalid: ${verdict.reasons.join('; ')}`;
+  if (repaired.eventCount !== storedEventCount || repaired.chainHead !== storedTailHash) {
+    return 'repaired snapshot does not match the stored history tail';
+  }
+  return null;
+};

@@ -431,3 +431,23 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
     },
   },
 ];
+
+export interface ContractResult {
+  readonly name: string;
+  readonly passed: boolean;
+  readonly error?: string;
+}
+
+/** Runs every case without a test framework (used by the on-device diagnostics harness). */
+export const runContractCases = async (cases: readonly ContractCase[]): Promise<ContractResult[]> => {
+  const results: ContractResult[] = [];
+  for (const c of cases) {
+    try {
+      await c.run();
+      results.push({ name: c.name, passed: true });
+    } catch (error) {
+      results.push({ name: c.name, passed: false, error: error instanceof Error ? error.message : String(error) });
+    }
+  }
+  return results;
+};
