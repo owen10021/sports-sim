@@ -34,3 +34,5 @@ export * from './golden';
 export * from './goldenExpected';
 export * from './decisionCommands';
 export * from './planCommands';
+export * from './reasoning';
+export * from './coherenceAudit';
