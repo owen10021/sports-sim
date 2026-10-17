@@ -6,7 +6,6 @@ import {
   describeBoardChange,
   entityId,
 } from '../src/index';
-import { NF } from './support/packageCHarness';
 import {
   codeOf,
   messageOf,
@@ -15,7 +14,7 @@ import {
   snapshotOf,
   type Runner,
 } from './support/orgHarness';
-import { newPackageCKernel } from './support/packageCHarness';
+import { NF, newPackageCKernel } from './support/packageCHarness';
 import {
   EB_PICK,
   EB_SCOUT,
@@ -31,7 +30,6 @@ const EB = {
   owner: 'person-eb-owner',
 };
 const SECOND = 'player-pr-02';
-const THIRD = 'player-pr-03';
 
 type EntrySpec = Partial<{
   playerId: string;

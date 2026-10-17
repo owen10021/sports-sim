@@ -7,7 +7,10 @@ import {
   runGoldenThroughStore,
   runPackageBScenario,
   runPackageBThroughStore,
+  runPackageCScenario,
+  runPackageCThroughStore,
   type PackageBResult,
+  type PackageCResult,
 } from '@sport-sim/sim-core';
 import {
   disposeScratchDatabases,
@@ -16,6 +19,10 @@ import {
 import { SqliteCareerStore } from '../persistence/sqliteCareerStore';
 import type { DiagnosticLine } from './careerDiagnostics';
 import { judgePackageBStoreRun } from './packageBJudgement';
+import {
+  judgePackageCDirectRun,
+  judgePackageCStoreRun,
+} from './packageCJudgement';
 
 export interface GoldenDiagnostics {
   readonly kernel: DiagnosticLine;
@@ -99,6 +106,37 @@ export const runPackageBOnDevice = async (): Promise<PackageBDiagnostics> => {
   return {
     kernel,
     store: judgePackageBStoreRun(run),
+    fingerprint: direct.fingerprint,
+    chainHead: direct.eventChainHead,
+    keyRecordIds: direct.keyRecordIds,
+  };
+};
+
+export interface PackageCDiagnostics {
+  readonly kernel: DiagnosticLine;
+  readonly store: DiagnosticLine;
+  readonly fingerprint: string;
+  readonly chainHead: string;
+  readonly keyRecordIds: PackageCResult['keyRecordIds'];
+}
+
+/**
+ * Run the Package C GM-acquisition scenario in THIS runtime (Hermes in the app), straight
+ * through the kernel and through the real expo-sqlite store, and compare both with the
+ * recorded Node values.
+ */
+export const runPackageCOnDevice = async (): Promise<PackageCDiagnostics> => {
+  const direct = runPackageCScenario();
+  let run;
+  try {
+    const db = await openScratchDatabase();
+    run = await runPackageCThroughStore(new SqliteCareerStore(db));
+  } finally {
+    await disposeScratchDatabases();
+  }
+  return {
+    kernel: judgePackageCDirectRun(direct),
+    store: judgePackageCStoreRun(run),
     fingerprint: direct.fingerprint,
     chainHead: direct.eventChainHead,
     keyRecordIds: direct.keyRecordIds,

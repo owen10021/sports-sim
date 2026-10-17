@@ -10,8 +10,10 @@ import {
 import {
   runGoldenOnDevice,
   runPackageBOnDevice,
+  runPackageCOnDevice,
   type GoldenDiagnostics,
   type PackageBDiagnostics,
+  type PackageCDiagnostics,
 } from '../src/diagnostics/goldenDiagnostics';
 import { useCareer } from '../src/lifecycle/CareerProvider';
 import {
@@ -34,6 +36,10 @@ export default function Diagnostics() {
   const [goldenError, setGoldenError] = useState<DiagnosticLine | null>(null);
   const [packageB, setPackageB] = useState<PackageBDiagnostics | null>(null);
   const [packageBError, setPackageBError] = useState<DiagnosticLine | null>(
+    null,
+  );
+  const [packageC, setPackageC] = useState<PackageCDiagnostics | null>(null);
+  const [packageCError, setPackageCError] = useState<DiagnosticLine | null>(
     null,
   );
   const [running, setRunning] = useState(false);
@@ -84,6 +90,22 @@ export default function Diagnostics() {
     } catch (e) {
       setPackageB(null);
       setPackageBError({
+        ok: false,
+        text: `ERROR: ${e instanceof Error ? e.message : String(e)}`,
+      });
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  const runPackageC = async () => {
+    setRunning(true);
+    try {
+      setPackageCError(null);
+      setPackageC(await runPackageCOnDevice());
+    } catch (e) {
+      setPackageC(null);
+      setPackageCError({
         ok: false,
         text: `ERROR: ${e instanceof Error ? e.message : String(e)}`,
       });
@@ -167,6 +189,25 @@ export default function Diagnostics() {
           <Row label="Fingerprint" value={packageB?.fingerprint ?? '-'} />
           <Row label="Event-chain head" value={packageB?.chainHead ?? '-'} />
         </Card>
+        <Card title="Package C scenario (GM acquisition)">
+          <Row
+            label="Kernel vs Node"
+            value={text(packageC?.kernel ?? packageCError)}
+            tone={tone(packageC?.kernel ?? packageCError)}
+          />
+          <Row
+            label="SQLite round trip"
+            value={text(packageC?.store ?? null)}
+            tone={tone(packageC?.store ?? null)}
+          />
+          <Row label="Fingerprint" value={packageC?.fingerprint ?? '-'} />
+          <Row label="Event-chain head" value={packageC?.chainHead ?? '-'} />
+        </Card>
+        <Button
+          label="Run Package C scenario"
+          disabled={running}
+          onPress={() => void runPackageC()}
+        />
         <Button
           label="Run Package B scenario"
           disabled={running}

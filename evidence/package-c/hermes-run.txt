@@ -1,0 +1,19 @@
+Package C cross-runtime golden proof (standalone Hermes)
+Engine: facebook/hermes tag hermes-v250829098.0.17, Linux x86_64 Release hermes CLI (same build as evidence/hermes).
+Reported bytecode version: 98 (Static Hermes true). The physical iPhone run (Task 16) closes the gap to the RN app's bytecode.
+
+Bundle: package-c-golden.hermes.js (esbuild es2015, built on Windows from commit 2bc2a98 + scripts/hermes/entryPackageC.ts).
+Bundle sha256 4a148cd4bcd6f488744034563d426545a96d6d2450875370e1a594742562b97b
+Run twice; outputs byte-identical (sha256 adfeb7d7ed0f39402473581fac37c96efb6539187a41db7dce2d039b332cfcea).
+Result: match=true diffs=[]
+  fingerprint    bf2e44d0c2609b59d506f90560e4248a5fe97664bb316b968f4f96fe34e055d4
+  eventChainHead 3f847dec6c81e179bb285617a9d8ae9eadf7c5e7e6bea2dd0edf2f61e2424e76
+  finalSimDate 2027-04-25, revision 100, eventCount 199, rngDraws 69
+These equal the Node values (PACKAGE_C_EXPECTED).
+
+Finding recorded during this capture (first attempt, commit 295b4d9/2ed061e): Hermes mis-bound loop variables
+captured by closures in `for (const x of ...)` loops of the SCENARIO DRIVER (not sim-core), so the Northfield
+resolve step ran Eastbrook's assignment and the scenario aborted with a clear error rather than a silent mismatch.
+Fix (2bc2a98): the scenario driver builds those steps with forEach callbacks, which bind per call. The first
+divergent step was located by fingerprint-comparing every step against the frozen per-step fingerprints.
+sim-core production code was not implicated; the full Hermes run now matches Node at every step.

@@ -1,6 +1,4 @@
-import { auditAcquisitionWorld } from './acquisitionAudit';
 import { previewAcquisitionImpact } from './acquisitionImpact';
-import type { CommandEnvelope } from './audit';
 import { canonicalString } from './canonical';
 import { capPosition } from './contractMath';
 import type { ContractTermsV1 } from './contracts';
@@ -11,29 +9,14 @@ import {
 import { DRAFT_BOARD_TERMS_TYPE, latestBoard } from './draftBoardCommands';
 import { DRAFT_SELECTION_TERMS_TYPE } from './draftCommands';
 import { moneyAmount, requireTransactionRules } from './economy';
-import {
-  commandId,
-  entityId,
-  worldId,
-  worldRevision,
-  type ActorRef,
-} from './ids';
+import { entityId, type ActorRef } from './ids';
 import { WorldKernel, type RejectionCode } from './kernel';
 import { agentFor } from './playerMarketView';
-import { PACKAGE_C_SEED } from './packageCWorldSeed';
-import { loadCareer } from './recovery';
-import { verifyCareerReplay } from './replay';
 import { rookieScaleTerms } from './rookieContracts';
 import { activeRightsFor, rosterCapacity } from './roster';
-import {
-  sealSnapshot,
-  type CareerStore,
-  type CommitRecord,
-} from './persistence';
 import { SYNTHETIC_PACKAGE_C_RULESET } from './syntheticFixtures';
 import { tradePackageTerms } from './tradeCommands';
 import type { AcquisitionAssetRef, TradePackageV1 } from './assets';
-import { createWorld, fingerprintWorld } from './world';
 
 /**
  * The Package C golden scenario. Like Packages A and B it lives in pure sim-core so Node,
@@ -842,7 +825,6 @@ const termsOf = (s: TermSpec): ContractTermsV1 => {
     })),
   };
 };
-const FLAT: TermSpec = { years: 2, base: 100_000 };
 const SECURE: TermSpec = { years: 2, base: 100_000, guaranteed: 100_000 };
 const FRONT: TermSpec = { years: 2, base: 60_000, signing: 100_000 };
 
