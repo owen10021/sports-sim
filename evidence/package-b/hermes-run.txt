@@ -1,0 +1,12 @@
+﻿Package B cross-runtime golden proof (standalone Hermes)
+Engine: facebook/hermes tag hermes-v250829098.0.17, Linux x86_64 Release hermes CLI (same build as evidence/hermes).
+Reported bytecode version: 98. The RN app was earlier recorded as bytecode 99; the physical iPhone run closes that gap.
+The Windows hermes.exe in C:\dev\hermes-cli rejects ES2015 class expressions, so it could not run this bundle.
+
+Bundle: package-b-golden.hermes.js (esbuild es2015, built on Windows from commit 39366bf + scripts/hermes/entryPackageB.ts).
+Run twice; outputs byte-identical (sha256 5c43f7a3dd55a0c691d40a0d31c77770c3f98cb97607ab357acbf25f221f9292).
+Result: match=true diffs=[]
+  fingerprint    fc1163b8df89db98d951a6393341986c72992853eea4198bb678c941a36c064c
+  eventChainHead 934b6d86fe79af00c6de40da67e64e1b4bdb7039701c7c45af1598a61ed4f9d0
+  finalSimDate 2026-10-19, revision 20, eventCount 33, rngDraws 3
+These equal the Node values (PACKAGE_B_EXPECTED). Full output line: package-b-golden.hermes.out.json

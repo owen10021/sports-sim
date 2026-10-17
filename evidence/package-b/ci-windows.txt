@@ -1,0 +1,128 @@
+﻿
+> sport-sim@0.0.0 ci
+> npm run typecheck && npm test && npm run lint && npm run format:check && npm run golden:check && npm run golden:package-b:check && npm run export:ios
+
+
+> sport-sim@0.0.0 typecheck
+> npm run typecheck --workspaces --if-present
+
+
+> @sport-sim/mobile@0.0.0 typecheck
+> tsc -p tsconfig.json && tsc -p tsconfig.test.json
+
+
+> @sport-sim/headless@0.0.0 typecheck
+> tsc -p tsconfig.json
+
+
+> @sport-sim/sim-core@0.0.0 typecheck
+> tsc -p tsconfig.json && tsc -p tsconfig.test.json
+
+
+> sport-sim@0.0.0 test
+> vitest run
+
+
+ RUN  v5.0.5 C:/dev/sport-sim
+
+ Γ£ô apps/mobile/test/sqliteCareerStore.test.ts (30 tests) 332ms
+ Γ£ô apps/mobile/test/packageBDiagnostics.test.ts (2 tests) 525ms
+ Γ£ô packages/sim-core/test/rng.test.ts (8 tests) 221ms
+ Γ£ô packages/sim-core/test/packageBScenario.test.ts (6 tests) 1100ms
+   Γ£ô Package B golden scenario (6)
+     Γ£ô save/reload at every command boundary yields the same final result 326ms
+     Γ£ô recovers from a corrupt latest snapshot without rewriting knowledge or decision history 339ms
+ Γ£ô packages/headless/test/golden.test.ts (7 tests) 304ms
+ Γ£ô packages/sim-core/test/authority.test.ts (31 tests) 299ms
+ Γ£ô apps/mobile/test/sqliteRecovery.test.ts (16 tests) 252ms
+ Γ£ô packages/sim-core/test/decisionStateMachine.test.ts (30 tests) 196ms
+ Γ£ô packages/sim-core/test/recovery.test.ts (10 tests) 126ms
+ Γ£ô packages/headless/test/cli.test.ts (6 tests) 212ms
+ Γ£ô packages/sim-core/test/replay.test.ts (16 tests) 201ms
+ Γ£ô packages/sim-core/test/planDecisionIntegration.test.ts (13 tests) 125ms
+ Γ£ô apps/mobile/test/careerLifecycle.test.ts (12 tests) 190ms
+ Γ£ô packages/sim-core/test/information.test.ts (21 tests) 160ms
+ Γ£ô packages/sim-core/test/persistenceContract.test.ts (20 tests) 110ms
+ Γ£ô packages/sim-core/test/organizationSeed.test.ts (18 tests) 115ms
+ Γ£ô packages/sim-core/test/relationships.test.ts (12 tests) 84ms
+ Γ£ô packages/sim-core/test/kernel.test.ts (12 tests) 66ms
+ Γ£ô packages/sim-core/test/reasoning.test.ts (9 tests) 87ms
+ Γ£ô packages/sim-core/test/legacyWorldMigration.test.ts (14 tests) 63ms
+ Γ£ô packages/sim-core/test/knowledgeView.test.ts (10 tests) 58ms
+ Γ£ô packages/sim-core/test/coherenceAudit.test.ts (4 tests) 55ms
+ Γ£ô packages/sim-core/test/commandRouter.test.ts (8 tests) 32ms
+ Γ£ô packages/sim-core/test/memoryCareerStore.test.ts (3 tests) 36ms
+ Γ£ô packages/sim-core/test/worldModelV2.test.ts (14 tests) 61ms
+ Γ£ô packages/sim-core/test/provenance.test.ts (8 tests) 26ms
+ Γ£ô packages/sim-core/test/architecture.test.ts (5 tests) 29ms
+ Γ£ô packages/sim-core/test/world.test.ts (7 tests) 28ms
+ Γ£ô apps/mobile/test/careerDiagnostics.test.ts (2 tests) 28ms
+ Γ£ô packages/sim-core/test/legacyFixtureIntegrity.test.ts (3 tests) 10ms
+ Γ£ô packages/sim-core/test/primitives.test.ts (14 tests) 19ms
+ Γ£ô packages/sim-core/test/audit.test.ts (9 tests) 13ms
+ Γ£ô packages/sim-core/test/syntheticFixtures.test.ts (3 tests) 6ms
+
+ Test Files  33 passed (33)
+      Tests  383 passed (383)
+   Start at  12:25:48
+   Duration  6.69s (import 46%, tests 45%, transform 6%, worker 2%)
+
+    Isolate  33 workers spawned ┬╖ ~233ms startup each (spawn + environment, per file)
+             at least ~2.33s faster with isolate: false ΓÇö reuses workers across files instead of one per file
+
+
+> sport-sim@0.0.0 lint
+> eslint .
+
+
+> sport-sim@0.0.0 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> sport-sim@0.0.0 golden:check
+> tsx packages/headless/src/bin.ts golden
+
+{"match":true,"diffs":[],"fingerprint":"ca1b49571b74625fbc366b4e60063a3a30bc52ddee4452d88f52ca1636550df3","eventChainHead":"d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a","finalSimDate":"2026-10-30","revision":3,"eventCount":3,"commandDays":[1,6,7]}
+
+> sport-sim@0.0.0 golden:package-b:check
+> tsx packages/headless/src/bin.ts package-b-golden
+
+{"match":true,"diffs":[],"fingerprint":"fc1163b8df89db98d951a6393341986c72992853eea4198bb678c941a36c064c","eventChainHead":"934b6d86fe79af00c6de40da67e64e1b4bdb7039701c7c45af1598a61ed4f9d0","finalSimDate":"2026-10-19","revision":20,"eventCount":33,"keyRecordIds":{"publicClaim":"rec-000001","nfClaim":"rec-000002","spClaim":"rec-000003","nfBelief":"rec-000004","spBelief":"rec-000005","nfProposal":"rec-000006","nfPlan":"rec-000008","nfReceipt":"rec-000009","spProposal":"rec-000010","spPlan":"rec-000011","spReceipt":"rec-000012","spNewClaim":"rec-000013","spNewBelief":"rec-000014","spRevisionProposal":"rec-000015","spRevisionReceipt":"rec-000016","nfPending":"rec-000018","spMandate":"rec-000019"}}
+
+> sport-sim@0.0.0 export:ios
+> npm run export:ios --workspace apps/mobile
+
+
+> @sport-sim/mobile@0.0.0 export:ios
+> expo export --platform ios
+
+Expo Autolinking module resolution enabled
+Starting Metro Bundler
+
+iOS Bundled 22222ms node_modules\expo-router\entry.js (1201 modules)
+
+ΓÇ║ Assets (23):
+..\..\node_modules\expo-router\assets\arrow_down.png (9.5KB)
+..\..\node_modules\expo-router\assets\error.png (469B)
+..\..\node_modules\expo-router\assets\file.png (138B)
+..\..\node_modules\expo-router\assets\forward.png (188B)
+..\..\node_modules\expo-router\assets\pkg.png (364B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\back-icon-mask.png (653B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\back-icon.png (4 variations | 566B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\clear-icon.png (4 variations | 425B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\close-icon.png (4 variations | 235B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\search-icon.png (3 variations | 582B)
+..\..\node_modules\expo-router\assets\sitemap.png (465B)
+..\..\node_modules\expo-router\assets\unmatched.png (4.8KB)
+
+ΓÇ║ ios bundles (1):
+_expo/static/js/ios/entry-99fb0c69163bbe9f3d86279b4bd2b9f2.hbc (2.9MB)
+
+ΓÇ║ Files (1):
+metadata.json (1.6KB)
+
+Exported: dist
+CI-EXIT 0
+
