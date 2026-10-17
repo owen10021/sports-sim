@@ -17,3 +17,5 @@ export * from './recovery';
 export * from './careerIntegrity';
 export * from './replay';
 export * from './syntheticFixtures';
+export * from './golden';
+export * from './goldenExpected';

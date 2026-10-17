@@ -1,0 +1,14 @@
+{
+  "name": "@sport-sim/headless",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "cli": "tsx src/bin.ts"
+  },
+  "dependencies": {
+    "@sport-sim/sim-core": "*"
+  }
+}

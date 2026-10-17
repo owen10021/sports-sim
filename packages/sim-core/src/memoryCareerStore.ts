@@ -14,6 +14,14 @@ import {
   type RecoveryReport,
 } from './persistence';
 
+export interface MemoryStoreState {
+  readonly snapshots: readonly CareerSnapshot[];
+  readonly activeRevision: number | null;
+  readonly commands: readonly CommandRecord[];
+  readonly events: readonly EventEnvelope[];
+  readonly recovery: readonly RecoveryReport[];
+}
+
 /**
  * Reference CareerStore that keeps everything in memory. It defines the behaviour every
  * real adapter must match, and lets the shared contract run without a mobile runtime.
@@ -61,6 +69,28 @@ export class MemoryCareerStore implements CareerStore {
     this.#events = this.#events.map((e, i) => (i === index ? (mutate(plain) as unknown as EventEnvelope) : e));
   }
 
+  /** Plain-data copy of everything stored (for adapters that persist this store as a file). */
+  exportState(): MemoryStoreState {
+    return cloneData({
+      snapshots: this.#snapshots,
+      activeRevision: this.#activeRevision,
+      commands: this.#commands,
+      events: this.#events,
+      recovery: this.#recovery,
+    });
+  }
+
+  /** Rebuild a store from exportState() output. Call initialize() before use. */
+  static fromState(state: MemoryStoreState): MemoryCareerStore {
+    const store = new MemoryCareerStore();
+    const copy = cloneData(state);
+    store.#snapshots = [...copy.snapshots];
+    store.#activeRevision = copy.activeRevision;
+    store.#commands = [...copy.commands];
+    store.#events = [...copy.events];
+    store.#recovery = [...copy.recovery];
+    return store;
+  }
   async initialize(): Promise<void> {
     this.#initialized = true;
   }
