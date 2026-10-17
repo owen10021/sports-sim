@@ -1,4 +1,6 @@
-import type { EntityId, RecordId } from './ids';
+import { entityId, recordId, type EntityId, type RecordId } from './ids';
+import type { SeedRoleEpisode } from './seed';
+import type { Entity } from './world';
 
 export const PERSON_ROLES = [
   'owner',
@@ -43,4 +45,31 @@ export interface PeopleState {
 export const emptyPeopleState = (): PeopleState => ({
   persons: [],
   roleEpisodes: [],
+});
+
+const byText = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
+
+/**
+ * Initial people: one record per `person` entity, plus the seeded role episodes, both in
+ * canonical (stable id) order. Names stay in the entity registry, never duplicated here.
+ */
+export const seededPeopleState = (
+  entities: readonly Entity[],
+  episodes: readonly SeedRoleEpisode[],
+): PeopleState => ({
+  persons: entities
+    .filter((e) => e.kind === 'person')
+    .map((e) => ({ entityId: e.id, active: true }))
+    .sort((a, b) => byText(a.entityId, b.entityId)),
+  roleEpisodes: episodes
+    .map((r): RoleEpisode => ({
+      id: recordId(r.id),
+      personId: entityId(r.personId),
+      organizationId: entityId(r.organizationId),
+      role: r.role,
+      title: r.title,
+      startDate: r.startDate,
+      endDate: r.endDate,
+    }))
+    .sort((a, b) => byText(a.id, b.id)),
 });

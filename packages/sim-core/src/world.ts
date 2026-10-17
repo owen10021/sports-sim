@@ -22,14 +22,14 @@ import {
   type SeedRef,
 } from './seed';
 import { deepFreeze } from './freeze';
-import { emptyAuthorityState, type AuthorityState } from './authority';
+import { seededAuthorityState, type AuthorityState } from './authority';
 import { emptyDecisionsState, type DecisionsState } from './decisions';
 import { emptyInformationState, type InformationState } from './information';
 import {
-  emptyOrganizationsState,
+  seededOrganizationsState,
   type OrganizationsState,
 } from './organizations';
-import { emptyPeopleState, type PeopleState } from './people';
+import { seededPeopleState, type PeopleState } from './people';
 import { emptyPlansState, type PlansState } from './plans';
 import {
   emptyRelationshipsState,
@@ -118,6 +118,11 @@ export const createWorld = (
     .map((e) => ({ id: entityId(e.id), kind: e.kind, name: e.name }))
     .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 
+  const substrate = seed.organizationSubstrate ?? {
+    roleEpisodes: [],
+    authorityGrants: [],
+  };
+
   return deepFreeze({
     schemaVersion: SCHEMA_VERSION,
     worldModelVersion: WORLD_MODEL_VERSION,
@@ -129,9 +134,9 @@ export const createWorld = (
     rng: DeterministicRng.fromSeed(seed.rngSeed32).snapshot(),
     nextIds: { event: 1, record: 1 },
     entities,
-    people: emptyPeopleState(),
-    organizations: emptyOrganizationsState(),
-    authority: emptyAuthorityState(),
+    people: seededPeopleState(entities, substrate.roleEpisodes),
+    organizations: seededOrganizationsState(entities),
+    authority: seededAuthorityState(substrate.authorityGrants),
     information: emptyInformationState(),
     relationships: emptyRelationshipsState(),
     plans: emptyPlansState(),

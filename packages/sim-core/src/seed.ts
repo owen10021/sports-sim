@@ -18,6 +18,13 @@ import {
 } from './provenance';
 import { SimDate } from './simDate';
 import {
+  DECISION_CATEGORIES,
+  DECISION_RIGHTS,
+  type DecisionCategory,
+  type DecisionRight,
+} from './authority';
+import { PERSON_ROLES, type PersonRole } from './people';
+import {
   validateRulesetManifest,
   type LeagueRulesetManifest,
   type RulesetRef,
@@ -33,6 +40,42 @@ export interface SeedEntity {
   readonly id: string;
   readonly kind: SeedEntityKind;
   readonly name: string;
+}
+
+/** A role interval for a seeded person in a seeded organization. */
+export interface SeedRoleEpisode {
+  readonly id: string;
+  readonly personId: string;
+  readonly organizationId: string;
+  readonly role: PersonRole;
+  readonly title: string;
+  readonly startDate: string;
+  /** Inclusive end date, or null while the role is held. */
+  readonly endDate: string | null;
+}
+
+/** Explicit starting authority. Nothing is implied by a role alone. */
+export interface SeedAuthorityGrant {
+  readonly id: string;
+  readonly personId: string;
+  readonly organizationId: string;
+  readonly category: DecisionCategory;
+  readonly rights: readonly DecisionRight[];
+  readonly transferable: boolean;
+  readonly effectiveFrom: string;
+  readonly effectiveUntil: string | null;
+  readonly sourcePersonId: string | null;
+  readonly revision: number;
+}
+
+/**
+ * Optional Package B block. Person/organization identity stays in `initialEntities`
+ * (the stable identity registry); this block only adds roles and authority that
+ * reference those entity ids.
+ */
+export interface OrganizationSubstrateSeed {
+  readonly roleEpisodes: readonly SeedRoleEpisode[];
+  readonly authorityGrants: readonly SeedAuthorityGrant[];
 }
 
 export interface SeedRef {
@@ -53,6 +96,8 @@ export interface WorldSeedBody {
   readonly startDate: string;
   readonly provenance: readonly SourceProvenance[];
   readonly initialEntities: readonly SeedEntity[];
+  /** Absent in Package A seeds, whose content hashes therefore never change. */
+  readonly organizationSubstrate?: OrganizationSubstrateSeed;
 }
 
 export interface WorldSeedManifest extends WorldSeedBody {
@@ -123,6 +168,140 @@ const parseEntities = (value: unknown): SeedEntity[] => {
   });
 };
 
+const parseSeedId = (value: unknown, what: string): string => {
+  const id = asString(value, what, 128);
+  if (!isValidId(id))
+    throw new ManifestFormatError(`${what} is not a valid id`);
+  return id;
+};
+
+const parseSeedDate = (value: unknown, what: string): string => {
+  const date = asString(value, what, 10);
+  if (!SimDate.isValidISO(date))
+    throw new ManifestFormatError(`${what} must be a valid YYYY-MM-DD date`);
+  return date;
+};
+
+const parseSeedInterval = (
+  from: unknown,
+  until: unknown,
+  what: string,
+): { from: string; until: string | null } => {
+  const start = parseSeedDate(from, `${what} start`);
+  const end = until === null ? null : parseSeedDate(until, `${what} end`);
+  if (end !== null && end < start)
+    throw new ManifestFormatError(`${what}: end date precedes start date`);
+  return { from: start, until: end };
+};
+
+const parseRoleEpisodes = (value: unknown): SeedRoleEpisode[] => {
+  if (!Array.isArray(value))
+    throw new ManifestFormatError(
+      'seed.organizationSubstrate.roleEpisodes must be an array',
+    );
+  return value.map((raw, i) => {
+    const what = `seed.organizationSubstrate.roleEpisodes[${i}]`;
+    const rec = asRecord(raw, what);
+    requireExactKeys(
+      rec,
+      [
+        'id',
+        'personId',
+        'organizationId',
+        'role',
+        'title',
+        'startDate',
+        'endDate',
+      ],
+      [],
+      what,
+    );
+    if (!(PERSON_ROLES as readonly unknown[]).includes(rec.role))
+      throw new ManifestFormatError(`${what}.role is not recognized`);
+    const span = parseSeedInterval(rec.startDate, rec.endDate, what);
+    return {
+      id: parseSeedId(rec.id, `${what}.id`),
+      personId: parseSeedId(rec.personId, `${what}.personId`),
+      organizationId: parseSeedId(rec.organizationId, `${what}.organizationId`),
+      role: rec.role as PersonRole,
+      title: asString(rec.title, `${what}.title`, 200),
+      startDate: span.from,
+      endDate: span.until,
+    };
+  });
+};
+
+const parseAuthorityGrants = (value: unknown): SeedAuthorityGrant[] => {
+  if (!Array.isArray(value))
+    throw new ManifestFormatError(
+      'seed.organizationSubstrate.authorityGrants must be an array',
+    );
+  return value.map((raw, i) => {
+    const what = `seed.organizationSubstrate.authorityGrants[${i}]`;
+    const rec = asRecord(raw, what);
+    requireExactKeys(
+      rec,
+      [
+        'id',
+        'personId',
+        'organizationId',
+        'category',
+        'rights',
+        'transferable',
+        'effectiveFrom',
+        'effectiveUntil',
+        'sourcePersonId',
+        'revision',
+      ],
+      [],
+      what,
+    );
+    if (!(DECISION_CATEGORIES as readonly unknown[]).includes(rec.category))
+      throw new ManifestFormatError(`${what}.category is not recognized`);
+    if (!Array.isArray(rec.rights) || rec.rights.length === 0)
+      throw new ManifestFormatError(`${what}.rights must be a non-empty array`);
+    const rights = rec.rights.map((r: unknown) => {
+      if (!(DECISION_RIGHTS as readonly unknown[]).includes(r))
+        throw new ManifestFormatError(`${what}.rights has an unknown right`);
+      return r as DecisionRight;
+    });
+    if (new Set(rights).size !== rights.length)
+      throw new ManifestFormatError(`${what}.rights has duplicates`);
+    if (typeof rec.transferable !== 'boolean')
+      throw new ManifestFormatError(`${what}.transferable must be a boolean`);
+    const span = parseSeedInterval(rec.effectiveFrom, rec.effectiveUntil, what);
+    return {
+      id: parseSeedId(rec.id, `${what}.id`),
+      personId: parseSeedId(rec.personId, `${what}.personId`),
+      organizationId: parseSeedId(rec.organizationId, `${what}.organizationId`),
+      category: rec.category as DecisionCategory,
+      rights,
+      transferable: rec.transferable,
+      effectiveFrom: span.from,
+      effectiveUntil: span.until,
+      sourcePersonId:
+        rec.sourcePersonId === null
+          ? null
+          : parseSeedId(rec.sourcePersonId, `${what}.sourcePersonId`),
+      revision: asSafeInt(rec.revision, `${what}.revision`, 1, 1_000_000),
+    };
+  });
+};
+
+const parseSubstrate = (value: unknown): OrganizationSubstrateSeed => {
+  const rec = asRecord(value, 'seed.organizationSubstrate');
+  requireExactKeys(
+    rec,
+    ['roleEpisodes', 'authorityGrants'],
+    [],
+    'seed.organizationSubstrate',
+  );
+  return {
+    roleEpisodes: parseRoleEpisodes(rec.roleEpisodes),
+    authorityGrants: parseAuthorityGrants(rec.authorityGrants),
+  };
+};
+
 const parseBody = (rec: Record<string, unknown>): WorldSeedBody => {
   const seedId = asString(rec.seedId, 'seed.seedId', 128);
   if (!isValidId(seedId))
@@ -130,7 +309,12 @@ const parseBody = (rec: Record<string, unknown>): WorldSeedBody => {
   const startDate = asString(rec.startDate, 'seed.startDate', 10);
   if (!SimDate.isValidISO(startDate))
     throw new ManifestFormatError('seed.startDate must be a valid YYYY-MM-DD');
+  const substrate =
+    rec.organizationSubstrate === undefined
+      ? {}
+      : { organizationSubstrate: parseSubstrate(rec.organizationSubstrate) };
   return {
+    ...substrate,
     schemaVersion: SCHEMA_VERSION,
     seedId,
     seedVersion: asSafeInt(rec.seedVersion, 'seed.seedVersion', 1, 1_000_000),
@@ -151,11 +335,14 @@ const bodyOf = (m: WorldSeedBody): WorldSeedBody => ({
   startDate: m.startDate,
   provenance: m.provenance,
   initialEntities: m.initialEntities,
+  ...(m.organizationSubstrate === undefined
+    ? {}
+    : { organizationSubstrate: m.organizationSubstrate }),
 });
 
 export const sealSeed = (body: WorldSeedBody): WorldSeedManifest => {
   const rec = asRecord(body, 'seed body');
-  requireExactKeys(rec, BODY_KEYS, [], 'seed body');
+  requireExactKeys(rec, BODY_KEYS, ['organizationSubstrate'], 'seed body');
   requireSupportedSchema(rec, 'seed');
   const parsed = parseBody(rec);
   return { ...parsed, contentHash: hashCanonical(bodyOf(parsed)) };
@@ -164,7 +351,12 @@ export const sealSeed = (body: WorldSeedBody): WorldSeedManifest => {
 export const validateSeedManifest = (value: unknown): WorldSeedManifest => {
   const rec = asRecord(value, 'seed manifest');
   requireSupportedSchema(rec, 'seed');
-  requireExactKeys(rec, [...BODY_KEYS, 'contentHash'], [], 'seed manifest');
+  requireExactKeys(
+    rec,
+    [...BODY_KEYS, 'contentHash'],
+    ['organizationSubstrate'],
+    'seed manifest',
+  );
   const stored = rec.contentHash;
   if (!isHash(stored))
     throw new ManifestFormatError(
@@ -184,6 +376,78 @@ export const seedRefOf = (m: WorldSeedManifest): SeedRef => ({
   seedVersion: m.seedVersion,
   contentHash: m.contentHash,
 });
+
+const END_OF_TIME = '9999-12-31';
+
+/** Cross-reference and consistency problems in the organization substrate block. */
+const substrateIssues = (seed: WorldSeedManifest): ValidationIssue[] => {
+  const sub = seed.organizationSubstrate;
+  if (sub === undefined) return [];
+  const issues: ValidationIssue[] = [];
+  const kinds = new Map(seed.initialEntities.map((e) => [e.id, e.kind]));
+  const requireKind = (
+    ref: string,
+    expected: SeedEntityKind,
+    where: string,
+  ): void => {
+    const kind = kinds.get(ref);
+    if (kind === undefined)
+      issues.push({
+        code: 'SEED_SUBSTRATE_UNKNOWN_ENTITY',
+        message: `${where} references unknown entity "${ref}"`,
+      });
+    else if (kind !== expected)
+      issues.push({
+        code: 'SEED_SUBSTRATE_WRONG_ENTITY_KIND',
+        message: `${where} references "${ref}" as a ${expected}, but it is a ${kind}`,
+      });
+  };
+  const seenIds = new Set<string>();
+  const claimId = (id: string, where: string): void => {
+    if (seenIds.has(id))
+      issues.push({
+        code: 'SEED_SUBSTRATE_DUPLICATE_ID',
+        message: `${where} reuses record id "${id}"`,
+      });
+    seenIds.add(id);
+  };
+  for (const r of sub.roleEpisodes) {
+    const where = `role episode "${r.id}"`;
+    claimId(r.id, where);
+    requireKind(r.personId, 'person', where);
+    requireKind(r.organizationId, 'organization', where);
+  }
+  for (const g of sub.authorityGrants) {
+    const where = `authority grant "${g.id}"`;
+    claimId(g.id, where);
+    requireKind(g.personId, 'person', where);
+    requireKind(g.organizationId, 'organization', where);
+    if (g.sourcePersonId !== null)
+      requireKind(g.sourcePersonId, 'person', where);
+  }
+  const groups = new Map<string, SeedRoleEpisode[]>();
+  for (const r of sub.roleEpisodes) {
+    const key = `${r.personId}|${r.organizationId}|${r.role}`;
+    groups.set(key, [...(groups.get(key) ?? []), r]);
+  }
+  for (const group of groups.values()) {
+    for (let i = 0; i < group.length; i++) {
+      for (let j = i + 1; j < group.length; j++) {
+        const a = group[i] as SeedRoleEpisode;
+        const b = group[j] as SeedRoleEpisode;
+        if (
+          a.startDate <= (b.endDate ?? END_OF_TIME) &&
+          b.startDate <= (a.endDate ?? END_OF_TIME)
+        )
+          issues.push({
+            code: 'SEED_SUBSTRATE_OVERLAPPING_ROLE',
+            message: `role episodes "${a.id}" and "${b.id}" overlap for ${a.personId} as ${a.role} in ${a.organizationId}`,
+          });
+      }
+    }
+  }
+  return issues;
+};
 
 const classify = (
   e: unknown,
@@ -237,6 +501,7 @@ export const validateForWorldCreation = (
       }
       seen.add(entity.id);
     }
+    issues.push(...substrateIssues(seed));
   }
   if (ruleset && seed) {
     const ref = seed.ruleset;

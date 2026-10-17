@@ -1,5 +1,6 @@
 import type { CanonicalValue } from './audit';
-import type { EntityId, RecordId } from './ids';
+import { entityId, recordId, type EntityId, type RecordId } from './ids';
+import type { SeedAuthorityGrant } from './seed';
 
 /** Explicit decision rights. One right never implies another. */
 export const DECISION_RIGHTS = [
@@ -87,6 +88,34 @@ export interface AuthorityState {
 
 export const emptyAuthorityState = (): AuthorityState => ({
   grants: [],
+  mandates: [],
+  protectedConstraints: [],
+});
+
+/**
+ * Initial authority: seeded grants in stable id order, rights in canonical enum order.
+ * Package B seeds no mandates or protected constraints.
+ */
+export const seededAuthorityState = (
+  grants: readonly SeedAuthorityGrant[],
+): AuthorityState => ({
+  grants: grants
+    .map((g): AuthorityGrant => ({
+      id: recordId(g.id),
+      personId: entityId(g.personId),
+      organizationId: entityId(g.organizationId),
+      category: g.category,
+      rights: [...g.rights].sort(
+        (a, b) => DECISION_RIGHTS.indexOf(a) - DECISION_RIGHTS.indexOf(b),
+      ),
+      transferable: g.transferable,
+      effectiveFrom: g.effectiveFrom,
+      effectiveUntil: g.effectiveUntil,
+      sourcePersonId:
+        g.sourcePersonId === null ? null : entityId(g.sourcePersonId),
+      revision: g.revision,
+    }))
+    .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)),
   mandates: [],
   protectedConstraints: [],
 });

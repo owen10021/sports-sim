@@ -1,0 +1,269 @@
+{
+  "contentHash": "6dd9a1e3df23be4aa7de5c352dd93c295fa38b5420ed4e14ae3e40766f821f56",
+  "initialEntities": [
+    {
+      "id": "org-northfield",
+      "kind": "organization",
+      "name": "Northfield Ironmen (synthetic)"
+    },
+    {
+      "id": "person-nf-owner",
+      "kind": "person",
+      "name": "Avery Holt (synthetic)"
+    },
+    {
+      "id": "person-nf-gm",
+      "kind": "person",
+      "name": "Jordan Pike (synthetic)"
+    },
+    {
+      "id": "person-nf-scout",
+      "kind": "person",
+      "name": "Casey Dunn (synthetic)"
+    },
+    {
+      "id": "org-southport",
+      "kind": "organization",
+      "name": "Southport Gulls (synthetic)"
+    },
+    {
+      "id": "person-sp-owner",
+      "kind": "person",
+      "name": "Quinn Marlow (synthetic)"
+    },
+    {
+      "id": "person-sp-gm",
+      "kind": "person",
+      "name": "Riley Strand (synthetic)"
+    },
+    {
+      "id": "person-sp-scout",
+      "kind": "person",
+      "name": "Morgan Vale (synthetic)"
+    }
+  ],
+  "organizationSubstrate": {
+    "authorityGrants": [
+      {
+        "category": "organizational_authority",
+        "effectiveFrom": "2026-10-16",
+        "effectiveUntil": null,
+        "id": "grant-nf-owner-authority",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2026-10-16",
+        "effectiveUntil": null,
+        "id": "grant-nf-owner-plan",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2026-10-16",
+        "effectiveUntil": null,
+        "id": "grant-nf-gm-plan",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-nf-owner",
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2026-10-16",
+        "effectiveUntil": null,
+        "id": "grant-nf-scout-plan",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-scout",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "communicate"
+        ],
+        "sourcePersonId": "person-nf-gm",
+        "transferable": false
+      },
+      {
+        "category": "organizational_authority",
+        "effectiveFrom": "2026-10-16",
+        "effectiveUntil": null,
+        "id": "grant-sp-owner-authority",
+        "organizationId": "org-southport",
+        "personId": "person-sp-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2026-10-16",
+        "effectiveUntil": null,
+        "id": "grant-sp-owner-plan",
+        "organizationId": "org-southport",
+        "personId": "person-sp-owner",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "veto",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": null,
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2026-10-16",
+        "effectiveUntil": null,
+        "id": "grant-sp-gm-plan",
+        "organizationId": "org-southport",
+        "personId": "person-sp-gm",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "approve",
+          "execute",
+          "communicate"
+        ],
+        "sourcePersonId": "person-sp-owner",
+        "transferable": true
+      },
+      {
+        "category": "organizational_plan",
+        "effectiveFrom": "2026-10-16",
+        "effectiveUntil": null,
+        "id": "grant-sp-scout-plan",
+        "organizationId": "org-southport",
+        "personId": "person-sp-scout",
+        "revision": 1,
+        "rights": [
+          "propose",
+          "advise",
+          "communicate"
+        ],
+        "sourcePersonId": "person-sp-gm",
+        "transferable": false
+      }
+    ],
+    "roleEpisodes": [
+      {
+        "endDate": null,
+        "id": "role-nf-owner",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-owner",
+        "role": "owner",
+        "startDate": "2020-01-01",
+        "title": "Owner"
+      },
+      {
+        "endDate": null,
+        "id": "role-nf-gm",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-gm",
+        "role": "general_manager",
+        "startDate": "2024-02-01",
+        "title": "General Manager"
+      },
+      {
+        "endDate": null,
+        "id": "role-nf-scout",
+        "organizationId": "org-northfield",
+        "personId": "person-nf-scout",
+        "role": "scout",
+        "startDate": "2025-03-01",
+        "title": "Area Scout"
+      },
+      {
+        "endDate": null,
+        "id": "role-sp-owner",
+        "organizationId": "org-southport",
+        "personId": "person-sp-owner",
+        "role": "owner",
+        "startDate": "2020-01-01",
+        "title": "Owner"
+      },
+      {
+        "endDate": null,
+        "id": "role-sp-gm",
+        "organizationId": "org-southport",
+        "personId": "person-sp-gm",
+        "role": "general_manager",
+        "startDate": "2024-02-01",
+        "title": "General Manager"
+      },
+      {
+        "endDate": null,
+        "id": "role-sp-scout",
+        "organizationId": "org-southport",
+        "personId": "person-sp-scout",
+        "role": "scout",
+        "startDate": "2025-03-01",
+        "title": "Area Scout"
+      }
+    ]
+  },
+  "provenance": [
+    {
+      "effectiveAsOf": "2026-10-16",
+      "note": "Synthetic Package B organization substrate fixture. Contains no real league data.",
+      "retrievedAt": "2026-10-17T00:00:00Z",
+      "sourceId": "sport-sim-synthetic-package-b",
+      "sourceKind": "synthetic",
+      "validationStatus": "synthetic"
+    }
+  ],
+  "rngSeed32": 20261017,
+  "ruleset": {
+    "contentHash": "0776311417c64397f948efe719cbf0ad6648b2011e5c227a62158ee6cb3712ae",
+    "rulesetId": "synthetic-minimal",
+    "rulesetVersion": 1
+  },
+  "schemaVersion": 1,
+  "seedId": "synthetic-org-substrate",
+  "seedVersion": 1,
+  "startDate": "2026-10-16"
+}
