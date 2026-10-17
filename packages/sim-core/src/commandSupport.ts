@@ -1,9 +1,16 @@
 import type { CanonicalValue, CommandPayloadBase } from './audit';
 import { effectiveRightsAt, type AuthorityState } from './authority';
 import type { EventSpec, RouteContext, RouteOutcome } from './commandRouter';
-import { entityId, isValidId, recordId, type EntityId } from './ids';
+import {
+  entityId,
+  isValidId,
+  recordId,
+  type EntityId,
+  type RecordId,
+} from './ids';
 import type { InformationState } from './information';
 import type { PeopleState } from './people';
+import type { RelationshipsState } from './relationships';
 import { SimDate } from './simDate';
 import type { FootballWorld } from './world';
 
@@ -92,28 +99,44 @@ export const requireExecute = (
         `${personId} lacks execute on organizational_authority in ${organizationId}`,
       );
 
-/** Next free `rec-NNNNNN` id. Skips any id already used by an authoritative record. */
-export const mintRecordId = (world: FootballWorld) => {
-  const taken = new Set<string>([
+const takenRecordIds = (world: FootballWorld): Set<string> =>
+  new Set<string>([
     ...world.people.roleEpisodes.map((x) => x.id),
     ...world.authority.grants.map((x) => x.id),
     ...world.authority.mandates.map((x) => x.id),
     ...world.authority.protectedConstraints.map((x) => x.id),
     ...world.information.claims.map((x) => x.id),
     ...world.information.beliefs.map((x) => x.id),
+    ...world.relationships.edges.map((x) => x.id),
+    ...world.relationships.effects.map((x) => x.id),
   ]);
+
+/**
+ * The next `count` free `rec-NNNNNN` ids, in order. Skips any id already used by an
+ * authoritative record. `next` is the value to store back into `nextIds.record`.
+ */
+export const mintRecordIds = (world: FootballWorld, count: number) => {
+  const taken = takenRecordIds(world);
+  const ids: RecordId[] = [];
   let n = world.nextIds.record;
-  for (;;) {
+  while (ids.length < count) {
     const id = `rec-${String(n).padStart(6, '0')}`;
     n += 1;
-    if (!taken.has(id)) return { id: recordId(id), next: n };
+    if (!taken.has(id)) ids.push(recordId(id));
   }
+  return { ids, next: n };
+};
+
+export const mintRecordId = (world: FootballWorld) => {
+  const minted = mintRecordIds(world, 1);
+  return { id: minted.ids[0]!, next: minted.next };
 };
 
 export interface Changes {
   readonly people?: PeopleState;
   readonly authority?: AuthorityState;
   readonly information?: InformationState;
+  readonly relationships?: RelationshipsState;
   readonly nextRecord?: number;
 }
 
@@ -132,6 +155,7 @@ export const finish = (
       people: changes.people ?? ctx.world.people,
       authority: changes.authority ?? ctx.world.authority,
       information: changes.information ?? ctx.world.information,
+      relationships: changes.relationships ?? ctx.world.relationships,
       nextIds: {
         ...ctx.world.nextIds,
         record: changes.nextRecord ?? ctx.world.nextIds.record,

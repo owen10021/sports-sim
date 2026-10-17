@@ -19,6 +19,7 @@ export * from './audit';
 export * from './commandRouter';
 export * from './authorityCommands';
 export * from './informationCommands';
+export * from './relationshipCommands';
 export * from './knowledgeView';
 export * from './kernel';
 export * from './persistence';

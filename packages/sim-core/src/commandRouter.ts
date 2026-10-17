@@ -5,6 +5,10 @@ import {
 } from './authorityCommands';
 import type { ActorRef, CommandId } from './ids';
 import {
+  routeRelationshipCommand,
+  type RelationshipCommandType,
+} from './relationshipCommands';
+import {
   routeInformationCommand,
   type InformationCommandType,
 } from './informationCommands';
@@ -71,8 +75,15 @@ interface InformationRoutedCommand extends CommandPayloadBase {
   readonly type: InformationCommandType;
 }
 
+interface RelationshipRoutedCommand extends CommandPayloadBase {
+  readonly type: RelationshipCommandType;
+}
+
 type RoutableCommand =
-  AdvanceDaysCommand | AuthorityRoutedCommand | InformationRoutedCommand;
+  | AdvanceDaysCommand
+  | AuthorityRoutedCommand
+  | InformationRoutedCommand
+  | RelationshipRoutedCommand;
 
 const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   AdvanceDays: true,
@@ -87,6 +98,7 @@ const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   RecordClaim: true,
   ShareClaim: true,
   FormBelief: true,
+  RecordRelationshipEffect: true,
 };
 
 export const isRoutableCommandType = (type: string): boolean =>
@@ -176,6 +188,8 @@ export const routeCommand = (ctx: RouteContext): RouteOutcome => {
     case 'ShareClaim':
     case 'FormBelief':
       return routeInformationCommand(ctx, command);
+    case 'RecordRelationshipEffect':
+      return routeRelationshipCommand(ctx, command);
     default: {
       const unreachable: never = command;
       throw new Error(
