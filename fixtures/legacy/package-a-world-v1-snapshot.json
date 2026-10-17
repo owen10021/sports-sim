@@ -1,0 +1,421 @@
+{
+  "commits": [
+    {
+      "commands": [
+        {
+          "envelope": {
+            "actor": {
+              "id": "golden-harness",
+              "kind": "test_harness"
+            },
+            "command": {
+              "days": 1,
+              "type": "AdvanceDays"
+            },
+            "commandId": "cmd-000001",
+            "expectedRevision": 0
+          },
+          "resultRevision": 1
+        }
+      ],
+      "events": [
+        {
+          "actor": {
+            "id": "golden-harness",
+            "kind": "test_harness"
+          },
+          "commandId": "cmd-000001",
+          "eventId": "evt-000001",
+          "hash": "88527b7579aff9d4dead44d04099536268aacbbbf42a1d0fd256964f5d6078d1",
+          "payload": {
+            "dayRolls": [
+              {
+                "date": "2026-10-17",
+                "roll": 803851580
+              }
+            ],
+            "days": 1,
+            "fromDate": "2026-10-16",
+            "toDate": "2026-10-17"
+          },
+          "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "revision": 1,
+          "simDate": "2026-10-17",
+          "type": "DaysAdvanced"
+        }
+      ],
+      "snapshot": {
+        "chainHead": "88527b7579aff9d4dead44d04099536268aacbbbf42a1d0fd256964f5d6078d1",
+        "contentHash": "a04aa9175b616f844ae4b18b8b0729509c0d5b69364e0d0c107d18e3ffc807c4",
+        "eventCount": 1,
+        "knownCommandIds": [
+          "cmd-000001"
+        ],
+        "revision": 1,
+        "schemaVersion": 1,
+        "world": {
+          "entities": [],
+          "nextIds": {
+            "event": 2
+          },
+          "revision": 1,
+          "rng": {
+            "algorithm": "xoshiro128ss-v1",
+            "draws": 1,
+            "s0": 2803970305,
+            "s1": 2766396996,
+            "s2": 912333856,
+            "s3": 2186364466
+          },
+          "ruleset": {
+            "contentHash": "0776311417c64397f948efe719cbf0ad6648b2011e5c227a62158ee6cb3712ae",
+            "rulesetId": "synthetic-minimal",
+            "rulesetVersion": 1
+          },
+          "schemaVersion": 1,
+          "seed": {
+            "contentHash": "95b75c540916552ad18c05fd50e158b218254ac909edf8a84d82e26ecc4bf98f",
+            "seedId": "synthetic-empty",
+            "seedVersion": 1
+          },
+          "simDate": "2026-10-17",
+          "worldId": "world-golden-1"
+        },
+        "worldFingerprint": "dde4d6daa87ca7f85a513fd101437d826b9665d975cd579de006d6bc1f612335",
+        "worldId": "world-golden-1"
+      }
+    },
+    {
+      "commands": [
+        {
+          "envelope": {
+            "actor": {
+              "id": "golden-harness",
+              "kind": "test_harness"
+            },
+            "command": {
+              "days": 6,
+              "type": "AdvanceDays"
+            },
+            "commandId": "cmd-000002",
+            "expectedRevision": 1
+          },
+          "resultRevision": 2
+        }
+      ],
+      "events": [
+        {
+          "actor": {
+            "id": "golden-harness",
+            "kind": "test_harness"
+          },
+          "commandId": "cmd-000002",
+          "eventId": "evt-000002",
+          "hash": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+          "payload": {
+            "dayRolls": [
+              {
+                "date": "2026-10-18",
+                "roll": 118029052
+              },
+              {
+                "date": "2026-10-19",
+                "roll": 3907281078
+              },
+              {
+                "date": "2026-10-20",
+                "roll": 74317167
+              },
+              {
+                "date": "2026-10-21",
+                "roll": 293261246
+              },
+              {
+                "date": "2026-10-22",
+                "roll": 976740587
+              },
+              {
+                "date": "2026-10-23",
+                "roll": 3463919171
+              }
+            ],
+            "days": 6,
+            "fromDate": "2026-10-17",
+            "toDate": "2026-10-23"
+          },
+          "previousHash": "88527b7579aff9d4dead44d04099536268aacbbbf42a1d0fd256964f5d6078d1",
+          "revision": 2,
+          "simDate": "2026-10-23",
+          "type": "DaysAdvanced"
+        }
+      ],
+      "snapshot": {
+        "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+        "contentHash": "6b93db567e8fb2669efb772e79f53cd39b7fb4dd1f3055079e13b43f5574dd31",
+        "eventCount": 2,
+        "knownCommandIds": [
+          "cmd-000001",
+          "cmd-000002"
+        ],
+        "revision": 2,
+        "schemaVersion": 1,
+        "world": {
+          "entities": [],
+          "nextIds": {
+            "event": 3
+          },
+          "revision": 2,
+          "rng": {
+            "algorithm": "xoshiro128ss-v1",
+            "draws": 7,
+            "s0": 365840248,
+            "s1": 1743845712,
+            "s2": 2282494281,
+            "s3": 2406492089
+          },
+          "ruleset": {
+            "contentHash": "0776311417c64397f948efe719cbf0ad6648b2011e5c227a62158ee6cb3712ae",
+            "rulesetId": "synthetic-minimal",
+            "rulesetVersion": 1
+          },
+          "schemaVersion": 1,
+          "seed": {
+            "contentHash": "95b75c540916552ad18c05fd50e158b218254ac909edf8a84d82e26ecc4bf98f",
+            "seedId": "synthetic-empty",
+            "seedVersion": 1
+          },
+          "simDate": "2026-10-23",
+          "worldId": "world-golden-1"
+        },
+        "worldFingerprint": "36b765558574271cad3a814a71daab797fd44dc9e3d0c18790072e069931b4f5",
+        "worldId": "world-golden-1"
+      }
+    },
+    {
+      "commands": [
+        {
+          "envelope": {
+            "actor": {
+              "id": "golden-harness",
+              "kind": "test_harness"
+            },
+            "command": {
+              "days": 7,
+              "type": "AdvanceDays"
+            },
+            "commandId": "cmd-000003",
+            "expectedRevision": 2
+          },
+          "resultRevision": 3
+        }
+      ],
+      "events": [
+        {
+          "actor": {
+            "id": "golden-harness",
+            "kind": "test_harness"
+          },
+          "commandId": "cmd-000003",
+          "eventId": "evt-000003",
+          "hash": "d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a",
+          "payload": {
+            "dayRolls": [
+              {
+                "date": "2026-10-24",
+                "roll": 2917763099
+              },
+              {
+                "date": "2026-10-25",
+                "roll": 1941310073
+              },
+              {
+                "date": "2026-10-26",
+                "roll": 1055979604
+              },
+              {
+                "date": "2026-10-27",
+                "roll": 3075782901
+              },
+              {
+                "date": "2026-10-28",
+                "roll": 719140762
+              },
+              {
+                "date": "2026-10-29",
+                "roll": 3493821492
+              },
+              {
+                "date": "2026-10-30",
+                "roll": 871944790
+              }
+            ],
+            "days": 7,
+            "fromDate": "2026-10-23",
+            "toDate": "2026-10-30"
+          },
+          "previousHash": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+          "revision": 3,
+          "simDate": "2026-10-30",
+          "type": "DaysAdvanced"
+        }
+      ],
+      "snapshot": {
+        "chainHead": "d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a",
+        "contentHash": "5c8986210aad1cfa9db204ec6dd5b24358a3074dcdd8be6faaa2b9db92f2c17a",
+        "eventCount": 3,
+        "knownCommandIds": [
+          "cmd-000001",
+          "cmd-000002",
+          "cmd-000003"
+        ],
+        "revision": 3,
+        "schemaVersion": 1,
+        "world": {
+          "entities": [],
+          "nextIds": {
+            "event": 4
+          },
+          "revision": 3,
+          "rng": {
+            "algorithm": "xoshiro128ss-v1",
+            "draws": 14,
+            "s0": 1887146218,
+            "s1": 229790473,
+            "s2": 3355917411,
+            "s3": 492732456
+          },
+          "ruleset": {
+            "contentHash": "0776311417c64397f948efe719cbf0ad6648b2011e5c227a62158ee6cb3712ae",
+            "rulesetId": "synthetic-minimal",
+            "rulesetVersion": 1
+          },
+          "schemaVersion": 1,
+          "seed": {
+            "contentHash": "95b75c540916552ad18c05fd50e158b218254ac909edf8a84d82e26ecc4bf98f",
+            "seedId": "synthetic-empty",
+            "seedVersion": 1
+          },
+          "simDate": "2026-10-30",
+          "worldId": "world-golden-1"
+        },
+        "worldFingerprint": "fd3baa44a20b08e5e6f4948adc6f123da62c7239ad04062f185f8cec96a53bda",
+        "worldId": "world-golden-1"
+      }
+    }
+  ],
+  "description": "Genuine Package A (world model v1, no worldModelVersion field) career: genesis snapshot plus the three committed golden commits. Frozen BEFORE the Package B world-model change. Never regenerate with newer code.",
+  "format": "sport-sim/legacy-package-a-world-v1-fixture",
+  "generatedFromCommit": "078ad505f7f31826b8d453121ebe46b3863fc148",
+  "genesis": {
+    "chainHead": "0000000000000000000000000000000000000000000000000000000000000000",
+    "contentHash": "8c9022e9bc7c421577604a2dbf1b88a789a972cae7619b447fef0625c887103b",
+    "eventCount": 0,
+    "knownCommandIds": [],
+    "revision": 0,
+    "schemaVersion": 1,
+    "world": {
+      "entities": [],
+      "nextIds": {
+        "event": 1
+      },
+      "revision": 0,
+      "rng": {
+        "algorithm": "xoshiro128ss-v1",
+        "draws": 0,
+        "s0": 1634827049,
+        "s1": 3197504100,
+        "s2": 2063904521,
+        "s3": 2026258508
+      },
+      "ruleset": {
+        "contentHash": "0776311417c64397f948efe719cbf0ad6648b2011e5c227a62158ee6cb3712ae",
+        "rulesetId": "synthetic-minimal",
+        "rulesetVersion": 1
+      },
+      "schemaVersion": 1,
+      "seed": {
+        "contentHash": "95b75c540916552ad18c05fd50e158b218254ac909edf8a84d82e26ecc4bf98f",
+        "seedId": "synthetic-empty",
+        "seedVersion": 1
+      },
+      "simDate": "2026-10-16",
+      "worldId": "world-golden-1"
+    },
+    "worldFingerprint": "8177fbbf3578650b49de5b048c300bae9e548ddcdcb0804ae57ea853feceea75",
+    "worldId": "world-golden-1"
+  },
+  "goldenExpected": {
+    "commandDays": [
+      1,
+      6,
+      7
+    ],
+    "eventChainHead": "d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a",
+    "eventCount": 3,
+    "finalSimDate": "2026-10-30",
+    "fingerprint": "fd3baa44a20b08e5e6f4948adc6f123da62c7239ad04062f185f8cec96a53bda",
+    "revision": 3,
+    "rngDraws": 14,
+    "scenario": "package-a-golden-v1",
+    "steps": [
+      {
+        "chainHead": "88527b7579aff9d4dead44d04099536268aacbbbf42a1d0fd256964f5d6078d1",
+        "fingerprint": "dde4d6daa87ca7f85a513fd101437d826b9665d975cd579de006d6bc1f612335",
+        "label": "advance-1",
+        "outcome": "committed",
+        "revision": 1,
+        "rngDraws": 1
+      },
+      {
+        "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+        "fingerprint": "36b765558574271cad3a814a71daab797fd44dc9e3d0c18790072e069931b4f5",
+        "label": "advance-6",
+        "outcome": "committed",
+        "revision": 2,
+        "rngDraws": 7
+      },
+      {
+        "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+        "fingerprint": "36b765558574271cad3a814a71daab797fd44dc9e3d0c18790072e069931b4f5",
+        "label": "duplicate-command",
+        "outcome": "DUPLICATE_COMMAND",
+        "revision": 2,
+        "rngDraws": 7
+      },
+      {
+        "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+        "fingerprint": "36b765558574271cad3a814a71daab797fd44dc9e3d0c18790072e069931b4f5",
+        "label": "stale-revision",
+        "outcome": "STALE_REVISION",
+        "revision": 2,
+        "rngDraws": 7
+      },
+      {
+        "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+        "fingerprint": "36b765558574271cad3a814a71daab797fd44dc9e3d0c18790072e069931b4f5",
+        "label": "invalid-days",
+        "outcome": "INVALID_PAYLOAD",
+        "revision": 2,
+        "rngDraws": 7
+      },
+      {
+        "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+        "fingerprint": "36b765558574271cad3a814a71daab797fd44dc9e3d0c18790072e069931b4f5",
+        "label": "unauthorized-actor",
+        "outcome": "UNAUTHORIZED_ACTOR",
+        "revision": 2,
+        "rngDraws": 7
+      },
+      {
+        "chainHead": "d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a",
+        "fingerprint": "fd3baa44a20b08e5e6f4948adc6f123da62c7239ad04062f185f8cec96a53bda",
+        "label": "advance-7",
+        "outcome": "committed",
+        "revision": 3,
+        "rngDraws": 14
+      }
+    ],
+    "worldId": "world-golden-1"
+  },
+  "scenario": "package-a-golden-v1"
+}

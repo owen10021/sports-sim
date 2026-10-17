@@ -1,0 +1,78 @@
+{
+  "note": "Package A golden expected values for world model v1. Immutable historical evidence, preserved when the Package B world-model change intentionally versioned the current golden.",
+  "source": "fixtures/legacy/package-a-world-v1-snapshot.json",
+  "generatedFromCommit": "078ad505f7f31826b8d453121ebe46b3863fc148",
+  "goldenExpected": {
+    "commandDays": [
+      1,
+      6,
+      7
+    ],
+    "eventChainHead": "d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a",
+    "eventCount": 3,
+    "finalSimDate": "2026-10-30",
+    "fingerprint": "fd3baa44a20b08e5e6f4948adc6f123da62c7239ad04062f185f8cec96a53bda",
+    "revision": 3,
+    "rngDraws": 14,
+    "scenario": "package-a-golden-v1",
+    "steps": [
+      {
+        "chainHead": "88527b7579aff9d4dead44d04099536268aacbbbf42a1d0fd256964f5d6078d1",
+        "fingerprint": "dde4d6daa87ca7f85a513fd101437d826b9665d975cd579de006d6bc1f612335",
+        "label": "advance-1",
+        "outcome": "committed",
+        "revision": 1,
+        "rngDraws": 1
+      },
+      {
+        "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+        "fingerprint": "36b765558574271cad3a814a71daab797fd44dc9e3d0c18790072e069931b4f5",
+        "label": "advance-6",
+        "outcome": "committed",
+        "revision": 2,
+        "rngDraws": 7
+      },
+      {
+        "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+        "fingerprint": "36b765558574271cad3a814a71daab797fd44dc9e3d0c18790072e069931b4f5",
+        "label": "duplicate-command",
+        "outcome": "DUPLICATE_COMMAND",
+        "revision": 2,
+        "rngDraws": 7
+      },
+      {
+        "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+        "fingerprint": "36b765558574271cad3a814a71daab797fd44dc9e3d0c18790072e069931b4f5",
+        "label": "stale-revision",
+        "outcome": "STALE_REVISION",
+        "revision": 2,
+        "rngDraws": 7
+      },
+      {
+        "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+        "fingerprint": "36b765558574271cad3a814a71daab797fd44dc9e3d0c18790072e069931b4f5",
+        "label": "invalid-days",
+        "outcome": "INVALID_PAYLOAD",
+        "revision": 2,
+        "rngDraws": 7
+      },
+      {
+        "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77",
+        "fingerprint": "36b765558574271cad3a814a71daab797fd44dc9e3d0c18790072e069931b4f5",
+        "label": "unauthorized-actor",
+        "outcome": "UNAUTHORIZED_ACTOR",
+        "revision": 2,
+        "rngDraws": 7
+      },
+      {
+        "chainHead": "d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a",
+        "fingerprint": "fd3baa44a20b08e5e6f4948adc6f123da62c7239ad04062f185f8cec96a53bda",
+        "label": "advance-7",
+        "outcome": "committed",
+        "revision": 3,
+        "rngDraws": 14
+      }
+    ],
+    "worldId": "world-golden-1"
+  }
+}
