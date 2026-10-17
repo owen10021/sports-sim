@@ -11,9 +11,8 @@ import {
   type TradePackageV1,
 } from './assets';
 import { canonicalString } from './canonical';
-import type { CanonicalValue } from './audit';
+import type { CanonicalValue, CommandPayloadBase } from './audit';
 import { effectiveRightsAt, isProtectedAt } from './authority';
-import type { CommandPayloadBase } from './audit';
 import type { EventSpec, RouteContext, RouteOutcome } from './commandRouter';
 import {
   bad,

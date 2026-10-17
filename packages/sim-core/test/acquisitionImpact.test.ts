@@ -232,6 +232,7 @@ describe('tradeCapacityProblems', () => {
             sourceRecordId: recordId('rec-900201'),
             capBySeason: [{ season: 2027, amount: 1_900_000 as never }],
             rosterSlotStatus: 'active',
+            contingencyGroupId: null,
             createdAt: TODAY,
             status: 'active',
           },

@@ -31,6 +31,7 @@ import {
   seasonOfDate,
   type RosterMembership,
   type RosterState,
+  type RosterStatus,
   type WaiverClaim,
   type WaiverRecord,
 } from './roster';
@@ -161,12 +162,12 @@ const claimCharges = (
  * Reservations are counted only when asked: submitting a claim must respect room already
  * held for other pending commitments; resolving one is checked against actual state.
  */
-const claimObstacle = (
+export const claimObstacle = (
   world: FootballWorld,
   tx: TransactionRulesV1,
   organizationId: EntityId,
-  status: 'active' | 'reserve',
-  charges: readonly SeasonAmount[],
+  status: RosterStatus | null,
+  charges: readonly { readonly season: number; readonly amount: number }[],
   withReservations: boolean,
 ): string | null => {
   const today = world.simDate;
@@ -184,14 +185,16 @@ const claimObstacle = (
       if (position.committed + held + charge.amount > position.cap)
         return `cap: season ${charge.season} would exceed ${position.cap} (committed ${position.committed}, reserved ${held}, incoming ${charge.amount})`;
     }
-    const capacity = rosterCapacity(world.roster, tx, organizationId, today)[
-      status
-    ];
-    const held = withReservations
-      ? reservedSlots(world.market, organizationId, status)
-      : 0;
-    if (capacity.count + held + 1 > capacity.limit)
-      return `roster capacity: ${status} has ${capacity.count} players and ${held} reserved of ${capacity.limit}`;
+    if (status !== null) {
+      const capacity = rosterCapacity(world.roster, tx, organizationId, today)[
+        status
+      ];
+      const held = withReservations
+        ? reservedSlots(world.market, organizationId, status)
+        : 0;
+      if (capacity.count + held + 1 > capacity.limit)
+        return `roster capacity: ${status} has ${capacity.count} players and ${held} reserved of ${capacity.limit}`;
+    }
   } catch (e) {
     if (e instanceof UnknownTransactionSeasonError) return e.message;
     throw e;
@@ -271,6 +274,7 @@ const routeClaim = (ctx: RouteContext, c: Cmd): RouteOutcome => {
     sourceRecordId: claimId,
     capBySeason: charges,
     rosterSlotStatus: status,
+    contingencyGroupId: null,
     createdAt: today,
     status: 'active',
   };

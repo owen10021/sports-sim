@@ -123,6 +123,7 @@ const takenRecordIds = (world: FootballWorld): Set<string> =>
     ...world.market.reservations.map((x) => x.id),
     ...world.market.inquiries.map((x) => x.id),
     ...world.market.tradeOffers.map((x) => x.id),
+    ...world.market.contractOffers.map((x) => x.id),
     ...world.market.responses.map((x) => x.id),
   ]);
 

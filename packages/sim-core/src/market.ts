@@ -1,5 +1,5 @@
 import type { AcquisitionAssetRef, TradePackageV1 } from './assets';
-import type { SeasonAmount } from './contracts';
+import type { ContractTermsV1, SeasonAmount } from './contracts';
 import { entityId, recordId, type EntityId, type RecordId } from './ids';
 import type { RosterStatus } from './roster';
 import type { PackageCSubstrateSeed } from './packageCSeedParse';
@@ -56,8 +56,86 @@ export type Reservation = {
   readonly sourceRecordId: RecordId;
   readonly capBySeason: readonly SeasonAmount[];
   readonly rosterSlotStatus: RosterStatus | null;
+  /**
+   * Reservations of one organization sharing a group are alternatives (a fallback chain):
+   * at most one of them can ever commit, so together they hold only the largest of them.
+   * `null` means the reservation stands alone.
+   */
+  readonly contingencyGroupId: string | null;
   readonly createdAt: string;
   readonly status: ReservationStatus;
+};
+
+export const ROLE_COMMITMENTS = [
+  'starter',
+  'rotation',
+  'depth',
+  'developmental',
+] as const;
+export type RoleCommitment = (typeof ROLE_COMMITMENTS)[number];
+
+export const CONTRACT_OFFER_STATUSES = [
+  'draft',
+  'communicated',
+  'countered',
+  'accepted_pending_commit',
+  'committed',
+  'rejected',
+  'withdrawn',
+  'expired',
+  'superseded',
+] as const;
+export type ContractOfferStatus = (typeof CONTRACT_OFFER_STATUSES)[number];
+
+/**
+ * A club's offer to a player, made through the player's agent. `priority` and
+ * `contingencyGroupId` are the club's own private ordering and fallback structure: the
+ * player side never sees them. Each revision is a separate immutable record.
+ */
+export type ContractOfferRecord = {
+  readonly id: RecordId;
+  readonly revision: number;
+  readonly organizationId: EntityId;
+  readonly playerId: EntityId;
+  /** The agent the offer was made through; null for an unrepresented player. */
+  readonly agentPersonId: EntityId | null;
+  readonly submittedBy: EntityId;
+  readonly organizationProposalId: RecordId;
+  readonly terms: ContractTermsV1;
+  readonly roleCommitment: RoleCommitment;
+  readonly targetRosterStatus: RosterStatus;
+  /** True when the player is already under contract with the offering club. */
+  readonly extension: boolean;
+  readonly contingencyGroupId: string | null;
+  readonly priority: number;
+  readonly submittedAt: string;
+  readonly expiresAt: string | null;
+  readonly status: ContractOfferStatus;
+  readonly supersedesRevision: number | null;
+  readonly reservationId: RecordId | null;
+  /** The coarse answer the club may see; never the player's private reasons. */
+  readonly communicated: readonly string[];
+};
+
+export const PLAYER_DISPOSITIONS = [
+  'accept',
+  'counter',
+  'reject',
+  'defer',
+] as const;
+export type PlayerDisposition = (typeof PLAYER_DISPOSITIONS)[number];
+
+/** The player side's recorded answer to one offer. Reasons are private to the player side. */
+export type ContractOfferResponse = {
+  readonly kind: 'contract_response';
+  readonly id: RecordId;
+  readonly offerId: RecordId;
+  readonly offerRevision: number;
+  readonly playerId: EntityId;
+  readonly disposition: PlayerDisposition;
+  readonly reasons: readonly string[];
+  readonly communicated: readonly string[];
+  readonly createdAt: string;
 };
 
 /**
@@ -163,14 +241,15 @@ export type TradeOfferResponse = {
   readonly createdAt: string;
 };
 
-export type MarketResponse = InquiryResponse | TradeOfferResponse;
+export type MarketResponse =
+  InquiryResponse | TradeOfferResponse | ContractOfferResponse;
 
 export type MarketState = {
   readonly agentClients: readonly AgentClientRecord[];
   readonly playerPreferences: readonly PlayerMarketPreferenceProfile[];
   readonly inquiries: readonly MarketInquiry[];
   readonly tradeOffers: readonly TradeOfferRecord[];
-  readonly contractOffers: readonly unknown[];
+  readonly contractOffers: readonly ContractOfferRecord[];
   readonly reservations: readonly Reservation[];
   readonly responses: readonly MarketResponse[];
 };
@@ -221,24 +300,41 @@ export const reservedCap = (
   market: Pick<MarketState, 'reservations'>,
   organizationId: EntityId,
   season: number,
-): number =>
-  market.reservations
-    .filter((r) => r.organizationId === organizationId && r.status === 'active')
-    .reduce(
-      (sum, r) =>
-        sum + (r.capBySeason.find((x) => x.season === season)?.amount ?? 0),
-      0,
-    );
+): number => {
+  const alone = (r: Reservation): number =>
+    r.capBySeason.find((x) => x.season === season)?.amount ?? 0;
+  let total = 0;
+  const groupMax = new Map<string, number>();
+  for (const r of market.reservations) {
+    if (r.organizationId !== organizationId || r.status !== 'active') continue;
+    if (r.contingencyGroupId === null) total += alone(r);
+    else
+      groupMax.set(
+        r.contingencyGroupId,
+        Math.max(groupMax.get(r.contingencyGroupId) ?? 0, alone(r)),
+      );
+  }
+  for (const v of groupMax.values()) total += v;
+  return total;
+};
 
 /** Roster slots held for an organization's pending commitments on one list. */
 export const reservedSlots = (
   market: Pick<MarketState, 'reservations'>,
   organizationId: EntityId,
   status: RosterStatus,
-): number =>
-  market.reservations.filter(
-    (r) =>
-      r.organizationId === organizationId &&
-      r.status === 'active' &&
-      r.rosterSlotStatus === status,
-  ).length;
+): number => {
+  let total = 0;
+  const groups = new Set<string>();
+  for (const r of market.reservations) {
+    if (
+      r.organizationId !== organizationId ||
+      r.status !== 'active' ||
+      r.rosterSlotStatus !== status
+    )
+      continue;
+    if (r.contingencyGroupId === null) total += 1;
+    else groups.add(r.contingencyGroupId);
+  }
+  return total + groups.size;
+};

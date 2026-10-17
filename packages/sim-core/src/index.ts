@@ -59,3 +59,6 @@ export * from './acquisitionImpact';
 export * from './acquisitionView';
 export * from './tradeReasoning';
 export * from './tradeCommands';
+export * from './playerMarketView';
+export * from './freeAgency';
+export * from './freeAgencyCommands';
