@@ -11,6 +11,7 @@ import {
 } from './contractCommands';
 import { routeRosterCommand, type RosterCommandType } from './rosterCommands';
 import { routeWaiverCommand, type WaiverCommandType } from './waiverCommands';
+import { routeTradeCommand, type TradeCommandType } from './tradeCommands';
 import {
   routeDecisionCommand,
   type DecisionCommandType,
@@ -110,8 +111,13 @@ interface WaiverRoutedCommand extends CommandPayloadBase {
   readonly type: WaiverCommandType;
 }
 
+interface TradeRoutedCommand extends CommandPayloadBase {
+  readonly type: TradeCommandType;
+}
+
 type RoutableCommand =
   | AdvanceDaysCommand
+  | TradeRoutedCommand
   | WaiverRoutedCommand
   | AuthorityRoutedCommand
   | InformationRoutedCommand
@@ -147,6 +153,11 @@ const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   CommitWaivePlayerProposal: true,
   SubmitWaiverClaim: true,
   ResolveWaivers: true,
+  SubmitMarketInquiry: true,
+  PostTradeOffer: true,
+  RequestTradeResponse: true,
+  AnswerTradeOffer: true,
+  CommitTradeAgreement: true,
 };
 
 export const isRoutableCommandType = (type: string): boolean =>
@@ -255,6 +266,12 @@ export const routeCommand = (ctx: RouteContext): RouteOutcome => {
     case 'SubmitWaiverClaim':
     case 'ResolveWaivers':
       return routeWaiverCommand(ctx, command);
+    case 'SubmitMarketInquiry':
+    case 'PostTradeOffer':
+    case 'RequestTradeResponse':
+    case 'AnswerTradeOffer':
+    case 'CommitTradeAgreement':
+      return routeTradeCommand(ctx, command);
     default: {
       const unreachable: never = command;
       throw new Error(

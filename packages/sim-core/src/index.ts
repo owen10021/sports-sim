@@ -56,3 +56,6 @@ export * from './contractLifecycle';
 export * from './waiverCommands';
 export * from './assets';
 export * from './acquisitionImpact';
+export * from './acquisitionView';
+export * from './tradeReasoning';
+export * from './tradeCommands';

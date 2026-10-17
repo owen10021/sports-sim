@@ -1,4 +1,12 @@
 import {
+  tradePackageTerms,
+  type TradePackageV1,
+  ACQUISITION_TIER_ASSESSMENT,
+  COMPETITIVE_WINDOW_KEY,
+  recordId,
+  type BeliefRecord,
+  type FootballWorld,
+  type OrganizationPlan,
   PACKAGE_C_SEED,
   SYNTHETIC_PACKAGE_C_RULESET,
   WorldKernel,
@@ -192,3 +200,119 @@ export const newCapKernel = (
     }),
     options,
   );
+
+/** The Package C world with extra authoritative state laid down before the first command. */
+export const newKernelWith = (
+  mutate: (world: FootballWorld) => FootballWorld,
+  options?: KernelOptions,
+): WorldKernel =>
+  WorldKernel.fromGenesis(
+    mutate(newPackageCKernel().world),
+    SYNTHETIC_PACKAGE_C_RULESET,
+    options,
+  );
+
+let beliefCounter = 0;
+/** An organization's own acquisition-tier belief about a player. */
+export const tierBelief = (
+  organizationId: string,
+  authorPersonId: string,
+  playerId: string,
+  tier: string,
+  extra: Record<string, unknown> = {},
+): BeliefRecord => {
+  beliefCounter += 1;
+  return {
+    id: recordId(`belief-test-${String(beliefCounter).padStart(3, '0')}`),
+    organizationId: entityId(organizationId),
+    authorPersonId: entityId(authorPersonId),
+    subject: { kind: 'entity', id: playerId },
+    assessmentType: ACQUISITION_TIER_ASSESSMENT,
+    assessment: { tier, ...extra } as never,
+    confidence: 'medium',
+    evidenceClaimIds: [],
+    formedAt: '2027-02-01',
+    supersedesBeliefId: null,
+  };
+};
+
+/** An active strategy plan stating an organization's competitive posture. */
+export const postureOnlyPlan = (
+  organizationId: string,
+  ownerPersonId: string,
+  window: string,
+  id = `plan-test-${organizationId}`,
+): OrganizationPlan => ({
+  id: recordId(id),
+  organizationId: entityId(organizationId),
+  kind: 'strategy',
+  scopeKey: 'franchise',
+  status: 'active',
+  currentRevision: 1,
+  revisions: [
+    {
+      revision: 1,
+      ownerPersonId: entityId(ownerPersonId),
+      effectiveAt: '2027-02-01',
+      horizon: 'multi_year',
+      objectives: [
+        { key: COMPETITIVE_WINDOW_KEY, priority: 'high', target: window },
+      ],
+      constraints: [],
+      triggerRefs: [],
+      fallbackPlanIds: [],
+      basisBeliefIds: [],
+      changeReasonRefs: [],
+    },
+  ],
+});
+
+export const withBeliefs =
+  (...beliefs: BeliefRecord[]) =>
+  (w: FootballWorld): FootballWorld => ({
+    ...w,
+    information: {
+      ...w.information,
+      beliefs: [...w.information.beliefs, ...beliefs],
+    },
+  });
+
+export const withPlans =
+  (...plans: OrganizationPlan[]) =>
+  (w: FootballWorld): FootballWorld => ({
+    ...w,
+    plans: { ...w.plans, plans: [...w.plans.plans, ...plans] },
+  });
+
+export const compose =
+  (...fns: ((w: FootballWorld) => FootballWorld)[]) =>
+  (w: FootballWorld): FootballWorld =>
+    fns.reduce((acc, f) => f(acc), w);
+
+export const TRADE_TERMS = 'trade_package_v1';
+
+/** Submits a trade-package proposal for `org` and returns its id. */
+export const submitTradeProposal = (
+  r: { run: (c: Record<string, unknown>) => unknown; kernel: WorldKernel },
+  org: string,
+  by: string,
+  counterparty: string,
+  pkg: TradePackageV1,
+  extra: Record<string, unknown> = {},
+): string => {
+  const res = r.run({
+    type: 'SubmitProposal',
+    organizationId: org,
+    actingPersonId: by,
+    category: 'acquisition',
+    subjects: [{ kind: 'entity', id: counterparty }],
+    termsType: TRADE_TERMS,
+    terms: tradePackageTerms(pkg),
+    requiredApproverPersonIds: [],
+    expiresAt: null,
+    contingencies: {},
+    ...extra,
+  }) as { ok: boolean };
+  if (!res.ok) throw new Error(`proposal refused: ${JSON.stringify(res)}`);
+  return r.kernel.world.decisions.proposals.at(-1)!.id;
+};
