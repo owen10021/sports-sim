@@ -6,10 +6,10 @@ export type ClaimVisibility = 'public' | 'organization' | 'restricted';
 export type ConfidenceBand =
   'very_low' | 'low' | 'medium' | 'high' | 'very_high';
 
-export interface SubjectRef {
+export type SubjectRef = {
   readonly kind: 'entity' | 'plan' | 'proposal' | 'world';
   readonly id: string;
-}
+};
 
 /** Immutable as-of statement with provenance. Later knowledge links forward. */
 export interface ClaimRecord {
@@ -27,6 +27,8 @@ export interface ClaimRecord {
   readonly possibleBias: string | null;
   readonly corroboratesClaimIds: readonly RecordId[];
   readonly contradictsClaimIds: readonly RecordId[];
+  /** Set on a copy created by `ShareClaim`; provenance (source, family, observation) is kept. */
+  readonly sharedFromClaimId: RecordId | null;
 }
 
 /** An organization's immutable as-of assessment. A newer belief supersedes by link. */

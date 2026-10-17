@@ -4,6 +4,10 @@ import {
   type AuthorityCommandType,
 } from './authorityCommands';
 import type { ActorRef, CommandId } from './ids';
+import {
+  routeInformationCommand,
+  type InformationCommandType,
+} from './informationCommands';
 import type { LeagueRulesetManifest } from './ruleset';
 import { DeterministicRng } from './rng';
 import { SimDate } from './simDate';
@@ -63,7 +67,12 @@ interface AuthorityRoutedCommand extends CommandPayloadBase {
   readonly type: AuthorityCommandType;
 }
 
-type RoutableCommand = AdvanceDaysCommand | AuthorityRoutedCommand;
+interface InformationRoutedCommand extends CommandPayloadBase {
+  readonly type: InformationCommandType;
+}
+
+type RoutableCommand =
+  AdvanceDaysCommand | AuthorityRoutedCommand | InformationRoutedCommand;
 
 const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   AdvanceDays: true,
@@ -75,6 +84,9 @@ const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   RevokeMandate: true,
   CreateProtectedConstraint: true,
   AmendProtectedConstraint: true,
+  RecordClaim: true,
+  ShareClaim: true,
+  FormBelief: true,
 };
 
 export const isRoutableCommandType = (type: string): boolean =>
@@ -160,6 +172,10 @@ export const routeCommand = (ctx: RouteContext): RouteOutcome => {
     case 'CreateProtectedConstraint':
     case 'AmendProtectedConstraint':
       return routeAuthorityCommand(ctx, command);
+    case 'RecordClaim':
+    case 'ShareClaim':
+    case 'FormBelief':
+      return routeInformationCommand(ctx, command);
     default: {
       const unreachable: never = command;
       throw new Error(

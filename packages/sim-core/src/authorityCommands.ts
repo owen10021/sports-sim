@@ -3,26 +3,42 @@ import {
   DECISION_CATEGORIES,
   DECISION_RIGHTS,
   activeRightsAt,
-  effectiveRightsAt,
   isProtectedAt,
   type AuthorityGrant,
-  type AuthorityState,
   type DecisionCategory,
   type DecisionRight,
   type Mandate,
   type ProtectedConstraint,
 } from './authority';
 import type { EventSpec, RouteContext, RouteOutcome } from './commandRouter';
-import { entityId, isValidId, recordId, type EntityId } from './ids';
+import {
+  bad,
+  byId,
+  dayAfter,
+  dayBefore,
+  denied,
+  finish,
+  hasKind,
+  isFailure,
+  isPlainObject,
+  mintRecordId,
+  nonEmptyText,
+  parseActingPerson,
+  parseDate,
+  parseOrganization,
+  protectedBy,
+  requireExecute,
+  spec,
+  type Cmd,
+  type Failure,
+} from './commandSupport';
+import { entityId, isValidId } from './ids';
 import {
   PERSON_ROLES,
   holdsRoleAt,
-  type PeopleState,
   type PersonRole,
   type RoleEpisode,
 } from './people';
-import { SimDate } from './simDate';
-import type { FootballWorld } from './world';
 
 export const AUTHORITY_COMMAND_TYPES = [
   'StartRoleEpisode',
@@ -35,54 +51,6 @@ export const AUTHORITY_COMMAND_TYPES = [
   'AmendProtectedConstraint',
 ] as const;
 export type AuthorityCommandType = (typeof AUTHORITY_COMMAND_TYPES)[number];
-
-type Cmd = CommandPayloadBase & { readonly [key: string]: unknown };
-type Failure = Extract<RouteOutcome, { ok: false }>;
-
-const bad = (message: string): Failure => ({
-  ok: false,
-  stage: 'validation',
-  code: 'INVALID_PAYLOAD',
-  message,
-});
-const denied = (message: string): Failure => ({
-  ok: false,
-  stage: 'authorization',
-  code: 'INSUFFICIENT_AUTHORITY',
-  message,
-});
-const protectedBy = (message: string): Failure => ({
-  ok: false,
-  stage: 'authorization',
-  code: 'PROTECTED_CONSTRAINT',
-  message,
-});
-
-const isFailure = (v: unknown): v is Failure =>
-  typeof v === 'object' && v !== null && 'ok' in v;
-
-const byId = <T extends { readonly id: string }>(a: T, b: T): number =>
-  a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
-
-const dayBefore = (date: string): string =>
-  SimDate.parse(date).addDays(-1).toISO();
-const dayAfter = (date: string): string =>
-  SimDate.parse(date).addDays(1).toISO();
-
-const isPlainObject = (v: unknown): v is { [key: string]: CanonicalValue } =>
-  typeof v === 'object' && v !== null && !Array.isArray(v);
-
-const nonEmptyText = (v: unknown, max = 200): v is string =>
-  typeof v === 'string' && v.length > 0 && v.length <= max;
-
-const hasKind = (
-  world: FootballWorld,
-  id: string,
-  kind: 'person' | 'organization',
-): boolean => world.entities.some((e) => e.id === id && e.kind === kind);
-
-const parseDate = (v: unknown, label: string): string | Failure =>
-  SimDate.isValidISO(v) ? v : bad(`${label} must be a YYYY-MM-DD date`);
 
 const parseRights = (
   v: unknown,
@@ -105,90 +73,6 @@ const parseCategory = (v: unknown): DecisionCategory | Failure =>
   (DECISION_CATEGORIES as readonly unknown[]).includes(v)
     ? (v as DecisionCategory)
     : bad('category is not a known decision category');
-
-/** The acting person is data in the command; the actor kind confers nothing. */
-const parseActingPerson = (ctx: RouteContext, c: Cmd): EntityId | Failure =>
-  isValidId(c.actingPersonId) && hasKind(ctx.world, c.actingPersonId, 'person')
-    ? entityId(c.actingPersonId)
-    : bad('actingPersonId must name an existing person');
-
-const parseOrganization = (
-  ctx: RouteContext,
-  value: unknown,
-): EntityId | Failure =>
-  isValidId(value) && hasKind(ctx.world, value, 'organization')
-    ? entityId(value)
-    : bad('organizationId must name an existing organization');
-
-const requireExecute = (
-  world: FootballWorld,
-  organizationId: EntityId,
-  personId: EntityId,
-): Failure | null =>
-  effectiveRightsAt(
-    world,
-    organizationId,
-    personId,
-    'organizational_authority',
-    world.simDate,
-  ).rights.includes('execute')
-    ? null
-    : denied(
-        `${personId} lacks execute on organizational_authority in ${organizationId}`,
-      );
-
-const mintRecordId = (world: FootballWorld) => {
-  const taken = new Set<string>([
-    ...world.people.roleEpisodes.map((x) => x.id),
-    ...world.authority.grants.map((x) => x.id),
-    ...world.authority.mandates.map((x) => x.id),
-    ...world.authority.protectedConstraints.map((x) => x.id),
-  ]);
-  let n = world.nextIds.record;
-  for (;;) {
-    const id = `rec-${String(n).padStart(6, '0')}`;
-    n += 1;
-    if (!taken.has(id)) return { id: recordId(id), next: n };
-  }
-};
-
-interface Changes {
-  readonly people?: PeopleState;
-  readonly authority?: AuthorityState;
-  readonly nextRecord?: number;
-}
-
-const finish = (
-  ctx: RouteContext,
-  changes: Changes,
-  eventSpecs: readonly EventSpec[],
-  detail: string,
-  authorizationDetail: string,
-): RouteOutcome => ({
-  ok: true,
-  authorizationDetail,
-  resolution: {
-    nextWorld: {
-      ...ctx.world,
-      people: changes.people ?? ctx.world.people,
-      authority: changes.authority ?? ctx.world.authority,
-      nextIds: {
-        ...ctx.world.nextIds,
-        record: changes.nextRecord ?? ctx.world.nextIds.record,
-      },
-    },
-    eventSpecs,
-    detail,
-  },
-});
-
-const spec = (
-  type: string,
-  payload: { [key: string]: CanonicalValue },
-): EventSpec => ({
-  type,
-  payload,
-});
 
 // ---------------------------------------------------------------------------
 

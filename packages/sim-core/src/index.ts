@@ -18,6 +18,8 @@ export * from './decisions';
 export * from './audit';
 export * from './commandRouter';
 export * from './authorityCommands';
+export * from './informationCommands';
+export * from './knowledgeView';
 export * from './kernel';
 export * from './persistence';
 export * from './memoryCareerStore';
