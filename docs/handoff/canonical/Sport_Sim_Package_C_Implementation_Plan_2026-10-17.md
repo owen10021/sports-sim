@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Status:** PLAN FOR REVIEW — do not implement until Owen approves this written plan.
+**Status:** APPROVED FOR IMPLEMENTATION — Owen authorized Package C continuation on 2026-10-17.
 
 **Authoring baseline:** Accepted Package B commit `f50cb2119b874542787241d1f1767fe01865efcd`, tagged `package-b-acceptance-20261017`; Package C design-basis line at `a1ffeb2766510e184d88d9d27731d31e3f67bdec` (the design-basis file itself originated at `314652f88e1da440a3f5994219e4bf59b9588bb2` and was tightened with cutdown/waiver/practice-squad + acquisition-impact-preview requirements at `a1ffeb2`). Package B’s physical-iPhone gate is closed with MATCH/MATCH; its accepted evidence/tag are immutable historical inputs.
 
