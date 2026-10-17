@@ -1,8 +1,8 @@
 # Package B Acceptance — Organizational Substrate
 
-**Status: NOT YET ACCEPTED.** Every automated gate below is green. The one remaining gate is the
-physical-iPhone run of the Package B Diagnostics scenario, which needs Owen's hands. No milestone tag
-exists until that gate records MATCH.
+**Status: ACCEPTED (2026-10-17).** Every automated gate is green and the physical-iPhone run of the
+Package B Diagnostics scenario recorded MATCH on both rows (see `evidence/package-b/iphone-run.md`).
+Milestone tag: `package-b-acceptance-20261017`.
 
 ## What Package B delivers
 
@@ -31,7 +31,7 @@ Pure `packages/sim-core`, no React / React Native / Expo / SQLite / fs / clock /
 | sim-core imports no RN / Expo / SQLite / fs / clock / network      | PASS — `architecture.test.ts`                   |
 | Save / reload at every command boundary                            | PASS — `packageBScenario.test.ts`               |
 | Corrupt latest snapshot → repair from history, history untouched   | PASS — `packageBScenario.test.ts`               |
-| Physical iPhone, Diagnostics → "Run Package B scenario"            | **PENDING (needs Owen)**                        |
+| Physical iPhone, Diagnostics → "Run Package B scenario"            | **MATCH (2026-10-17 14:44, Expo Go)**           |
 
 Package B golden (`package-b-golden-v1`), identical on Node and Hermes:
 
@@ -109,7 +109,5 @@ node scripts/hermes-golden.mjs <hermes> --scenario package-b
 
 ## Still needed from Owen
 
-- Run Diagnostics → **Run Package B scenario** on the iPhone and report whether both rows say MATCH
-  and the fingerprint / chain head equal the values above.
-- Copy `C:\dev\backups\package-a-acceptance-20261017\` (and the Package B archive once made) off the PC.
+- Copy `C:\dev\backups\package-a-acceptance-20261017\` and `C:\dev\backups\package-b-acceptance-20261017\` off the PC.
 - `npx.cmd expo logout` (carried over from Package A).
