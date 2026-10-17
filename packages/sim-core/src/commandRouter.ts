@@ -5,6 +5,10 @@ import {
 } from './authorityCommands';
 import type { ActorRef, CommandId } from './ids';
 import {
+  routeDecisionCommand,
+  type DecisionCommandType,
+} from './decisionCommands';
+import {
   routeRelationshipCommand,
   type RelationshipCommandType,
 } from './relationshipCommands';
@@ -79,11 +83,16 @@ interface RelationshipRoutedCommand extends CommandPayloadBase {
   readonly type: RelationshipCommandType;
 }
 
+interface DecisionRoutedCommand extends CommandPayloadBase {
+  readonly type: DecisionCommandType;
+}
+
 type RoutableCommand =
   | AdvanceDaysCommand
   | AuthorityRoutedCommand
   | InformationRoutedCommand
-  | RelationshipRoutedCommand;
+  | RelationshipRoutedCommand
+  | DecisionRoutedCommand;
 
 const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   AdvanceDays: true,
@@ -99,6 +108,12 @@ const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   ShareClaim: true,
   FormBelief: true,
   RecordRelationshipEffect: true,
+  SubmitProposal: true,
+  ReviseProposal: true,
+  ApproveProposal: true,
+  VetoProposal: true,
+  WithdrawProposal: true,
+  ExpireProposal: true,
 };
 
 export const isRoutableCommandType = (type: string): boolean =>
@@ -190,6 +205,13 @@ export const routeCommand = (ctx: RouteContext): RouteOutcome => {
       return routeInformationCommand(ctx, command);
     case 'RecordRelationshipEffect':
       return routeRelationshipCommand(ctx, command);
+    case 'SubmitProposal':
+    case 'ReviseProposal':
+    case 'ApproveProposal':
+    case 'VetoProposal':
+    case 'WithdrawProposal':
+    case 'ExpireProposal':
+      return routeDecisionCommand(ctx, command);
     default: {
       const unreachable: never = command;
       throw new Error(

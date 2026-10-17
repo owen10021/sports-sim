@@ -32,3 +32,4 @@ export * from './replay';
 export * from './syntheticFixtures';
 export * from './golden';
 export * from './goldenExpected';
+export * from './decisionCommands';
