@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "rulesetId": "synthetic-package-c-rules",
+  "rulesetVersion": 1,
+  "displayName": "Synthetic Package C Transaction Rules",
+  "provenance": [
+    {
+      "sourceId": "sport-sim-synthetic-package-c-rules",
+      "sourceKind": "synthetic",
+      "retrievedAt": "2026-10-17T00:00:00Z",
+      "effectiveAsOf": "2026-10-17",
+      "validationStatus": "synthetic",
+      "note": "Synthetic Package C acceptance profile. Values are test boundaries, not claims about current NFL rules or economics."
+    }
+  ],
+  "rules": {
+    "maxAdvanceDaysPerCommand": 30,
+    "transactions": {
+      "moneyUnit": "synthetic-unit",
+      "seasonRules": [
+        {
+          "season": 2026,
+          "salaryCap": 2000000,
+          "activeRosterLimit": 10,
+          "reserveRosterLimit": 4,
+          "practiceSquadLimit": 4,
+          "freeAgencyOpen": "2026-03-10",
+          "freeAgencyClose": "2026-07-15",
+          "tradeDeadline": "2026-11-03",
+          "draftDate": "2026-04-25"
+        },
+        {
+          "season": 2027,
+          "salaryCap": 2000000,
+          "activeRosterLimit": 10,
+          "reserveRosterLimit": 4,
+          "practiceSquadLimit": 4,
+          "freeAgencyOpen": "2027-03-10",
+          "freeAgencyClose": "2027-07-15",
+          "tradeDeadline": "2027-11-03",
+          "draftDate": "2027-04-25"
+        },
+        {
+          "season": 2028,
+          "salaryCap": 2000000,
+          "activeRosterLimit": 10,
+          "reserveRosterLimit": 4,
+          "practiceSquadLimit": 4,
+          "freeAgencyOpen": "2028-03-10",
+          "freeAgencyClose": "2028-07-15",
+          "tradeDeadline": "2028-11-03",
+          "draftDate": "2028-04-25"
+        },
+        {
+          "season": 2029,
+          "salaryCap": 2000000,
+          "activeRosterLimit": 10,
+          "reserveRosterLimit": 4,
+          "practiceSquadLimit": 4,
+          "freeAgencyOpen": "2029-03-10",
+          "freeAgencyClose": "2029-07-15",
+          "tradeDeadline": "2029-11-03",
+          "draftDate": "2029-04-25"
+        },
+        {
+          "season": 2030,
+          "salaryCap": 2000000,
+          "activeRosterLimit": 10,
+          "reserveRosterLimit": 4,
+          "practiceSquadLimit": 4,
+          "freeAgencyOpen": "2030-03-10",
+          "freeAgencyClose": "2030-07-15",
+          "tradeDeadline": "2030-11-03",
+          "draftDate": "2030-04-25"
+        }
+      ],
+      "contracts": {
+        "minYears": 1,
+        "maxYears": 5,
+        "signingBonusProrationMaxYears": 5,
+        "minimumBaseSalary": 10000,
+        "guaranteedFutureBaseOnRelease": true,
+        "signingBonusStaysWithOriginalClubOnTrade": true
+      },
+      "market": {
+        "defaultOfferValidityDays": 7,
+        "futurePickTradeHorizonSeasons": 2,
+        "resolutionPolicy": "checkpoint"
+      },
+      "waivers": {
+        "claimWindowDays": 1,
+        "releasedPlayerWaiverPolicy": "all",
+        "claimWinnerMovesToEnd": true
+      },
+      "draft": {
+        "rounds": 3,
+        "rookieContractByRound": [
+          {
+            "round": 1,
+            "years": 4,
+            "baseSalaryBySeason": [
+              60000,
+              70000,
+              80000,
+              90000
+            ],
+            "signingBonus": 100000
+          },
+          {
+            "round": 2,
+            "years": 4,
+            "baseSalaryBySeason": [
+              40000,
+              45000,
+              50000,
+              55000
+            ],
+            "signingBonus": 40000
+          },
+          {
+            "round": 3,
+            "years": 3,
+            "baseSalaryBySeason": [
+              20000,
+              22000,
+              24000
+            ],
+            "signingBonus": 10000
+          }
+        ]
+      }
+    }
+  },
+  "contentHash": "2f1affed310f6764f746395924f68d6648e8e2ccf211a6e410f9e8f3f8c75f23"
+}

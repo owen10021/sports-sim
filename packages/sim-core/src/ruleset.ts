@@ -1,3 +1,4 @@
+import { parseTransactionRulesV1, type TransactionRulesV1 } from './economy';
 import { hashCanonical, isHash } from './hash';
 import { isValidId } from './ids';
 import {
@@ -17,6 +18,12 @@ import {
 export interface LeagueRules {
   /** Upper bound for one AdvanceDays command. */
   readonly maxAdvanceDaysPerCommand: number;
+  /**
+   * Package C transaction mechanics. OPTIONAL: Package A/B rulesets omit it and keep their
+   * content hashes. Package C commands call `requireTransactionRules` and fail closed
+   * when it is absent.
+   */
+  readonly transactions?: TransactionRulesV1;
 }
 
 export interface RulesetRef {
@@ -53,7 +60,19 @@ const parseBody = (rec: Record<string, unknown>): LeagueRulesetBody => {
   if (!isValidId(rulesId))
     throw new ManifestFormatError('ruleset.rulesetId is not a valid id');
   const rules = asRecord(rec.rules, 'ruleset.rules');
-  requireExactKeys(rules, ['maxAdvanceDaysPerCommand'], [], 'ruleset.rules');
+  requireExactKeys(
+    rules,
+    ['maxAdvanceDaysPerCommand'],
+    ['transactions'],
+    'ruleset.rules',
+  );
+  const transactions =
+    rules.transactions === undefined
+      ? undefined
+      : parseTransactionRulesV1(
+          rules.transactions,
+          'ruleset.rules.transactions',
+        );
   return {
     schemaVersion: SCHEMA_VERSION,
     rulesetId: rulesId,
@@ -72,6 +91,7 @@ const parseBody = (rec: Record<string, unknown>): LeagueRulesetBody => {
         1,
         3650,
       ),
+      ...(transactions === undefined ? {} : { transactions }),
     },
   };
 };

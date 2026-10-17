@@ -4,6 +4,7 @@ export * from './canonical';
 export * from './hash';
 export * from './provenance';
 export * from './ruleset';
+export * from './economy';
 export * from './seed';
 export * from './rng';
 export * from './world';
