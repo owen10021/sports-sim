@@ -5,3 +5,4 @@ export * from './hash';
 export * from './provenance';
 export * from './ruleset';
 export * from './seed';
+export * from './rng';
