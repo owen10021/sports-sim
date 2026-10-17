@@ -30,10 +30,56 @@ export type DraftPickAsset = {
   readonly status: DraftPickStatus;
 };
 
+export const NEED_PRIORITIES = [
+  'low',
+  'normal',
+  'high',
+  'must_address',
+] as const;
+export type NeedPriority = (typeof NEED_PRIORITIES)[number];
+
+/** Tiers are ordinal groups (1 is the club's highest) that avoid false precision. */
+export const MIN_BOARD_TIER = 1;
+export const MAX_BOARD_TIER = 8;
+
+/**
+ * One prospect on an organization's board. The tier a prospect sits in is the club's
+ * evaluation; `needPriority` is separate and can change without rewriting it. The entry
+ * carries references to the club's own knowledge only: never raw player capabilities.
+ */
+export type DraftBoardEntry = {
+  readonly playerId: EntityId;
+  readonly beliefIds: readonly RecordId[];
+  readonly roleProjection: string | null;
+  /** Null for a genuine tie or real uncertainty about the order inside the tier. */
+  readonly withinTierOrder: number | null;
+  readonly needPriority: NeedPriority;
+  readonly planIds: readonly RecordId[];
+  readonly noteClaimIds: readonly RecordId[];
+};
+
+export type DraftBoardTier = {
+  readonly tier: number;
+  readonly entries: readonly DraftBoardEntry[];
+};
+
+/** An immutable board revision. A new revision links to the one it replaces. */
+export type DraftBoardRevision = {
+  readonly id: RecordId;
+  readonly organizationId: EntityId;
+  readonly draftClassId: RecordId;
+  readonly revision: number;
+  readonly tiers: readonly DraftBoardTier[];
+  readonly createdAt: string;
+  readonly supersedesBoardRevisionId: RecordId | null;
+  readonly organizationProposalId: RecordId;
+  readonly createdByPersonId: EntityId;
+};
+
 export type DraftState = {
   readonly classes: readonly DraftClass[];
   readonly picks: readonly DraftPickAsset[];
-  readonly boards: readonly unknown[];
+  readonly boards: readonly DraftBoardRevision[];
   readonly sessions: readonly unknown[];
   readonly selections: readonly unknown[];
 };

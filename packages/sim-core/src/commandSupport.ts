@@ -128,6 +128,7 @@ const takenRecordIds = (world: FootballWorld): Set<string> =>
     ...world.scouting.questions.map((x) => x.id),
     ...world.scouting.assignments.map((x) => x.id),
     ...world.scouting.reports.map((x) => x.id),
+    ...world.draft.boards.map((x) => x.id),
   ]);
 
 /**

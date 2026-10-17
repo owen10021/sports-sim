@@ -63,3 +63,4 @@ export * from './playerMarketView';
 export * from './freeAgency';
 export * from './freeAgencyCommands';
 export * from './scoutingCommands';
+export * from './draftBoardCommands';
