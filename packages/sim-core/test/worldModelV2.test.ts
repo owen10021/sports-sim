@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   DOMAIN_STATE_KEYS,
+  PACKAGE_C_DOMAIN_STATE_KEYS,
   InvalidWorldModelError,
   UnsupportedWorldModelVersionError,
   WORLD_MODEL_VERSION,
@@ -36,16 +37,16 @@ const asLegacy = (w: FootballWorld): Record<string, unknown> => {
 
 describe('current world model (v3, Package B domains)', () => {
   it('declares world model version 3, independent of the persistence schema version', () => {
-    expect(WORLD_MODEL_VERSION).toBe(3);
+    expect(WORLD_MODEL_VERSION).toBe(4);
     const w = build();
-    expect(w.worldModelVersion).toBe(3);
+    expect(w.worldModelVersion).toBe(4);
     expect(w.schemaVersion).toBe(1);
   });
 
   it('creates a world with empty, canonically ordered domain state and a record counter', () => {
     const w = build();
     expect(w.nextIds).toEqual({ event: 1, record: 1 });
-    expect(Object.keys(DOMAIN_STATE_KEYS)).toEqual([
+    expect(Object.keys(PACKAGE_C_DOMAIN_STATE_KEYS)).toEqual([
       'people',
       'organizations',
       'authority',
@@ -128,7 +129,7 @@ describe('world model validation (fail closed)', () => {
 
   it('refuses a future world model version instead of guessing', () => {
     const w = JSON.parse(JSON.stringify(build())) as Record<string, unknown>;
-    w.worldModelVersion = 4;
+    w.worldModelVersion = 5;
     expect(() => requireCurrentWorld(w)).toThrow(
       UnsupportedWorldModelVersionError,
     );
@@ -140,7 +141,7 @@ describe('world model validation (fail closed)', () => {
       }
       return null;
     })();
-    expect(err?.found).toBe(4);
+    expect(err?.found).toBe(5);
   });
 
   it('keeps legacy and current detection mutually exclusive', () => {
@@ -166,7 +167,7 @@ describe('kernel and snapshot boundaries', () => {
     ).toThrow(InvalidWorldModelError);
     const future = {
       ...build(),
-      worldModelVersion: 4,
+      worldModelVersion: 5,
     } as unknown as FootballWorld;
     expect(() => WorldKernel.fromGenesis(future, ruleset)).toThrow(
       UnsupportedWorldModelVersionError,
@@ -183,7 +184,7 @@ describe('kernel and snapshot boundaries', () => {
     });
     expect(verifySnapshot(snap)).toEqual({ ok: true });
     expect(snap.worldFingerprint).toBe(fingerprintWorld(w));
-    const future = { ...snap, world: { ...snap.world, worldModelVersion: 4 } };
+    const future = { ...snap, world: { ...snap.world, worldModelVersion: 5 } };
     expect(() => verifySnapshot(future)).toThrow(
       UnsupportedWorldModelVersionError,
     );

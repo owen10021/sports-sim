@@ -57,3 +57,25 @@ describe('frozen Package A v1 fixture', () => {
     expect('worldModelVersion' in fixture.genesis.world).toBe(false);
   });
 });
+
+describe('frozen Package C v3 fixture', () => {
+  it('matches its recorded SHA-256 and size and the checked-in manifest', () => {
+    const p = join(
+      root,
+      'fixtures',
+      'legacy',
+      'package-c-world-v3-snapshot.json',
+    );
+    const bytes = readFileSync(p);
+    expect(bytes.length).toBe(10233474);
+    const sha = createHash('sha256').update(bytes).digest('hex');
+    expect(sha).toBe(
+      '1cd132df373ccabdf5093079fed48d35ed1854807729edf1c505dffcad44aafe',
+    );
+    const sums = readFileSync(
+      join(root, 'fixtures', 'legacy', 'SHA256SUMS.txt'),
+      'utf8',
+    );
+    expect(sums).toContain(`${sha}  package-c-world-v3-snapshot.json`);
+  });
+});

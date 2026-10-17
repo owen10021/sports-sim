@@ -41,7 +41,7 @@ describe('Package C golden scenario', () => {
           '..',
           'fixtures',
           'golden',
-          'package-c-golden-v1.json',
+          'package-c-golden-v2.json',
         ),
         'utf8',
       ),

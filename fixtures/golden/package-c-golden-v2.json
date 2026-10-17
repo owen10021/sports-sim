@@ -1,0 +1,1004 @@
+{
+  "scenario": "package-c-golden-v2",
+  "worldId": "world-package-c-1",
+  "finalSimDate": "2027-04-25",
+  "revision": 100,
+  "eventCount": 199,
+  "rngDraws": 69,
+  "fingerprint": "cf56661e2d6e3de1b24bfda02694bc79459a81f44b24fe575636fa2b8a6375be",
+  "eventChainHead": "3f847dec6c81e179bb285617a9d8ae9eadf7c5e7e6bea2dd0edf2f61e2424e76",
+  "organizations": [
+    {
+      "organizationId": "org-northfield",
+      "committed2027": 860000,
+      "committed2028": 595000,
+      "active": 2,
+      "reserve": 1,
+      "practiceSquad": 1,
+      "picksOwned": 6
+    },
+    {
+      "organizationId": "org-southport",
+      "committed2027": 1205000,
+      "committed2028": 900000,
+      "active": 4,
+      "reserve": 1,
+      "practiceSquad": 2,
+      "picksOwned": 5
+    },
+    {
+      "organizationId": "org-eastbrook",
+      "committed2027": 1180000,
+      "committed2028": 1190000,
+      "active": 6,
+      "reserve": 0,
+      "practiceSquad": 0,
+      "picksOwned": 7
+    },
+    {
+      "organizationId": "org-westlake",
+      "committed2027": 1470000,
+      "committed2028": 920000,
+      "active": 5,
+      "reserve": 1,
+      "practiceSquad": 0,
+      "picksOwned": 6
+    }
+  ],
+  "capCheckpoints": {
+    "nf2027BeforeRelease": 1150000,
+    "nf2028BeforeRelease": 595000,
+    "nf2027AfterRelease": 1150000,
+    "nf2028AfterRelease": 595000,
+    "wl-fa01SigningBefore2028": 800000,
+    "wl-fa01SigningAfter2028": 920000,
+    "eb-fa02SigningBefore2028": 1005000,
+    "eb-fa02SigningAfter2028": 1115000,
+    "eb-ext02SigningBefore2028": 1115000,
+    "eb-ext02SigningAfter2028": 1095000,
+    "sp-ps04SigningBefore2028": 800000,
+    "sp-ps04SigningAfter2028": 800000
+  },
+  "assetOwnership": {
+    "pick-2027-r1-s1": "org-westlake:used",
+    "pick-2027-r1-s2": "org-eastbrook:used",
+    "pick-2027-r1-s3": "org-southport:used",
+    "pick-2027-r1-s4": "org-eastbrook:used",
+    "pick-2027-r2-s1": "org-northfield:used",
+    "pick-2027-r2-s2": "org-northfield:used",
+    "pick-2027-r2-s3": "org-southport:used",
+    "pick-2027-r2-s4": "org-northfield:used",
+    "pick-2027-r3-s1": "org-westlake:used",
+    "pick-2027-r3-s2": "org-westlake:used",
+    "pick-2027-r3-s3": "org-southport:used",
+    "pick-2027-r3-s4": "org-northfield:used",
+    "player-pr-01": "org-eastbrook:contract",
+    "player-pr-02": "org-southport:contract",
+    "player-pr-03": "unattached",
+    "player-pr-04": "org-northfield:draft",
+    "player-pr-05": "org-southport:draft",
+    "player-pr-06": "org-westlake:draft",
+    "player-pr-07": "org-westlake:draft",
+    "player-pr-08": "org-northfield:draft",
+    "player-pr-09": "org-southport:draft",
+    "player-pr-10": "org-northfield:draft",
+    "player-pr-11": "org-northfield:draft",
+    "player-pr-12": "org-eastbrook:draft",
+    "player-pr-13": "org-southport:draft",
+    "player-pr-14": "org-westlake:draft"
+  },
+  "auditErrorFindings": 0,
+  "keyRecordIds": {
+    "nfPlanProposal": "rec-000001",
+    "spPlanProposal": "rec-000004",
+    "ebPlanProposal": "rec-000007",
+    "wlPlanProposal": "rec-000010",
+    "nfClaimA": "rec-000013",
+    "nfClaimB": "rec-000014",
+    "ebClaimA": "rec-000015",
+    "ebClaimB": "rec-000016",
+    "nfQuestion": "rec-000017",
+    "nfAssignment": "rec-000018",
+    "ebQuestion": "rec-000019",
+    "ebAssignment": "rec-000020",
+    "nfReport": "rec-000022",
+    "nfBelief": "rec-000021",
+    "ebReport": "rec-000024",
+    "ebBelief": "rec-000023",
+    "nfBoardProposal": "rec-000025",
+    "nfBoard1": "rec-000026",
+    "ebBoardProposal": "rec-000028",
+    "ebBoard1": "rec-000029",
+    "nfBoardProposal2": "rec-000031",
+    "nfBoard2": "rec-000032",
+    "ebNoteClaim": "rec-000034",
+    "ebAvoidBelief": "rec-000035",
+    "shopEb": "rec-000036",
+    "shopWl": "rec-000038",
+    "dumpProposalA": "rec-000040",
+    "dumpOffer": "rec-000041",
+    "dumpDisposition": "reject",
+    "swapProposalA": "rec-000043",
+    "swapOffer": "rec-000044",
+    "swapProposalB": "rec-000045",
+    "swapPreviewA": "{\"preview\":{\"organizationId\":\"org-northfield\",\"capDeltaBySeason\":[{\"season\":2027,\"delta\":65000},{\"season\":2028,\"delta\":-205000}],\"activeSlotsBefore\":3,\"activeSlotsAfter\":2,\"reserveSlotsBefore\":1,\"reserveSlotsAfter\":2,\"practiceSquadSlotsBefore\":1,\"practiceSquadSlotsAfter\":1,\"incomingAssets\":[\"player_rights:player-eb-04:right-player-eb-04\"],\"outgoingAssets\":[\"player_rights:player-nf-01:right-player-nf-01\"],\"draftPickIdsGained\":[],\"draftPickIdsLost\":[],\"reservationIdsAffected\":[]},\"cap\":[1085000,800000,0,0],\"slots\":3}",
+    "swapPreviewB": "{\"preview\":{\"organizationId\":\"org-eastbrook\",\"capDeltaBySeason\":[{\"season\":2027,\"delta\":-65000},{\"season\":2028,\"delta\":205000}],\"activeSlotsBefore\":3,\"activeSlotsAfter\":4,\"reserveSlotsBefore\":1,\"reserveSlotsAfter\":0,\"practiceSquadSlotsBefore\":0,\"practiceSquadSlotsAfter\":0,\"incomingAssets\":[\"player_rights:player-nf-01:right-player-nf-01\"],\"outgoingAssets\":[\"player_rights:player-eb-04:right-player-eb-04\"],\"draftPickIdsGained\":[],\"draftPickIdsLost\":[],\"reservationIdsAffected\":[]},\"cap\":[1060000,800000,0,0],\"slots\":3}",
+    "releaseProposal": "rec-000056",
+    "waiver": "rec-000057",
+    "waiverWinner": "org-westlake",
+    "eb-fa01ContractProposal": "rec-000068",
+    "eb-fa01Offer": "rec-000069",
+    "eb-fa02ContractProposal": "rec-000071",
+    "eb-fa02Offer": "rec-000072",
+    "wl-fa01ContractProposal": "rec-000074",
+    "wl-fa01Offer": "rec-000075",
+    "status:eb-fa01": "rejected",
+    "status:eb-fa02": "accepted_pending_commit",
+    "status:wl-fa01": "accepted_pending_commit",
+    "eb-ext02ContractProposal": "rec-000088",
+    "eb-ext02Offer": "rec-000089",
+    "sp-ps04ContractProposal": "rec-000091",
+    "sp-ps04Offer": "rec-000092",
+    "draftSession": "rec-000104",
+    "picktradeProposalA": "rec-000105",
+    "picktradeOffer": "rec-000106",
+    "picktradeProposalB": "rec-000107",
+    "picktradePreviewA": "{\"preview\":{\"organizationId\":\"org-northfield\",\"capDeltaBySeason\":[],\"activeSlotsBefore\":2,\"activeSlotsAfter\":2,\"reserveSlotsBefore\":1,\"reserveSlotsAfter\":1,\"practiceSquadSlotsBefore\":1,\"practiceSquadSlotsAfter\":1,\"incomingAssets\":[\"draft_pick:pick-2027-r2-s2\"],\"outgoingAssets\":[\"draft_pick:pick-2027-r1-s4\"],\"draftPickIdsGained\":[\"pick-2027-r2-s2\"],\"draftPickIdsLost\":[\"pick-2027-r1-s4\"],\"reservationIdsAffected\":[]},\"cap\":[860000,595000,0,0],\"slots\":2}",
+    "picktradePreviewB": "{\"preview\":{\"organizationId\":\"org-eastbrook\",\"capDeltaBySeason\":[],\"activeSlotsBefore\":5,\"activeSlotsAfter\":5,\"reserveSlotsBefore\":0,\"reserveSlotsAfter\":0,\"practiceSquadSlotsBefore\":0,\"practiceSquadSlotsAfter\":0,\"incomingAssets\":[\"draft_pick:pick-2027-r1-s4\"],\"outgoingAssets\":[\"draft_pick:pick-2027-r2-s2\"],\"draftPickIdsGained\":[\"pick-2027-r1-s4\"],\"draftPickIdsLost\":[\"pick-2027-r2-s2\"],\"reservationIdsAffected\":[]},\"cap\":[1095000,1095000,200000,200000],\"slots\":5}",
+    "draftProposal01": "rec-000110",
+    "selection01": "rec-000111",
+    "draftProposal02": "rec-000114",
+    "selection02": "rec-000115",
+    "draftProposal03": "rec-000118",
+    "selection03": "rec-000119",
+    "draftProposal04": "rec-000122",
+    "selection04": "rec-000123",
+    "draftProposal05": "rec-000126",
+    "selection05": "rec-000127",
+    "draftProposal06": "rec-000130",
+    "selection06": "rec-000131",
+    "draftProposal07": "rec-000134",
+    "selection07": "rec-000135",
+    "draftProposal08": "rec-000138",
+    "selection08": "rec-000139",
+    "draftProposal09": "rec-000142",
+    "selection09": "rec-000143",
+    "draftProposal10": "rec-000146",
+    "selection10": "rec-000147",
+    "draftProposal11": "rec-000150",
+    "selection11": "rec-000151",
+    "draftProposal12": "rec-000154",
+    "selection12": "rec-000155",
+    "rookieContractProposal": "rec-000158",
+    "rookieOffer": "rec-000159",
+    "udfaPlayer": "player-pr-02",
+    "udfaContractProposal": "rec-000161",
+    "udfaOffer": "rec-000162"
+  },
+  "steps": [
+    {
+      "label": "plan-propose-nf",
+      "outcome": "committed",
+      "revision": 1,
+      "rngDraws": 0,
+      "fingerprint": "fa6181528e0da5c89604c3635c2a800d3d46301364498005709e1ba76c472f8f",
+      "chainHead": "5acf62248c5e509920f45c8b00839360616b71ad1c489d426b31353a928eea5b"
+    },
+    {
+      "label": "plan-commit-nf",
+      "outcome": "committed",
+      "revision": 2,
+      "rngDraws": 0,
+      "fingerprint": "edff124d364e4c997376654812d5ff3e3adc46f81d5a455314422ae912a7c080",
+      "chainHead": "e1dc88c72469e19b27577111574e7f514b55895f7cc1a867da050eb89f0a8e02"
+    },
+    {
+      "label": "plan-propose-sp",
+      "outcome": "committed",
+      "revision": 3,
+      "rngDraws": 0,
+      "fingerprint": "8cc91334fb162ef8007b8f692f401e7bef4d7e937ebeff11ca736720708027f6",
+      "chainHead": "39412fc8f071cd679df48dc9465afee6f8cb105aeebaa60be3891e3cf1c7cf7d"
+    },
+    {
+      "label": "plan-commit-sp",
+      "outcome": "committed",
+      "revision": 4,
+      "rngDraws": 0,
+      "fingerprint": "57fc01ab90dabcb27e452e991da12f0543a1dfedccd9b9905390ae42194d4f9e",
+      "chainHead": "4c4cbacbcdccee0282007d5a58b3716a01003f5c8eb850445033558abb1ae89f"
+    },
+    {
+      "label": "plan-propose-eb",
+      "outcome": "committed",
+      "revision": 5,
+      "rngDraws": 0,
+      "fingerprint": "663749ad308b065a1bdf03d5bcabf16bf93001b4980d7da44c1c7dbf84c620f8",
+      "chainHead": "8b5956d9c60b1b645247f251de4c4ac1c356188a52bb00b52f680c90f93b29e4"
+    },
+    {
+      "label": "plan-commit-eb",
+      "outcome": "committed",
+      "revision": 6,
+      "rngDraws": 0,
+      "fingerprint": "fc996a63aed4dffb5aed5cbd5ae0a66b167d5d24d5d1c4212d0d887f74611b73",
+      "chainHead": "0b700bdbb5ff0d873da3da16e040bec3486e932c1919dbb177877e8db1848d2c"
+    },
+    {
+      "label": "plan-propose-wl",
+      "outcome": "committed",
+      "revision": 7,
+      "rngDraws": 0,
+      "fingerprint": "9b5da3ab7db31c1eb685fb37dbebf4c7d2f8137f8745014dc97c892cd22eec53",
+      "chainHead": "71a1886f68d07c2c81815cceea3661943348805391391f91ce6cbef872a69375"
+    },
+    {
+      "label": "plan-commit-wl",
+      "outcome": "committed",
+      "revision": 8,
+      "rngDraws": 0,
+      "fingerprint": "eb35c3caf751cf6ffbaf8cdb644207a3a0836a8aec13c063a120a69a982f76e2",
+      "chainHead": "178676649172936eb54a7f04ce756891954a200a89bb95cbf85cea26c928c45b"
+    },
+    {
+      "label": "nf-observe-processing",
+      "outcome": "committed",
+      "revision": 9,
+      "rngDraws": 0,
+      "fingerprint": "889a2452366c1497fb776c67635e8c2b6d103508d1e0f5688bfe2da56459a5b8",
+      "chainHead": "304518d2cd76ddeed1c68cb2cf0cd57fd82e06cc4d5321dfca6cfbb38f3454e3"
+    },
+    {
+      "label": "nf-observe-coverage",
+      "outcome": "committed",
+      "revision": 10,
+      "rngDraws": 0,
+      "fingerprint": "8976793a03165f92a7d1d1549926f6792ed31f12ed936d2d6b39fa7090ae906c",
+      "chainHead": "814d1778ebf7222df4b03f257da6d6e3d6d3c8108a3e2f51295973804079d5f5"
+    },
+    {
+      "label": "eb-observe-burst",
+      "outcome": "committed",
+      "revision": 11,
+      "rngDraws": 0,
+      "fingerprint": "2f7ffea9a9abda90ec229d3b5d239a4d4f012dbe3c2e21c3db52c21f8044547d",
+      "chainHead": "33156ebce6c21ed7f2d3d6cff77ed0426403c80510f04ebb0d235ef96ea1520a"
+    },
+    {
+      "label": "eb-observe-route",
+      "outcome": "committed",
+      "revision": 12,
+      "rngDraws": 0,
+      "fingerprint": "6db67931ee6aba319ddff273aa1d963aa8c91a3002cbfbcf8ffcc5a39fa03757",
+      "chainHead": "288477f61180822fed67f99ab75c2d518b36fbeaae2197137042d10fb667e8e7"
+    },
+    {
+      "label": "nf-ask",
+      "outcome": "committed",
+      "revision": 13,
+      "rngDraws": 0,
+      "fingerprint": "ab858c865ea7f8d3dd4b43cd944615e4c59ed6e64eabf0dbd8117c092e2e8a31",
+      "chainHead": "2f7daa7cf56c55ecd98018d3ee65ced728e10b09400606ca5aaa46791b35eea6"
+    },
+    {
+      "label": "nf-assign",
+      "outcome": "committed",
+      "revision": 14,
+      "rngDraws": 0,
+      "fingerprint": "cc0b2d321c0ad1d151a4f958b023bdf6692841843b9fc354be3e9fd261b564ff",
+      "chainHead": "a6ea23d849476c3db1bf49335cbf337d60fcb5774c7e68e02f6eb37b1485a4fb"
+    },
+    {
+      "label": "eb-ask",
+      "outcome": "committed",
+      "revision": 15,
+      "rngDraws": 0,
+      "fingerprint": "de2672726aa8a7d206c6c85379340c938a639ee389b64221953e763a79d21521",
+      "chainHead": "333cbaaaf4dbee71a5e0bc7504c904444e9426bfff24e07b636ef53d7cf16c31"
+    },
+    {
+      "label": "eb-assign",
+      "outcome": "committed",
+      "revision": 16,
+      "rngDraws": 0,
+      "fingerprint": "fea592dfe2ce55c946983af38a6067de82b73f4af4fedf6a8cba4c5c6761da67",
+      "chainHead": "033760854723a564c210c5b6f27a71aba88afdd8ac05f10957e05c7585acf1ac"
+    },
+    {
+      "label": "advance-scouting-day",
+      "outcome": "committed",
+      "revision": 17,
+      "rngDraws": 1,
+      "fingerprint": "0193aad835747dbee7a2a3e54550bd33b6977507f55e751752e97ca35c1fb11c",
+      "chainHead": "5723a4abf415de7fa51578d235154750a158f6bfb0087eef7c543b0dbc8e469a"
+    },
+    {
+      "label": "nf-resolve",
+      "outcome": "committed",
+      "revision": 18,
+      "rngDraws": 1,
+      "fingerprint": "605b561290e7b652b7ca8a7a65386c4757e845eba65ec822aba6d3e64d594675",
+      "chainHead": "e807b93099bf27d5e9f4d781380f5f5f6509a55be18ae5224f70c1ef9b06dd65"
+    },
+    {
+      "label": "eb-resolve",
+      "outcome": "committed",
+      "revision": 19,
+      "rngDraws": 1,
+      "fingerprint": "b5f9df0788fe8cae10e7a905966f4f451cbc444f4a3df01cf75f6dd3574827a9",
+      "chainHead": "5cebb9402a06ed65926383ddf771056025d7ee9e56a79ef8e795db131f558f74"
+    },
+    {
+      "label": "nf-board-propose",
+      "outcome": "committed",
+      "revision": 20,
+      "rngDraws": 1,
+      "fingerprint": "a0864c927723d23e751e926415538b9cd03ca86af99eb2cc5d316f749d61e562",
+      "chainHead": "21b15f64e89abe34bd531d94a897055d5e07762e84777c7175ba57e579a01733"
+    },
+    {
+      "label": "nf-board-commit",
+      "outcome": "committed",
+      "revision": 21,
+      "rngDraws": 1,
+      "fingerprint": "a80aaca2a799c0a89fc2330e155d6e489d47ae15837fc9ddb14e1759633a3da4",
+      "chainHead": "f795307f4f5c103911abc8f6529ce21b3f1627a2a86b2f2150df58f402fc5507"
+    },
+    {
+      "label": "eb-board-propose",
+      "outcome": "committed",
+      "revision": 22,
+      "rngDraws": 1,
+      "fingerprint": "e4009fabf406d271bab65f502c85a369cd032d16f34559094f576a30444ac6c9",
+      "chainHead": "c624833b0f9eff1c9f291b627b6e9d933d9ff5ddf7f17a5fc49f54163e1628f8"
+    },
+    {
+      "label": "eb-board-commit",
+      "outcome": "committed",
+      "revision": 23,
+      "rngDraws": 1,
+      "fingerprint": "ac9b4b553bee88eea96057c47b5119b3edf1a84e0c294dc4a42d9886a4491fd0",
+      "chainHead": "5f507705f10fd3eebd528837395a8d187a4fd3ae3eafe0fbed9c9f6b24e61573"
+    },
+    {
+      "label": "nf-board-need-propose",
+      "outcome": "committed",
+      "revision": 24,
+      "rngDraws": 1,
+      "fingerprint": "470ddb4492efe21252b34fc1473b9ff99c55dadfc9bd64f81aa1ba2960766e50",
+      "chainHead": "817462651b102f3698ddd09f6af7af9d87fe31536719726411e228d623db6b96"
+    },
+    {
+      "label": "nf-board-need-commit",
+      "outcome": "committed",
+      "revision": 25,
+      "rngDraws": 1,
+      "fingerprint": "fca195f399d0c769ca4b0b06483d3016b012a0c79424264f96dc258be9f92bbf",
+      "chainHead": "69578ada4a0611c794d6b22e9e1ea118ea165ccd7cae005507accc370043813c"
+    },
+    {
+      "label": "eb-note-nf02",
+      "outcome": "committed",
+      "revision": 26,
+      "rngDraws": 1,
+      "fingerprint": "a3cb63785fa4100297c1db762b1f7f38fdcc5eaeeea5b1550de4b149127f8e33",
+      "chainHead": "c36f715376d5d534ff327370cacf70be558428e85a5a9a84f2fedf895d4d6356"
+    },
+    {
+      "label": "eb-avoid-nf02",
+      "outcome": "committed",
+      "revision": 27,
+      "rngDraws": 1,
+      "fingerprint": "a0481d81fd140bc34adbc72f982112fa0374a7e910899c37be115ce6b552e5b6",
+      "chainHead": "37fdb3eeca7c5418652e26f1e1eda639469768269327a041e661e67f2559d02c"
+    },
+    {
+      "label": "nf-shop-nf01-eb",
+      "outcome": "committed",
+      "revision": 28,
+      "rngDraws": 1,
+      "fingerprint": "8d0c37313ce0a4a39d325a4aa72ef653f3d47753ab5edb63ad6878709c162419",
+      "chainHead": "4e2d7982e3814a75133f90cfed2e917998b87fb5d0a92f17a1ce84b21292425c"
+    },
+    {
+      "label": "nf-shop-nf01-wl",
+      "outcome": "committed",
+      "revision": 29,
+      "rngDraws": 1,
+      "fingerprint": "9287ec97fb87c84e3eb500d6e6cf0a7dfad2f66050fa38dbe5495ead3fd7b861",
+      "chainHead": "671b1f197c5b23c466a7bc864525804455738de2cdb836bd7cd117396d049ed1"
+    },
+    {
+      "label": "dump-propose-a",
+      "outcome": "committed",
+      "revision": 30,
+      "rngDraws": 1,
+      "fingerprint": "9322b8c7da7a15a6f21a247c750f80e73a177aa4524f3e621a3e7cc251075c1b",
+      "chainHead": "f5e81a65bb825f2b0a0a427b3627cae59a9289a6a538c59e736766b62efc36f8"
+    },
+    {
+      "label": "dump-post",
+      "outcome": "committed",
+      "revision": 31,
+      "rngDraws": 1,
+      "fingerprint": "98207718ea99d77edee3aa329fffcc71bea5522793aa5a7aa90cf23a6a2193a6",
+      "chainHead": "b05fbceadde3327673d180518fbb739e1d628d73102ca68b50e807bb39b069c1"
+    },
+    {
+      "label": "dump-ask",
+      "outcome": "committed",
+      "revision": 32,
+      "rngDraws": 1,
+      "fingerprint": "285a12b05f38f423c537ef8b3646ca1eeab8148207cc2b6800425067dc864d11",
+      "chainHead": "d977ba7d294d4030e1d604f23f861d8d806cedf114121947440e8cff8c6ad9da"
+    },
+    {
+      "label": "swap-propose-a",
+      "outcome": "committed",
+      "revision": 33,
+      "rngDraws": 1,
+      "fingerprint": "f6b83aec1ecbab7681159b288987a02f23b477117d1623b1b1a23f41ca07b5ee",
+      "chainHead": "fbd981f304954acb2bcfd2cd761c7533d83da1ec425c2b0c61b49cf63520612f"
+    },
+    {
+      "label": "swap-post",
+      "outcome": "committed",
+      "revision": 34,
+      "rngDraws": 1,
+      "fingerprint": "cf8dc2a22ce35212350395ba13d0763af83e9f73c542b8d33de5e2218bf8117b",
+      "chainHead": "e69396f1ff78fbb5e8e53559f8bcf766dc97065b4fcc131135bf3458331af059"
+    },
+    {
+      "label": "swap-propose-b",
+      "outcome": "committed",
+      "revision": 35,
+      "rngDraws": 1,
+      "fingerprint": "81927d1baaaf06bbdaf7c044380a66cf52fcd19674ba924517ad26ccc84d143f",
+      "chainHead": "dfe983381e83ab1b647e8b33331061870da59729686907358a9114532fe16d4b"
+    },
+    {
+      "label": "swap-answer",
+      "outcome": "committed",
+      "revision": 36,
+      "rngDraws": 1,
+      "fingerprint": "0322669d6d0b6c81ba8ef01df72a1618809f689fe0f50f88885dc9597a3e4898",
+      "chainHead": "f664193074f1b5ad08da6df666734dcc47d20e25119ed9e290f500b1b3dfd731"
+    },
+    {
+      "label": "swap-commit",
+      "outcome": "committed",
+      "revision": 37,
+      "rngDraws": 1,
+      "fingerprint": "e2c5b98a92a587d240f77452cc93cdd5a97cd11d676ffaf5b994a5af46930b7e",
+      "chainHead": "56ffcc689264eb2c7ca3b9d726ea39929d1cf7ecd6fc53176761e15f378ac52b"
+    },
+    {
+      "label": "nf-release-propose",
+      "outcome": "committed",
+      "revision": 38,
+      "rngDraws": 1,
+      "fingerprint": "201a7e4ca0511f326f01729251c9f702b8aff1ba072c0ec85a19083345c94a53",
+      "chainHead": "cbcc754de0fffa2a9c7384170857970284d47075bcf061a091c9c029f052010d"
+    },
+    {
+      "label": "nf-release-commit",
+      "outcome": "committed",
+      "revision": 39,
+      "rngDraws": 1,
+      "fingerprint": "bf0b211df218736855754fbccde0d4a41ad1ee5a9ce23bb9e1c4c2eb7d466fd8",
+      "chainHead": "3fb4807add9a2d080ad620836848b09ebf71c0f8f1ad47b5d204546fcfccdb78"
+    },
+    {
+      "label": "waiver-claim-so",
+      "outcome": "committed",
+      "revision": 40,
+      "rngDraws": 1,
+      "fingerprint": "07d1eadc7442556e2b47c17d1e11729e63051516faea0b2a89caf9e6c02fb38f",
+      "chainHead": "9cad39c02b2b8695ff203b6de5eeb48d8b0c81ae747f989e9eaf62277b036149"
+    },
+    {
+      "label": "waiver-claim-ea",
+      "outcome": "committed",
+      "revision": 41,
+      "rngDraws": 1,
+      "fingerprint": "f1379c21fda3b7ad910ea7a98db60fac44454f981fa8942587f914a03bf37d29",
+      "chainHead": "f2d7d4cf7914e2a112e6888997f82c26c3bb3818bd9968960efbd9ca008dd349"
+    },
+    {
+      "label": "waiver-claim-we",
+      "outcome": "committed",
+      "revision": 42,
+      "rngDraws": 1,
+      "fingerprint": "4dc2c80f76a4b6fd535e7555b03b7507efa77ec62e3abff2d108cdf188ad6f3b",
+      "chainHead": "0d3ffbbd2067120c5bec0cb30934e1e08b1f2f64ecd904a59fd236221379b827"
+    },
+    {
+      "label": "advance-waiver-day",
+      "outcome": "committed",
+      "revision": 43,
+      "rngDraws": 2,
+      "fingerprint": "38c1d5d1e0c54d20d4b3207c60d0ec51b12b98ad90ace0d447b4a84218b0097d",
+      "chainHead": "3b4c960b80cacf7badc0f1cedd199af7635c6faad1c4fc9a3af5ed50da602035"
+    },
+    {
+      "label": "resolve-waivers",
+      "outcome": "committed",
+      "revision": 44,
+      "rngDraws": 2,
+      "fingerprint": "ceac277ae77531ffaf1faf9069c7d79273f66b1fffb6fa84a70d1d619e1eff02",
+      "chainHead": "995101e8d037af042bbe0856b35d6efdd423a5af39dafc5c5c78059439613c54"
+    },
+    {
+      "label": "advance-to-free-agency",
+      "outcome": "committed",
+      "revision": 45,
+      "rngDraws": 23,
+      "fingerprint": "25daa0f2def6553e5f6bb97a5224b7b878f0efc5686b7bb766ad9640f9e4c915",
+      "chainHead": "485cf2da2eacef3274ec18ed6fc73e663b7e4dfe941114a44347ccab91b0232e"
+    },
+    {
+      "label": "eb-fa01-contract-propose",
+      "outcome": "committed",
+      "revision": 46,
+      "rngDraws": 23,
+      "fingerprint": "32b57f801e3c04ca790220e59a9478c8014ede39fc3129ce184f18a6c25a3bd2",
+      "chainHead": "616b62f08a9cbf92811e150e134e75df35fdef85a6a59007f1844f30e5c54088"
+    },
+    {
+      "label": "eb-fa01-offer",
+      "outcome": "committed",
+      "revision": 47,
+      "rngDraws": 23,
+      "fingerprint": "b32008caa459d04d551145276d6f1a1974d9ec9dc48bd598455cb0d1c7d3d312",
+      "chainHead": "2beaff6456306b25c82922e3c3f6e418a4fe6c6556bffcfaa8e92d45c540b1dc"
+    },
+    {
+      "label": "eb-fa02-contract-propose",
+      "outcome": "committed",
+      "revision": 48,
+      "rngDraws": 23,
+      "fingerprint": "d077356cc82aa66a2e6faeda712a1399e2dff8237f52580a6815bf3f1eb2a0a4",
+      "chainHead": "2976efa45b3082adb00e865709f25dff895e899d75be04504db253a685e82f22"
+    },
+    {
+      "label": "eb-fa02-offer",
+      "outcome": "committed",
+      "revision": 49,
+      "rngDraws": 23,
+      "fingerprint": "f4c68a9e3a4307208dde7d0bc3a9ebdea7f4500167d88ea36d924e42f223e0bd",
+      "chainHead": "08394ccefc05a236851a896126eee6f048f0d4b5f4718060326f347672434bca"
+    },
+    {
+      "label": "wl-fa01-contract-propose",
+      "outcome": "committed",
+      "revision": 50,
+      "rngDraws": 23,
+      "fingerprint": "b8cfcd76b2ae9fadb9ab1de951718cde217f7103fd24acbb01838060afcf6648",
+      "chainHead": "49a8bff8eb03e5cf9fd4fb9bc7a5ebbf9315a994e7f46de641ce864f69d5cb7f"
+    },
+    {
+      "label": "wl-fa01-offer",
+      "outcome": "committed",
+      "revision": 51,
+      "rngDraws": 23,
+      "fingerprint": "8c8150a442487f4033f8afbb1381d4af0b78f91403938288cbae382419474d76",
+      "chainHead": "d7ce2fef2fdc652c56c37485066a2d9769e3c2b23c88757840dcd8d83b9981f1"
+    },
+    {
+      "label": "resolve-free-agency-1",
+      "outcome": "committed",
+      "revision": 52,
+      "rngDraws": 23,
+      "fingerprint": "dfaaaa7e85c49144c1ec6eb75d69c985aa630887f9aa43ec1829b61a6c793452",
+      "chainHead": "780f12fab6f9701734c9b4153d555d4659ae60c1108be0942e25191109a46ab4"
+    },
+    {
+      "label": "wl-fa01-sign",
+      "outcome": "committed",
+      "revision": 53,
+      "rngDraws": 23,
+      "fingerprint": "edb922956cf433495f573eda7b67b3649d5352977139cc3af0700e826bc373ac",
+      "chainHead": "4ed6ca0fdfdbdf0174e52cacab588fd43be46e1951a448280002b85d7afddfea"
+    },
+    {
+      "label": "eb-fa02-sign",
+      "outcome": "committed",
+      "revision": 54,
+      "rngDraws": 23,
+      "fingerprint": "c4a513d21ec66c88eaddb7107bf829dee312e33e2d4d26e3a2ea08c6ef8f4836",
+      "chainHead": "2e9a844bc71489deaa51b06cd4b036407e5b408984b07f0b5855fd66961e2e8e"
+    },
+    {
+      "label": "eb-ext02-contract-propose",
+      "outcome": "committed",
+      "revision": 55,
+      "rngDraws": 23,
+      "fingerprint": "f3ae6a796ce070e594cedb3168f827d64088de8f9c5f20ced8410d8f28d822a3",
+      "chainHead": "5906cdfaf961f4da685af825f3fc11d8291b1404440fe351954a0c728d5ea5ee"
+    },
+    {
+      "label": "eb-ext02-offer",
+      "outcome": "committed",
+      "revision": 56,
+      "rngDraws": 23,
+      "fingerprint": "4527d13c869c0b301ac10e59e0a54c4ce47939d8cf344aeb7cabc89dde528c33",
+      "chainHead": "a5008742c257a26dd26e39812eae752e2e2b26a82cd848053c6c1c7ca04ffc4f"
+    },
+    {
+      "label": "sp-ps04-contract-propose",
+      "outcome": "committed",
+      "revision": 57,
+      "rngDraws": 23,
+      "fingerprint": "a4e8d73ca5d2edd89200e9bd18660caef99c6d9c388a667ab908da326f890afa",
+      "chainHead": "062e97f6f53f35a6f85be5e9ef1ea7333a8a21936bb9aeaf1086e3977e13a06c"
+    },
+    {
+      "label": "sp-ps04-offer",
+      "outcome": "committed",
+      "revision": 58,
+      "rngDraws": 23,
+      "fingerprint": "ffdcdf53b9b512d254e494490257b02743265bdf68dd875ca47785ae9d3a7a7a",
+      "chainHead": "a583a9c7342176eb1f41dd901851f0cc2a01805fbc2492df77f3c79efc4f1d0e"
+    },
+    {
+      "label": "resolve-free-agency-2",
+      "outcome": "committed",
+      "revision": 59,
+      "rngDraws": 23,
+      "fingerprint": "9ad4ef13bed4471ffdae444053cdbedc161cc03e74d30bde01892808b7f983ba",
+      "chainHead": "d5cadab3190516fa3429f2a00cffaf207b21be0ffdc14e4edd87530784998826"
+    },
+    {
+      "label": "eb-ext02-sign",
+      "outcome": "committed",
+      "revision": 60,
+      "rngDraws": 23,
+      "fingerprint": "78fd758799946fce4248dfd2d1532f121823ae06bab46fd1a761bc012e54c3a8",
+      "chainHead": "4e09368ce14e4c5dd1ae2854993fa6e9e49a1de5ed4870014b2b0ce1741ce44e"
+    },
+    {
+      "label": "sp-ps04-sign",
+      "outcome": "committed",
+      "revision": 61,
+      "rngDraws": 23,
+      "fingerprint": "aef2db954f00fa812662862988497a387bd3c500cd67c1bb446202470529855c",
+      "chainHead": "5b29be260ab9168a5f5265fab4dac9e64415654fbd4448c42de01ec6cfabd947"
+    },
+    {
+      "label": "advance-toward-draft",
+      "outcome": "committed",
+      "revision": 62,
+      "rngDraws": 53,
+      "fingerprint": "69bc2712c274797a4f0d7258857ab2daec47e52606f6961fbac5c31cf18a097d",
+      "chainHead": "5c2b6692184ffd6ffca98f375cb649293e621041e897d6ce7e23b18e3d896764"
+    },
+    {
+      "label": "advance-to-draft-day",
+      "outcome": "committed",
+      "revision": 63,
+      "rngDraws": 69,
+      "fingerprint": "3bb1ca88e1c32ec77b6ddfdf37d608c0c4ece2a9c7b09118ce299259165c454f",
+      "chainHead": "88ca2d629c49f2e5602ce5ba7b7e8895c620cec6c85fb6c711ae2040b84db2a9"
+    },
+    {
+      "label": "open-draft",
+      "outcome": "committed",
+      "revision": 64,
+      "rngDraws": 69,
+      "fingerprint": "5d02138f1d874cdbdf1d8eb8db4734bc32ba92afaa3b7ab9e6067e5bd9f98d9a",
+      "chainHead": "7826f4e42174418a2183ff9a1431e9e26c2698ec7f144a1f8c82350638ddc202"
+    },
+    {
+      "label": "picktrade-propose-a",
+      "outcome": "committed",
+      "revision": 65,
+      "rngDraws": 69,
+      "fingerprint": "a87b0c96b37f0217756b8429bb3195d9ec871583f7ad0ff50bea1ca36588664f",
+      "chainHead": "52218a1485f92db9d4b8a0037d4873250abbc68a566b140e7eaf5fe5aab1fb70"
+    },
+    {
+      "label": "picktrade-post",
+      "outcome": "committed",
+      "revision": 66,
+      "rngDraws": 69,
+      "fingerprint": "41f248538c8b772c04220dda131d02ff38d2fd0a80e34b76677502456c7ba6a2",
+      "chainHead": "81de647d80f9790d65aa158a3e269f35902f62fb9f0044f9f41deb19480e3af7"
+    },
+    {
+      "label": "picktrade-propose-b",
+      "outcome": "committed",
+      "revision": 67,
+      "rngDraws": 69,
+      "fingerprint": "188200d067ad95740047de6aa1fb89cd944bc4438416c0d0a30abe3c1a5a4d1f",
+      "chainHead": "71959863ad837e9d19f96504d091a3000c18bf7b44c0a7939f1fbd3313e90abb"
+    },
+    {
+      "label": "picktrade-answer",
+      "outcome": "committed",
+      "revision": 68,
+      "rngDraws": 69,
+      "fingerprint": "438c29d25fd5ce02542affe6bb39ecb88776a13ed41e11f13a6ae21352bcd120",
+      "chainHead": "83956ccd90ef0871347c9077574104fcfc6953ab33cd653f5838a1392e53f506"
+    },
+    {
+      "label": "picktrade-commit",
+      "outcome": "committed",
+      "revision": 69,
+      "rngDraws": 69,
+      "fingerprint": "dd459dda4289191580797c20e6d8677b693a045b3ce971a503456204458ec365",
+      "chainHead": "be64ad7c250b1a41b80c5065f5c0332fe5bd2c5816d6ec4115ef1583b404dac1"
+    },
+    {
+      "label": "draft-01-propose",
+      "outcome": "committed",
+      "revision": 70,
+      "rngDraws": 69,
+      "fingerprint": "017e7fc71c37166fc20a1c49c9256f807d52d988d60bfaa40abd4c3039f75292",
+      "chainHead": "5cd1e73994cf994f4ee4a135e27f7b77d10473bff22464136a75afa7f6b122cc"
+    },
+    {
+      "label": "draft-01-select",
+      "outcome": "committed",
+      "revision": 71,
+      "rngDraws": 69,
+      "fingerprint": "ecde61a14b325889f8895bf36dc121ae6bf5176e78c15eec89d9f8b1ec8ca7eb",
+      "chainHead": "bd583d57cc6a98cb1fa60555a09f9bd6b6132c0f2d5b308562d8aa8b826e0437"
+    },
+    {
+      "label": "draft-02-propose",
+      "outcome": "committed",
+      "revision": 72,
+      "rngDraws": 69,
+      "fingerprint": "d8e1099abf76255bc0e7f25ad1a38d120a5a8f5495b141097fee60528d45e6d5",
+      "chainHead": "3229c3c5dd631440848db76094c29d1d48977ccb453281f9dd02401a6cf8b95b"
+    },
+    {
+      "label": "draft-02-select",
+      "outcome": "committed",
+      "revision": 73,
+      "rngDraws": 69,
+      "fingerprint": "244bf4fd62f24368a2674cb317c07bc07169c7797c4ebdb2c955a7017b6203f5",
+      "chainHead": "bb94327a04674efe658f31e430a7cc1207a5379bc20874b80ec7a4067872c6d3"
+    },
+    {
+      "label": "draft-03-propose",
+      "outcome": "committed",
+      "revision": 74,
+      "rngDraws": 69,
+      "fingerprint": "c54e2425e379f97dc2edf8c110fe7fea3f6218e468d0bee69749582e0051c1f2",
+      "chainHead": "1353d945ca69bf7ff96b89a45f7fd6266c9c34c2f7b99680a9c10babdb9ab15b"
+    },
+    {
+      "label": "draft-03-select",
+      "outcome": "committed",
+      "revision": 75,
+      "rngDraws": 69,
+      "fingerprint": "50681f50a555df831f7381c3c05d33becf9a3f3ae52d7f7754b732533255df11",
+      "chainHead": "a3654dd5baf67e7824702ab612ccb9649d7194ab7dbc5612187a6e36a1547f84"
+    },
+    {
+      "label": "draft-04-propose",
+      "outcome": "committed",
+      "revision": 76,
+      "rngDraws": 69,
+      "fingerprint": "be7ac9623f9bda70f0eedf3162e6f3cea9904b6eaffaf13630c29d7464c61047",
+      "chainHead": "b2bb35bfb4774de7ab76e5f9ca317fe6d437a684bcdcb653d9d7d489a89c4a60"
+    },
+    {
+      "label": "draft-04-select",
+      "outcome": "committed",
+      "revision": 77,
+      "rngDraws": 69,
+      "fingerprint": "0d5f679bd31af1427245b3bbc12a07eb1094a4fee386a7796d2cfb98b789a92e",
+      "chainHead": "7293efbb58d3d495b4e960915072da866b26c2cea00445147338718ea629c8c9"
+    },
+    {
+      "label": "draft-05-propose",
+      "outcome": "committed",
+      "revision": 78,
+      "rngDraws": 69,
+      "fingerprint": "29e65494027957b1b3f2c3c66f1a497e3a87ec070e7b2febebb822d390c15881",
+      "chainHead": "b1cfd6cab92e9a8cdc71a9c40e136155b2b22a395eb5d68dceb4e3c69ad98cd6"
+    },
+    {
+      "label": "draft-05-select",
+      "outcome": "committed",
+      "revision": 79,
+      "rngDraws": 69,
+      "fingerprint": "929dc1dad64e740eb08a8f0163031ac9d9d8bfcfabb4edb0b02bdf3befdb1ef0",
+      "chainHead": "fd687e585d6e2c5ef8a7f7d8b349c71e09e750642cc2c3a2b8282ce6b1723def"
+    },
+    {
+      "label": "draft-06-propose",
+      "outcome": "committed",
+      "revision": 80,
+      "rngDraws": 69,
+      "fingerprint": "6a1ab3e9e572e916744e7df64c4fa82104e14938c05476bf5708ce6f6ac2d049",
+      "chainHead": "b15788c08e3b218dcf0551fd19ffee67d0afb14a0a08e985904fa47df9b3b56f"
+    },
+    {
+      "label": "draft-06-select",
+      "outcome": "committed",
+      "revision": 81,
+      "rngDraws": 69,
+      "fingerprint": "b488ca7fc97555dbc1b194306a740040fdb1c6ca0c186f1ef1a262552b08bde6",
+      "chainHead": "e13b5135c794f84978956faa5141747eb1b20651cce461b2a88df14c57312fd6"
+    },
+    {
+      "label": "draft-07-propose",
+      "outcome": "committed",
+      "revision": 82,
+      "rngDraws": 69,
+      "fingerprint": "9217214afcc192439a60b791529828634fe56ce9d951d56bf929ec46bd51b754",
+      "chainHead": "4241a27b2f9b46b39913cfa24a3e1e27f144b620f335238ab45bdbb44756a92a"
+    },
+    {
+      "label": "draft-07-select",
+      "outcome": "committed",
+      "revision": 83,
+      "rngDraws": 69,
+      "fingerprint": "85969fbc3fb263bd787a5aaf4a86947f25364aca7eab7a587c83a3fe91a70a2d",
+      "chainHead": "4eb2111182a51e6d275dfd636dc5b3f7759146a25d9a3c0a94d19a9fcb5f2dab"
+    },
+    {
+      "label": "draft-08-propose",
+      "outcome": "committed",
+      "revision": 84,
+      "rngDraws": 69,
+      "fingerprint": "8bc8af14cf5aa499efacff700a693ff8785147e7e8e211a58416d2381c8ea511",
+      "chainHead": "4a00fe1517f626b5d1ff61875fbb94d665680c37996c305043c913d913f85e0d"
+    },
+    {
+      "label": "draft-08-select",
+      "outcome": "committed",
+      "revision": 85,
+      "rngDraws": 69,
+      "fingerprint": "00ae4eddabcd2b5792ed9cebbe23e0be352967b3f6399a1c2406f297830afdaa",
+      "chainHead": "b6077566206ebd161d04edc61166aa4e8305f1a872aba88ce8cbd85eb7a7491f"
+    },
+    {
+      "label": "draft-09-propose",
+      "outcome": "committed",
+      "revision": 86,
+      "rngDraws": 69,
+      "fingerprint": "d0204fa19a7179550dcd393de385d17f6fa16a6bffad72eb06ae34f58d269689",
+      "chainHead": "ad050306598562aa3f8f0520fdc63ac0f9df9ae8fc1bb37dc97edd62d839fa02"
+    },
+    {
+      "label": "draft-09-select",
+      "outcome": "committed",
+      "revision": 87,
+      "rngDraws": 69,
+      "fingerprint": "dc5fbafcf574992a99851727af7c2842e35a137abb3bd749b15e4450c35613cd",
+      "chainHead": "359e733cb18d8eade6a7f341bc72612e3325a7ca94b51416733c5d8ffda2e549"
+    },
+    {
+      "label": "draft-10-propose",
+      "outcome": "committed",
+      "revision": 88,
+      "rngDraws": 69,
+      "fingerprint": "3333a6c101cd67e9926bb57633b1eca9e6b95889a61a091eea790c41aee3333e",
+      "chainHead": "f6289e650e8251f821d62dd62df98d3eab51f7ddcd9b3cc564e290f64bcaa8b7"
+    },
+    {
+      "label": "draft-10-select",
+      "outcome": "committed",
+      "revision": 89,
+      "rngDraws": 69,
+      "fingerprint": "80c17fb5f86bed70feea1e7d8d9c56e342ca6cedc92f2a0f62bdc5e14f336716",
+      "chainHead": "70b9500f8ca4dde5033ae3ce41055e5cb26a58f2b006cd65af28acc2484a1c2f"
+    },
+    {
+      "label": "draft-11-propose",
+      "outcome": "committed",
+      "revision": 90,
+      "rngDraws": 69,
+      "fingerprint": "5fe39d13df4e4f36c4bdb46bab0d231a7acc282ed07de070dacdf6a71fc65b06",
+      "chainHead": "481ece60201b0b9c19c7d4f7d6aa737bb5cd760a9006b1d62cd1146339dff78d"
+    },
+    {
+      "label": "draft-11-select",
+      "outcome": "committed",
+      "revision": 91,
+      "rngDraws": 69,
+      "fingerprint": "532ec7418dc70cfdb2bb402e5dfd26b75f989c21c13efb6bb1733b6105c6ee14",
+      "chainHead": "ef114c86b12d142df87201a5b67e67c3521afbdb04af4d3cfd1cd98ee5e063d6"
+    },
+    {
+      "label": "draft-12-propose",
+      "outcome": "committed",
+      "revision": 92,
+      "rngDraws": 69,
+      "fingerprint": "e84a232d7100d5a108af148c48e2198b0405f630b4bdc93b8a4bf4049636c5ce",
+      "chainHead": "ec2d9a2b1ac76be5f93b20ab4b034cf945382fa9d7366131fedf414bfa2a28ef"
+    },
+    {
+      "label": "draft-12-select",
+      "outcome": "committed",
+      "revision": 93,
+      "rngDraws": 69,
+      "fingerprint": "9674d8296637669a72c61c322472ea77eef06de8ee2d786c11a536f2a03eb53f",
+      "chainHead": "b40f3639d2158302cb26475d393897b0d623b58d95d5b37ef38f40675765698f"
+    },
+    {
+      "label": "rookie-contract-propose",
+      "outcome": "committed",
+      "revision": 94,
+      "rngDraws": 69,
+      "fingerprint": "f90d3252bea90564eebc05c0a5599e714b41e41663fd8d71a25be53ebfcdeadd",
+      "chainHead": "de687bd23d6f7c36071d4b0172da8a9ea0e4a8e4f66454d90400499fcf4cea2c"
+    },
+    {
+      "label": "rookie-offer",
+      "outcome": "committed",
+      "revision": 95,
+      "rngDraws": 69,
+      "fingerprint": "70daa7a513c671a756c13a87654198bbdad7a9e84217d37480906bb845caedf9",
+      "chainHead": "2e0975691700b6645cbc321abd8cdf67c63b825debb7d54744ba194fff50b7c7"
+    },
+    {
+      "label": "udfa-contract-propose",
+      "outcome": "committed",
+      "revision": 96,
+      "rngDraws": 69,
+      "fingerprint": "d8b74a264c6c3a8248b413d3d4e775ae2efaa21bdc7f33120cd6ecd01548b004",
+      "chainHead": "ac5bdc2667861ae450e063023e64220c96cc823f4c62e02c363f28fe52a73616"
+    },
+    {
+      "label": "udfa-offer",
+      "outcome": "committed",
+      "revision": 97,
+      "rngDraws": 69,
+      "fingerprint": "d736503e0feea0de53bb6db1e78d5aae629f66652af426a8312cf22d1334652a",
+      "chainHead": "4f4357d142ca1e36b2b0fe81971d06193034ad4f1afa14a77ef49087f28c0f82"
+    },
+    {
+      "label": "resolve-free-agency-3",
+      "outcome": "committed",
+      "revision": 98,
+      "rngDraws": 69,
+      "fingerprint": "efce2f8977441c1ba5b6615f14a9ef4804506a1bd48499990f5eb3b950ec8181",
+      "chainHead": "99a159310565ce07e28d85634e2c768398a2520b55b008a9b15560a7b743e209"
+    },
+    {
+      "label": "rookie-sign",
+      "outcome": "committed",
+      "revision": 99,
+      "rngDraws": 69,
+      "fingerprint": "21a866468f8c48444de9d4e38ce5320eb210d2f3263923ae3763c4bb6d56ade1",
+      "chainHead": "c301b888ea09eed59b457d7d4b0eae98214fd145f614e2a49266b040d65c0a5e"
+    },
+    {
+      "label": "udfa-sign",
+      "outcome": "committed",
+      "revision": 100,
+      "rngDraws": 69,
+      "fingerprint": "cf56661e2d6e3de1b24bfda02694bc79459a81f44b24fe575636fa2b8a6375be",
+      "chainHead": "3f847dec6c81e179bb285617a9d8ae9eadf7c5e7e6bea2dd0edf2f61e2424e76"
+    },
+    {
+      "label": "replay-udfa-sign",
+      "outcome": "INVALID_PAYLOAD",
+      "revision": 100,
+      "rngDraws": 69,
+      "fingerprint": "cf56661e2d6e3de1b24bfda02694bc79459a81f44b24fe575636fa2b8a6375be",
+      "chainHead": "3f847dec6c81e179bb285617a9d8ae9eadf7c5e7e6bea2dd0edf2f61e2424e76"
+    },
+    {
+      "label": "late-selection-after-draft",
+      "outcome": "INVALID_PAYLOAD",
+      "revision": 100,
+      "rngDraws": 69,
+      "fingerprint": "cf56661e2d6e3de1b24bfda02694bc79459a81f44b24fe575636fa2b8a6375be",
+      "chainHead": "3f847dec6c81e179bb285617a9d8ae9eadf7c5e7e6bea2dd0edf2f61e2424e76"
+    },
+    {
+      "label": "stale-revision-advance",
+      "outcome": "STALE_REVISION",
+      "revision": 100,
+      "rngDraws": 69,
+      "fingerprint": "cf56661e2d6e3de1b24bfda02694bc79459a81f44b24fe575636fa2b8a6375be",
+      "chainHead": "3f847dec6c81e179bb285617a9d8ae9eadf7c5e7e6bea2dd0edf2f61e2424e76"
+    }
+  ]
+}

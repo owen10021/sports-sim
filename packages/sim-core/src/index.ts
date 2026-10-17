@@ -23,6 +23,8 @@ export * from './contracts';
 export * from './market';
 export * from './scouting';
 export * from './draft';
+export * from './development';
+export * from './medical';
 export * from './audit';
 export * from './commandRouter';
 export * from './authorityCommands';

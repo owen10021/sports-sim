@@ -11,9 +11,11 @@ import {
   UnsupportedWorldModelVersionError,
   fingerprintLegacyPackageAWorld,
   fingerprintLegacyPackageBWorld,
+  fingerprintLegacyPackageCWorld,
   futureWorldModelVersion,
   isLegacyPackageAWorld,
   isLegacyPackageBWorld,
+  isLegacyPackageCWorld,
   worldModelProblems,
   type StoredWorld,
 } from './worldModel';
@@ -204,7 +206,9 @@ export const verifySnapshot = (value: unknown): SnapshotVerification => {
     throw new UnsupportedWorldModelVersionError('career snapshot', futureModel);
   const legacyA = isLegacyPackageAWorld(world);
   const legacyB = isLegacyPackageBWorld(world);
-  const modelProblems = legacyA || legacyB ? [] : worldModelProblems(world);
+  const legacyC = isLegacyPackageCWorld(world);
+  const modelProblems =
+    legacyA || legacyB || legacyC ? [] : worldModelProblems(world);
   if (modelProblems.length > 0) {
     return {
       ok: false,
@@ -230,7 +234,9 @@ export const verifySnapshot = (value: unknown): SnapshotVerification => {
       ? fingerprintLegacyPackageAWorld(world)
       : legacyB
         ? fingerprintLegacyPackageBWorld(world)
-        : fingerprintWorld(world as FootballWorld);
+        : legacyC
+          ? fingerprintLegacyPackageCWorld(world)
+          : fingerprintWorld(world as FootballWorld);
     if (fingerprint !== s.worldFingerprint)
       reasons.push('worldFingerprint mismatch');
   } catch (e) {

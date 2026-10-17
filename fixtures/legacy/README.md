@@ -26,3 +26,16 @@ commits of the `package-b-golden-v1` scenario, with the accepted Package B golde
   `packages/sim-core/test/legacyFixtureIntegrity.test.ts`).
 - It must NEVER be regenerated with newer code.
 - The Package B golden values are also preserved in `evidence/package-b/golden-expected-world-model-v2.json`.
+
+## package-c-world-v3-snapshot.json
+
+A genuine Package C career (world model v3): the genesis snapshot plus all 100 committed
+commits of the `package-c-golden-v1` scenario, with the accepted Package C golden values embedded.
+
+- Generated on 2026-10-17 from the accepted Package C code (source identical to `dd80769755145c6fba8c156ae68ff6cdcf1fe408`,
+  tag `package-c-acceptance-20261017`), at repository commit `77be85e`, BEFORE the Package D world-model change.
+- Size 10233474 bytes (compact JSON, one line), SHA-256 `1cd132df373ccabdf5093079fed48d35ed1854807729edf1c505dffcad44aafe`
+  (see `SHA256SUMS.txt`; also pinned in `packages/sim-core/test/packageCWorldMigration.test.ts` and
+  `packages/sim-core/test/legacyFixtureIntegrity.test.ts`).
+- It must NEVER be regenerated with newer code.
+- The Package C golden values are also preserved in `evidence/package-c/golden-expected-world-model-v3.json`.

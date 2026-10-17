@@ -1,0 +1,223 @@
+{
+  "scenario": "package-b-golden-v3",
+  "worldId": "world-package-b-1",
+  "finalSimDate": "2026-10-19",
+  "revision": 20,
+  "eventCount": 33,
+  "rngDraws": 3,
+  "fingerprint": "5a5e5643bdc05338a3c26a9cafe6094d060059670ff08a3bf4b63ca2c8c14311",
+  "eventChainHead": "934b6d86fe79af00c6de40da67e64e1b4bdb7039701c7c45af1598a61ed4f9d0",
+  "keyRecordIds": {
+    "publicClaim": "rec-000001",
+    "nfClaim": "rec-000002",
+    "spClaim": "rec-000003",
+    "nfBelief": "rec-000004",
+    "spBelief": "rec-000005",
+    "nfProposal": "rec-000006",
+    "nfPlan": "rec-000008",
+    "nfReceipt": "rec-000009",
+    "spProposal": "rec-000010",
+    "spPlan": "rec-000011",
+    "spReceipt": "rec-000012",
+    "spNewClaim": "rec-000013",
+    "spNewBelief": "rec-000014",
+    "spRevisionProposal": "rec-000015",
+    "spRevisionReceipt": "rec-000016",
+    "nfPending": "rec-000018",
+    "spMandate": "rec-000019"
+  },
+  "steps": [
+    {
+      "label": "public-fact",
+      "outcome": "committed",
+      "revision": 1,
+      "rngDraws": 0,
+      "fingerprint": "676227aca8a85de290cc6c93e147784c6a5c8574a1ec2cdc0e6bfb24b82be03a",
+      "chainHead": "97bb1ecc29b5d8e2d4521f1d52f7fa2bfe454a79b34046c670cc423949ef8b2f"
+    },
+    {
+      "label": "nf-private-claim",
+      "outcome": "committed",
+      "revision": 2,
+      "rngDraws": 0,
+      "fingerprint": "e06486318187c6f6c4dd036634455f56882f0c69ad63ed141debdecfe8346089",
+      "chainHead": "53e568ef5d2bdc3efb9a7373767c73c11657878369478973e429958e5276e239"
+    },
+    {
+      "label": "sp-private-claim",
+      "outcome": "committed",
+      "revision": 3,
+      "rngDraws": 0,
+      "fingerprint": "3cb221c0fc3d324ba4cba36d4c26538ad06e566cf47e18348a1d3be27155d5a4",
+      "chainHead": "e1842ca2e28aa550dbcc7253473a50a4b84c8054e76482781a815f28254ab3b1"
+    },
+    {
+      "label": "nf-belief",
+      "outcome": "committed",
+      "revision": 4,
+      "rngDraws": 0,
+      "fingerprint": "d3e5dfa8af3fb595999104333379370f0c49048d340c415f9118ca8199fa9f20",
+      "chainHead": "165cb07ccbf67b82d6c38e1db0f40bfb91d053e5e1e4d11657ececbdbfc6a8dd"
+    },
+    {
+      "label": "sp-belief",
+      "outcome": "committed",
+      "revision": 5,
+      "rngDraws": 0,
+      "fingerprint": "12533b1d364ec68445f0fcc827c09e1eabecd1e5d2e36603835093a575284707",
+      "chainHead": "5ee8562d5fc41ba2880407b0e728bdc6b52727e7593162736dc53eb983ac6d34"
+    },
+    {
+      "label": "nf-plan-proposed-needs-owner",
+      "outcome": "committed",
+      "revision": 6,
+      "rngDraws": 0,
+      "fingerprint": "e03571304837df5d94d782b271aaca776c3f89c6b9ee4f7bb38eadaa542c85b8",
+      "chainHead": "a6690dc885dd3e29c8a2abfc44594431a8be1374502e64f11162a9b1b32fa6b8"
+    },
+    {
+      "label": "nf-owner-approves",
+      "outcome": "committed",
+      "revision": 7,
+      "rngDraws": 0,
+      "fingerprint": "b076fe37d3c6406211c3f646e277a89e732f19e5c5850953c5e26299f25ac2ac",
+      "chainHead": "006ba7d20d2213a7a212fb7bd03142c617bbdb262322e767d5ee6a9dfe98a3af"
+    },
+    {
+      "label": "nf-plan-committed",
+      "outcome": "committed",
+      "revision": 8,
+      "rngDraws": 0,
+      "fingerprint": "233cf411a97e29f13fd8d916659ee078afddc587ca1a0dca79fe422b9c7418d0",
+      "chainHead": "814d6c646e9753eeaa8f5453d94b399154a0dbc607c63a2ab8dd0f8ce8c8cd02"
+    },
+    {
+      "label": "sp-plan-proposed",
+      "outcome": "committed",
+      "revision": 9,
+      "rngDraws": 0,
+      "fingerprint": "c9e3682aade1e3ccf26bb1d379fd69341c7e476ab48e51f5c4f944b863ea5844",
+      "chainHead": "22121ea0a057436a34dbe73104d2abeb2dd4dce4c8412f8ae34709442e2fead6"
+    },
+    {
+      "label": "sp-plan-committed",
+      "outcome": "committed",
+      "revision": 10,
+      "rngDraws": 0,
+      "fingerprint": "085a16aaaf3b42b929a058c892d87e79571e39381848705f252eb71f3256faad",
+      "chainHead": "9f0d40c6678e86eed18f0dbb0fa67c674184739dfc5c2497e4302ee960e64730"
+    },
+    {
+      "label": "advance-3",
+      "outcome": "committed",
+      "revision": 11,
+      "rngDraws": 3,
+      "fingerprint": "35c0c276f1d9672d42804475565a1cbde0f1b3cb0ba393cffa591d674f1c2a86",
+      "chainHead": "ab120e1df67107793881fb32b951c0325073c93b9d72030a9bc805733a2c4844"
+    },
+    {
+      "label": "duplicate-command",
+      "outcome": "DUPLICATE_COMMAND",
+      "revision": 11,
+      "rngDraws": 3,
+      "fingerprint": "35c0c276f1d9672d42804475565a1cbde0f1b3cb0ba393cffa591d674f1c2a86",
+      "chainHead": "ab120e1df67107793881fb32b951c0325073c93b9d72030a9bc805733a2c4844"
+    },
+    {
+      "label": "stale-revision",
+      "outcome": "STALE_REVISION",
+      "revision": 11,
+      "rngDraws": 3,
+      "fingerprint": "35c0c276f1d9672d42804475565a1cbde0f1b3cb0ba393cffa591d674f1c2a86",
+      "chainHead": "ab120e1df67107793881fb32b951c0325073c93b9d72030a9bc805733a2c4844"
+    },
+    {
+      "label": "sp-contradicting-claim",
+      "outcome": "committed",
+      "revision": 12,
+      "rngDraws": 3,
+      "fingerprint": "ee921898128b3dbd5f319e1fde2f7436bf2d552311bd2d010654e30b79e58bbd",
+      "chainHead": "37b8c703ac94ba87ffc82c731f8b6b46d3a3b7534799aa3c8da28b56a65ee558"
+    },
+    {
+      "label": "sp-belief-superseded",
+      "outcome": "committed",
+      "revision": 13,
+      "rngDraws": 3,
+      "fingerprint": "2b245b4492a539c6b315c1ebd5cd9d7c56105c5e4c43dc01d4ebedb99e9ebee4",
+      "chainHead": "c4f88ce8da78ea8e6eea161e021f40dfebe2b8c12534177ea82a29811369f66f"
+    },
+    {
+      "label": "sp-revision-proposed",
+      "outcome": "committed",
+      "revision": 14,
+      "rngDraws": 3,
+      "fingerprint": "c3fb7a63dc7bcdc9b1c9bc01fe90f7c7518beeaa315dc2bf5e82bfeff5b02881",
+      "chainHead": "baca23d11d96e92a6bc8b16e408bf346e175430faf59ceba1d44a93e8dd22994"
+    },
+    {
+      "label": "sp-revision-committed",
+      "outcome": "committed",
+      "revision": 15,
+      "rngDraws": 3,
+      "fingerprint": "98f6afe4591aa265ff087b70a06ed2d8da207077265a3b4b1a31f93db9668929",
+      "chainHead": "141769d6b372c6ea08dc5d0c3ff91ae60b63016466b203e5589bee632ec4c4ed"
+    },
+    {
+      "label": "nf-reversal-proposed-without-cause",
+      "outcome": "committed",
+      "revision": 16,
+      "rngDraws": 3,
+      "fingerprint": "2b24e8a0024f7959797cd19815343035e589ede695f6ad168e3e1f1935548164",
+      "chainHead": "0066c05c8fce685c147c4f13aa1ff3bd966b2a53dc203d125927b14a905951d5"
+    },
+    {
+      "label": "nf-unexplained-reversal-refused",
+      "outcome": "INVALID_PAYLOAD",
+      "revision": 16,
+      "rngDraws": 3,
+      "fingerprint": "2b24e8a0024f7959797cd19815343035e589ede695f6ad168e3e1f1935548164",
+      "chainHead": "0066c05c8fce685c147c4f13aa1ff3bd966b2a53dc203d125927b14a905951d5"
+    },
+    {
+      "label": "nf-pending-proposal",
+      "outcome": "committed",
+      "revision": 17,
+      "rngDraws": 3,
+      "fingerprint": "693ceca22d5c8c6d7a7a30f0a473409613d7c6a225e577058b9eb6c28aafc9ee",
+      "chainHead": "e1e4dce5658c436a8dbeb63a35b396da3343fe33949b107203e5c6ef192884d3"
+    },
+    {
+      "label": "sp-delegates-to-scout",
+      "outcome": "committed",
+      "revision": 18,
+      "rngDraws": 3,
+      "fingerprint": "38cd024f3022e2b5c0ddca1a97435d141ca9b27edd0244acc1df8173f5844c5a",
+      "chainHead": "b23341a80625da1ba24e0fdad422023d559b61161f265e529e9dbaf748900ff2"
+    },
+    {
+      "label": "sp-scout-role-ends",
+      "outcome": "committed",
+      "revision": 19,
+      "rngDraws": 3,
+      "fingerprint": "9b1210e9d0f8e76b68a6aeecde2c47719070a8bfee9ab4113464da0e29e75d71",
+      "chainHead": "8538c862a79ba3c99b6f0421bcc59d05ff83cceb8a51b6272d57096a6b9d8838"
+    },
+    {
+      "label": "nf-gm-grant-revoked",
+      "outcome": "committed",
+      "revision": 20,
+      "rngDraws": 3,
+      "fingerprint": "5a5e5643bdc05338a3c26a9cafe6094d060059670ff08a3bf4b63ca2c8c14311",
+      "chainHead": "934b6d86fe79af00c6de40da67e64e1b4bdb7039701c7c45af1598a61ed4f9d0"
+    },
+    {
+      "label": "nf-pending-commit-fails",
+      "outcome": "INSUFFICIENT_AUTHORITY",
+      "revision": 20,
+      "rngDraws": 3,
+      "fingerprint": "5a5e5643bdc05338a3c26a9cafe6094d060059670ff08a3bf4b63ca2c8c14311",
+      "chainHead": "934b6d86fe79af00c6de40da67e64e1b4bdb7039701c7c45af1598a61ed4f9d0"
+    }
+  ]
+}

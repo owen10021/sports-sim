@@ -16,7 +16,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
   "revision": 20,
   "eventCount": 33,
   "rngDraws": 3,
-  "fingerprint": "7c6d3a45d7eee4c58cfe5b7de031124d4933f488640705bd88bafc055b322447",
+  "fingerprint": "5a5e5643bdc05338a3c26a9cafe6094d060059670ff08a3bf4b63ca2c8c14311",
   "eventChainHead": "934b6d86fe79af00c6de40da67e64e1b4bdb7039701c7c45af1598a61ed4f9d0",
   "keyRecordIds": {
     "publicClaim": "rec-000001",
@@ -43,7 +43,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 1,
       "rngDraws": 0,
-      "fingerprint": "20db2c2779669686e21a0466e18792dae1b45a05e1ef5b60edbffd01f728055b",
+      "fingerprint": "676227aca8a85de290cc6c93e147784c6a5c8574a1ec2cdc0e6bfb24b82be03a",
       "chainHead": "97bb1ecc29b5d8e2d4521f1d52f7fa2bfe454a79b34046c670cc423949ef8b2f"
     },
     {
@@ -51,7 +51,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 2,
       "rngDraws": 0,
-      "fingerprint": "0d6876af896c63eae00273f3ccc51a080fcb39d10c726109f76df69baaae1b64",
+      "fingerprint": "e06486318187c6f6c4dd036634455f56882f0c69ad63ed141debdecfe8346089",
       "chainHead": "53e568ef5d2bdc3efb9a7373767c73c11657878369478973e429958e5276e239"
     },
     {
@@ -59,7 +59,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 3,
       "rngDraws": 0,
-      "fingerprint": "b37f2a0b42da8d685a3e16fe23a3864077c8f54af7a803989ea0d5953e52d9f6",
+      "fingerprint": "3cb221c0fc3d324ba4cba36d4c26538ad06e566cf47e18348a1d3be27155d5a4",
       "chainHead": "e1842ca2e28aa550dbcc7253473a50a4b84c8054e76482781a815f28254ab3b1"
     },
     {
@@ -67,7 +67,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 4,
       "rngDraws": 0,
-      "fingerprint": "b95f08cdcfe010fecc2c41ef1c187fb62334c780012835ae7f32b80ae575998e",
+      "fingerprint": "d3e5dfa8af3fb595999104333379370f0c49048d340c415f9118ca8199fa9f20",
       "chainHead": "165cb07ccbf67b82d6c38e1db0f40bfb91d053e5e1e4d11657ececbdbfc6a8dd"
     },
     {
@@ -75,7 +75,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 5,
       "rngDraws": 0,
-      "fingerprint": "be51170ad151f4a57bf29b74cd31ced38be6f5334f5c4914da1b06b687f6db9a",
+      "fingerprint": "12533b1d364ec68445f0fcc827c09e1eabecd1e5d2e36603835093a575284707",
       "chainHead": "5ee8562d5fc41ba2880407b0e728bdc6b52727e7593162736dc53eb983ac6d34"
     },
     {
@@ -83,7 +83,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 6,
       "rngDraws": 0,
-      "fingerprint": "9d87ff15820e89cfdcfde383e57161137accb6032df4761cb2d6234ebdc11dc4",
+      "fingerprint": "e03571304837df5d94d782b271aaca776c3f89c6b9ee4f7bb38eadaa542c85b8",
       "chainHead": "a6690dc885dd3e29c8a2abfc44594431a8be1374502e64f11162a9b1b32fa6b8"
     },
     {
@@ -91,7 +91,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 7,
       "rngDraws": 0,
-      "fingerprint": "49aeccb833b206c20fd50d564a3488453f4dbc35075b0e357b86768f8f82e447",
+      "fingerprint": "b076fe37d3c6406211c3f646e277a89e732f19e5c5850953c5e26299f25ac2ac",
       "chainHead": "006ba7d20d2213a7a212fb7bd03142c617bbdb262322e767d5ee6a9dfe98a3af"
     },
     {
@@ -99,7 +99,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 8,
       "rngDraws": 0,
-      "fingerprint": "b1ce498ee90275201eb91b9c16a7ae223a7516a067ca926834dc73cd7b3b464f",
+      "fingerprint": "233cf411a97e29f13fd8d916659ee078afddc587ca1a0dca79fe422b9c7418d0",
       "chainHead": "814d6c646e9753eeaa8f5453d94b399154a0dbc607c63a2ab8dd0f8ce8c8cd02"
     },
     {
@@ -107,7 +107,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 9,
       "rngDraws": 0,
-      "fingerprint": "1ef6e5ad843598b19fb129f5b6d4a4436d8a6bfdb22c809ad2beb11843644e2c",
+      "fingerprint": "c9e3682aade1e3ccf26bb1d379fd69341c7e476ab48e51f5c4f944b863ea5844",
       "chainHead": "22121ea0a057436a34dbe73104d2abeb2dd4dce4c8412f8ae34709442e2fead6"
     },
     {
@@ -115,7 +115,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 10,
       "rngDraws": 0,
-      "fingerprint": "900ca064e3cb5ebbc65a77a07db26f0f65448e97fb0c9cb89b055828ff042b79",
+      "fingerprint": "085a16aaaf3b42b929a058c892d87e79571e39381848705f252eb71f3256faad",
       "chainHead": "9f0d40c6678e86eed18f0dbb0fa67c674184739dfc5c2497e4302ee960e64730"
     },
     {
@@ -123,7 +123,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 11,
       "rngDraws": 3,
-      "fingerprint": "20e1e2c665b759bdfc6b80410e6b2f56e47ebcbba1abe64130b363b28722e795",
+      "fingerprint": "35c0c276f1d9672d42804475565a1cbde0f1b3cb0ba393cffa591d674f1c2a86",
       "chainHead": "ab120e1df67107793881fb32b951c0325073c93b9d72030a9bc805733a2c4844"
     },
     {
@@ -131,7 +131,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "DUPLICATE_COMMAND",
       "revision": 11,
       "rngDraws": 3,
-      "fingerprint": "20e1e2c665b759bdfc6b80410e6b2f56e47ebcbba1abe64130b363b28722e795",
+      "fingerprint": "35c0c276f1d9672d42804475565a1cbde0f1b3cb0ba393cffa591d674f1c2a86",
       "chainHead": "ab120e1df67107793881fb32b951c0325073c93b9d72030a9bc805733a2c4844"
     },
     {
@@ -139,7 +139,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "STALE_REVISION",
       "revision": 11,
       "rngDraws": 3,
-      "fingerprint": "20e1e2c665b759bdfc6b80410e6b2f56e47ebcbba1abe64130b363b28722e795",
+      "fingerprint": "35c0c276f1d9672d42804475565a1cbde0f1b3cb0ba393cffa591d674f1c2a86",
       "chainHead": "ab120e1df67107793881fb32b951c0325073c93b9d72030a9bc805733a2c4844"
     },
     {
@@ -147,7 +147,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 12,
       "rngDraws": 3,
-      "fingerprint": "2031262ced46e0c7499b0505c0aad2f38cf13c7ecd9d59736b1abc63d8def77b",
+      "fingerprint": "ee921898128b3dbd5f319e1fde2f7436bf2d552311bd2d010654e30b79e58bbd",
       "chainHead": "37b8c703ac94ba87ffc82c731f8b6b46d3a3b7534799aa3c8da28b56a65ee558"
     },
     {
@@ -155,7 +155,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 13,
       "rngDraws": 3,
-      "fingerprint": "92ecf59ee9d54b61c747990734eef3b4011e96798504ec838ae94511859a4568",
+      "fingerprint": "2b245b4492a539c6b315c1ebd5cd9d7c56105c5e4c43dc01d4ebedb99e9ebee4",
       "chainHead": "c4f88ce8da78ea8e6eea161e021f40dfebe2b8c12534177ea82a29811369f66f"
     },
     {
@@ -163,7 +163,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 14,
       "rngDraws": 3,
-      "fingerprint": "c4beafa762f64b519d4f106c4abe0ff146ce6ad87a78fc95ed87045a1b1d1053",
+      "fingerprint": "c3fb7a63dc7bcdc9b1c9bc01fe90f7c7518beeaa315dc2bf5e82bfeff5b02881",
       "chainHead": "baca23d11d96e92a6bc8b16e408bf346e175430faf59ceba1d44a93e8dd22994"
     },
     {
@@ -171,7 +171,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 15,
       "rngDraws": 3,
-      "fingerprint": "773471ad0d28a1f72bf6e3e01a5c95c70d5d89b390c86917d30d4548f62baf6e",
+      "fingerprint": "98f6afe4591aa265ff087b70a06ed2d8da207077265a3b4b1a31f93db9668929",
       "chainHead": "141769d6b372c6ea08dc5d0c3ff91ae60b63016466b203e5589bee632ec4c4ed"
     },
     {
@@ -179,7 +179,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 16,
       "rngDraws": 3,
-      "fingerprint": "e7be25cb23245569b2e0da26219e707c448cda584aa18ff2a7d10025b7e28b65",
+      "fingerprint": "2b24e8a0024f7959797cd19815343035e589ede695f6ad168e3e1f1935548164",
       "chainHead": "0066c05c8fce685c147c4f13aa1ff3bd966b2a53dc203d125927b14a905951d5"
     },
     {
@@ -187,7 +187,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "INVALID_PAYLOAD",
       "revision": 16,
       "rngDraws": 3,
-      "fingerprint": "e7be25cb23245569b2e0da26219e707c448cda584aa18ff2a7d10025b7e28b65",
+      "fingerprint": "2b24e8a0024f7959797cd19815343035e589ede695f6ad168e3e1f1935548164",
       "chainHead": "0066c05c8fce685c147c4f13aa1ff3bd966b2a53dc203d125927b14a905951d5"
     },
     {
@@ -195,7 +195,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 17,
       "rngDraws": 3,
-      "fingerprint": "eed61d202b76a50d285610b64ef66dd600c35bf22ff9c694620fc77e0e68b29c",
+      "fingerprint": "693ceca22d5c8c6d7a7a30f0a473409613d7c6a225e577058b9eb6c28aafc9ee",
       "chainHead": "e1e4dce5658c436a8dbeb63a35b396da3343fe33949b107203e5c6ef192884d3"
     },
     {
@@ -203,7 +203,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 18,
       "rngDraws": 3,
-      "fingerprint": "b9da09ba996ac7f16b593a0e2c03701479cae2ab8e7c290d0483ece3ac9cdc4c",
+      "fingerprint": "38cd024f3022e2b5c0ddca1a97435d141ca9b27edd0244acc1df8173f5844c5a",
       "chainHead": "b23341a80625da1ba24e0fdad422023d559b61161f265e529e9dbaf748900ff2"
     },
     {
@@ -211,7 +211,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 19,
       "rngDraws": 3,
-      "fingerprint": "d6af4e74331103fd15d154639387a299e95059c6bbca5ff79f7f542eb7d3d13d",
+      "fingerprint": "9b1210e9d0f8e76b68a6aeecde2c47719070a8bfee9ab4113464da0e29e75d71",
       "chainHead": "8538c862a79ba3c99b6f0421bcc59d05ff83cceb8a51b6272d57096a6b9d8838"
     },
     {
@@ -219,7 +219,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "committed",
       "revision": 20,
       "rngDraws": 3,
-      "fingerprint": "7c6d3a45d7eee4c58cfe5b7de031124d4933f488640705bd88bafc055b322447",
+      "fingerprint": "5a5e5643bdc05338a3c26a9cafe6094d060059670ff08a3bf4b63ca2c8c14311",
       "chainHead": "934b6d86fe79af00c6de40da67e64e1b4bdb7039701c7c45af1598a61ed4f9d0"
     },
     {
@@ -227,7 +227,7 @@ export const PACKAGE_B_EXPECTED: PackageBResult = {
       "outcome": "INSUFFICIENT_AUTHORITY",
       "revision": 20,
       "rngDraws": 3,
-      "fingerprint": "7c6d3a45d7eee4c58cfe5b7de031124d4933f488640705bd88bafc055b322447",
+      "fingerprint": "5a5e5643bdc05338a3c26a9cafe6094d060059670ff08a3bf4b63ca2c8c14311",
       "chainHead": "934b6d86fe79af00c6de40da67e64e1b4bdb7039701c7c45af1598a61ed4f9d0"
     }
   ]

@@ -132,7 +132,7 @@ describe('Package A golden history is preserved, not overwritten', () => {
   });
 
   it('gives the current-model golden a different scenario id and fingerprint', () => {
-    expect(GOLDEN_EXPECTED.scenario).toBe('package-a-golden-v3');
+    expect(GOLDEN_EXPECTED.scenario).toBe('package-a-golden-v4');
     expect(GOLDEN_EXPECTED.fingerprint).not.toBe(
       fixture.goldenExpected.fingerprint,
     );
@@ -150,7 +150,7 @@ describe('migrateLegacyPackageAWorld', () => {
     const migrated = migrateLegacyPackageAWorld(legacy);
     expect(canonicalString(legacy)).toBe(before);
     expect(worldModelProblems(migrated)).toEqual([]);
-    expect(migrated.worldModelVersion).toBe(3);
+    expect(migrated.worldModelVersion).toBe(4);
     expect(migrated.worldId).toBe(legacy.worldId);
     expect(migrated.simDate).toBe(legacy.simDate);
     expect(migrated.revision).toBe(legacy.revision);
@@ -203,7 +203,7 @@ describe('resume, load, replay and save all migrate through the same boundary', 
       eventCount: fin.eventCount,
       knownCommandIds: fin.knownCommandIds,
     });
-    expect(kernel.world.worldModelVersion).toBe(3);
+    expect(kernel.world.worldModelVersion).toBe(4);
     expect(kernel.world.worldId).toBe(fin.worldId);
     expect(kernel.world.revision).toBe(3);
     expect(kernel.world.rng).toEqual(legacyWorld(fin).rng);
@@ -263,7 +263,7 @@ describe('resume, load, replay and save all migrate through the same boundary', 
     });
     expect(loaded.status).toBe('loaded');
     if (loaded.status !== 'loaded') return;
-    expect(loaded.kernel.world.worldModelVersion).toBe(3);
+    expect(loaded.kernel.world.worldModelVersion).toBe(4);
     expect(loaded.kernel.chainHead).toBe(fixture.goldenExpected.eventChainHead);
     const replay = await verifyCareerReplay(store, SYNTHETIC_RULESET);
     expect(replay.ok).toBe(true);
@@ -298,7 +298,7 @@ describe('resume, load, replay and save all migrate through the same boundary', 
     expect(latest?.revision).toBe(4);
     expect(
       (latest!.world as { worldModelVersion?: number }).worldModelVersion,
-    ).toBe(3);
+    ).toBe(4);
     const again = await loadCareer(store, {
       ruleset: SYNTHETIC_RULESET,
       seed: SYNTHETIC_SEED,
@@ -327,7 +327,7 @@ describe('resume, load, replay and save all migrate through the same boundary', 
     const fin = finalSnapshot();
     const future = {
       ...fin,
-      world: { ...fin.world, worldModelVersion: 4 },
+      world: { ...fin.world, worldModelVersion: 5 },
     };
     expect(() => verifySnapshot(future)).toThrow();
     expect(() =>
