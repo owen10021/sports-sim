@@ -1,7 +1,7 @@
 # Sport Sim Package D — Canonical Design Basis
 
 Date: 2026-10-17  
-Status: **PROPOSED FOR USER REVIEW — NOT YET IMPLEMENTATION AUTHORITY**
+Status: **APPROVED DESIGN BASIS — IMPLEMENTATION REQUIRES SEPARATE APPROVED PLAN**
 
 This document is the focused, repo-local design basis for **Package D: Development / Practice / Medical / Opportunity**. It is derived from the already-approved project canon and the accepted Package C handoff. It does not authorize implementation by itself and does not replace the frozen architecture, project brain, game blueprint, final pre-build research synthesis, or accepted Package A/B/C contracts.
 
