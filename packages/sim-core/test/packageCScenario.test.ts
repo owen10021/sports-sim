@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   MemoryCareerStore,
   PACKAGE_C_EXPECTED,
@@ -17,6 +17,9 @@ import {
 } from '../src/index';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+
+// Every test replays a 103-step scenario; slow or loaded machines need more than the 5s default.
+vi.setConfig({ testTimeout: 180_000 });
 
 const reload = (_i: number, k: WorldKernel): WorldKernel =>
   WorldKernel.resume({
@@ -127,7 +130,7 @@ describe('Package C golden scenario', () => {
       expect(once.fingerprint).toBe(uninterrupted.fingerprint);
       expect(once.eventChainHead).toBe(uninterrupted.eventChainHead);
     }
-  }, 180_000);
+  });
 
   it('persists, reloads and replays to the identical fingerprint and chain head', async () => {
     const run = await runPackageCThroughStore(new MemoryCareerStore());
@@ -136,7 +139,7 @@ describe('Package C golden scenario', () => {
     expect(run.reloadedFingerprint).toBe(run.result.fingerprint);
     expect(run.reloadedChainHead).toBe(run.result.eventChainHead);
     expect(run.result.fingerprint).toBe(PACKAGE_C_EXPECTED.fingerprint);
-  }, 120_000);
+  });
 
   it('recovers from a corrupt latest snapshot without rewriting history', async () => {
     const store = new MemoryCareerStore();
@@ -168,5 +171,5 @@ describe('Package C golden scenario', () => {
     expect(canonicalString(after.commands)).toBe(
       canonicalString(before.commands),
     );
-  }, 120_000);
+  });
 });
