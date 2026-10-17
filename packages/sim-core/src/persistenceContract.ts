@@ -451,3 +451,23 @@ export const runContractCases = async (cases: readonly ContractCase[]): Promise<
   }
   return results;
 };
+export interface ContractCareer {
+  readonly kernel: WorldKernel;
+  readonly ruleset: LeagueRulesetManifest;
+  /** Commit record for the untouched genesis state. */
+  genesis(): CommitRecord;
+  /** Execute the next AdvanceDays command on `kernel` and return the commit record for it. */
+  step(days?: number): CommitRecord;
+}
+
+/** Deterministic synthetic career used by the persistence and recovery contracts. */
+export const createContractCareer = (): ContractCareer => {
+  const { kernel, ruleset } = newCareer();
+  let n = 0;
+  return {
+    kernel,
+    ruleset,
+    genesis: () => genesisCommit(kernel),
+    step: (days = 1) => advance(kernel, ++n, days),
+  };
+};

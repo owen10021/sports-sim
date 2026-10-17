@@ -12,3 +12,5 @@ export * from './kernel';
 export * from './persistence';
 export * from './memoryCareerStore';
 export * from './persistenceContract';
+export * from './recoveryContract';
+export * from './recovery';

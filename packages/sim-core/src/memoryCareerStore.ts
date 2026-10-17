@@ -47,6 +47,20 @@ export class MemoryCareerStore implements CareerStore {
     this.#snapshots[i] = mutate(plain) as unknown as CareerSnapshot;
   }
 
+  /** Test seam: drop the newest `count` events and the commands that produced them. */
+  truncateHistoryForTest(count: number): void {
+    const removed = this.#events.slice(this.#events.length - count);
+    const gone = new Set<string>(removed.map((e) => e.commandId));
+    this.#events = this.#events.slice(0, this.#events.length - count);
+    this.#commands = this.#commands.filter((c) => !gone.has(c.envelope.commandId));
+  }
+
+  /** Test seam: rewrite one stored event (by 0-based index) without re-hashing it. */
+  tamperWithEventForTest(index: number, mutate: (plain: Record<string, unknown>) => Record<string, unknown>): void {
+    const plain = JSON.parse(JSON.stringify(this.#events[index])) as Record<string, unknown>;
+    this.#events = this.#events.map((e, i) => (i === index ? (mutate(plain) as unknown as EventEnvelope) : e));
+  }
+
   async initialize(): Promise<void> {
     this.#initialized = true;
   }
