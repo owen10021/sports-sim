@@ -220,3 +220,17 @@ export const seededDevelopmentState = (
     events: [],
   };
 };
+
+/** Private simulation query, never an organization decision view or inferred default. */
+export const developmentProfileFor = (
+  development: Pick<DevelopmentState, 'playerProfiles'>,
+  playerId: EntityId,
+): PlayerDevelopmentProfile | undefined =>
+  development.playerProfiles.find((p) => p.personId === playerId);
+
+/** Missing readiness remains missing; callers must choose an explicit resolution policy. */
+export const readinessFor = (
+  development: Pick<DevelopmentState, 'readiness'>,
+  playerId: EntityId,
+): PlayerReadinessRecord | undefined =>
+  development.readiness.find((r) => r.playerId === playerId);

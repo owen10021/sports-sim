@@ -381,3 +381,57 @@ export const rosterInvariantFindings = (
   }
   return findings.sort(bySubject);
 };
+
+/** One proposed dimension change, resolved from the same pre-checkpoint snapshot. */
+export type CapabilityDelta = {
+  readonly playerId: EntityId;
+  readonly capabilityKey: string;
+  readonly deltaBp: number;
+};
+
+/**
+ * Pure internal mutation boundary. Only WorldKernel may commit the resulting roster.
+ * All deltas are validated before constructing a replacement; no clamping, implicit
+ * dimensions or duplicate updates. Resolution owns bounding its proposed deltas.
+ */
+export const applyCapabilityDeltas = (
+  roster: RosterState,
+  deltas: readonly CapabilityDelta[],
+): RosterState => {
+  const updates = new Map<EntityId, Map<string, number>>();
+  for (const delta of deltas) {
+    const player = roster.players.find((p) => p.personId === delta.playerId);
+    if (player === undefined) throw new Error('Unknown capability player');
+    const capability = player.capabilities.find(
+      (c) => c.key === delta.capabilityKey,
+    );
+    if (capability === undefined) throw new Error('Unknown capability key');
+    if (!Number.isSafeInteger(delta.deltaBp))
+      throw new Error('Capability delta must be a safe integer');
+    const valueBp = capability.valueBp + delta.deltaBp;
+    if (!Number.isSafeInteger(valueBp) || valueBp < 0 || valueBp > 10000)
+      throw new Error('Capability result outside range 0..10000');
+    const playerUpdates =
+      updates.get(delta.playerId) ?? new Map<string, number>();
+    if (playerUpdates.has(delta.capabilityKey))
+      throw new Error('duplicate capability delta');
+    playerUpdates.set(delta.capabilityKey, valueBp);
+    updates.set(delta.playerId, playerUpdates);
+  }
+  if (deltas.length === 0) return roster;
+  return {
+    ...roster,
+    players: roster.players.map((player) => {
+      const playerUpdates = updates.get(player.personId);
+      if (playerUpdates === undefined) return player;
+      return {
+        ...player,
+        capabilities: player.capabilities.map((capability) =>
+          playerUpdates.has(capability.key)
+            ? { ...capability, valueBp: playerUpdates.get(capability.key)! }
+            : capability,
+        ),
+      };
+    }),
+  };
+};
