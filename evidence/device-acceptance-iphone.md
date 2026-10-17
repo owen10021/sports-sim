@@ -26,6 +26,10 @@ After creating a career and advancing twice, then closing and reopening the app:
 - Stored career: verified (snapshot hash, ruleset/seed refs, event chain, rev 2)
 - Full-history replay: matches stored state (fingerprint 6e588609cf4b...)
 
+## Background/resume (acceptance 4, background half)
+
+A second Diagnostics screenshot taken after sending Expo Go to the background and reopening it showed the identical career: rev 2, 2 events, same fingerprint (6e588609cf4b...) and event-chain head, stored career verified, replay matching, pending saves 0. The screenshot itself cannot prove the app was backgrounded first; the owner reported doing it.
+
 ## Defects found by this run, fixed before acceptance
 
 1. Replay line reported a mismatch on an empty store (fixed with a test, db64566).
@@ -33,6 +37,5 @@ After creating a career and advancing twice, then closing and reopening the app:
 
 ## Not covered by this record
 
-- Background/resume was not separately exercised at the time of writing.
 - Runs were in Expo Go, not a TestFlight/App Store build. See docs/release/testflight-revalidation-gate.md.
 - The golden scenario was observed once per screenshot; a second consecutive golden run was requested but not separately captured.

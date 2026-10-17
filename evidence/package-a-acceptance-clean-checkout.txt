@@ -1,0 +1,98 @@
+
+ACCEPTANCE RUN 20261017-074959
+started 2026-10-17T07:49:59.7819012-04:00
+node v24.19.0 npm 11.17.0
+HEAD 668b662f2e780f54c3795c549919faea6c21143f
+status 0 dirty files
+=== npm-ci ===
+28 vulnerabilities (10 moderate, 18 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm warn allow-scripts 2 packages have install scripts not yet covered by allowScripts:
+npm warn allow-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn allow-scripts   unrs-resolver@1.12.2 (postinstall: node postinstall.js)
+npm warn allow-scripts
+npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
+EXIT[npm-ci]=0
+=== typecheck ===
+> npm run typecheck --workspaces --if-present
+
+
+> @sport-sim/mobile@0.0.0 typecheck
+> tsc -p tsconfig.json && tsc -p tsconfig.test.json
+
+
+> @sport-sim/headless@0.0.0 typecheck
+> tsc -p tsconfig.json
+
+
+> @sport-sim/sim-core@0.0.0 typecheck
+> tsc -p tsconfig.json && tsc -p tsconfig.test.json
+
+EXIT[typecheck]=0
+=== lint ===
+
+> sport-sim@0.0.0 lint
+> eslint .
+
+EXIT[lint]=0
+=== format:check ===
+
+> sport-sim@0.0.0 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+EXIT[format:check]=0
+=== test ===
+ ??? apps/mobile/test/careerDiagnostics.test.ts (2 tests) 26ms
+ ??? packages/sim-core/test/syntheticFixtures.test.ts (3 tests) 9ms
+ ??? packages/sim-core/test/recovery.test.ts (10 tests) 92ms
+ ??? packages/sim-core/test/persistenceContract.test.ts (20 tests) 72ms
+ ??? apps/mobile/test/sqliteRecovery.test.ts (16 tests) 162ms
+
+ Test Files  18 passed (18)
+      Tests  188 passed (188)
+   Start at  07:54:43
+   Duration  4.08s (tests 33%, import 32%, transform 31%, worker 4%)
+
+    Isolate  18 workers spawned ?? ~316ms startup each (spawn + environment, per file)
+             at least ~1.58s faster with isolate: false ??? reuses workers across files instead of one per file
+
+EXIT[test]=0
+=== golden:check ===
+
+> sport-sim@0.0.0 golden:check
+> tsx packages/headless/src/bin.ts golden
+
+{"match":true,"diffs":[],"fingerprint":"fd3baa44a20b08e5e6f4948adc6f123da62c7239ad04062f185f8cec96a53bda","eventChainHead":"d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a","finalSimDate":"2026-10-30","revision":3,"eventCount":3,"commandDays":[1,6,7]}
+EXIT[golden:check]=0
+=== export:ios ===
+..\..\node_modules\expo-router\assets\react-navigation\elements\back-icon.png (4 variations | 566B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\clear-icon.png (4 variations | 425B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\close-icon.png (4 variations | 235B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\search-icon.png (3 variations | 582B)
+..\..\node_modules\expo-router\assets\sitemap.png (465B)
+..\..\node_modules\expo-router\assets\unmatched.png (4.8KB)
+
+??? ios bundles (1):
+_expo/static/js/ios/entry-81701da29fe0faf40927ecfe74c6d66d.hbc (2.7MB)
+
+??? Files (1):
+metadata.json (1.6KB)
+
+Exported: dist
+EXIT[export:ios]=0
+finished 2026-10-17T07:55:29.7509823-04:00
+ALL-DONE C:\dev\acceptance\run-20261017-074959
+
+--- SUMMARY (added when recording) ---
+Clean clone of origin/main at 668b662f2e780f54c3795c549919faea6c21143f, Windows, node v24.19.0, npm 11.17.0.
+npm ci, typecheck, lint, format:check, test (18 files, 188 tests passed), golden:check (match, fingerprint fd3baa44...53bda, head d9c18cb9...897a), expo export --platform ios (2.7MB Hermes bytecode bundle) all exited 0.
+Per-step full output was not saved for steps whose names contain a colon (format:check, golden:check, export:ios); this file holds the last 14 lines of each step plus the exit codes. Test run detail is in the original run directory C:\dev\acceptance\run-20261017-074959.
