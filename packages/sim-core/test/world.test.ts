@@ -120,6 +120,14 @@ describe('fingerprintWorld', () => {
       { ...w, rng: { ...w.rng, draws: w.rng.draws + 1 } },
       { ...w, rng: { ...w.rng, s0: (w.rng.s0 + 1) >>> 0 } },
       { ...w, nextIds: { ...w.nextIds, event: w.nextIds.event + 1 } },
+      { ...w, nextIds: { ...w.nextIds, record: w.nextIds.record + 1 } },
+      {
+        ...w,
+        people: {
+          ...w.people,
+          persons: [{ entityId: entityId('p1'), active: true }],
+        },
+      },
       { ...w, ruleset: { ...w.ruleset, contentHash: 'a'.repeat(64) } },
       { ...w, seed: { ...w.seed, contentHash: 'b'.repeat(64) } },
       { ...w, entities: [{ id: entityId('p1'), kind: 'person', name: 'New' }] },
@@ -132,8 +140,16 @@ describe('fingerprintWorld', () => {
   it('does not depend on object key insertion order', () => {
     const w = build();
     const reordered = {
+      decisions: w.decisions,
+      plans: w.plans,
+      relationships: w.relationships,
+      information: w.information,
+      authority: w.authority,
+      organizations: w.organizations,
+      people: w.people,
+      worldModelVersion: w.worldModelVersion,
       entities: w.entities,
-      nextIds: { event: w.nextIds.event },
+      nextIds: { record: w.nextIds.record, event: w.nextIds.event },
       rng: {
         draws: w.rng.draws,
         s3: w.rng.s3,

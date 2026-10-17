@@ -11,6 +11,8 @@ export type WorldId = Brand<string, 'WorldId'>;
 export type EntityId = Brand<string, 'EntityId'>;
 export type CommandId = Brand<string, 'CommandId'>;
 export type EventId = Brand<string, 'EventId'>;
+/** Identifies an authoritative Package B domain record (role episode, claim, plan, ...). */
+export type RecordId = Brand<string, 'RecordId'>;
 export type WorldRevision = Brand<number, 'WorldRevision'>;
 
 /** 1-128 chars; starts alphanumeric; then alphanumerics and . _ : - */
@@ -34,6 +36,8 @@ export const commandId = (value: string): CommandId =>
   checkedId('CommandId', value) as CommandId;
 export const eventId = (value: string): EventId =>
   checkedId('EventId', value) as EventId;
+export const recordId = (value: string): RecordId =>
+  checkedId('RecordId', value) as RecordId;
 
 export const isValidRevision = (value: unknown): value is number =>
   typeof value === 'number' &&

@@ -7,6 +7,14 @@ import {
 import { hashCanonical, isHash } from './hash';
 import { SCHEMA_VERSION, UnsupportedSchemaVersionError } from './provenance';
 import { deepFreeze, fingerprintWorld, type FootballWorld } from './world';
+import {
+  UnsupportedWorldModelVersionError,
+  fingerprintLegacyPackageAWorld,
+  futureWorldModelVersion,
+  isLegacyPackageAWorld,
+  worldModelProblems,
+  type StoredWorld,
+} from './worldModel';
 
 /**
  * Persistence contract. Everything here is plain data: nothing depends on SQLite,
@@ -22,10 +30,15 @@ export interface CareerSnapshot {
   readonly eventCount: number;
   /** Audit chain head at this revision (GENESIS_HASH when eventCount is 0). */
   readonly chainHead: string;
+  /**
+   * Fingerprint of world under ITS OWN world-model semantics: a Package A (legacy) world
+   * keeps its Package A fingerprint; a current world uses the current one.
+   */
   readonly worldFingerprint: string;
   /** Command ids already committed; restored so duplicates stay rejected after restart. */
   readonly knownCommandIds: readonly string[];
-  readonly world: FootballWorld;
+  /** The world as stored: current, or a Package A world migrated at load time. */
+  readonly world: StoredWorld;
   /** SHA-256 over every other field. */
   readonly contentHash: string;
 }
@@ -179,9 +192,21 @@ export const verifySnapshot = (value: unknown): SnapshotVerification => {
     return { ok: false, reasons: ['schemaVersion missing or not an integer'] };
   }
   const reasons: string[] = [];
-  const world = s.world as FootballWorld | undefined;
+  const world = s.world as StoredWorld | undefined;
   if (typeof world !== 'object' || world === null) {
     return { ok: false, reasons: ['world missing'] };
+  }
+  // A world model this build does not understand is never interpreted or recovered.
+  const futureModel = futureWorldModelVersion(world);
+  if (futureModel !== null)
+    throw new UnsupportedWorldModelVersionError('career snapshot', futureModel);
+  const legacyWorld = isLegacyPackageAWorld(world);
+  const modelProblems = legacyWorld ? [] : worldModelProblems(world);
+  if (modelProblems.length > 0) {
+    return {
+      ok: false,
+      reasons: modelProblems.map((p) => `world model: ${p}`),
+    };
   }
   if (!isHash(s.contentHash)) reasons.push('contentHash malformed');
   if (!isHash(s.chainHead)) reasons.push('chainHead malformed');
@@ -198,7 +223,10 @@ export const verifySnapshot = (value: unknown): SnapshotVerification => {
     ) {
       reasons.push('contentHash does not match snapshot content');
     }
-    if (fingerprintWorld(world) !== s.worldFingerprint)
+    const fingerprint = legacyWorld
+      ? fingerprintLegacyPackageAWorld(world)
+      : fingerprintWorld(world as FootballWorld);
+    if (fingerprint !== s.worldFingerprint)
       reasons.push('worldFingerprint mismatch');
   } catch (e) {
     reasons.push(

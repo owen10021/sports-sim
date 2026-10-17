@@ -27,6 +27,11 @@ import {
   type LeagueRulesetManifest,
 } from './ruleset';
 import { deepFreeze, type FootballWorld } from './world';
+import {
+  assertCurrentWorld,
+  requireCurrentWorld,
+  type StoredWorld,
+} from './worldModel';
 
 export type RejectionCode =
   | 'SCHEMA_INVALID'
@@ -68,7 +73,8 @@ outeCommand.
 }
 
 export interface KernelResumeState {
-  readonly world: FootballWorld;
+  /** Current world, or a Package A world that is migrated here (the one load boundary). */
+  readonly world: StoredWorld;
   readonly ruleset: LeagueRulesetManifest;
   readonly chainHead: string;
   readonly eventCount: number;
@@ -128,6 +134,7 @@ export class WorldKernel {
     ruleset: LeagueRulesetManifest,
     options: KernelOptions = {},
   ): WorldKernel {
+    assertCurrentWorld(world);
     if (world.revision !== 0 || world.nextIds.event !== 1) {
       throw new Error('fromGenesis requires an untouched genesis world');
     }
@@ -138,11 +145,12 @@ export class WorldKernel {
     state: KernelResumeState,
     options: KernelOptions = {},
   ): WorldKernel {
-    if (state.eventCount + 1 !== state.world.nextIds.event) {
+    const world = requireCurrentWorld(state.world);
+    if (state.eventCount + 1 !== world.nextIds.event) {
       throw new Error('eventCount does not agree with world.nextIds.event');
     }
     return new WorldKernel(
-      state.world,
+      world,
       state.ruleset,
       state.chainHead,
       state.eventCount,

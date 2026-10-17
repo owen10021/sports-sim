@@ -16,7 +16,7 @@ import {
   type RecoveryReport,
 } from './persistence';
 import type { LeagueRulesetManifest } from './ruleset';
-import { fingerprintWorld } from './world';
+import { currentModelFingerprintOf, fingerprintWorld } from './world';
 
 export type ReplayErrorCode =
   'COMMAND_REJECTED' | 'REVISION_MISMATCH' | 'EVENT_MISMATCH';
@@ -163,7 +163,11 @@ export const verifyCareerReplay = async (
     const verdict = verifySnapshot(active);
     if (!verdict.ok)
       reasons.push(...verdict.reasons.map((r) => `active snapshot: ${r}`));
-    if (active.worldFingerprint !== fingerprint)
+    // A Package A snapshot is compared after the same explicit migration the replay used.
+    const activeFingerprint = verdict.ok
+      ? currentModelFingerprintOf(active.world)
+      : active.worldFingerprint;
+    if (activeFingerprint !== fingerprint)
       reasons.push('active snapshot fingerprint differs from replayed history');
     if (active.chainHead !== chainHead)
       reasons.push('active snapshot chainHead differs from replayed history');

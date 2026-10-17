@@ -329,11 +329,12 @@ const replay = async (p: Parsed, io: CliIo): Promise<number> => {
 const golden = (p: Parsed, io: CliIo): number => {
   const result = runGoldenScenario();
   if (p.options.get('write') === true) {
+    // One immutable fixture per scenario id: the world-model-1 file is never overwritten.
     const fixture = join(
       repoRoot,
       'fixtures',
       'golden',
-      'package-a-golden-v1.json',
+      `${result.scenario}.json`,
     );
     mkdirSync(dirname(fixture), { recursive: true });
     writeFileSync(fixture, `${JSON.stringify(result, null, 2)}\n`, 'utf8');

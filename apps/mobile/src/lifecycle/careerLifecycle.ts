@@ -2,7 +2,7 @@ import {
   WorldKernel,
   commandId,
   createWorld,
-  fingerprintWorld,
+  currentModelFingerprintOf,
   loadCareer,
   sealSnapshot,
   type ActorRef,
@@ -232,7 +232,8 @@ export class CareerLifecycle {
       simDate: world?.simDate ?? null,
       revision: world === null ? null : Number(world.revision),
       eventCount: kernel?.eventCount ?? snapshot?.eventCount ?? null,
-      fingerprint: world === null ? null : fingerprintWorld(world),
+      // A read-only snapshot may be a Package A world; show its current-model fingerprint.
+      fingerprint: world === null ? null : currentModelFingerprintOf(world),
       chainHead: kernel?.chainHead ?? snapshot?.chainHead ?? null,
       pendingCommits: this.#pending.length,
       savedRevision: this.#savedRevision,
