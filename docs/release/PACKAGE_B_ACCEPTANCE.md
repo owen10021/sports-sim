@@ -20,17 +20,18 @@ Pure `packages/sim-core`, no React / React Native / Expo / SQLite / fs / clock /
 
 ## Gates
 
-| Gate                                                               | Result                                     |
-| ------------------------------------------------------------------ | ------------------------------------------ |
-| `npm run ci` (typecheck, tests, lint, format, goldens, iOS export) | PASS — `evidence/package-b/ci-windows.txt` |
-| Core + mobile tests                                                | 383 passed                                 |
-| Package A golden unchanged                                         | MATCH `ca1b4957…0df3` / `d9c18cb9…897a`    |
-| Package B golden on Node, run twice                                | identical, MATCH                           |
-| Package B golden on standalone Hermes, run twice                   | identical, MATCH (Hermes bytecode 98)      |
-| sim-core imports no RN / Expo / SQLite / fs / clock / network      | PASS — `architecture.test.ts`              |
-| Save / reload at every command boundary                            | PASS — `packageBScenario.test.ts`          |
-| Corrupt latest snapshot → repair from history, history untouched   | PASS — `packageBScenario.test.ts`          |
-| Physical iPhone, Diagnostics → "Run Package B scenario"            | **PENDING (needs Owen)**                   |
+| Gate                                                               | Result                                          |
+| ------------------------------------------------------------------ | ----------------------------------------------- |
+| `npm run ci` (typecheck, tests, lint, format, goldens, iOS export) | PASS — `evidence/package-b/ci-windows.txt`      |
+| Clean checkout of 0e94970: npm ci, then npm run ci                 | PASS - evidence/package-b/clean-checkout-ci.txt |
+| Core + mobile tests                                                | 383 passed                                      |
+| Package A golden unchanged                                         | MATCH `ca1b4957…0df3` / `d9c18cb9…897a`         |
+| Package B golden on Node, run twice                                | identical, MATCH                                |
+| Package B golden on standalone Hermes, run twice                   | identical, MATCH (Hermes bytecode 98)           |
+| sim-core imports no RN / Expo / SQLite / fs / clock / network      | PASS — `architecture.test.ts`                   |
+| Save / reload at every command boundary                            | PASS — `packageBScenario.test.ts`               |
+| Corrupt latest snapshot → repair from history, history untouched   | PASS — `packageBScenario.test.ts`               |
+| Physical iPhone, Diagnostics → "Run Package B scenario"            | **PENDING (needs Owen)**                        |
 
 Package B golden (`package-b-golden-v1`), identical on Node and Hermes:
 
