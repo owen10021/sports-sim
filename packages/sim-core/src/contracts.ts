@@ -46,7 +46,11 @@ export type ContractAgreement = {
   readonly status: ContractStatus;
 };
 
-export const TERMINATION_REASONS = ['release', 'waiver_unclaimed'] as const;
+export const TERMINATION_REASONS = [
+  'release',
+  'waiver_unclaimed',
+  'trade_retained_bonus',
+] as const;
 export type TerminationReason = (typeof TERMINATION_REASONS)[number];
 
 /** Cap or cash owed in one season; entries are sorted by season and never zero. */

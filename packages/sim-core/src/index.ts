@@ -54,3 +54,5 @@ export * from './packageCWorldSeed';
 export * from './contractCommands';
 export * from './contractLifecycle';
 export * from './waiverCommands';
+export * from './assets';
+export * from './acquisitionImpact';

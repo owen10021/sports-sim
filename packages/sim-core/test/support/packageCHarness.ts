@@ -4,6 +4,8 @@ import {
   WorldKernel,
   commitAuthorizedDomainChange,
   createWorld,
+  requireTransactionRules,
+  type LeagueRulesetManifest,
   entityId,
   rulesetRefOf,
   routeCommand,
@@ -114,6 +116,12 @@ export const submitDomain = (
   ...extra,
 });
 
+const RULESETS = new WeakMap<WorldKernel, LeagueRulesetManifest>();
+
+/** The sealed ruleset a kernel built by this harness runs under. */
+export const rulesOf = (kernel: WorldKernel) =>
+  requireTransactionRules(RULESETS.get(kernel) ?? SYNTHETIC_PACKAGE_C_RULESET);
+
 type TxBody = Record<string, unknown> & {
   waivers: Record<string, unknown>;
   seasonRules: Record<string, unknown>[];
@@ -148,13 +156,15 @@ export const newVariantKernel = (
     ...seedBody,
     ruleset: rulesetRefOf(ruleset),
   } as unknown as WorldSeedBody);
-  return WorldKernel.fromGenesis(
+  const kernel = WorldKernel.fromGenesis(
     createWorld(seed, ruleset, {
       newWorldId: () => worldId('world-package-c-2'),
     }),
     ruleset,
     options,
   );
+  RULESETS.set(kernel, ruleset);
+  return kernel;
 };
 
 /** Released players do not pass through waivers (`releasedPlayerWaiverPolicy: 'none'`). */
