@@ -7,7 +7,7 @@ import {
   type PreferenceLevel,
   type RoleCommitment,
 } from './market';
-import type { RosterStatus } from './roster';
+import { activeRightsFor, type RosterStatus } from './roster';
 import type { FootballWorld } from './world';
 
 /**
@@ -42,6 +42,8 @@ export type OfferAsSeenByPlayer = {
   readonly roleCommitment: RoleCommitment;
   readonly targetRosterStatus: RosterStatus;
   readonly extension: boolean;
+  /** The offering club holds this player's draft right: rookie scale terms, no negotiation. */
+  readonly rookieSlot: boolean;
   readonly expiresAt: string | null;
   readonly totalCash: number;
   readonly bands: OfferBands;
@@ -146,6 +148,10 @@ export const buildPlayerMarketDecisionView = (
       roleCommitment: o.roleCommitment,
       targetRosterStatus: o.targetRosterStatus,
       extension: o.extension,
+      rookieSlot: activeRightsFor(world.roster, playerId, today).some(
+        (r) =>
+          r.kind === 'draft' && r.holderOrganizationId === o.organizationId,
+      ),
       expiresAt: o.expiresAt,
       totalCash: totalCashOf(o.terms),
       bands: bandsOf(o.terms, o.roleCommitment),
@@ -215,6 +221,13 @@ export const unmetDimensions = (
     (d) => levelIndex(bands[d]) < levelIndex(requirementFor(profile, d)),
   );
 
+/** A rookie-scale offer from the draft-rights holder is not negotiated: nothing is unmet. */
+const unmetFor = (
+  profile: PlayerMarketPreferenceProfile,
+  o: OfferAsSeenByPlayer,
+): readonly MarketDimension[] =>
+  o.rookieSlot ? [] : unmetDimensions(profile, o.bands);
+
 const compareOffers = (
   profile: PlayerMarketPreferenceProfile,
   a: OfferAsSeenByPlayer,
@@ -241,7 +254,7 @@ export const rankAcceptableOffers = (
 ): readonly OfferAsSeenByPlayer[] => {
   const p = profile ?? DEFAULT_PROFILE(playerId);
   return offers
-    .filter((o) => unmetDimensions(p, o.bands).length === 0)
+    .filter((o) => unmetFor(p, o).length === 0)
     .sort((a, b) => compareOffers(p, a, b));
 };
 
@@ -279,7 +292,7 @@ export const evaluatePlayerOfferSet = (
   );
   const best = ranked[0]?.offerId;
   return view.offers.map((o): PlayerOfferEvaluation => {
-    const unmet = unmetDimensions(profile, o.bands);
+    const unmet = unmetFor(profile, o);
     const base = {
       offerId: o.offerId,
       revision: o.revision,

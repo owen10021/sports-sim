@@ -19,6 +19,7 @@ import {
   routeDraftBoardCommand,
   type DraftBoardCommandType,
 } from './draftBoardCommands';
+import { routeDraftCommand, type DraftCommandType } from './draftCommands';
 import {
   routeScoutingCommand,
   type ScoutingCommandType,
@@ -139,12 +140,17 @@ interface DraftBoardRoutedCommand extends CommandPayloadBase {
   readonly type: DraftBoardCommandType;
 }
 
+interface DraftRoutedCommand extends CommandPayloadBase {
+  readonly type: DraftCommandType;
+}
+
 type RoutableCommand =
   | AdvanceDaysCommand
   | TradeRoutedCommand
   | FreeAgencyRoutedCommand
   | ScoutingRoutedCommand
   | DraftBoardRoutedCommand
+  | DraftRoutedCommand
   | WaiverRoutedCommand
   | AuthorityRoutedCommand
   | InformationRoutedCommand
@@ -193,6 +199,8 @@ const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   AssignScoutingEvaluation: true,
   ResolveScoutingAssignment: true,
   CommitDraftBoardProposal: true,
+  OpenDraft: true,
+  MakeDraftSelection: true,
 };
 
 export const isRoutableCommandType = (type: string): boolean =>
@@ -318,6 +326,9 @@ export const routeCommand = (ctx: RouteContext): RouteOutcome => {
       return routeScoutingCommand(ctx, command);
     case 'CommitDraftBoardProposal':
       return routeDraftBoardCommand(ctx, command);
+    case 'OpenDraft':
+    case 'MakeDraftSelection':
+      return routeDraftCommand(ctx, command);
     default: {
       const unreachable: never = command;
       throw new Error(

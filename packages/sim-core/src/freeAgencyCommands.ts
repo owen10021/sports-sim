@@ -38,7 +38,9 @@ import {
   type Reservation,
   type RoleCommitment,
 } from './market';
+import { isUndraftedProspect } from './draft';
 import { agentFor } from './playerMarketView';
+import { rookieScaleProblem } from './rookieContracts';
 import {
   ROSTER_STATUSES,
   activeRightsFor,
@@ -156,18 +158,19 @@ const eligibility = (
 ): Eligibility | string => {
   const rights = activeRightsFor(world.roster, playerId, today);
   const right = rights[0];
-  if (right === undefined)
+  if (right === undefined) {
+    if (isUndraftedProspect(world.draft, playerId))
+      return ` is a draft prospect until the draft completes, then an undrafted free agent`;
     return {
       extension: false,
       right: undefined,
       membership: undefined,
       agreement: undefined,
     };
+  }
   if (right.holderOrganizationId !== org)
     return `${playerId} is under ${right.holderOrganizationId}'s rights`;
-  if (right.kind === 'draft')
-    return `${playerId} is a draft right, signed through the draft (not free agency)`;
-  if (right.kind === 'exclusive')
+  if (right.kind === 'draft' || right.kind === 'exclusive')
     return {
       extension: false,
       right,
@@ -339,6 +342,10 @@ const routeSubmit = (ctx: RouteContext, c: Cmd): RouteOutcome => {
 
   const elig = eligibility(world, org, playerId, today);
   if (typeof elig === 'string') return bad(elig);
+  if (elig.right?.kind === 'draft') {
+    const scale = rookieScaleProblem(world, tx, elig.right, terms);
+    if (scale !== null) return bad(scale);
+  }
   if (elig.extension && target !== elig.membership!.status)
     return bad(
       `an extension keeps the player on the ${elig.membership!.status} list`,
@@ -686,6 +693,10 @@ const routeCommit = (ctx: RouteContext, c: Cmd): RouteOutcome => {
   const org = offer.organizationId;
   const elig = eligibility(world, org, offer.playerId, today);
   if (typeof elig === 'string') return bad(`stale offer: ${elig}`);
+  if (elig.right?.kind === 'draft') {
+    const scale = rookieScaleProblem(world, tx, elig.right, offer.terms);
+    if (scale !== null) return bad(`stale offer: ${scale}`);
+  }
   if (elig.extension !== offer.extension)
     return bad('stale offer: the player changed status since the offer');
   if (agentFor(world, offer.playerId, today) !== offer.agentPersonId)

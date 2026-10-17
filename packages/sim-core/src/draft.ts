@@ -76,13 +76,65 @@ export type DraftBoardRevision = {
   readonly createdByPersonId: EntityId;
 };
 
+export const DRAFT_SESSION_STATUSES = [
+  'scheduled',
+  'open',
+  'complete',
+] as const;
+export type DraftSessionStatus = (typeof DRAFT_SESSION_STATUSES)[number];
+
+/**
+ * A live draft for one class. The order is fixed when the draft opens; picks keep their id
+ * when traded, so the club on the clock is always the pick's CURRENT owner. There is no
+ * clock: the draft waits at `currentIndex` until a selection command arrives.
+ */
+export type DraftSession = {
+  readonly id: RecordId;
+  readonly draftClassId: RecordId;
+  readonly status: DraftSessionStatus;
+  readonly orderedPickIds: readonly RecordId[];
+  readonly currentIndex: number;
+  readonly selectionIds: readonly RecordId[];
+  readonly openedAt: string;
+  readonly completedAt: string | null;
+};
+
+export type DraftSelection = {
+  readonly id: RecordId;
+  readonly sessionId: RecordId;
+  readonly pickId: RecordId;
+  readonly organizationId: EntityId;
+  readonly playerId: EntityId;
+  readonly organizationProposalId: RecordId;
+  readonly selectedAt: string;
+  /** The board revision the club says it drafted from, if any. */
+  readonly boardRevisionId: RecordId | null;
+};
+
 export type DraftState = {
   readonly classes: readonly DraftClass[];
   readonly picks: readonly DraftPickAsset[];
   readonly boards: readonly DraftBoardRevision[];
-  readonly sessions: readonly unknown[];
-  readonly selections: readonly unknown[];
+  readonly sessions: readonly DraftSession[];
+  readonly selections: readonly DraftSelection[];
 };
+
+/**
+ * Whether the player is still a draft prospect: in some class whose draft has not been
+ * completed. A prospect is not a free agent; once the draft completes, the undrafted
+ * become ordinary market players (undrafted free agents).
+ */
+export const isUndraftedProspect = (
+  draft: DraftState,
+  playerId: EntityId,
+): boolean =>
+  draft.classes.some(
+    (c) =>
+      c.eligiblePlayerIds.includes(playerId) &&
+      !draft.sessions.some(
+        (s) => s.draftClassId === c.id && s.status === 'complete',
+      ),
+  );
 
 export const emptyDraftState = (): DraftState => ({
   classes: [],

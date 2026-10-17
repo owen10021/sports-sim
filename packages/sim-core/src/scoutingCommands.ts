@@ -15,7 +15,8 @@ import {
   type Failure,
 } from './commandSupport';
 import { isClaimVisibleTo } from './knowledgeView';
-import { activeRightsFor, holdsContractRight, seasonOfDate } from './roster';
+import { isUndraftedProspect } from './draft';
+import { activeRightsFor, holdsContractRight } from './roster';
 import { entityId, isValidId, type EntityId, type RecordId } from './ids';
 import type { BeliefRecord, ClaimRecord } from './information';
 import { holdsRoleAt } from './people';
@@ -163,13 +164,7 @@ const parseContext = (
         return bad(
           `${playerId} is not a free agent: he is under someone's rights`,
         );
-      if (
-        world.draft.classes.some(
-          (c) =>
-            c.season >= seasonOfDate(today) &&
-            c.eligiblePlayerIds.includes(playerId),
-        )
-      )
+      if (isUndraftedProspect(world.draft, playerId))
         return bad(`${playerId} is a draft prospect, not a free agent`);
       return { kind, pickId: null };
     case 'trade_target':
