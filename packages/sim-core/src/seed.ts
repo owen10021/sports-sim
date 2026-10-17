@@ -25,6 +25,12 @@ import {
 } from './authority';
 import { PERSON_ROLES, type PersonRole } from './people';
 import {
+  packageCIssues,
+  parsePackageCSubstrate,
+  type PackageCSubstrateSeed,
+} from './packageCSeedParse';
+import { parseSeedId, parseSeedInterval } from './seedParsing';
+import {
   validateRulesetManifest,
   type LeagueRulesetManifest,
   type RulesetRef,
@@ -98,6 +104,8 @@ export interface WorldSeedBody {
   readonly initialEntities: readonly SeedEntity[];
   /** Absent in Package A seeds, whose content hashes therefore never change. */
   readonly organizationSubstrate?: OrganizationSubstrateSeed;
+  /** Absent in Package A/B seeds, whose content hashes therefore never change. */
+  readonly packageCSubstrate?: PackageCSubstrateSeed;
 }
 
 export interface WorldSeedManifest extends WorldSeedBody {
@@ -166,32 +174,6 @@ const parseEntities = (value: unknown): SeedEntity[] => {
       name: asString(rec.name, `seed.initialEntities[${i}].name`, 200),
     };
   });
-};
-
-const parseSeedId = (value: unknown, what: string): string => {
-  const id = asString(value, what, 128);
-  if (!isValidId(id))
-    throw new ManifestFormatError(`${what} is not a valid id`);
-  return id;
-};
-
-const parseSeedDate = (value: unknown, what: string): string => {
-  const date = asString(value, what, 10);
-  if (!SimDate.isValidISO(date))
-    throw new ManifestFormatError(`${what} must be a valid YYYY-MM-DD date`);
-  return date;
-};
-
-const parseSeedInterval = (
-  from: unknown,
-  until: unknown,
-  what: string,
-): { from: string; until: string | null } => {
-  const start = parseSeedDate(from, `${what} start`);
-  const end = until === null ? null : parseSeedDate(until, `${what} end`);
-  if (end !== null && end < start)
-    throw new ManifestFormatError(`${what}: end date precedes start date`);
-  return { from: start, until: end };
 };
 
 const parseRoleEpisodes = (value: unknown): SeedRoleEpisode[] => {
@@ -313,8 +295,13 @@ const parseBody = (rec: Record<string, unknown>): WorldSeedBody => {
     rec.organizationSubstrate === undefined
       ? {}
       : { organizationSubstrate: parseSubstrate(rec.organizationSubstrate) };
+  const packageC =
+    rec.packageCSubstrate === undefined
+      ? {}
+      : { packageCSubstrate: parsePackageCSubstrate(rec.packageCSubstrate) };
   return {
     ...substrate,
+    ...packageC,
     schemaVersion: SCHEMA_VERSION,
     seedId,
     seedVersion: asSafeInt(rec.seedVersion, 'seed.seedVersion', 1, 1_000_000),
@@ -338,11 +325,19 @@ const bodyOf = (m: WorldSeedBody): WorldSeedBody => ({
   ...(m.organizationSubstrate === undefined
     ? {}
     : { organizationSubstrate: m.organizationSubstrate }),
+  ...(m.packageCSubstrate === undefined
+    ? {}
+    : { packageCSubstrate: m.packageCSubstrate }),
 });
 
 export const sealSeed = (body: WorldSeedBody): WorldSeedManifest => {
   const rec = asRecord(body, 'seed body');
-  requireExactKeys(rec, BODY_KEYS, ['organizationSubstrate'], 'seed body');
+  requireExactKeys(
+    rec,
+    BODY_KEYS,
+    ['organizationSubstrate', 'packageCSubstrate'],
+    'seed body',
+  );
   requireSupportedSchema(rec, 'seed');
   const parsed = parseBody(rec);
   return { ...parsed, contentHash: hashCanonical(bodyOf(parsed)) };
@@ -354,7 +349,7 @@ export const validateSeedManifest = (value: unknown): WorldSeedManifest => {
   requireExactKeys(
     rec,
     [...BODY_KEYS, 'contentHash'],
-    ['organizationSubstrate'],
+    ['organizationSubstrate', 'packageCSubstrate'],
     'seed manifest',
   );
   const stored = rec.contentHash;
@@ -502,6 +497,15 @@ export const validateForWorldCreation = (
       seen.add(entity.id);
     }
     issues.push(...substrateIssues(seed));
+    if (seed.packageCSubstrate !== undefined)
+      issues.push(
+        ...packageCIssues(
+          seed.packageCSubstrate,
+          seed.initialEntities,
+          seed.organizationSubstrate?.roleEpisodes ?? [],
+          ruleset,
+        ),
+      );
   }
   if (ruleset && seed) {
     const ref = seed.ruleset;
