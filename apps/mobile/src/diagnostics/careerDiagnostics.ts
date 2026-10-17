@@ -55,6 +55,15 @@ export const verifySavedReplay = async (
   life: CareerLifecycle,
 ): Promise<DiagnosticLine> => {
   try {
+    // Same emptiness test as verifySavedCareer: a store with nothing saved has no history to
+    // replay. Anything else (including corruption) still goes through the replay check.
+    const outcome = await loadCareer(life.store, {
+      ruleset: SYNTHETIC_RULESET,
+      seed: SYNTHETIC_SEED,
+    });
+    if (outcome.status === 'empty') {
+      return { ok: true, text: 'Nothing to replay yet' };
+    }
     const result = await verifyCareerReplay(life.store, SYNTHETIC_RULESET);
     return result.ok
       ? {

@@ -124,8 +124,9 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     [view, busy, error, guarded],
   );
 
-  // eslint-disable-next-line react-hooks/refs -- `api` is the memo above; the ref read is intentional (see the note there).
+  /* eslint-disable react-hooks/refs -- `api` is the memo above; the ref read is intentional (see the note there). */
   return (
     <CareerContext.Provider value={api}>{children}</CareerContext.Provider>
   );
+  /* eslint-enable react-hooks/refs */
 }
