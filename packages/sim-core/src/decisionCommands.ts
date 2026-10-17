@@ -1,3 +1,7 @@
+import {
+  canonicalOpportunityTerms,
+  OPPORTUNITY_ALLOCATION_TERMS_TYPE,
+} from './opportunity';
 import type { CanonicalValue, CommandPayloadBase } from './audit';
 import { DECISION_CATEGORIES, type DecisionCategory } from './authority';
 import type { EventSpec, RouteContext, RouteOutcome } from './commandRouter';
@@ -58,7 +62,8 @@ export type DecisionCommandType = (typeof DECISION_COMMAND_TYPES)[number];
 
 /**
  * Package B exercised the first three categories. Package C opens the four acquisition
- * categories; game-day, medical and workload categories stay reserved.
+ * categories. Package D additively opens workload, medical clearance and scheme;
+ * game-day activation and staff hiring remain reserved.
  */
 export const PACKAGE_C_PROPOSAL_CATEGORIES: readonly DecisionCategory[] = [
   'acquisition',
@@ -66,9 +71,15 @@ export const PACKAGE_C_PROPOSAL_CATEGORIES: readonly DecisionCategory[] = [
   'roster',
   'major_trade',
 ];
+export const PACKAGE_D_PROPOSAL_CATEGORIES: readonly DecisionCategory[] = [
+  'workload_usage',
+  'medical_clearance',
+  'scheme',
+];
 const PROPOSAL_CATEGORIES: readonly DecisionCategory[] = [
   ...DECISION_CATEGORIES.slice(0, 3),
   ...PACKAGE_C_PROPOSAL_CATEGORIES,
+  ...PACKAGE_D_PROPOSAL_CATEGORIES,
 ];
 
 const MAX_SUBJECTS = 8;
@@ -199,7 +210,10 @@ const parseFields = (
   return {
     subjects,
     termsType,
-    terms,
+    terms:
+      termsType === OPPORTUNITY_ALLOCATION_TERMS_TYPE
+        ? canonicalOpportunityTerms(terms)
+        : terms,
     requiredApproverPersonIds: required,
     expiresAt,
     contingencies,

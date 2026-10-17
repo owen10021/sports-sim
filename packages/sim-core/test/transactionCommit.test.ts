@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { newPackageDKernel } from './support/packageDHarness';
 import type { ExecuteResult } from '../src/index';
 import {
   ACQ_TERMS,
@@ -62,13 +63,9 @@ describe('Package C proposal categories', () => {
     }
   });
 
-  it('keeps game-day, medical and workload categories reserved', () => {
+  it('keeps game-day and staff-hiring categories reserved', () => {
     const r = fresh();
-    for (const category of [
-      'game_day_activation',
-      'medical_clearance',
-      'workload_usage',
-    ]) {
+    for (const category of ['game_day_activation', 'staff_hiring']) {
       const before = snapshotOf(r.kernel);
       const res = r.run(submitDomain(NF.org, NF.gm, category));
       expect(codeOf(res)).toBe('INVALID_PAYLOAD');
@@ -463,4 +460,27 @@ describe('authorized domain commit: fault injection', () => {
     okResult(commitNf(r));
     expect(r.kernel.world.decisions.receipts).toHaveLength(1);
   });
+});
+
+describe('Package D domain categories use the same authorized commit adapter', () => {
+  it.each(['workload_usage', 'medical_clearance', 'scheme'])(
+    'accepts and commits authorized %s terms',
+    (category) => {
+      const r = runnerFor(newPackageDKernel({ testRouter: testDomainRouter }));
+      okResult(r.run(submitDomain(NF.org, NF.owner, category)));
+      const proposalId = lastProposalId(r);
+      okResult(
+        r.run(
+          domainCommitCommand([
+            request(NF.org, NF.owner, proposalId, ACQ_TERMS, {
+              expectedCategory: category,
+            }),
+          ]),
+        ),
+      );
+      expect(r.kernel.world.decisions.receipts.at(-1)!.proposalId).toBe(
+        proposalId,
+      );
+    },
+  );
 });

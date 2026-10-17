@@ -21,3 +21,19 @@ Base: `2269e2b`.
 - Broader verification: full `npm run ci` passed (exit 0): 70 files, 852 tests, typecheck, lint, formatting, independent A/B/C golden checks and iOS export. Log: `evidence/tmp/package-d/task3-ci.log`.
 
 No command routing or Package E behavior was added.
+
+## Task 4: scarce development opportunity
+
+Base: `20a8daf`.
+
+- Added explicit, privileged `OpenOpportunityWindow` and proposal-gated `CommitOpportunityAllocationProposal`. Pools come exclusively from the active D ruleset; roster count cannot create capacity.
+- Added the `development` B plan kind and a read-only active-development/succession-plan query. Intent grants no workload execute authority.
+- Opened only `workload_usage`, `medical_clearance` and `scheme` through the existing proposal and authorized-domain adapter. C categories remain unchanged; game-day activation and staff hiring remain reserved.
+- Allocation lists and their reference lists are canonical before proposal hashing/approval. Equivalent allocation input order gives the same entire authoritative world, not merely the same balances.
+- Validation includes conserved capacity, positive safe-integer units, membership, organization/window identity, date bounds, teachers, linked plans, duplicate rows and resolved windows. D window/allocation IDs participate in global collision avoidance.
+- Interpretation: `opportunityProblems(world, window, allocations)` takes explicit roster/people/plans context; the plan's two-argument shorthand cannot validate those cross-references on its own.
+- Interpretation: a window receives one atomic, nonempty allocation set. Opening a second overlapping organization window is rejected even under a different phase label, preventing duplicate capacity. Adjacent windows are allowed. No recurring windows are invented.
+- Synthetic test coaches/authority/teaching profiles are added in a resealed genesis variant in `test/support/packageDHarness.ts`; the frozen D seed and accepted A/B/C fixtures are untouched.
+- Debugging found that forwarding a caller-supplied mandate usage declaration could understate actual allocated units. Two regression tests failed (understated workload accepted; valid delegation without manual declaration rejected). The router now derives total `opportunity_units` from real terms and validates every actual scope against the mandate before the shared atomic commit. Both regressions pass.
+- Targeted tests: 35/35 passed after RED runs for the new commands/helpers/categories and mandate regressions.
+- Broader verification: full `npm run ci` passed (exit 0), 73 files and 869 tests, typecheck, lint, format, independent A/B/C goldens and iOS export. Log: `evidence/tmp/package-d/task4-ci.log`.

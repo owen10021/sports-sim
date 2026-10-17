@@ -8,6 +8,7 @@ export const PLAN_KINDS = [
   'succession',
   'acquisition',
   'staff',
+  'development',
 ] as const;
 export type PlanKind = (typeof PLAN_KINDS)[number];
 

@@ -15,6 +15,7 @@ import {
 } from './commandSupport';
 import {
   PACKAGE_C_PROPOSAL_CATEGORIES,
+  PACKAGE_D_PROPOSAL_CATEGORIES,
   commitProposals,
   type CommitPart,
 } from './decisionCommands';
@@ -52,7 +53,8 @@ export interface DomainCommitRequest {
 }
 
 export const isDomainCommitCategory = (category: DecisionCategory): boolean =>
-  PACKAGE_C_PROPOSAL_CATEGORIES.includes(category);
+  PACKAGE_C_PROPOSAL_CATEGORIES.includes(category) ||
+  PACKAGE_D_PROPOSAL_CATEGORIES.includes(category);
 
 /**
  * Validates everything that is specific to a domain commit, against the live world at the

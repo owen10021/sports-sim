@@ -14,6 +14,7 @@ import type { PeopleState } from './people';
 import type { RelationshipsState } from './relationships';
 import { SimDate } from './simDate';
 import type { FootballWorld } from './world';
+import type { DevelopmentState } from './development';
 
 /** Shared plumbing for command routers: payload parsing, failures, id minting, resolution. */
 export type Cmd = CommandPayloadBase & { readonly [key: string]: unknown };
@@ -131,6 +132,8 @@ const takenRecordIds = (world: FootballWorld): Set<string> =>
     ...world.draft.boards.map((x) => x.id),
     ...world.draft.sessions.map((x) => x.id),
     ...world.draft.selections.map((x) => x.id),
+    ...world.development.opportunityWindows.map((x) => x.id),
+    ...world.development.opportunityAllocations.map((x) => x.id),
   ]);
 
 /**
@@ -155,6 +158,7 @@ export const mintRecordId = (world: FootballWorld) => {
 };
 
 export interface Changes {
+  readonly development?: DevelopmentState;
   readonly people?: PeopleState;
   readonly authority?: AuthorityState;
   readonly information?: InformationState;
@@ -175,6 +179,7 @@ export const finish = (
   resolution: {
     nextWorld: {
       ...ctx.world,
+      development: changes.development ?? ctx.world.development,
       people: changes.people ?? ctx.world.people,
       authority: changes.authority ?? ctx.world.authority,
       information: changes.information ?? ctx.world.information,

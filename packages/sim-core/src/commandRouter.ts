@@ -1,3 +1,7 @@
+import {
+  routeDevelopmentCommand,
+  type DevelopmentCommandType,
+} from './developmentCommands';
 import type { CanonicalValue, CommandPayloadBase } from './audit';
 import {
   routeAuthorityCommand,
@@ -144,7 +148,12 @@ interface DraftRoutedCommand extends CommandPayloadBase {
   readonly type: DraftCommandType;
 }
 
+interface DevelopmentRoutedCommand extends CommandPayloadBase {
+  readonly type: DevelopmentCommandType;
+}
+
 type RoutableCommand =
+  | DevelopmentRoutedCommand
   | AdvanceDaysCommand
   | TradeRoutedCommand
   | FreeAgencyRoutedCommand
@@ -161,6 +170,8 @@ type RoutableCommand =
   | ContractRoutedCommand;
 
 const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
+  OpenOpportunityWindow: true,
+  CommitOpportunityAllocationProposal: true,
   AdvanceDays: true,
   StartRoleEpisode: true,
   EndRoleEpisode: true,
@@ -275,6 +286,9 @@ const routeAdvanceDays = (
 export const routeCommand = (ctx: RouteContext): RouteOutcome => {
   const command = ctx.command as RoutableCommand;
   switch (command.type) {
+    case 'OpenOpportunityWindow':
+    case 'CommitOpportunityAllocationProposal':
+      return routeDevelopmentCommand(ctx, command);
     case 'AdvanceDays':
       return routeAdvanceDays(ctx, command);
     case 'StartRoleEpisode':

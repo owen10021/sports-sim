@@ -81,3 +81,7 @@ export {
 } from './packageCScenario';
 export * from './packageCScenarioRun';
 export { PACKAGE_C_EXPECTED } from './packageCGoldenExpected';
+
+export * from './opportunity';
+export * from './developmentIntent';
+export * from './developmentCommands';
