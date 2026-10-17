@@ -73,3 +73,18 @@ export const seededPeopleState = (
     }))
     .sort((a, b) => byText(a.id, b.id)),
 });
+
+/** True when the person holds any role episode in the organization on `date` (inclusive). */
+export const holdsRoleAt = (
+  people: PeopleState,
+  organizationId: EntityId,
+  personId: EntityId,
+  date: string,
+): boolean =>
+  people.roleEpisodes.some(
+    (e) =>
+      e.personId === personId &&
+      e.organizationId === organizationId &&
+      e.startDate <= date &&
+      (e.endDate === null || date <= e.endDate),
+  );

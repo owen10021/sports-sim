@@ -1,4 +1,8 @@
 import type { CanonicalValue, CommandPayloadBase } from './audit';
+import {
+  routeAuthorityCommand,
+  type AuthorityCommandType,
+} from './authorityCommands';
 import type { ActorRef, CommandId } from './ids';
 import type { LeagueRulesetManifest } from './ruleset';
 import { DeterministicRng } from './rng';
@@ -30,7 +34,11 @@ export interface RouteContext {
   readonly command: CommandPayloadBase;
 }
 
-export type RouterRejectionCode = 'INVALID_PAYLOAD' | 'UNAUTHORIZED_ACTOR';
+export type RouterRejectionCode =
+  | 'INVALID_PAYLOAD'
+  | 'UNAUTHORIZED_ACTOR'
+  | 'INSUFFICIENT_AUTHORITY'
+  | 'PROTECTED_CONSTRAINT';
 
 export type RouteOutcome =
   | {
@@ -51,10 +59,22 @@ interface AdvanceDaysCommand extends CommandPayloadBase {
 }
 
 /** Every command the kernel can route. Add a member here and the switch below must handle it. */
-type RoutableCommand = AdvanceDaysCommand;
+interface AuthorityRoutedCommand extends CommandPayloadBase {
+  readonly type: AuthorityCommandType;
+}
+
+type RoutableCommand = AdvanceDaysCommand | AuthorityRoutedCommand;
 
 const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   AdvanceDays: true,
+  StartRoleEpisode: true,
+  EndRoleEpisode: true,
+  GrantAuthority: true,
+  RevokeAuthority: true,
+  CreateMandate: true,
+  RevokeMandate: true,
+  CreateProtectedConstraint: true,
+  AmendProtectedConstraint: true,
 };
 
 export const isRoutableCommandType = (type: string): boolean =>
@@ -131,9 +151,20 @@ export const routeCommand = (ctx: RouteContext): RouteOutcome => {
   switch (command.type) {
     case 'AdvanceDays':
       return routeAdvanceDays(ctx, command);
+    case 'StartRoleEpisode':
+    case 'EndRoleEpisode':
+    case 'GrantAuthority':
+    case 'RevokeAuthority':
+    case 'CreateMandate':
+    case 'RevokeMandate':
+    case 'CreateProtectedConstraint':
+    case 'AmendProtectedConstraint':
+      return routeAuthorityCommand(ctx, command);
     default: {
-      const unreachable: never = command.type;
-      throw new Error(`unroutable command type: ${String(unreachable)}`);
+      const unreachable: never = command;
+      throw new Error(
+        `unroutable command type: ${String((unreachable as CommandPayloadBase).type)}`,
+      );
     }
   }
 };

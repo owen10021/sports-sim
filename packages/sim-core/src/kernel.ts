@@ -39,6 +39,8 @@ export type RejectionCode =
   | 'DUPLICATE_COMMAND'
   | 'INVALID_PAYLOAD'
   | 'UNAUTHORIZED_ACTOR'
+  | 'INSUFFICIENT_AUTHORITY'
+  | 'PROTECTED_CONSTRAINT'
   | 'INTERNAL_ERROR';
 
 export interface Rejection {

@@ -17,6 +17,7 @@ export * from './plans';
 export * from './decisions';
 export * from './audit';
 export * from './commandRouter';
+export * from './authorityCommands';
 export * from './kernel';
 export * from './persistence';
 export * from './memoryCareerStore';
