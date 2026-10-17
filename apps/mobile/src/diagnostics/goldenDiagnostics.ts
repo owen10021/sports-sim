@@ -4,7 +4,10 @@ import {
   runGoldenScenario,
   runGoldenThroughStore,
 } from '@sport-sim/sim-core';
-import { ExpoSqliteDatabase } from '../persistence/expoSqliteDatabase';
+import {
+  disposeScratchDatabases,
+  openScratchDatabase,
+} from '../persistence/scratchDatabase';
 import { SqliteCareerStore } from '../persistence/sqliteCareerStore';
 import type { DiagnosticLine } from './careerDiagnostics';
 
@@ -28,8 +31,13 @@ export const runGoldenOnDevice = async (): Promise<GoldenDiagnostics> => {
       ? { ok: true, text: 'MATCH Node golden (fingerprint + event-chain head)' }
       : { ok: false, text: `MISMATCH: ${directDiffs.join(' | ')}` };
 
-  const db = await ExpoSqliteDatabase.open(':memory:');
-  const run = await runGoldenThroughStore(new SqliteCareerStore(db));
+  let run;
+  try {
+    const db = await openScratchDatabase();
+    run = await runGoldenThroughStore(new SqliteCareerStore(db));
+  } finally {
+    await disposeScratchDatabases();
+  }
   const storeDiffs = diffGolden(run.result, GOLDEN_EXPECTED);
   if (run.loadStatus !== 'loaded')
     storeDiffs.push(`load status ${run.loadStatus}`);
