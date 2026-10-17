@@ -14,25 +14,25 @@ export type PlanKind = (typeof PLAN_KINDS)[number];
 export type PlanStatus = 'active' | 'superseded' | 'closed';
 export type PlanPriority = 'low' | 'medium' | 'high' | 'critical';
 
-export interface PlanObjective {
+export type PlanObjective = {
   readonly key: string;
   readonly priority: PlanPriority;
   readonly target: CanonicalValue;
-}
+};
 
-export interface PlanConstraint {
+export type PlanConstraint = {
   readonly key: string;
   readonly kind: 'hard' | 'preference';
   readonly value: CanonicalValue;
-}
+};
 
-export interface PlanTrigger {
+export type PlanTrigger = {
   readonly kind: 'date' | 'claim' | 'event' | 'manual_review';
   readonly refId: string;
   readonly note: string;
-}
+};
 
-export interface PlanRevision {
+export type PlanRevision = {
   readonly revision: number;
   readonly ownerPersonId: EntityId;
   readonly effectiveAt: string;
@@ -43,9 +43,9 @@ export interface PlanRevision {
   readonly fallbackPlanIds: readonly RecordId[];
   readonly basisBeliefIds: readonly RecordId[];
   readonly changeReasonRefs: readonly RecordId[];
-}
+};
 
-export interface OrganizationPlan {
+export type OrganizationPlan = {
   readonly id: RecordId;
   readonly organizationId: EntityId;
   readonly kind: PlanKind;
@@ -53,10 +53,10 @@ export interface OrganizationPlan {
   readonly status: PlanStatus;
   readonly currentRevision: number;
   readonly revisions: readonly PlanRevision[];
-}
+};
 
-export interface PlansState {
+export type PlansState = {
   readonly plans: readonly OrganizationPlan[];
-}
+};
 
 export const emptyPlansState = (): PlansState => ({ plans: [] });

@@ -4,6 +4,7 @@ import {
   type AuthorityCommandType,
 } from './authorityCommands';
 import type { ActorRef, CommandId } from './ids';
+import { routePlanCommand, type PlanCommandType } from './planCommands';
 import {
   routeDecisionCommand,
   type DecisionCommandType,
@@ -87,12 +88,17 @@ interface DecisionRoutedCommand extends CommandPayloadBase {
   readonly type: DecisionCommandType;
 }
 
+interface PlanRoutedCommand extends CommandPayloadBase {
+  readonly type: PlanCommandType;
+}
+
 type RoutableCommand =
   | AdvanceDaysCommand
   | AuthorityRoutedCommand
   | InformationRoutedCommand
   | RelationshipRoutedCommand
-  | DecisionRoutedCommand;
+  | DecisionRoutedCommand
+  | PlanRoutedCommand;
 
 const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   AdvanceDays: true,
@@ -114,6 +120,7 @@ const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   VetoProposal: true,
   WithdrawProposal: true,
   ExpireProposal: true,
+  CommitPlanProposal: true,
 };
 
 export const isRoutableCommandType = (type: string): boolean =>
@@ -212,6 +219,8 @@ export const routeCommand = (ctx: RouteContext): RouteOutcome => {
     case 'WithdrawProposal':
     case 'ExpireProposal':
       return routeDecisionCommand(ctx, command);
+    case 'CommitPlanProposal':
+      return routePlanCommand(ctx, command);
     default: {
       const unreachable: never = command;
       throw new Error(

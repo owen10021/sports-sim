@@ -110,6 +110,7 @@ const takenRecordIds = (world: FootballWorld): Set<string> =>
     ...world.information.beliefs.map((x) => x.id),
     ...world.relationships.edges.map((x) => x.id),
     ...world.relationships.effects.map((x) => x.id),
+    ...world.plans.plans.map((x) => x.id),
     ...world.decisions.proposals.map((x) => x.id),
     ...world.decisions.approvals.map((x) => x.id),
     ...world.decisions.receipts.map((x) => x.id),
