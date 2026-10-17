@@ -16,3 +16,4 @@ export * from './recoveryContract';
 export * from './recovery';
 export * from './careerIntegrity';
 export * from './replay';
+export * from './syntheticFixtures';

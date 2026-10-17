@@ -1,0 +1,32 @@
+# Evidence: npx expo export --platform ios (Windows, rescueadmin account)
+# Captured: 2026-10-16T23:10:07.3727678-04:00
+# Node v24.19.0, npm 11.17.0
+# Source commit (parent): 4fa0daa91f30dea9ac09d90b56a594bac818f2db
+# Command: cd apps/mobile && npx expo export --platform ios
+
+Expo Autolinking module resolution enabled
+Starting Metro Bundler
+
+iOS Bundled 39119ms node_modules\expo-router\entry.js (1174 modules)
+
+â€º Assets (23):
+..\..\node_modules\expo-router\assets\arrow_down.png (9.5KB)
+..\..\node_modules\expo-router\assets\error.png (469B)
+..\..\node_modules\expo-router\assets\file.png (138B)
+..\..\node_modules\expo-router\assets\forward.png (188B)
+..\..\node_modules\expo-router\assets\pkg.png (364B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\back-icon-mask.png (653B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\back-icon.png (4 variations | 566B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\clear-icon.png (4 variations | 425B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\close-icon.png (4 variations | 235B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\search-icon.png (3 variations | 582B)
+..\..\node_modules\expo-router\assets\sitemap.png (465B)
+..\..\node_modules\expo-router\assets\unmatched.png (4.8KB)
+
+â€º ios bundles (1):
+_expo/static/js/ios/entry-61468f17c4dc78243b4cb1c44d55d57d.hbc (2.7MB)
+
+â€º Files (1):
+metadata.json (1.6KB)
+
+Exported: dist
