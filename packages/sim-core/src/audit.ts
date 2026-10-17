@@ -10,7 +10,14 @@ import {
   type WorldRevision,
 } from './ids';
 import { SimDate } from './simDate';
-import type { CanonicalValue } from './canonical';
+/** JSON-like authoritative data: integers, strings, booleans, null, arrays, plain objects. */
+export type CanonicalValue =
+  | string
+  | number
+  | boolean
+  | null
+  | readonly CanonicalValue[]
+  | { readonly [key: string]: CanonicalValue };
 
 /** Hash that the first event of a career chain links to. */
 export const GENESIS_HASH = '0'.repeat(64);
