@@ -1,8 +1,7 @@
-python : Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut 
-from Settings > Apps > Advanced app settings > App execution aliases.
-At line:1 char:82
-+ ... indows.txt; python evidence\independent-golden-reference.py 2>&1 | Ou ...
-+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: (Python was not ...cution aliases.:String) [], RemoteException
-    + FullyQualifiedErrorId : NativeCommandError
- 
+Run with Python 3 (Linux sandbox, python3 -I evidence/independent-golden-reference.py), shares no code with the TypeScript implementation.
+Final values (match Node and Hermes):
+  fingerprint    fd3baa44a20b08e5e6f4948adc6f123da62c7239ad04062f185f8cec96a53bda
+  eventChainHead d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a
+Per-step fingerprints:
+  advance-1 dde4d6daa87ca7f85a513fd101437d826b9665d975cd579de006d6bc1f612335
+  advance-6 36b765558574271cad3a814a71daab797fd44dc9e3d0c18790072e069931b4f5
