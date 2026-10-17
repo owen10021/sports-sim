@@ -49,3 +49,4 @@ export * from './packageBScenario';
 export * from './packageBGoldenExpected';
 export * from './packageCWorldSeed';
 export * from './transactionCommit';
+export * from './rosterCommands';

@@ -1,3 +1,8 @@
+import {
+  transactionSeasonRules,
+  type TransactionRulesV1,
+  type TransactionSeasonRules,
+} from './economy';
 import { entityId, recordId, type EntityId, type RecordId } from './ids';
 import type { PackageCSubstrateSeed } from './packageCSeedParse';
 
@@ -123,4 +128,218 @@ export const seededRosterState = (
     waiverClaims: [],
     waiverPriority: sub.waiverPriority.map((o) => entityId(o)),
   };
+};
+
+// ---------------------------------------------------------------------------
+// Pure queries and invariants (derived, never stored)
+// ---------------------------------------------------------------------------
+
+/**
+ * The ruleset season a logical date belongs to. Interpretation: the calendar year of the
+ * date, because the ruleset keys every season's cap, limits, windows and draft date by one
+ * year number. A date in a year the ruleset does not cover has no rules and is refused by
+ * `transactionSeasonRules`.
+ */
+export const seasonOfDate = (date: string): number => Number(date.slice(0, 4));
+
+type Interval = {
+  readonly effectiveFrom: string;
+  readonly effectiveUntil: string | null;
+};
+const isEffectiveOn = (r: Interval, date: string): boolean =>
+  r.effectiveFrom <= date &&
+  (r.effectiveUntil === null || date <= r.effectiveUntil);
+
+/** Every right in force for a player on `date`, in stable id order. */
+export const activeRightsFor = (
+  roster: Pick<RosterState, 'rights'>,
+  playerId: EntityId,
+  date: string,
+): readonly PlayerRightsRecord[] =>
+  roster.rights
+    .filter((r) => r.playerId === playerId && isEffectiveOn(r, date))
+    .sort((a, b) => byText(a.id, b.id));
+
+/** The organization holding rights to a player on `date`; `undefined` for a free agent. */
+export const currentRightsHolder = (
+  roster: Pick<RosterState, 'rights'>,
+  playerId: EntityId,
+  date: string,
+): PlayerRightsRecord | undefined => activeRightsFor(roster, playerId, date)[0];
+
+const activeMembershipsFor = (
+  roster: Pick<RosterState, 'memberships'>,
+  playerId: EntityId,
+  date: string,
+): readonly RosterMembership[] =>
+  roster.memberships
+    .filter((m) => m.playerId === playerId && isEffectiveOn(m, date))
+    .sort((a, b) => byText(a.id, b.id));
+
+export const currentRosterMembership = (
+  roster: Pick<RosterState, 'memberships'>,
+  playerId: EntityId,
+  date: string,
+): RosterMembership | undefined =>
+  activeMembershipsFor(roster, playerId, date)[0];
+
+export type GroupedRoster = {
+  readonly [S in RosterStatus]: readonly RosterMembership[];
+};
+
+/** An organization's roster on `date`, grouped by status, in stable player order. */
+export const organizationRoster = (
+  roster: Pick<RosterState, 'memberships'>,
+  organizationId: EntityId,
+  date: string,
+): GroupedRoster => {
+  const mine = roster.memberships
+    .filter(
+      (m) => m.organizationId === organizationId && isEffectiveOn(m, date),
+    )
+    .sort((a, b) => byText(a.playerId, b.playerId) || byText(a.id, b.id));
+  return {
+    active: mine.filter((m) => m.status === 'active'),
+    reserve: mine.filter((m) => m.status === 'reserve'),
+    practice_squad: mine.filter((m) => m.status === 'practice_squad'),
+  };
+};
+
+export type StatusCapacity = {
+  readonly count: number;
+  readonly limit: number;
+  /** Open slots; never negative (an over-limit state is reported by the invariant audit). */
+  readonly room: number;
+};
+export type RosterCapacity = { readonly [S in RosterStatus]: StatusCapacity };
+
+const limitFor = (
+  seasonRules: TransactionSeasonRules,
+  status: RosterStatus,
+): number =>
+  status === 'active'
+    ? seasonRules.activeRosterLimit
+    : status === 'reserve'
+      ? seasonRules.reserveRosterLimit
+      : seasonRules.practiceSquadLimit;
+
+/** Roster counts against the ruleset limits for the date's season. Throws on an uncovered season. */
+export const rosterCapacity = (
+  roster: Pick<RosterState, 'memberships'>,
+  tx: TransactionRulesV1,
+  organizationId: EntityId,
+  date: string,
+): RosterCapacity => {
+  const rules = transactionSeasonRules(tx, seasonOfDate(date));
+  const grouped = organizationRoster(roster, organizationId, date);
+  const one = (status: RosterStatus): StatusCapacity => {
+    const count = grouped[status].length;
+    const limit = limitFor(rules, status);
+    return { count, limit, room: Math.max(0, limit - count) };
+  };
+  return {
+    active: one('active'),
+    reserve: one('reserve'),
+    practice_squad: one('practice_squad'),
+  };
+};
+
+/** Whether `organizationId` holds a contract right to the player on `date`. */
+export const holdsContractRight = (
+  roster: Pick<RosterState, 'rights'>,
+  playerId: EntityId,
+  organizationId: EntityId,
+  date: string,
+): boolean =>
+  activeRightsFor(roster, playerId, date).some(
+    (r) => r.holderOrganizationId === organizationId && r.kind === 'contract',
+  );
+
+export const ROSTER_INVARIANT_CODES = [
+  'ACTIVE_OVER_LIMIT',
+  'DUPLICATE_ACTIVE_MEMBERSHIP',
+  'DUPLICATE_ACTIVE_RIGHTS',
+  'MEMBERSHIP_WITHOUT_RIGHTS',
+  'PRACTICE_SQUAD_OVER_LIMIT',
+  'RESERVE_OVER_LIMIT',
+] as const;
+export type RosterInvariantCode = (typeof ROSTER_INVARIANT_CODES)[number];
+
+export type RosterInvariantFinding = {
+  readonly code: RosterInvariantCode;
+  readonly organizationId: EntityId | null;
+  readonly playerId: EntityId | null;
+  readonly detail: string;
+};
+
+const bySubject = (
+  a: RosterInvariantFinding,
+  b: RosterInvariantFinding,
+): number =>
+  byText(a.code, b.code) ||
+  byText(a.organizationId ?? '', b.organizationId ?? '') ||
+  byText(a.playerId ?? '', b.playerId ?? '');
+
+/**
+ * Audits roster conservation on `date`: one holder and one membership per player, every
+ * membership backed by a contract right of the same organization, and every status within
+ * the ruleset limit. Findings are sorted; a clean roster returns `[]`.
+ */
+export const rosterInvariantFindings = (
+  roster: Pick<RosterState, 'rights' | 'memberships'>,
+  tx: TransactionRulesV1,
+  date: string,
+): readonly RosterInvariantFinding[] => {
+  const findings: RosterInvariantFinding[] = [];
+  const rightsBy = new Map<EntityId, number>();
+  for (const r of roster.rights)
+    if (isEffectiveOn(r, date))
+      rightsBy.set(r.playerId, (rightsBy.get(r.playerId) ?? 0) + 1);
+  for (const [playerId, n] of rightsBy)
+    if (n > 1)
+      findings.push({
+        code: 'DUPLICATE_ACTIVE_RIGHTS',
+        organizationId: null,
+        playerId,
+        detail: `${playerId} has ${n} active rights records`,
+      });
+  const membershipsBy = new Map<EntityId, number>();
+  const orgs = new Set<EntityId>();
+  for (const m of roster.memberships) {
+    if (!isEffectiveOn(m, date)) continue;
+    orgs.add(m.organizationId);
+    membershipsBy.set(m.playerId, (membershipsBy.get(m.playerId) ?? 0) + 1);
+    if (!holdsContractRight(roster, m.playerId, m.organizationId, date))
+      findings.push({
+        code: 'MEMBERSHIP_WITHOUT_RIGHTS',
+        organizationId: m.organizationId,
+        playerId: m.playerId,
+        detail: `${m.playerId} is on ${m.organizationId} without a contract right held by it`,
+      });
+  }
+  for (const [playerId, n] of membershipsBy)
+    if (n > 1)
+      findings.push({
+        code: 'DUPLICATE_ACTIVE_MEMBERSHIP',
+        organizationId: null,
+        playerId,
+        detail: `${playerId} has ${n} active memberships`,
+      });
+  const overCode = {
+    active: 'ACTIVE_OVER_LIMIT',
+    reserve: 'RESERVE_OVER_LIMIT',
+    practice_squad: 'PRACTICE_SQUAD_OVER_LIMIT',
+  } as const;
+  for (const organizationId of orgs) {
+    const cap = rosterCapacity(roster, tx, organizationId, date);
+    for (const status of ROSTER_STATUSES)
+      if (cap[status].count > cap[status].limit)
+        findings.push({
+          code: overCode[status],
+          organizationId,
+          playerId: null,
+          detail: `${organizationId} has ${cap[status].count} ${status} players, limit ${cap[status].limit}`,
+        });
+  }
+  return findings.sort(bySubject);
 };
