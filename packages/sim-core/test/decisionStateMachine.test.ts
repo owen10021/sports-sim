@@ -104,7 +104,7 @@ describe('submission and direct authorization', () => {
     const before = snapshotOf(r.kernel);
     const bads: Record<string, unknown>[] = [
       submitCommand(NF.gm, { category: 'free_agency' }),
-      submitCommand(NF.gm, { category: 'roster' }),
+      submitCommand(NF.gm, { category: 'game_day_activation' }),
       submitCommand(NF.gm, { subjects: [] }),
       submitCommand(NF.gm, { subjects: [{ kind: 'entity', id: 'nobody' }] }),
       submitCommand(NF.gm, { termsType: '' }),

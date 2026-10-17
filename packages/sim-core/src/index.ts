@@ -48,3 +48,4 @@ export * from './orgSubstrateSeed';
 export * from './packageBScenario';
 export * from './packageBGoldenExpected';
 export * from './packageCWorldSeed';
+export * from './transactionCommit';

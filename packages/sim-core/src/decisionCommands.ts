@@ -56,9 +56,20 @@ export const DECISION_COMMAND_TYPES = [
 ] as const;
 export type DecisionCommandType = (typeof DECISION_COMMAND_TYPES)[number];
 
-/** Package B exercises the first three categories; the rest are reserved. */
-const PROPOSAL_CATEGORIES: readonly DecisionCategory[] =
-  DECISION_CATEGORIES.slice(0, 3);
+/**
+ * Package B exercised the first three categories. Package C opens the four acquisition
+ * categories; game-day, medical and workload categories stay reserved.
+ */
+export const PACKAGE_C_PROPOSAL_CATEGORIES: readonly DecisionCategory[] = [
+  'acquisition',
+  'contract',
+  'roster',
+  'major_trade',
+];
+const PROPOSAL_CATEGORIES: readonly DecisionCategory[] = [
+  ...DECISION_CATEGORIES.slice(0, 3),
+  ...PACKAGE_C_PROPOSAL_CATEGORIES,
+];
 
 const MAX_SUBJECTS = 8;
 
@@ -608,16 +619,26 @@ const routeRevise = (ctx: RouteContext, c: Cmd): RouteOutcome => {
 
 // --- the commit gate ----------------------------------------------------------
 
-export interface CommitProposalInput {
-  /** The world after the domain adapter's own changes. Decision state is layered on top. */
-  readonly nextWorld: FootballWorld;
+export interface CommitPart {
   readonly proposalId: string;
   readonly expectedRevision: number;
   readonly actorPersonId: EntityId;
   readonly beliefIds: readonly string[];
   readonly evidenceClaimIds: readonly string[];
   readonly rationale: CanonicalValue;
+}
+
+export interface CommitProposalInput extends CommitPart {
+  /** The world after the domain adapter's own changes. Decision state is layered on top. */
+  readonly nextWorld: FootballWorld;
   /** The adapter's own events; the gate appends the commit and receipt events after them. */
+  readonly domainEvents: readonly EventSpec[];
+}
+
+export interface CommitProposalsInput {
+  readonly nextWorld: FootballWorld;
+  /** One part per proposal that this single atomic domain change executes (a trade has two). */
+  readonly parts: readonly CommitPart[];
   readonly domainEvents: readonly EventSpec[];
 }
 
@@ -633,23 +654,26 @@ const checkedIds = (
   return v.map(recordId);
 };
 
-/**
- * The only way a proposal becomes committed. A domain adapter (never a generic command)
- * calls this with the world it has already changed; the gate re-derives authority from
- * current rights, checks the exact terms hash and deadline, requires `execute`, and layers
- * the proposal state, an immutable receipt, and the commit events onto the result.
- */
-export const commitProposal = (
-  ctx: RouteContext,
-  input: CommitProposalInput,
-): RouteOutcome => {
-  const { world } = ctx;
+interface ValidatedPart {
+  readonly part: CommitPart;
+  readonly proposal: ProposalRecord;
+  readonly beliefs: readonly RecordId[];
+  readonly evidence: readonly RecordId[];
+  readonly execute: NonNullable<ReturnType<typeof rightBackingAt>>;
+  readonly authorization: ReturnType<typeof evaluateProposalAuthority>;
+}
+
+/** Everything that must still hold at the instant of commit, re-derived from current state. */
+const validatePart = (
+  world: FootballWorld,
+  part: CommitPart,
+): ValidatedPart | Failure => {
   const today = world.simDate;
-  const proposal = latestProposal(world.decisions, input.proposalId);
+  const proposal = latestProposal(world.decisions, part.proposalId);
   if (proposal === undefined) return bad('proposalId does not name a proposal');
-  if (input.expectedRevision !== proposal.revision)
+  if (part.expectedRevision !== proposal.revision)
     return bad(
-      `proposal revision is stale: expected ${input.expectedRevision}, latest is ${proposal.revision}`,
+      `proposal revision is stale: expected ${part.expectedRevision}, latest is ${proposal.revision}`,
     );
   if (proposal.state !== 'authorized')
     return bad(
@@ -658,7 +682,7 @@ export const commitProposal = (
   if (!isProposalLiveAt(proposal, today)) return bad('proposal has expired');
   if (proposalTermsHash(proposal) !== proposal.termsHash)
     return bad('proposal terms no longer match their hash');
-  const beliefs = checkedIds(input.beliefIds, 'beliefIds', (id) =>
+  const beliefs = checkedIds(part.beliefIds, 'beliefIds', (id) =>
     world.information.beliefs.some(
       (b) =>
         b.id === id &&
@@ -666,20 +690,20 @@ export const commitProposal = (
         isBeliefVisibleTo(
           world,
           proposal.organizationId,
-          input.actorPersonId,
+          part.actorPersonId,
           b,
         ),
     ),
   );
   if (isFailure(beliefs)) return beliefs;
   const evidence = checkedIds(
-    input.evidenceClaimIds,
+    part.evidenceClaimIds,
     'evidenceClaimIds',
     (id) =>
       findVisibleClaim(
         world,
         proposal.organizationId,
-        input.actorPersonId,
+        part.actorPersonId,
         id,
       ) !== undefined,
   );
@@ -688,74 +712,138 @@ export const commitProposal = (
   const execute = rightBackingAt(
     world,
     proposal.organizationId,
-    input.actorPersonId,
+    part.actorPersonId,
     proposal.category,
     'execute',
     today,
   );
   if (execute === null)
     return denied(
-      `${input.actorPersonId} lacks execute on ${proposal.category} in ${proposal.organizationId}`,
+      `${part.actorPersonId} lacks execute on ${proposal.category} in ${proposal.organizationId}`,
     );
   const authorization = evaluateProposalAuthority(world, proposal, today);
   if (!authorization.satisfied)
     return denied(
       `authorization no longer holds: ${authorization.reasons.join('; ')}`,
     );
+  return { part, proposal, beliefs, evidence, execute, authorization };
+};
 
-  const minted = mintRecordIds(input.nextWorld, 1);
+/**
+ * The only way proposals become committed. A domain adapter (never a generic command)
+ * calls this with the world it has already changed; the gate re-derives authority from
+ * current rights, checks the exact terms hash and deadline, requires `execute`, and layers
+ * the proposal state, immutable receipts, and the commit events onto the result. Every
+ * proposal in `parts` commits in the same resolution or none does.
+ */
+export const commitProposals = (
+  ctx: RouteContext,
+  input: CommitProposalsInput,
+): RouteOutcome => {
+  const { world } = ctx;
+  const today = world.simDate;
+  if (input.parts.length === 0) return bad('at least one proposal must commit');
+  if (new Set(input.parts.map((p) => p.proposalId)).size !== input.parts.length)
+    return bad('the same proposal cannot commit twice in one resolution');
+  const ordered = [...input.parts].sort((a, b) =>
+    a.proposalId < b.proposalId ? -1 : a.proposalId > b.proposalId ? 1 : 0,
+  );
+  const validated: ValidatedPart[] = [];
+  for (const part of ordered) {
+    const v = validatePart(world, part);
+    if (isFailure(v)) return v;
+    validated.push(v);
+  }
+
+  const minted = mintRecordIds(input.nextWorld, validated.length);
   const firstEvent = world.nextIds.event;
-  const total = input.domainEvents.length + 2;
+  const total = input.domainEvents.length + 2 * validated.length;
   const outcomeEventIds = Array.from({ length: total }, (_, i) =>
     eventId(`evt-${pad(firstEvent + i)}`),
   );
-  const receipt: DecisionReceipt = {
-    id: minted.ids[0]!,
-    proposalId: proposal.id,
-    proposalRevision: proposal.revision,
+  const receipts: DecisionReceipt[] = validated.map((v, i) => ({
+    id: minted.ids[i]!,
+    proposalId: v.proposal.id,
+    proposalRevision: v.proposal.revision,
     commandId: ctx.commandId,
-    actorPersonId: input.actorPersonId,
+    actorPersonId: v.part.actorPersonId,
     authorityGrantIds: [
-      ...new Set([...execute.grantIds, ...authorization.grantIds]),
+      ...new Set([...v.execute.grantIds, ...v.authorization.grantIds]),
     ].sort(),
-    evidenceClaimIds: evidence,
-    beliefIds: beliefs,
-    approvalIds: authorization.approvalIds,
-    mandateId: execute.mandateId,
-    executedTermsHash: proposal.termsHash,
+    evidenceClaimIds: v.evidence,
+    beliefIds: v.beliefs,
+    approvalIds: v.authorization.approvalIds,
+    mandateId: v.execute.mandateId,
+    executedTermsHash: v.proposal.termsHash,
     committedAt: today,
     outcomeEventIds,
-    originalRationale: input.rationale,
+    originalRationale: v.part.rationale,
+  }));
+  let decisions: DecisionsState = input.nextWorld.decisions;
+  for (const v of validated)
+    decisions = replaceProposal(decisions, {
+      ...v.proposal,
+      state: 'committed',
+    });
+  decisions = {
+    ...decisions,
+    receipts: [...decisions.receipts, ...receipts].sort(compareById),
   };
-  const committed: ProposalRecord = { ...proposal, state: 'committed' };
-  const decisions: DecisionsState = {
-    ...replaceProposal(input.nextWorld.decisions, committed),
-    receipts: [...input.nextWorld.decisions.receipts, receipt].sort(
-      compareById,
-    ),
-  };
+  const commitSpecs: EventSpec[] = [];
+  validated.forEach((v, i) => {
+    commitSpecs.push(
+      spec('ProposalCommitted', {
+        proposalId: v.proposal.id,
+        revision: v.proposal.revision,
+        actingPersonId: v.part.actorPersonId,
+      }),
+      spec('DecisionReceiptRecorded', { receipt: { ...receipts[i]! } }),
+    );
+  });
   return {
     ok: true,
-    authorizationDetail: `${input.actorPersonId} holds execute; authorization re-derived`,
+    authorizationDetail:
+      validated.length === 1
+        ? `${validated[0]!.part.actorPersonId} holds execute; authorization re-derived`
+        : validated
+            .map(
+              (v) =>
+                `${v.part.actorPersonId} holds execute on ${v.proposal.id}; authorization re-derived`,
+            )
+            .join('; '),
     resolution: {
       nextWorld: {
         ...input.nextWorld,
         decisions,
         nextIds: { ...input.nextWorld.nextIds, record: minted.next },
       },
-      eventSpecs: [
-        ...input.domainEvents,
-        spec('ProposalCommitted', {
-          proposalId: proposal.id,
-          revision: proposal.revision,
-          actingPersonId: input.actorPersonId,
-        }),
-        spec('DecisionReceiptRecorded', { receipt: { ...receipt } }),
-      ],
-      detail: `committed ${proposal.id}/${proposal.revision}`,
+      eventSpecs: [...input.domainEvents, ...commitSpecs],
+      detail: validated
+        .map((v) => `committed ${v.proposal.id}/${v.proposal.revision}`)
+        .join('; '),
     },
   };
 };
+
+/** Single-proposal commit: the established Package B gate, now a one-part `commitProposals`. */
+export const commitProposal = (
+  ctx: RouteContext,
+  input: CommitProposalInput,
+): RouteOutcome =>
+  commitProposals(ctx, {
+    nextWorld: input.nextWorld,
+    domainEvents: input.domainEvents,
+    parts: [
+      {
+        proposalId: input.proposalId,
+        expectedRevision: input.expectedRevision,
+        actorPersonId: input.actorPersonId,
+        beliefIds: input.beliefIds,
+        evidenceClaimIds: input.evidenceClaimIds,
+        rationale: input.rationale,
+      },
+    ],
+  });
 
 export const routeDecisionCommand = (
   ctx: RouteContext,
