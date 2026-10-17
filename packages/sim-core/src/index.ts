@@ -9,3 +9,6 @@ export * from './rng';
 export * from './world';
 export * from './audit';
 export * from './kernel';
+export * from './persistence';
+export * from './memoryCareerStore';
+export * from './persistenceContract';
