@@ -1,4 +1,6 @@
+import type { SeasonAmount } from './contracts';
 import { entityId, recordId, type EntityId, type RecordId } from './ids';
+import type { RosterStatus } from './roster';
 import type { PackageCSubstrateSeed } from './packageCSeedParse';
 
 /**
@@ -32,13 +34,38 @@ export type PlayerMarketPreferenceProfile = {
   readonly flexibility: PreferenceLevel;
 };
 
+export const RESERVATION_SOURCE_KINDS = [
+  'waiver_claim',
+  'contract_offer',
+  'trade_offer',
+] as const;
+export type ReservationSourceKind = (typeof RESERVATION_SOURCE_KINDS)[number];
+export const RESERVATION_STATUSES = ['active', 'released', 'consumed'] as const;
+export type ReservationStatus = (typeof RESERVATION_STATUSES)[number];
+
+/**
+ * Cap room and a roster slot held for a pending commitment, so two pending commitments can
+ * never spend the same room. Active reservations count against availability; released and
+ * consumed ones are history.
+ */
+export type Reservation = {
+  readonly id: RecordId;
+  readonly organizationId: EntityId;
+  readonly sourceKind: ReservationSourceKind;
+  readonly sourceRecordId: RecordId;
+  readonly capBySeason: readonly SeasonAmount[];
+  readonly rosterSlotStatus: RosterStatus | null;
+  readonly createdAt: string;
+  readonly status: ReservationStatus;
+};
+
 export type MarketState = {
   readonly agentClients: readonly AgentClientRecord[];
   readonly playerPreferences: readonly PlayerMarketPreferenceProfile[];
   readonly inquiries: readonly unknown[];
   readonly tradeOffers: readonly unknown[];
   readonly contractOffers: readonly unknown[];
-  readonly reservations: readonly unknown[];
+  readonly reservations: readonly Reservation[];
   readonly responses: readonly unknown[];
 };
 
@@ -82,3 +109,30 @@ export const seededMarketState = (
       .sort((a, b) => byText(a.playerPersonId, b.playerPersonId)),
   };
 };
+
+/** Cap room held for an organization's pending commitments in a season. */
+export const reservedCap = (
+  market: Pick<MarketState, 'reservations'>,
+  organizationId: EntityId,
+  season: number,
+): number =>
+  market.reservations
+    .filter((r) => r.organizationId === organizationId && r.status === 'active')
+    .reduce(
+      (sum, r) =>
+        sum + (r.capBySeason.find((x) => x.season === season)?.amount ?? 0),
+      0,
+    );
+
+/** Roster slots held for an organization's pending commitments on one list. */
+export const reservedSlots = (
+  market: Pick<MarketState, 'reservations'>,
+  organizationId: EntityId,
+  status: RosterStatus,
+): number =>
+  market.reservations.filter(
+    (r) =>
+      r.organizationId === organizationId &&
+      r.status === 'active' &&
+      r.rosterSlotStatus === status,
+  ).length;

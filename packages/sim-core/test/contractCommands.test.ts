@@ -99,14 +99,16 @@ describe('seeded contracts', () => {
 });
 
 describe('CommitReleaseProposal under a waive-all ruleset', () => {
-  it('refuses to shortcut a release into free agency', () => {
+  it('sends an active player to waivers instead of free agency', () => {
     const r = runnerFor(newPackageCKernel());
     submitRelease(r, NF.org, NF.gm, 'player-nf-01');
-    const before = snapshotOf(r.kernel);
-    const res = commit(r, NF.gm);
-    expect(codeOf(res)).toBe('INVALID_PAYLOAD');
-    expect(messageOf(res)).toContain('waivers');
-    expect(snapshotOf(r.kernel)).toEqual(before);
+    const res = okResult(commit(r, NF.gm));
+    expect(types(res)[0]).toBe('WaiverOpened');
+    expect(res.world.contracts.terminations).toHaveLength(0);
+    expect(
+      currentRightsHolder(res.world.roster, entityId('player-nf-01'), TODAY)
+        ?.holderOrganizationId,
+    ).toBe(NF.org);
   });
 });
 

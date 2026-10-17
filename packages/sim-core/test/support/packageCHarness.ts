@@ -114,28 +114,31 @@ export const submitDomain = (
   ...extra,
 });
 
+type TxBody = Record<string, unknown> & {
+  waivers: Record<string, unknown>;
+  seasonRules: Record<string, unknown>[];
+};
+
 /**
- * The same Package C world under a ruleset whose released players do not pass through
- * waivers (`releasedPlayerWaiverPolicy: 'none'`). The seed is re-sealed against the variant
- * ruleset so nothing but that one rule differs.
+ * The Package C world under a variant transaction ruleset. The seed is re-sealed against the
+ * variant ruleset so nothing but the patched rules differs.
  */
-export const newNoWaiverKernel = (options?: KernelOptions): WorldKernel => {
+export const newVariantKernel = (
+  patch: (tx: TxBody) => TxBody,
+  options?: KernelOptions,
+): WorldKernel => {
   const { contentHash: _ruleHash, ...rulesetBody } =
     SYNTHETIC_PACKAGE_C_RULESET as unknown as Record<string, unknown> & {
-      rules: { transactions: { waivers: Record<string, unknown> } };
+      rules: { transactions: TxBody };
     };
   void _ruleHash;
   const ruleset = sealRuleset({
     ...rulesetBody,
     rules: {
       ...rulesetBody.rules,
-      transactions: {
-        ...rulesetBody.rules.transactions,
-        waivers: {
-          ...rulesetBody.rules.transactions.waivers,
-          releasedPlayerWaiverPolicy: 'none',
-        },
-      },
+      transactions: patch(
+        structuredClone(rulesetBody.rules.transactions) as TxBody,
+      ),
     },
   } as unknown as LeagueRulesetBody);
   const { contentHash: _seedHash, ...seedBody } =
@@ -153,3 +156,29 @@ export const newNoWaiverKernel = (options?: KernelOptions): WorldKernel => {
     options,
   );
 };
+
+/** Released players do not pass through waivers (`releasedPlayerWaiverPolicy: 'none'`). */
+export const newNoWaiverKernel = (options?: KernelOptions): WorldKernel =>
+  newVariantKernel(
+    (tx) => ({
+      ...tx,
+      waivers: { ...tx.waivers, releasedPlayerWaiverPolicy: 'none' },
+    }),
+    options,
+  );
+
+/** Every season's salary cap replaced by `capFor(season, current)`. */
+export const newCapKernel = (
+  capFor: (season: number, current: number) => number,
+  options?: KernelOptions,
+): WorldKernel =>
+  newVariantKernel(
+    (tx) => ({
+      ...tx,
+      seasonRules: tx.seasonRules.map((s) => ({
+        ...s,
+        salaryCap: capFor(Number(s.season), Number(s.salaryCap)),
+      })),
+    }),
+    options,
+  );

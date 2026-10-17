@@ -78,6 +78,7 @@ const agreement = (
   signedAt: '2027-01-01',
   sourceOfferId: null,
   sourceProposalId: null,
+  supersedesAgreementId: null,
   status,
 });
 

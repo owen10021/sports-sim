@@ -63,13 +63,51 @@ export type RosterMembership = {
   readonly sourceRecordId: RecordId;
 };
 
+export const WAIVER_STATUSES = [
+  'open',
+  'awarded',
+  'unclaimed',
+  'cancelled',
+] as const;
+export type WaiverStatus = (typeof WAIVER_STATUSES)[number];
+
+/**
+ * A waiver period for one player. While it is open the waiving club keeps the player's
+ * contract agreement and rights (and so the cap charge); only the roster membership has
+ * ended. Resolution either moves contract and rights to a claimant or terminates the contract.
+ */
+export type WaiverRecord = {
+  readonly id: RecordId;
+  readonly playerId: EntityId;
+  readonly waivingOrganizationId: EntityId;
+  readonly contractAgreementId: RecordId;
+  readonly openedAt: string;
+  /** Last day a claim may be submitted; resolution is possible from this day on. */
+  readonly claimDeadline: string;
+  readonly status: WaiverStatus;
+  readonly winnerOrganizationId: EntityId | null;
+  readonly resolvedAt: string | null;
+};
+
+/** A claim a club files for a waived player; it holds a reservation until it resolves. */
+export type WaiverClaim = {
+  readonly id: RecordId;
+  readonly waiverId: RecordId;
+  readonly claimingOrganizationId: EntityId;
+  readonly submittedBy: EntityId;
+  readonly submittedAt: string;
+  /** The list the claimant would place the player on. */
+  readonly rosterStatus: 'active' | 'reserve';
+  readonly reservationId: RecordId;
+  readonly active: boolean;
+};
+
 export type RosterState = {
   readonly players: readonly PlayerRecord[];
   readonly rights: readonly PlayerRightsRecord[];
   readonly memberships: readonly RosterMembership[];
-  /** Refined by Task 7 (waivers). */
-  readonly waivers: readonly unknown[];
-  readonly waiverClaims: readonly unknown[];
+  readonly waivers: readonly WaiverRecord[];
+  readonly waiverClaims: readonly WaiverClaim[];
   /** One complete, unique organization order (empty until seeded). */
   readonly waiverPriority: readonly EntityId[];
 };

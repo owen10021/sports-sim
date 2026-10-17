@@ -41,6 +41,8 @@ export type ContractAgreement = {
   readonly sourceOfferId: RecordId | null;
   /** The authorized proposal that executed it, if any (seeded contracts have none). */
   readonly sourceProposalId: RecordId | null;
+  /** The agreement a waiver claim or trade assumed; this agreement carries its terms on. */
+  readonly supersedesAgreementId: RecordId | null;
   readonly status: ContractStatus;
 };
 
@@ -105,6 +107,7 @@ export const seededContractsState = (
         signedAt: c.signedAt,
         sourceOfferId: null,
         sourceProposalId: null,
+        supersedesAgreementId: null,
         status: 'active',
       }))
       .sort((a, b) => byText(a.id, b.id)),

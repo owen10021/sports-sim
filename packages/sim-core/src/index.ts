@@ -52,3 +52,5 @@ export * from './rosterCommands';
 export * from './contractMath';
 export * from './packageCWorldSeed';
 export * from './contractCommands';
+export * from './contractLifecycle';
+export * from './waiverCommands';
