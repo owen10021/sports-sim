@@ -76,6 +76,23 @@ export const bonusProration = (
 ): readonly MoneyAmount[] =>
   prorateSigningBonus(rules, terms.signingBonus, terms.years.length);
 
+/**
+ * The unamortized signing-bonus charge an extension leaves behind: the replaced
+ * agreement's bonus proration stays on the club's books for seasons >= `fromSeason`.
+ */
+export const extensionRetainedBonus = (
+  rules: ContractRules,
+  oldTerms: ContractTermsV1,
+  fromSeason: number,
+): readonly SeasonAmount[] => {
+  const bonus = bonusProration(rules, oldTerms);
+  return nonZero(
+    oldTerms.years
+      .map((y, i) => ({ season: y.season, amount: bonus[i]! }))
+      .filter((x) => x.season >= fromSeason),
+  );
+};
+
 /** Cap charge per contract season. */
 export const capChargeBySeason = (
   rules: ContractRules,

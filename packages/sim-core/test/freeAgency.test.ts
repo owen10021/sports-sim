@@ -4,6 +4,7 @@ import {
   activeRightsFor,
   capPosition,
   entityId,
+  extensionRetainedBonus,
   fingerprintWorld,
   requireTransactionRules,
   reservedCap,
@@ -405,6 +406,34 @@ describe('extensions reuse the same path', () => {
       members,
     );
     expect(rosterInvariantFindings(w.roster, TX, w.simDate)).toEqual([]);
+  });
+
+  it('keeps the replaced contract’s unamortized bonus proration as dead cap', () => {
+    const r = fresh();
+    const old = r.kernel.world.contracts.agreements.find(
+      (a) => a.playerId === 'player-nf-01' && a.status === 'active',
+    )!;
+    okResult(
+      sendOffer(r, NF.org, NF.gm, 'player-nf-01', {
+        terms: SECURE,
+        role: 'rotation',
+        target: 'active',
+      }).res,
+    );
+    okResult(resolveMarket(r));
+    okResult(commitSigning(r, NF.gm, latestOfferOf(r, NF.org, 'player-nf-01')));
+    const w = r.kernel.world;
+    const expected = extensionRetainedBonus(
+      TX.contracts,
+      old.terms,
+      Number(w.simDate.slice(0, 4)),
+    );
+    expect(old.terms.signingBonus).toBeGreaterThan(0);
+    expect(expected.length).toBeGreaterThan(0);
+    const t = w.contracts.terminations.find((x) => x.agreementId === old.id)!;
+    expect(t.reason).toBe('extension_retained_bonus');
+    expect(t.deadCapBySeason).toEqual(expected);
+    expect(t.guaranteedCashDue).toBe(0);
   });
 
   it('refuses to extend a player who is not on the club’s roster', () => {

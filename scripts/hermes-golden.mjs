@@ -14,11 +14,12 @@ const scenario =
 const SCENARIOS = {
   'package-a': { entry: 'entry.ts', name: 'golden' },
   'package-b': { entry: 'entryPackageB.ts', name: 'package-b-golden' },
+  'package-c': { entry: 'entryPackageC.ts', name: 'package-c-golden' },
 };
 const chosen = SCENARIOS[scenario];
 if (!hermes || !chosen) {
   console.error(
-    'usage: node scripts/hermes-golden.mjs <path-to-hermes> [--scenario package-a|package-b]',
+    'usage: node scripts/hermes-golden.mjs <path-to-hermes> [--scenario package-a|package-b|package-c]',
   );
   process.exit(2);
 }

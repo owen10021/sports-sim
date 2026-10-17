@@ -18,8 +18,10 @@
     "golden:write": "tsx packages/headless/src/bin.ts golden --write",
     "golden:package-b:check": "tsx packages/headless/src/bin.ts package-b-golden",
     "golden:package-b:write": "tsx packages/headless/src/bin.ts package-b-golden --write",
+    "golden:package-c:check": "tsx packages/headless/src/bin.ts package-c-golden",
+    "golden:package-c:write": "tsx packages/headless/src/bin.ts package-c-golden --write",
     "export:ios": "npm run export:ios --workspace apps/mobile",
-    "ci": "npm run typecheck && npm test && npm run lint && npm run format:check && npm run golden:check && npm run golden:package-b:check && npm run export:ios",
+    "ci": "npm run typecheck && npm test && npm run lint && npm run format:check && npm run golden:check && npm run golden:package-b:check && npm run golden:package-c:check && npm run export:ios",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

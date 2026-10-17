@@ -1,6 +1,6 @@
 import { capChargeBySeason, capPosition } from './contractMath';
 import type { SeasonAmount } from './contracts';
-import { UnknownTransactionSeasonError } from './economy';
+import { UnknownTransactionSeasonError, addMoney } from './economy';
 import type { TransactionRulesV1 } from './economy';
 import type { EntityId } from './ids';
 import type {
@@ -59,8 +59,15 @@ export const offerCharges = (
       a.organizationId === offer.organizationId &&
       a.status === 'active',
   );
+  // The old signing-bonus proration is retained as dead cap by the extension, so only
+  // the replaced base salary and roster bonus are offset by the new charge.
   const before =
-    old === undefined ? [] : capChargeBySeason(tx.contracts, old.terms);
+    old === undefined
+      ? []
+      : old.terms.years.map((y) => ({
+          season: y.season,
+          amount: addMoney(y.baseSalary, y.rosterBonus),
+        }));
   return next
     .map((x) => ({
       season: x.season,

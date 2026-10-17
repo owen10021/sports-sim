@@ -67,3 +67,12 @@ export * from './draftBoardCommands';
 export * from './draftCommands';
 export * from './acquisitionAudit';
 export * from './rookieContracts';
+export {
+  PACKAGE_C_SCENARIO_ID,
+  PACKAGE_C_WORLD_ID,
+  PACKAGE_C_STEPS,
+  PackageCScenarioError,
+  type PackageCVariant,
+} from './packageCScenario';
+export * from './packageCScenarioRun';
+export { PACKAGE_C_EXPECTED } from './packageCGoldenExpected';

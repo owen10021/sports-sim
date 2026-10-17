@@ -50,6 +50,7 @@ export const TERMINATION_REASONS = [
   'release',
   'waiver_unclaimed',
   'trade_retained_bonus',
+  'extension_retained_bonus',
 ] as const;
 export type TerminationReason = (typeof TERMINATION_REASONS)[number];
 

@@ -14,8 +14,16 @@ import {
   spec,
   type Cmd,
 } from './commandSupport';
-import { capPosition, contractTermsProblems } from './contractMath';
-import type { ContractAgreement, ContractTermsV1 } from './contracts';
+import {
+  capPosition,
+  contractTermsProblems,
+  extensionRetainedBonus,
+} from './contractMath';
+import type {
+  ContractAgreement,
+  ContractTermination,
+  ContractTermsV1,
+} from './contracts';
 import { latestProposal } from './decisions';
 import {
   UnknownTransactionSeasonError,
@@ -709,7 +717,7 @@ const routeCommit = (ctx: RouteContext, c: Cmd): RouteOutcome => {
   const blocked = fitProblem(world, tx, [], offer);
   if (blocked !== null) return bad(`stale offer: ${blocked}`);
 
-  const extraIds = elig.extension ? 2 : 3;
+  const extraIds = 3;
   const minted = mintRecordIds(world, extraIds);
   const agreementId = minted.ids[0]!;
   const rightId = minted.ids[1]!;
@@ -733,6 +741,29 @@ const routeCommit = (ctx: RouteContext, c: Cmd): RouteOutcome => {
     effectiveFrom: today,
     effectiveUntil: null,
   };
+  const retained =
+    elig.extension && elig.agreement !== undefined
+      ? extensionRetainedBonus(
+          tx.contracts,
+          elig.agreement.terms,
+          seasonOfDate(today),
+        )
+      : [];
+  const termination: ContractTermination[] =
+    elig.agreement !== undefined && retained.length > 0
+      ? [
+          {
+            id: minted.ids[2]!,
+            agreementId: elig.agreement.id,
+            organizationId: org,
+            playerId: offer.playerId,
+            terminatedAt: today,
+            reason: 'extension_retained_bonus',
+            deadCapBySeason: retained,
+            guaranteedCashDue: 0 as ContractTermination['guaranteedCashDue'],
+          },
+        ]
+      : [];
   const memberships = elig.extension
     ? world.roster.memberships
     : [
@@ -797,6 +828,9 @@ const routeCommit = (ctx: RouteContext, c: Cmd): RouteOutcome => {
         ),
         agreement,
       ].sort(byId),
+      terminations: [...world.contracts.terminations, ...termination].sort(
+        byId,
+      ),
     },
     market: {
       ...world.market,
