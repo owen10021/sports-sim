@@ -368,7 +368,7 @@ scoutQuestion('nf', NF.org, NF.scout, NF_PICK, [
 ]);
 scoutQuestion('eb', EB.org, EB.scout, EB_PICK, ['burst', 'route_craft']);
 add('advance-scouting-day', { type: 'AdvanceDays', days: 1 });
-for (const key of ['nf', 'eb'] as const) {
+(['nf', 'eb'] as const).forEach((key) => {
   const who = key === 'nf' ? NF : EB;
   add(
     `${key}-resolve`,
@@ -385,7 +385,7 @@ for (const key of ['nf', 'eb'] as const) {
       },
     },
   );
-}
+});
 
 // ============================ phase 3: boards =====================================
 
@@ -408,7 +408,7 @@ const boardTerms = (c: Context, key: 'nf' | 'eb', need: string) => ({
     },
   ],
 });
-for (const key of ['nf', 'eb'] as const) {
+(['nf', 'eb'] as const).forEach((key) => {
   const who = key === 'nf' ? NF : EB;
   add(
     `${key}-board-propose`,
@@ -442,7 +442,7 @@ for (const key of ['nf', 'eb'] as const) {
       },
     },
   );
-}
+});
 // Northfield's need rises; the evaluation (tier, belief) is untouched.
 add(
   'nf-board-need-propose',
@@ -704,7 +704,7 @@ add(
   },
 );
 
-for (const target of [EB, WL] as const) {
+([EB, WL] as const).forEach((target) => {
   add(
     `nf-shop-nf01-${target === EB ? 'eb' : 'wl'}`,
     (c) => ({
@@ -723,7 +723,7 @@ for (const target of [EB, WL] as const) {
       },
     },
   );
-}
+});
 
 // Eastbrook has its own reasons to turn down player-nf-02; the answer is recorded.
 tradeFlow(
@@ -795,7 +795,7 @@ add(
     },
   },
 );
-for (const o of [SP, EB, WL] as const)
+([SP, EB, WL] as const).forEach((o) => {
   add(`waiver-claim-${o.org.slice(4, 6)}`, (c) => ({
     type: 'SubmitWaiverClaim',
     organizationId: o.org,
@@ -803,6 +803,7 @@ for (const o of [SP, EB, WL] as const)
     waiverId: c.m.waiver,
     rosterStatus: 'active',
   }));
+});
 add('advance-waiver-day', { type: 'AdvanceDays', days: 1 });
 add(
   'resolve-waivers',
@@ -1045,7 +1046,7 @@ const choose = (c: Context, org: string) => {
     return { playerId: entry.playerId as string, boardId: board.id as string };
   return { playerId: free[free.length - 1]! as string, boardId: null };
 };
-for (let i = 0; i < 12; i += 1) {
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].forEach((i) => {
   const slot = String(i + 1).padStart(2, '0');
   add(
     `draft-${slot}-propose`,
@@ -1095,7 +1096,7 @@ for (let i = 0; i < 12; i += 1) {
       },
     },
   );
-}
+});
 
 // ============================ phase 8: rookie and undrafted signings ==============
 

@@ -14292,7 +14292,7 @@
   ]);
   scoutQuestion("eb", EB.org, EB.scout, EB_PICK, ["burst", "route_craft"]);
   add("advance-scouting-day", { type: "AdvanceDays", days: 1 });
-  for (const key of ["nf", "eb"]) {
+  ["nf", "eb"].forEach((key) => {
     const who = key === "nf" ? NF : EB;
     add(
       `${key}-resolve`,
@@ -14309,7 +14309,7 @@
         }
       }
     );
-  }
+  });
   var boardTerms = (c, key, need) => ({
     draftClassId: c.k.world.draft.classes[0].id,
     tiers: [
@@ -14329,7 +14329,7 @@
       }
     ]
   });
-  for (const key of ["nf", "eb"]) {
+  ["nf", "eb"].forEach((key) => {
     const who = key === "nf" ? NF : EB;
     add(
       `${key}-board-propose`,
@@ -14362,7 +14362,7 @@
         }
       }
     );
-  }
+  });
   add(
     "nf-board-need-propose",
     (c) => proposalCmd(
@@ -14590,7 +14590,7 @@
       }
     }
   );
-  for (const target of [EB, WL]) {
+  [EB, WL].forEach((target) => {
     add(
       `nf-shop-nf01-${target === EB ? "eb" : "wl"}`,
       (c) => ({
@@ -14609,7 +14609,7 @@
         }
       }
     );
-  }
+  });
   tradeFlow(
     "dump",
     NF,
@@ -14673,7 +14673,7 @@
       }
     }
   );
-  for (const o of [SP, EB, WL])
+  [SP, EB, WL].forEach((o) => {
     add(`waiver-claim-${o.org.slice(4, 6)}`, (c) => ({
       type: "SubmitWaiverClaim",
       organizationId: o.org,
@@ -14681,6 +14681,7 @@
       waiverId: c.m.waiver,
       rosterStatus: "active"
     }));
+  });
   add("advance-waiver-day", { type: "AdvanceDays", days: 1 });
   add(
     "resolve-waivers",
@@ -14887,7 +14888,7 @@
       return { playerId: entry.playerId, boardId: board.id };
     return { playerId: free[free.length - 1], boardId: null };
   };
-  for (let i = 0; i < 12; i += 1) {
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].forEach((i) => {
     const slot = String(i + 1).padStart(2, "0");
     add(
       `draft-${slot}-propose`,
@@ -14936,7 +14937,7 @@
         }
       }
     );
-  }
+  });
   var rookieOwner = (k) => {
     const sel = k.world.draft.selections.find((s) => s.playerId === PROSPECT);
     return sel === void 0 ? void 0 : { sel, org: sel.organizationId };
