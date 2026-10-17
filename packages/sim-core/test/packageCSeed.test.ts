@@ -190,7 +190,11 @@ describe('createWorld populates Package C state from the seed', () => {
     expect(w.draft.classes).toHaveLength(c.draftClasses.length);
     expect(w.draft.picks).toHaveLength(c.draftPicks.length);
     expect(w.draft.boards).toEqual([]);
-    expect(w.contracts.agreements).toEqual([]);
+    expect(w.contracts.agreements).toHaveLength(c.contracts.length);
+    expect(w.contracts.agreements.every((a) => a.status === 'active')).toBe(
+      true,
+    );
+    expect(w.contracts.terminations).toEqual([]);
   });
 
   it('is deterministic, deeply frozen, and consumes no randomness', () => {
@@ -410,6 +414,36 @@ describe('seed validation: cross references (fail closed)', () => {
     has((s) => {
       (s.draftPicks[0] as { season: number }).season = 1999;
     }, 'SEED_C_PICK_OUT_OF_RULES');
+  });
+
+  it('rejects contracts that disagree with rights, memberships, terms or the cap', () => {
+    has((s) => {
+      (s.contracts as unknown[]).push(clone(s.contracts[0]));
+    }, 'SEED_C_DUPLICATE_ID');
+    has((s) => {
+      (s.contracts[0] as { playerId: string }).playerId = 'player-fa-01';
+    }, 'SEED_C_RIGHT_WITHOUT_CONTRACT');
+    has((s) => {
+      (s.contracts as unknown[]).pop();
+    }, 'SEED_C_RIGHT_WITHOUT_CONTRACT');
+    has((s) => {
+      (s.contracts as unknown[]).pop();
+    }, 'SEED_C_MEMBERSHIP_WITHOUT_CONTRACT');
+    has((s) => {
+      (s.contracts[0]!.years[0] as { baseSalary: number }).baseSalary = 1;
+    }, 'SEED_C_CONTRACT_TERMS');
+    has((s) => {
+      (s.contracts[0]!.years[0] as { guaranteedBase: number }).guaranteedBase =
+        99_999_999;
+    }, 'SEED_C_CONTRACT_TERMS');
+    has((s) => {
+      const extra = clone(s.contracts[0]) as { id: string };
+      extra.id = 'contract-extra';
+      (s.contracts as unknown[]).push(extra);
+    }, 'SEED_C_DUPLICATE_CONTRACT');
+    has((s) => {
+      (s.contracts[0] as { signingBonus: number }).signingBonus = 3_000_000;
+    }, 'SEED_C_CAP_EXCEEDED');
   });
 
   it('rejects overlapping rights for one player (duplicate ownership)', () => {

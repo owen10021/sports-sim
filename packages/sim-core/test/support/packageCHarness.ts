@@ -5,10 +5,15 @@ import {
   commitAuthorizedDomainChange,
   createWorld,
   entityId,
+  rulesetRefOf,
   routeCommand,
+  sealRuleset,
+  sealSeed,
   worldId,
   type DomainCommitRequest,
   type KernelOptions,
+  type LeagueRulesetBody,
+  type WorldSeedBody,
   type RouteContext,
   type RouteOutcome,
 } from '../../src/index';
@@ -108,3 +113,43 @@ export const submitDomain = (
   contingencies: {},
   ...extra,
 });
+
+/**
+ * The same Package C world under a ruleset whose released players do not pass through
+ * waivers (`releasedPlayerWaiverPolicy: 'none'`). The seed is re-sealed against the variant
+ * ruleset so nothing but that one rule differs.
+ */
+export const newNoWaiverKernel = (options?: KernelOptions): WorldKernel => {
+  const { contentHash: _ruleHash, ...rulesetBody } =
+    SYNTHETIC_PACKAGE_C_RULESET as unknown as Record<string, unknown> & {
+      rules: { transactions: { waivers: Record<string, unknown> } };
+    };
+  void _ruleHash;
+  const ruleset = sealRuleset({
+    ...rulesetBody,
+    rules: {
+      ...rulesetBody.rules,
+      transactions: {
+        ...rulesetBody.rules.transactions,
+        waivers: {
+          ...rulesetBody.rules.transactions.waivers,
+          releasedPlayerWaiverPolicy: 'none',
+        },
+      },
+    },
+  } as unknown as LeagueRulesetBody);
+  const { contentHash: _seedHash, ...seedBody } =
+    PACKAGE_C_SEED as unknown as Record<string, unknown>;
+  void _seedHash;
+  const seed = sealSeed({
+    ...seedBody,
+    ruleset: rulesetRefOf(ruleset),
+  } as unknown as WorldSeedBody);
+  return WorldKernel.fromGenesis(
+    createWorld(seed, ruleset, {
+      newWorldId: () => worldId('world-package-c-2'),
+    }),
+    ruleset,
+    options,
+  );
+};

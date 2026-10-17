@@ -6,6 +6,9 @@ import {
   type ValidationIssue,
 } from './provenance';
 import { PREFERENCE_LEVELS, type PreferenceLevel } from './market';
+import { capPosition, contractTermsProblems } from './contractMath';
+import { seededContractsState } from './contracts';
+import { moneyAmount } from './economy';
 import { DRAFT_PICK_STATUSES, type DraftPickStatus } from './draft';
 import {
   RIGHTS_KINDS,
@@ -54,6 +57,24 @@ export type SeedMembership = {
   readonly sourceRecordId: string;
 };
 
+export type SeedContractYear = {
+  readonly season: number;
+  readonly baseSalary: number;
+  readonly rosterBonus: number;
+  readonly guaranteedBase: number;
+};
+
+/** A seeded active contract. Its `id` is the `sourceRecordId` of the player's contract right. */
+export type SeedContract = {
+  readonly id: string;
+  readonly playerId: string;
+  readonly organizationId: string;
+  readonly signedAt: string;
+  readonly startSeason: number;
+  readonly signingBonus: number;
+  readonly years: readonly SeedContractYear[];
+};
+
 export type SeedAgentClient = {
   readonly id: string;
   readonly agentPersonId: string;
@@ -98,6 +119,7 @@ export type PackageCSubstrateSeed = {
   readonly players: readonly SeedPlayer[];
   readonly rights: readonly SeedRight[];
   readonly memberships: readonly SeedMembership[];
+  readonly contracts: readonly SeedContract[];
   readonly agentClients: readonly SeedAgentClient[];
   readonly playerPreferences: readonly SeedPlayerPreference[];
   readonly evaluatorProfiles: readonly SeedEvaluator[];
@@ -111,6 +133,7 @@ const BLOCK_KEYS = [
   'players',
   'rights',
   'memberships',
+  'contracts',
   'agentClients',
   'playerPreferences',
   'evaluatorProfiles',
@@ -257,6 +280,52 @@ const parseMembership = (raw: unknown, what: string): SeedMembership => {
   };
 };
 
+const money = (value: unknown, what: string): number =>
+  asSafeInt(value, what, 0, Number.MAX_SAFE_INTEGER);
+
+const parseContractYear = (raw: unknown, what: string): SeedContractYear => {
+  const rec = asRecord(raw, what);
+  requireExactKeys(
+    rec,
+    ['season', 'baseSalary', 'rosterBonus', 'guaranteedBase'],
+    [],
+    what,
+  );
+  return {
+    season: asSafeInt(rec.season, `${what}.season`, 1900, 3000),
+    baseSalary: money(rec.baseSalary, `${what}.baseSalary`),
+    rosterBonus: money(rec.rosterBonus, `${what}.rosterBonus`),
+    guaranteedBase: money(rec.guaranteedBase, `${what}.guaranteedBase`),
+  };
+};
+
+const parseContract = (raw: unknown, what: string): SeedContract => {
+  const rec = asRecord(raw, what);
+  requireExactKeys(
+    rec,
+    [
+      'id',
+      'playerId',
+      'organizationId',
+      'signedAt',
+      'startSeason',
+      'signingBonus',
+      'years',
+    ],
+    [],
+    what,
+  );
+  return {
+    id: parseSeedId(rec.id, `${what}.id`),
+    playerId: parseSeedId(rec.playerId, `${what}.playerId`),
+    organizationId: parseSeedId(rec.organizationId, `${what}.organizationId`),
+    signedAt: parseSeedDate(rec.signedAt, `${what}.signedAt`),
+    startSeason: asSafeInt(rec.startSeason, `${what}.startSeason`, 1900, 3000),
+    signingBonus: money(rec.signingBonus, `${what}.signingBonus`),
+    years: arrayOf(rec.years, `${what}.years`, parseContractYear),
+  };
+};
+
 const parseAgentClient = (raw: unknown, what: string): SeedAgentClient => {
   const rec = asRecord(raw, what);
   requireExactKeys(
@@ -396,6 +465,7 @@ export const parsePackageCSubstrate = (
       `${what}.memberships`,
       parseMembership,
     ),
+    contracts: arrayOf(rec.contracts, `${what}.contracts`, parseContract),
     agentClients: arrayOf(
       rec.agentClients,
       `${what}.agentClients`,
@@ -679,6 +749,88 @@ export const packageCIssues = (
           `${where} is for season ${p.season}, which the ruleset does not declare`,
         );
     }
+  }
+
+  const contractById = new Map<string, SeedContract>();
+  const contractsByPlayer = new Map<string, SeedContract[]>();
+  for (const c of sub.contracts) {
+    const where = `contract "${c.id}"`;
+    claim(c.id, where);
+    contractById.set(c.id, c);
+    contractsByPlayer.set(c.playerId, [
+      ...(contractsByPlayer.get(c.playerId) ?? []),
+      c,
+    ]);
+    requirePlayer(c.playerId, where);
+    requireKind(c.organizationId, 'organization', where);
+    if (tx !== undefined)
+      for (const problem of contractTermsProblems(tx, {
+        startSeason: c.startSeason,
+        signingBonus: moneyAmount(c.signingBonus),
+        years: c.years.map((y) => ({
+          season: y.season,
+          baseSalary: moneyAmount(y.baseSalary),
+          rosterBonus: moneyAmount(y.rosterBonus),
+          guaranteedBase: moneyAmount(y.guaranteedBase),
+        })),
+      }))
+        add('CONTRACT_TERMS', `${where}: ${problem}`);
+  }
+  for (const [playerId, cs] of contractsByPlayer)
+    if (cs.length > 1)
+      add(
+        'DUPLICATE_CONTRACT',
+        `player "${playerId}" has ${cs.length} active contracts`,
+      );
+  for (const r of sub.rights) {
+    if (r.kind !== 'contract') continue;
+    const c = contractById.get(r.sourceRecordId);
+    if (
+      c === undefined ||
+      c.playerId !== r.playerId ||
+      c.organizationId !== r.holderOrganizationId
+    )
+      add(
+        'RIGHT_WITHOUT_CONTRACT',
+        `contract right "${r.id}" names no matching contract as its source`,
+      );
+  }
+  for (const c of sub.contracts)
+    if (
+      !sub.rights.some(
+        (r) =>
+          r.kind === 'contract' &&
+          r.sourceRecordId === c.id &&
+          r.playerId === c.playerId &&
+          r.holderOrganizationId === c.organizationId,
+      )
+    )
+      add(
+        'CONTRACT_WITHOUT_RIGHT',
+        `contract "${c.id}" has no contract right held by "${c.organizationId}"`,
+      );
+  for (const m of sub.memberships)
+    if (
+      !sub.contracts.some(
+        (c) =>
+          c.playerId === m.playerId && c.organizationId === m.organizationId,
+      )
+    )
+      add(
+        'MEMBERSHIP_WITHOUT_CONTRACT',
+        `roster membership "${m.id}" has no contract with "${m.organizationId}"`,
+      );
+  if (tx !== undefined && issues.length === 0) {
+    const state = seededContractsState(sub);
+    for (const org of entities.filter((e) => e.kind === 'organization'))
+      for (const season of tx.seasonRules) {
+        const position = capPosition(tx, state, org.id as never, season.season);
+        if (position.space < 0)
+          add(
+            'CAP_EXCEEDED',
+            `"${org.id}" is ${-position.space} over the cap in season ${season.season}`,
+          );
+      }
   }
 
   const orgIds = entities

@@ -31,7 +31,7 @@ import {
 } from './organizations';
 import { seededPeopleState, type PeopleState } from './people';
 import { emptyPlansState, type PlansState } from './plans';
-import { emptyContractsState, type ContractsState } from './contracts';
+import { seededContractsState, type ContractsState } from './contracts';
 import { seededDraftState, type DraftState } from './draft';
 import { seededMarketState, type MarketState } from './market';
 import { seededRosterState, type RosterState } from './roster';
@@ -152,7 +152,7 @@ export const createWorld = (
     plans: emptyPlansState(),
     decisions: emptyDecisionsState(),
     roster: seededRosterState(seed.packageCSubstrate),
-    contracts: emptyContractsState(),
+    contracts: seededContractsState(seed.packageCSubstrate),
     market: seededMarketState(seed.packageCSubstrate),
     scouting: seededScoutingState(seed.packageCSubstrate),
     draft: seededDraftState(seed.packageCSubstrate),

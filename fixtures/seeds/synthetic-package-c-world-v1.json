@@ -1,5 +1,5 @@
 {
-  "contentHash": "83430163982975b145ebf282d45f00d5ab6f1cfaabe079f242a04adfe7e88ff6",
+  "contentHash": "5411c810e442eafdc886698d4840600ea367a124041680e06668d8c17ede1b4a",
   "initialEntities": [
     {
       "id": "org-northfield",
@@ -1430,6 +1430,476 @@
         "effectiveUntil": null,
         "id": "client-player-pr-04",
         "playerPersonId": "player-pr-04"
+      }
+    ],
+    "contracts": [
+      {
+        "id": "contract-seed-player-eb-01",
+        "organizationId": "org-eastbrook",
+        "playerId": "player-eb-01",
+        "signedAt": "2026-03-01",
+        "signingBonus": 150000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 175000,
+            "guaranteedBase": 175000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 185000,
+            "guaranteedBase": 92500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 195000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-eb-02",
+        "organizationId": "org-eastbrook",
+        "playerId": "player-eb-02",
+        "signedAt": "2026-03-01",
+        "signingBonus": 120000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 200000,
+            "guaranteedBase": 200000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 210000,
+            "guaranteedBase": 105000,
+            "rosterBonus": 0,
+            "season": 2027
+          },
+          {
+            "baseSalary": 220000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-eb-03",
+        "organizationId": "org-eastbrook",
+        "playerId": "player-eb-03",
+        "signedAt": "2026-03-01",
+        "signingBonus": 90000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 225000,
+            "guaranteedBase": 225000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 235000,
+            "guaranteedBase": 117500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 245000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-eb-04",
+        "organizationId": "org-eastbrook",
+        "playerId": "player-eb-04",
+        "signedAt": "2026-03-01",
+        "signingBonus": 60000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 250000,
+            "guaranteedBase": 250000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 260000,
+            "guaranteedBase": 130000,
+            "rosterBonus": 0,
+            "season": 2027
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-nf-01",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-01",
+        "signedAt": "2026-03-01",
+        "signingBonus": 150000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 175000,
+            "guaranteedBase": 175000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 185000,
+            "guaranteedBase": 92500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 195000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-nf-02",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-02",
+        "signedAt": "2026-03-01",
+        "signingBonus": 120000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 200000,
+            "guaranteedBase": 200000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 210000,
+            "guaranteedBase": 105000,
+            "rosterBonus": 0,
+            "season": 2027
+          },
+          {
+            "baseSalary": 220000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-nf-03",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-03",
+        "signedAt": "2026-03-01",
+        "signingBonus": 90000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 225000,
+            "guaranteedBase": 225000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 235000,
+            "guaranteedBase": 117500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 245000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-nf-04",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-04",
+        "signedAt": "2026-03-01",
+        "signingBonus": 60000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 250000,
+            "guaranteedBase": 250000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 260000,
+            "guaranteedBase": 130000,
+            "rosterBonus": 0,
+            "season": 2027
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-nf-05",
+        "organizationId": "org-northfield",
+        "playerId": "player-nf-05",
+        "signedAt": "2026-03-01",
+        "signingBonus": 0,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 20000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 25000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2027
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-sp-01",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-01",
+        "signedAt": "2026-03-01",
+        "signingBonus": 150000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 175000,
+            "guaranteedBase": 175000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 185000,
+            "guaranteedBase": 92500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 195000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-sp-02",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-02",
+        "signedAt": "2026-03-01",
+        "signingBonus": 120000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 200000,
+            "guaranteedBase": 200000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 210000,
+            "guaranteedBase": 105000,
+            "rosterBonus": 0,
+            "season": 2027
+          },
+          {
+            "baseSalary": 220000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-sp-03",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-03",
+        "signedAt": "2026-03-01",
+        "signingBonus": 90000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 225000,
+            "guaranteedBase": 225000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 235000,
+            "guaranteedBase": 117500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 245000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-sp-04",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-04",
+        "signedAt": "2026-03-01",
+        "signingBonus": 60000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 250000,
+            "guaranteedBase": 250000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 260000,
+            "guaranteedBase": 130000,
+            "rosterBonus": 0,
+            "season": 2027
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-sp-05",
+        "organizationId": "org-southport",
+        "playerId": "player-sp-05",
+        "signedAt": "2026-03-01",
+        "signingBonus": 0,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 20000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 25000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2027
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-wl-01",
+        "organizationId": "org-westlake",
+        "playerId": "player-wl-01",
+        "signedAt": "2026-03-01",
+        "signingBonus": 150000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 175000,
+            "guaranteedBase": 175000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 185000,
+            "guaranteedBase": 92500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 195000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-wl-02",
+        "organizationId": "org-westlake",
+        "playerId": "player-wl-02",
+        "signedAt": "2026-03-01",
+        "signingBonus": 120000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 200000,
+            "guaranteedBase": 200000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 210000,
+            "guaranteedBase": 105000,
+            "rosterBonus": 0,
+            "season": 2027
+          },
+          {
+            "baseSalary": 220000,
+            "guaranteedBase": 0,
+            "rosterBonus": 0,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-wl-03",
+        "organizationId": "org-westlake",
+        "playerId": "player-wl-03",
+        "signedAt": "2026-03-01",
+        "signingBonus": 90000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 225000,
+            "guaranteedBase": 225000,
+            "rosterBonus": 10000,
+            "season": 2026
+          },
+          {
+            "baseSalary": 235000,
+            "guaranteedBase": 117500,
+            "rosterBonus": 10000,
+            "season": 2027
+          },
+          {
+            "baseSalary": 245000,
+            "guaranteedBase": 0,
+            "rosterBonus": 10000,
+            "season": 2028
+          }
+        ]
+      },
+      {
+        "id": "contract-seed-player-wl-04",
+        "organizationId": "org-westlake",
+        "playerId": "player-wl-04",
+        "signedAt": "2026-03-01",
+        "signingBonus": 60000,
+        "startSeason": 2026,
+        "years": [
+          {
+            "baseSalary": 250000,
+            "guaranteedBase": 250000,
+            "rosterBonus": 0,
+            "season": 2026
+          },
+          {
+            "baseSalary": 260000,
+            "guaranteedBase": 130000,
+            "rosterBonus": 0,
+            "season": 2027
+          }
+        ]
       }
     ],
     "draftClasses": [
