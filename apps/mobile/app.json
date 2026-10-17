@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Sport Sim",
+    "slug": "sport-sim",
+    "version": "0.0.1",
+    "scheme": "sportsim",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "platforms": [
+      "ios"
+    ],
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      "expo-status-bar"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.sportsim.app",
+      "deploymentTarget": "16.4"
+    },
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
