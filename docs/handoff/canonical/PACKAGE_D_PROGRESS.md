@@ -37,3 +37,17 @@ Base: `20a8daf`.
 - Debugging found that forwarding a caller-supplied mandate usage declaration could understate actual allocated units. Two regression tests failed (understated workload accepted; valid delegation without manual declaration rejected). The router now derives total `opportunity_units` from real terms and validates every actual scope against the mandate before the shared atomic commit. Both regressions pass.
 - Targeted tests: 35/35 passed after RED runs for the new commands/helpers/categories and mandate regressions.
 - Broader verification: full `npm run ci` passed (exit 0), 73 files and 869 tests, typecheck, lint, format, independent A/B/C goldens and iOS export. Log: `evidence/tmp/package-d/task4-ci.log`.
+
+## Task 5: role learning and finite teaching
+
+Base: `dd99510`.
+
+- Added pure `teachingProblems`, `resolveRoleLearning` and `projectTransferFamiliarity`; exported the new focused module through the existing index (an additional routine export beyond the task's file list).
+- Existing responsibility-level knowledge and teaching types already satisfy the task; no redundant state fields were added.
+- Opportunity validation now composes teaching bandwidth, organization-role and expertise legality. Each teacher's budget is shared across all resources and players in the same window. A role scope must match the player's current role or an explicitly held role tag.
+- Learning output is an ephemeral per-responsibility delta, not an aggregate scheme score. Only named installation/development lessons with relevant teaching produce learning. Shared units are divided among named responsibilities; multiple teachers contribute weighted expertise rather than stacked bonuses.
+- Interpretation: the transfer helper is a read-only projection for one person's knowledge. Exact knowledge is retained; analogous transfer uses half of the strongest matching family source, with no stacking. This is a synthetic modeling coefficient, not an NFL empirical claim. Applying any transfer remains a later authorized checkpoint concern; projecting it alone changes nothing.
+- Formula tests use literal, hand-calculated expectations and cover partial knowledge, zero change, unrelated expertise, fixed-budget staff splitting, shared-responsibility cost and person-owned continuity.
+- Staff departure is exercised with the existing production role-ending and calendar commands: capability/learned knowledge persist, future teaching legality changes.
+- RED: all 9 new tests failed for missing helpers/teaching validation after correcting a test payload to the existing `episodeId/lastDay` command interface. GREEN: 9/9 new tests and 13 opportunity regressions passed.
+- Broader verification: full `npm run ci` passed (exit 0), 75 files and 878 tests, typecheck, lint, formatting, A/B/C goldens and iOS export. Log: `evidence/tmp/package-d/task5-ci.log`.

@@ -1,4 +1,5 @@
 import type { CanonicalValue } from './audit';
+import { teachingProblems } from './roleLearning';
 import { canonicalString } from './canonical';
 import type {
   OpportunityAllocation,
@@ -78,7 +79,7 @@ export const remainingOpportunity = (
  * Reads no latent player capability, responsiveness or medical recovery state.
  */
 export const opportunityProblems = (
-  world: Pick<FootballWorld, 'roster' | 'people' | 'plans'>,
+  world: Pick<FootballWorld, 'roster' | 'people' | 'plans' | 'development'>,
   window: OpportunityWindow,
   allocations: readonly OpportunityAllocation[],
 ): readonly string[] => {
@@ -157,5 +158,7 @@ export const opportunityProblems = (
       remainingOpportunity(window, allocations, p.resourceKey, p.scopeKey) < 0
     )
       problems.add('OPPORTUNITY_OVERALLOCATED');
+  for (const problem of teachingProblems(world, allocations))
+    problems.add(problem);
   return [...problems].sort(byText);
 };
