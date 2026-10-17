@@ -15,22 +15,50 @@ afterEach(() => rmSync(dir, { recursive: true, force: true }));
 const run = async (...argv: string[]) => {
   const out: string[] = [];
   const err: string[] = [];
-  const code = await runCli(argv, { out: (l) => out.push(l), err: (l) => err.push(l) });
-  return { code, out, err, json: out.length > 0 ? (JSON.parse(out[out.length - 1]!) as Record<string, unknown>) : null };
+  const code = await runCli(argv, {
+    out: (l) => out.push(l),
+    err: (l) => err.push(l),
+  });
+  return {
+    code,
+    out,
+    err,
+    json:
+      out.length > 0
+        ? (JSON.parse(out[out.length - 1]!) as Record<string, unknown>)
+        : null,
+  };
 };
 
 describe('headless CLI', () => {
   it('create -> advance -> inspect -> verify -> replay on a synthetic career', async () => {
-    const created = await run('create', '--file', file, '--world-id', 'world-cli-1');
+    const created = await run(
+      'create',
+      '--file',
+      file,
+      '--world-id',
+      'world-cli-1',
+    );
     expect(created.code).toBe(0);
-    expect(created.json).toMatchObject({ worldId: 'world-cli-1', revision: 0, simDate: '2026-10-16' });
+    expect(created.json).toMatchObject({
+      worldId: 'world-cli-1',
+      revision: 0,
+      simDate: '2026-10-16',
+    });
 
     const advanced = await run('advance', '--file', file, '--days', '3');
     expect(advanced.code).toBe(0);
-    expect(advanced.json).toMatchObject({ revision: 1, simDate: '2026-10-19', eventCount: 1 });
+    expect(advanced.json).toMatchObject({
+      revision: 1,
+      simDate: '2026-10-19',
+      eventCount: 1,
+    });
 
     const inspected = await run('inspect', '--file', file);
-    expect(inspected.json).toMatchObject({ revision: 1, simDate: '2026-10-19' });
+    expect(inspected.json).toMatchObject({
+      revision: 1,
+      simDate: '2026-10-19',
+    });
     expect(inspected.json?.fingerprint).toBe(advanced.json?.fingerprint);
 
     const verified = await run('verify', '--file', file);
@@ -39,7 +67,10 @@ describe('headless CLI', () => {
 
     const replayed = await run('replay', '--file', file);
     expect(replayed.code).toBe(0);
-    expect(replayed.json).toMatchObject({ ok: true, fingerprint: advanced.json?.fingerprint });
+    expect(replayed.json).toMatchObject({
+      ok: true,
+      fingerprint: advanced.json?.fingerprint,
+    });
   });
 
   it('a rejected command exits non-zero and leaves the file byte-identical', async () => {
@@ -54,19 +85,27 @@ describe('headless CLI', () => {
 
   it('refuses to create over an existing career', async () => {
     await run('create', '--file', file, '--world-id', 'world-cli-3');
-    const again = await run('create', '--file', file, '--world-id', 'world-cli-4');
+    const again = await run(
+      'create',
+      '--file',
+      file,
+      '--world-id',
+      'world-cli-4',
+    );
     expect(again.code).toBe(1);
     expect(again.err.join('\n')).toMatch(/already exists/i);
   });
 
   it('verify detects tampered history and a corrupt newest snapshot; replay --repair fixes only the latter', async () => {
     await run('create', '--file', file, '--world-id', 'world-cli-5');
-    for (const d of ['1', '2', '3']) await run('advance', '--file', file, '--days', d);
+    for (const d of ['1', '2', '3'])
+      await run('advance', '--file', file, '--days', d);
     const original = readFileSync(file, 'utf8');
 
     // Corrupt newest snapshot (history intact) -> detected, repairable.
     const corrupt = JSON.parse(original);
-    corrupt.state.snapshots[corrupt.state.snapshots.length - 1].contentHash = 'f'.repeat(64);
+    corrupt.state.snapshots[corrupt.state.snapshots.length - 1].contentHash =
+      'f'.repeat(64);
     writeFileSync(file, JSON.stringify(corrupt));
     const detected = await run('verify', '--file', file);
     expect(detected.code).toBe(1);
@@ -95,6 +134,8 @@ describe('headless CLI', () => {
   it('usage errors exit 2', async () => {
     expect((await run('nonsense')).code).toBe(2);
     expect((await run('inspect')).code).toBe(2);
-    expect((await run('advance', '--file', file, '--days', 'abc')).code).toBe(2);
+    expect((await run('advance', '--file', file, '--days', 'abc')).code).toBe(
+      2,
+    );
   });
 });

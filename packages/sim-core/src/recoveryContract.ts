@@ -1,6 +1,10 @@
 import { verifyEventChain } from './audit';
 import { fingerprintWorld } from './world';
-import { createContractCareer, type ContractCase, type ContractCareer } from './persistenceContract';
+import {
+  createContractCareer,
+  type ContractCase,
+  type ContractCareer,
+} from './persistenceContract';
 import { SCHEMA_VERSION, UnsupportedSchemaVersionError } from './provenance';
 import { verifySnapshot, type CareerStore } from './persistence';
 import { CareerLoadError } from './careerIntegrity';
@@ -37,13 +41,18 @@ export const recoveryCheck = (condition: boolean, message: string): void => {
   if (!condition) throw new RecoveryContractFailure(message);
 };
 
-export const expectRejection = async (fn: () => Promise<unknown>, message: string): Promise<unknown> => {
+export const expectRejection = async (
+  fn: () => Promise<unknown>,
+  message: string,
+): Promise<unknown> => {
   try {
     await fn();
   } catch (error) {
     return error;
   }
-  throw new RecoveryContractFailure(`${message} (expected a rejection, got success)`);
+  throw new RecoveryContractFailure(
+    `${message} (expected a rejection, got success)`,
+  );
 };
 
 /** Store with a genesis save plus four committed days (revisions 0..4). */
@@ -58,14 +67,19 @@ export const seedCareer = async (
   return career;
 };
 
-export const recoveryContractCases = (factory: RecoveryHarnessFactory): ContractCase[] => [
+export const recoveryContractCases = (
+  factory: RecoveryHarnessFactory,
+): ContractCase[] => [
   {
     name: 'an empty store loads as empty',
     async run() {
       const h = await factory();
       await h.store.initialize();
       const ruleset = createContractCareer().ruleset;
-      recoveryCheck((await loadCareer(h.store, { ruleset })).status === 'empty', 'empty store -> empty');
+      recoveryCheck(
+        (await loadCareer(h.store, { ruleset })).status === 'empty',
+        'empty store -> empty',
+      );
     },
   },
   {
@@ -74,21 +88,32 @@ export const recoveryContractCases = (factory: RecoveryHarnessFactory): Contract
       const h = await factory();
       const career = await seedCareer(h);
       const out = await loadCareer(h.store, { ruleset: career.ruleset });
-      recoveryCheck(out.status === 'loaded', `expected loaded, got ${out.status}`);
+      recoveryCheck(
+        out.status === 'loaded',
+        `expected loaded, got ${out.status}`,
+      );
       if (out.status !== 'loaded') return;
       recoveryCheck(
-        fingerprintWorld(out.kernel.world) === fingerprintWorld(career.kernel.world),
+        fingerprintWorld(out.kernel.world) ===
+          fingerprintWorld(career.kernel.world),
         'loaded world fingerprint equals live world',
       );
-      recoveryCheck(out.kernel.chainHead === career.kernel.chainHead, 'loaded audit head equals live head');
+      recoveryCheck(
+        out.kernel.chainHead === career.kernel.chainHead,
+        'loaded audit head equals live head',
+      );
       const next = career.step(2);
       const res = out.kernel.execute(next.commands[0]!.envelope);
       recoveryCheck(res.ok, 'loaded kernel accepts the next command');
       recoveryCheck(
-        fingerprintWorld(out.kernel.world) === fingerprintWorld(career.kernel.world),
+        fingerprintWorld(out.kernel.world) ===
+          fingerprintWorld(career.kernel.world),
         'loaded kernel stays in lock-step with the live one',
       );
-      recoveryCheck((await h.store.loadRecoveryLog()).length === 0, 'a healthy load logs no recovery');
+      recoveryCheck(
+        (await h.store.loadRecoveryLog()).length === 0,
+        'a healthy load logs no recovery',
+      );
     },
   },
   {
@@ -98,17 +123,32 @@ export const recoveryContractCases = (factory: RecoveryHarnessFactory): Contract
       const career = await seedCareer(h);
       await h.tamperSnapshot(4, 'hash');
       const out = await loadCareer(h.store, { ruleset: career.ruleset });
-      recoveryCheck(out.status === 'degraded', `expected degraded, got ${out.status}`);
+      recoveryCheck(
+        out.status === 'degraded',
+        `expected degraded, got ${out.status}`,
+      );
       if (out.status !== 'degraded') return;
       recoveryCheck(out.snapshot.revision === 3, 'fell back to revision 3');
-      recoveryCheck(out.report.action === 'FELL_BACK_TO_PREVIOUS_SNAPSHOT', 'report names the fallback');
-      recoveryCheck(out.report.previousActiveRevision === 4, 'report names the damaged revision');
-      recoveryCheck(out.report.restoredRevision === 3, 'report names the restored revision');
+      recoveryCheck(
+        out.report.action === 'FELL_BACK_TO_PREVIOUS_SNAPSHOT',
+        'report names the fallback',
+      );
+      recoveryCheck(
+        out.report.previousActiveRevision === 4,
+        'report names the damaged revision',
+      );
+      recoveryCheck(
+        out.report.restoredRevision === 3,
+        'report names the restored revision',
+      );
       recoveryCheck(out.report.reasons.length > 0, 'report explains why');
       const log = await h.store.loadRecoveryLog();
       recoveryCheck(log.length === 1, 'the recovery is recorded durably');
       const stillBad = await h.store.loadLatest();
-      recoveryCheck(!verifySnapshot(stillBad).ok, 'corruption is not silently erased');
+      recoveryCheck(
+        !verifySnapshot(stillBad).ok,
+        'corruption is not silently erased',
+      );
     },
   },
   {
@@ -118,8 +158,12 @@ export const recoveryContractCases = (factory: RecoveryHarnessFactory): Contract
       const career = await seedCareer(h);
       await h.tamperSnapshot(4, 'junk');
       const out = await loadCareer(h.store, { ruleset: career.ruleset });
-      recoveryCheck(out.status === 'degraded', `expected degraded, got ${out.status}`);
-      if (out.status === 'degraded') recoveryCheck(out.snapshot.revision === 3, 'fell back to revision 3');
+      recoveryCheck(
+        out.status === 'degraded',
+        `expected degraded, got ${out.status}`,
+      );
+      if (out.status === 'degraded')
+        recoveryCheck(out.snapshot.revision === 3, 'fell back to revision 3');
     },
   },
   {
@@ -130,7 +174,10 @@ export const recoveryContractCases = (factory: RecoveryHarnessFactory): Contract
       await h.tamperSnapshot(4, 'hash');
       await loadCareer(h.store, { ruleset: career.ruleset });
       await loadCareer(h.store, { ruleset: career.ruleset });
-      recoveryCheck((await h.store.loadRecoveryLog()).length === 1, 'identical recovery logged once');
+      recoveryCheck(
+        (await h.store.loadRecoveryLog()).length === 1,
+        'identical recovery logged once',
+      );
     },
   },
   {
@@ -139,9 +186,18 @@ export const recoveryContractCases = (factory: RecoveryHarnessFactory): Contract
       const h = await factory();
       const career = await seedCareer(h);
       await h.tamperSnapshot(4, 'future');
-      const err = await expectRejection(() => loadCareer(h.store, { ruleset: career.ruleset }), 'future schema');
-      recoveryCheck(err instanceof UnsupportedSchemaVersionError, 'UnsupportedSchemaVersionError expected');
-      recoveryCheck((await h.store.loadRecoveryLog()).length === 0, 'nothing is "recovered" from a future build');
+      const err = await expectRejection(
+        () => loadCareer(h.store, { ruleset: career.ruleset }),
+        'future schema',
+      );
+      recoveryCheck(
+        err instanceof UnsupportedSchemaVersionError,
+        'UnsupportedSchemaVersionError expected',
+      );
+      recoveryCheck(
+        (await h.store.loadRecoveryLog()).length === 0,
+        'nothing is "recovered" from a future build',
+      );
     },
   },
   {
@@ -151,9 +207,15 @@ export const recoveryContractCases = (factory: RecoveryHarnessFactory): Contract
       const career = await seedCareer(h);
       await h.truncateHistory(1);
       const out = await loadCareer(h.store, { ruleset: career.ruleset });
-      recoveryCheck(out.status === 'degraded', `expected degraded, got ${out.status}`);
+      recoveryCheck(
+        out.status === 'degraded',
+        `expected degraded, got ${out.status}`,
+      );
       if (out.status !== 'degraded') return;
-      recoveryCheck(out.snapshot.revision === 3, 'fell back to the last snapshot the history supports');
+      recoveryCheck(
+        out.snapshot.revision === 3,
+        'fell back to the last snapshot the history supports',
+      );
       recoveryCheck(
         out.report.reasons.some((r) => r.includes('history')),
         'report mentions the missing history',
@@ -167,11 +229,20 @@ export const recoveryContractCases = (factory: RecoveryHarnessFactory): Contract
       const career = await seedCareer(h);
       await h.tamperEvent(2);
       const out = await loadCareer(h.store, { ruleset: career.ruleset });
-      recoveryCheck(out.status === 'degraded', `expected degraded, got ${out.status}`);
+      recoveryCheck(
+        out.status === 'degraded',
+        `expected degraded, got ${out.status}`,
+      );
       if (out.status !== 'degraded') return;
-      recoveryCheck(out.snapshot.revision === 2, 'fell back to the snapshot inside the verified prefix');
+      recoveryCheck(
+        out.snapshot.revision === 2,
+        'fell back to the snapshot inside the verified prefix',
+      );
       const events = (await h.store.loadHistorySince(0)).events;
-      recoveryCheck(!verifyEventChain(events).ok, 'the tampered chain really fails verification');
+      recoveryCheck(
+        !verifyEventChain(events).ok,
+        'the tampered chain really fails verification',
+      );
     },
   },
   {
@@ -181,9 +252,15 @@ export const recoveryContractCases = (factory: RecoveryHarnessFactory): Contract
       const career = await seedCareer(h, 2);
       for (const r of [0, 1, 2]) await h.tamperSnapshot(r, 'hash');
       const out = await loadCareer(h.store, { ruleset: career.ruleset });
-      recoveryCheck(out.status === 'failed', `expected failed, got ${out.status}`);
+      recoveryCheck(
+        out.status === 'failed',
+        `expected failed, got ${out.status}`,
+      );
       if (out.status === 'failed') {
-        recoveryCheck(out.report.action === 'NO_VERIFIED_SNAPSHOT', 'report says nothing verifies');
+        recoveryCheck(
+          out.report.action === 'NO_VERIFIED_SNAPSHOT',
+          'report says nothing verifies',
+        );
       }
     },
   },
@@ -200,15 +277,26 @@ export const recoveryContractCases = (factory: RecoveryHarnessFactory): Contract
         provenance: career.ruleset.provenance,
         rules: { maxAdvanceDaysPerCommand: 30 },
       });
-      const err = await expectRejection(() => loadCareer(h.store, { ruleset: other }), 'ruleset mismatch');
-      recoveryCheck(err instanceof CareerLoadError && err.code === 'RULESET_MISMATCH', 'RULESET_MISMATCH expected');
-      recoveryCheck((await h.store.loadRecoveryLog()).length === 0, 'no recovery logged');
+      const err = await expectRejection(
+        () => loadCareer(h.store, { ruleset: other }),
+        'ruleset mismatch',
+      );
+      recoveryCheck(
+        err instanceof CareerLoadError && err.code === 'RULESET_MISMATCH',
+        'RULESET_MISMATCH expected',
+      );
+      recoveryCheck(
+        (await h.store.loadRecoveryLog()).length === 0,
+        'no recovery logged',
+      );
     },
   },
 ];
 
 /** Repair behaviour: rebuild the latest snapshot from immutable history, or refuse. */
-export const repairContractCases = (factory: RecoveryHarnessFactory): ContractCase[] => [
+export const repairContractCases = (
+  factory: RecoveryHarnessFactory,
+): ContractCase[] => [
   {
     name: 'repair: a corrupt newest snapshot is rebuilt from history exactly, logged, and then loads cleanly',
     async run() {
@@ -216,20 +304,42 @@ export const repairContractCases = (factory: RecoveryHarnessFactory): ContractCa
       const career = await seedCareer(h);
       const original = await h.store.loadLatest();
       await h.tamperSnapshot(4, 'hash');
-      const out = await loadCareer(h.store, { ruleset: career.ruleset, repair: true });
-      recoveryCheck(out.status === 'recovered', `expected recovered, got ${out.status}`);
-      if (out.status !== 'recovered') return;
-      recoveryCheck(out.report.action === 'REPAIRED_LATEST_FROM_REPLAY', 'report names the repair');
-      recoveryCheck(out.snapshot.contentHash === original?.contentHash, 'repaired snapshot equals the original exactly');
+      const out = await loadCareer(h.store, {
+        ruleset: career.ruleset,
+        repair: true,
+      });
       recoveryCheck(
-        fingerprintWorld(out.kernel.world) === fingerprintWorld(career.kernel.world),
+        out.status === 'recovered',
+        `expected recovered, got ${out.status}`,
+      );
+      if (out.status !== 'recovered') return;
+      recoveryCheck(
+        out.report.action === 'REPAIRED_LATEST_FROM_REPLAY',
+        'report names the repair',
+      );
+      recoveryCheck(
+        out.snapshot.contentHash === original?.contentHash,
+        'repaired snapshot equals the original exactly',
+      );
+      recoveryCheck(
+        fingerprintWorld(out.kernel.world) ===
+          fingerprintWorld(career.kernel.world),
         'repaired world fingerprint equals live world',
       );
-      recoveryCheck(out.kernel.chainHead === career.kernel.chainHead, 'repaired audit head equals live head');
+      recoveryCheck(
+        out.kernel.chainHead === career.kernel.chainHead,
+        'repaired audit head equals live head',
+      );
       const next = career.step(3);
-      recoveryCheck(out.kernel.execute(next.commands[0]!.envelope).ok, 'repaired career keeps executing');
+      recoveryCheck(
+        out.kernel.execute(next.commands[0]!.envelope).ok,
+        'repaired career keeps executing',
+      );
       const log = await h.store.loadRecoveryLog();
-      recoveryCheck(log.length === 1 && log[0]?.action === 'REPAIRED_LATEST_FROM_REPLAY', 'repair logged once');
+      recoveryCheck(
+        log.length === 1 && log[0]?.action === 'REPAIRED_LATEST_FROM_REPLAY',
+        'repair logged once',
+      );
     },
   },
   {
@@ -239,10 +349,19 @@ export const repairContractCases = (factory: RecoveryHarnessFactory): ContractCa
       const career = await seedCareer(h);
       const original = await h.store.loadLatest();
       await h.tamperSnapshot(4, 'junk');
-      const out = await loadCareer(h.store, { ruleset: career.ruleset, repair: true });
-      recoveryCheck(out.status === 'recovered', `expected recovered, got ${out.status}`);
+      const out = await loadCareer(h.store, {
+        ruleset: career.ruleset,
+        repair: true,
+      });
+      recoveryCheck(
+        out.status === 'recovered',
+        `expected recovered, got ${out.status}`,
+      );
       if (out.status === 'recovered') {
-        recoveryCheck(out.snapshot.contentHash === original?.contentHash, 'repaired snapshot equals the original');
+        recoveryCheck(
+          out.snapshot.contentHash === original?.contentHash,
+          'repaired snapshot equals the original',
+        );
       }
     },
   },
@@ -253,10 +372,19 @@ export const repairContractCases = (factory: RecoveryHarnessFactory): ContractCa
       const career = await seedCareer(h);
       const original = await h.store.loadLatest();
       for (const r of [1, 2, 3, 4]) await h.tamperSnapshot(r, 'hash');
-      const out = await loadCareer(h.store, { ruleset: career.ruleset, repair: true });
-      recoveryCheck(out.status === 'recovered', `expected recovered, got ${out.status}`);
+      const out = await loadCareer(h.store, {
+        ruleset: career.ruleset,
+        repair: true,
+      });
+      recoveryCheck(
+        out.status === 'recovered',
+        `expected recovered, got ${out.status}`,
+      );
       if (out.status === 'recovered') {
-        recoveryCheck(out.snapshot.contentHash === original?.contentHash, 'rebuilt from genesis history');
+        recoveryCheck(
+          out.snapshot.contentHash === original?.contentHash,
+          'rebuilt from genesis history',
+        );
       }
     },
   },
@@ -268,8 +396,14 @@ export const repairContractCases = (factory: RecoveryHarnessFactory): ContractCa
       await h.tamperSnapshot(4, 'hash');
       await loadCareer(h.store, { ruleset: career.ruleset, repair: true });
       const again = await loadCareer(h.store, { ruleset: career.ruleset });
-      recoveryCheck(again.status === 'loaded', `expected loaded, got ${again.status}`);
-      recoveryCheck((await h.store.loadRecoveryLog()).length === 1, 'no further recovery entries');
+      recoveryCheck(
+        again.status === 'loaded',
+        `expected loaded, got ${again.status}`,
+      );
+      recoveryCheck(
+        (await h.store.loadRecoveryLog()).length === 1,
+        'no further recovery entries',
+      );
     },
   },
   {
@@ -279,14 +413,23 @@ export const repairContractCases = (factory: RecoveryHarnessFactory): ContractCa
       const career = await seedCareer(h);
       await h.tamperEvent(2);
       await h.tamperSnapshot(4, 'hash');
-      const out = await loadCareer(h.store, { ruleset: career.ruleset, repair: true });
-      recoveryCheck(out.status === 'degraded', `expected degraded, got ${out.status}`);
+      const out = await loadCareer(h.store, {
+        ruleset: career.ruleset,
+        repair: true,
+      });
+      recoveryCheck(
+        out.status === 'degraded',
+        `expected degraded, got ${out.status}`,
+      );
       const log = await h.store.loadRecoveryLog();
       recoveryCheck(
         log.every((r) => r.action !== 'REPAIRED_LATEST_FROM_REPLAY'),
         'no repair was recorded',
       );
-      recoveryCheck(!verifySnapshot(await h.store.loadLatest()).ok, 'the damaged snapshot was left as it was');
+      recoveryCheck(
+        !verifySnapshot(await h.store.loadLatest()).ok,
+        'the damaged snapshot was left as it was',
+      );
     },
   },
   {
@@ -295,10 +438,19 @@ export const repairContractCases = (factory: RecoveryHarnessFactory): ContractCa
       const h = await factory();
       const career = await seedCareer(h);
       await h.truncateHistory(1);
-      const out = await loadCareer(h.store, { ruleset: career.ruleset, repair: true });
-      recoveryCheck(out.status === 'degraded', `expected degraded, got ${out.status}`);
+      const out = await loadCareer(h.store, {
+        ruleset: career.ruleset,
+        repair: true,
+      });
+      recoveryCheck(
+        out.status === 'degraded',
+        `expected degraded, got ${out.status}`,
+      );
       const log = await h.store.loadRecoveryLog();
-      recoveryCheck(log.every((r) => r.action !== 'REPAIRED_LATEST_FROM_REPLAY'), 'no repair was recorded');
+      recoveryCheck(
+        log.every((r) => r.action !== 'REPAIRED_LATEST_FROM_REPLAY'),
+        'no repair was recorded',
+      );
     },
   },
 ];

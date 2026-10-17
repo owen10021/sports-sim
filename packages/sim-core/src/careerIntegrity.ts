@@ -29,7 +29,10 @@ export interface LoadOptions {
 }
 
 /** Check a snapshot belongs to the supplied ruleset (and seed, when given). Throws if not. */
-export const requireMatchingRefs = (snapshot: CareerSnapshot, options: LoadOptions): void => {
+export const requireMatchingRefs = (
+  snapshot: CareerSnapshot,
+  options: LoadOptions,
+): void => {
   const want = rulesetRefOf(options.ruleset);
   const have = snapshot.world.ruleset;
   if (
@@ -45,7 +48,10 @@ export const requireMatchingRefs = (snapshot: CareerSnapshot, options: LoadOptio
   if (options.seed !== undefined) {
     const wantSeed = seedRefOf(options.seed);
     if (canonicalString(snapshot.world.seed) !== canonicalString(wantSeed)) {
-      throw new CareerLoadError('SEED_MISMATCH', 'career descends from a different world seed');
+      throw new CareerLoadError(
+        'SEED_MISMATCH',
+        'career descends from a different world seed',
+      );
     }
   }
 };

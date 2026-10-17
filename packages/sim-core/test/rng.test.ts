@@ -4,25 +4,36 @@ import { DeterministicRng, type RngState } from '../src/index';
 // Reference vectors were produced by an independent Python implementation of
 // xoshiro128** (Blackman/Vigna) seeded through splitmix32; see rng.ts for the
 // exact seeding contract. They must never be regenerated from the TypeScript code.
-const REF: Record<number, { state: number[]; first6: number[]; after6: number[] }> = {
+const REF: Record<
+  number,
+  { state: number[]; first6: number[]; after6: number[] }
+> = {
   0: {
     state: [1684164658, 3653269916, 2939563536, 2141751570],
-    first6: [1789933344, 44971166, 2521387044, 3848737593, 1138324114, 749234105],
+    first6: [
+      1789933344, 44971166, 2521387044, 3848737593, 1138324114, 749234105,
+    ],
     after6: [329295192, 953275645, 2825333633, 1708779182],
   },
   1: {
     state: [1580013426, 350525680, 3524174333, 3011703609],
-    first6: [393288148, 2174103013, 3814759091, 2092745082, 1865176206, 2179171167],
+    first6: [
+      393288148, 2174103013, 3814759091, 2092745082, 1865176206, 2179171167,
+    ],
     after6: [1139658107, 1388964670, 3725279914, 3999740333],
   },
   12345: {
     state: [3283241497, 613117429, 2940958500, 516375437],
-    first6: [1093274547, 203003357, 3741353573, 3803725158, 4178738660, 810247443],
+    first6: [
+      1093274547, 203003357, 3741353573, 3803725158, 4178738660, 810247443,
+    ],
     after6: [295305044, 3974570048, 3662437342, 3047766246],
   },
   4294967295: {
     state: [3950124170, 4293442868, 1302505678, 2762329221],
-    first6: [4104197751, 1825856343, 1152209388, 2427537429, 3685145430, 609215610],
+    first6: [
+      4104197751, 1825856343, 1152209388, 2427537429, 3685145430, 609215610,
+    ],
     after6: [1492704536, 891779096, 2960609414, 3495962299],
   },
 };
@@ -90,7 +101,9 @@ describe('DeterministicRng (xoshiro128ss-v1)', () => {
 
   it('keeps nextInt inside [0, max) for assorted bounds and is not grossly biased', () => {
     const rng = DeterministicRng.fromSeed(9);
-    for (const max of [1, 2, 3, 7, 1000, 65536, 0x80000000, 0xffffffff, 0x100000000]) {
+    for (const max of [
+      1, 2, 3, 7, 1000, 65536, 0x80000000, 0xffffffff, 0x100000000,
+    ]) {
       for (let i = 0; i < 200; i++) {
         const v = rng.nextInt(max);
         expect(Number.isInteger(v)).toBe(true);
@@ -111,7 +124,15 @@ describe('DeterministicRng (xoshiro128ss-v1)', () => {
     const rng = DeterministicRng.fromSeed(5);
     rng.nextU32();
     const before = rng.snapshot();
-    for (const bad of [0, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY, 0x100000001, '3' as unknown as number]) {
+    for (const bad of [
+      0,
+      -1,
+      1.5,
+      Number.NaN,
+      Number.POSITIVE_INFINITY,
+      0x100000001,
+      '3' as unknown as number,
+    ]) {
       expect(() => rng.nextInt(bad)).toThrow(RangeError);
       expect(rng.snapshot()).toEqual(before);
     }

@@ -31,14 +31,22 @@ export const runGoldenOnDevice = async (): Promise<GoldenDiagnostics> => {
   const db = await ExpoSqliteDatabase.open(':memory:');
   const run = await runGoldenThroughStore(new SqliteCareerStore(db));
   const storeDiffs = diffGolden(run.result, GOLDEN_EXPECTED);
-  if (run.loadStatus !== 'loaded') storeDiffs.push(`load status ${run.loadStatus}`);
+  if (run.loadStatus !== 'loaded')
+    storeDiffs.push(`load status ${run.loadStatus}`);
   if (!run.replayOk) storeDiffs.push('stored history replay failed');
-  if (run.reloadedFingerprint !== GOLDEN_EXPECTED.fingerprint) storeDiffs.push('reloaded fingerprint differs');
-  if (run.reloadedChainHead !== GOLDEN_EXPECTED.eventChainHead) storeDiffs.push('reloaded chain head differs');
+  if (run.reloadedFingerprint !== GOLDEN_EXPECTED.fingerprint)
+    storeDiffs.push('reloaded fingerprint differs');
+  if (run.reloadedChainHead !== GOLDEN_EXPECTED.eventChainHead)
+    storeDiffs.push('reloaded chain head differs');
   const store: DiagnosticLine =
     storeDiffs.length === 0
       ? { ok: true, text: 'MATCH after SQLite save, reload and replay' }
       : { ok: false, text: `MISMATCH: ${storeDiffs.join(' | ')}` };
 
-  return { kernel, store, fingerprint: direct.fingerprint, chainHead: direct.eventChainHead };
+  return {
+    kernel,
+    store,
+    fingerprint: direct.fingerprint,
+    chainHead: direct.eventChainHead,
+  };
 };

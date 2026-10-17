@@ -24,7 +24,11 @@ export interface RngState {
 const TWO_32 = 0x100000000;
 
 const isU32 = (n: unknown): n is number =>
-  typeof n === 'number' && Number.isInteger(n) && n >= 0 && n <= 0xffffffff && !Object.is(n, -0);
+  typeof n === 'number' &&
+  Number.isInteger(n) &&
+  n >= 0 &&
+  n <= 0xffffffff &&
+  !Object.is(n, -0);
 
 const rotl = (x: number, k: number): number => (x << k) | (x >>> (32 - k));
 
@@ -38,17 +42,30 @@ const splitmix32Next = (state: number): { state: number; value: number } => {
 };
 
 const validateState = (state: RngState): void => {
-  if (typeof state !== 'object' || state === null || state.algorithm !== RNG_ALGORITHM) {
-    throw new RangeError(`Unsupported RNG algorithm; expected ${RNG_ALGORITHM}`);
+  if (
+    typeof state !== 'object' ||
+    state === null ||
+    state.algorithm !== RNG_ALGORITHM
+  ) {
+    throw new RangeError(
+      `Unsupported RNG algorithm; expected ${RNG_ALGORITHM}`,
+    );
   }
-  if (!isU32(state.s0) || !isU32(state.s1) || !isU32(state.s2) || !isU32(state.s3)) {
+  if (
+    !isU32(state.s0) ||
+    !isU32(state.s1) ||
+    !isU32(state.s2) ||
+    !isU32(state.s3)
+  ) {
     throw new RangeError('RNG state words must be uint32 integers');
   }
   if (state.s0 === 0 && state.s1 === 0 && state.s2 === 0 && state.s3 === 0) {
     throw new RangeError('RNG state must not be all zero');
   }
   if (!Number.isSafeInteger(state.draws) || state.draws < 0) {
-    throw new RangeError('RNG draw counter must be a non-negative safe integer');
+    throw new RangeError(
+      'RNG draw counter must be a non-negative safe integer',
+    );
   }
 };
 
@@ -68,7 +85,8 @@ export class DeterministicRng {
   }
 
   static fromSeed(seed32: number): DeterministicRng {
-    if (!isU32(seed32)) throw new RangeError('RNG seed must be a uint32 integer');
+    if (!isU32(seed32))
+      throw new RangeError('RNG seed must be a uint32 integer');
     let cursor = seed32;
     const words: number[] = [];
     for (let i = 0; i < 4; i++) {

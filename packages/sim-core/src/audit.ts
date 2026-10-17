@@ -27,7 +27,9 @@ export interface CommandPayloadBase {
 }
 
 /** An intent submitted by an actor. Only the World Kernel can turn this into reality. */
-export interface CommandEnvelope<C extends CommandPayloadBase = CommandPayloadBase> {
+export interface CommandEnvelope<
+  C extends CommandPayloadBase = CommandPayloadBase,
+> {
   readonly commandId: CommandId;
   /** The world revision the submitter believes is current (optimistic concurrency). */
   readonly expectedRevision: WorldRevision;
@@ -35,7 +37,8 @@ export interface CommandEnvelope<C extends CommandPayloadBase = CommandPayloadBa
   readonly command: C;
 }
 
-export type TraceStage = 'validation' | 'authorization' | 'resolution' | 'commit';
+export type TraceStage =
+  'validation' | 'authorization' | 'resolution' | 'commit';
 export interface TraceStep {
   readonly stage: TraceStage;
   readonly outcome: 'pass' | 'fail';
@@ -93,10 +96,18 @@ const isBodyShaped = (e: unknown): e is EventBody => {
 };
 
 /** Wrap an event body into the next link of the chain. Throws on malformed input. */
-export const chainEvent = (previousHash: string, body: EventBody): EventEnvelope => {
-  if (!isHash(previousHash)) throw new TypeError('previousHash must be 64 lowercase hex chars');
+export const chainEvent = (
+  previousHash: string,
+  body: EventBody,
+): EventEnvelope => {
+  if (!isHash(previousHash))
+    throw new TypeError('previousHash must be 64 lowercase hex chars');
   if (!isBodyShaped(body)) throw new TypeError('malformed event body');
-  return deepFreeze({ ...bodyOf(body), previousHash, hash: hashEvent(previousHash, body) });
+  return deepFreeze({
+    ...bodyOf(body),
+    previousHash,
+    hash: hashEvent(previousHash, body),
+  });
 };
 
 export type ChainFailureReason =
@@ -130,26 +141,45 @@ export const verifyEventChain = (
   const seenIds = new Set<string>();
   for (let index = 0; index < events.length; index++) {
     const e = events[index] as EventEnvelope;
-    const fail = (reason: ChainFailureReason, message: string): ChainVerification => ({
+    const fail = (
+      reason: ChainFailureReason,
+      message: string,
+    ): ChainVerification => ({
       ok: false,
       index,
       reason,
       message,
     });
-    if (!isBodyShaped(e) || !isHash((e as EventEnvelope).previousHash) || !isHash((e as EventEnvelope).hash)) {
+    if (
+      !isBodyShaped(e) ||
+      !isHash((e as EventEnvelope).previousHash) ||
+      !isHash((e as EventEnvelope).hash)
+    ) {
       return fail('MALFORMED', `event ${index} is malformed`);
     }
     if (e.previousHash !== expectedPrevious) {
-      return fail('BROKEN_LINK', `event ${index} does not link to the preceding hash`);
+      return fail(
+        'BROKEN_LINK',
+        `event ${index} does not link to the preceding hash`,
+      );
     }
     if (hashEvent(e.previousHash, e) !== e.hash) {
-      return fail('HASH_MISMATCH', `event ${index} content does not match its hash`);
+      return fail(
+        'HASH_MISMATCH',
+        `event ${index} content does not match its hash`,
+      );
     }
     if (e.revision < lastRevision) {
-      return fail('REVISION_ORDER', `event ${index} revision ${e.revision} precedes ${lastRevision}`);
+      return fail(
+        'REVISION_ORDER',
+        `event ${index} revision ${e.revision} precedes ${lastRevision}`,
+      );
     }
     if (seenIds.has(e.eventId)) {
-      return fail('DUPLICATE_EVENT_ID', `event ${index} reuses id ${e.eventId}`);
+      return fail(
+        'DUPLICATE_EVENT_ID',
+        `event ${index} reuses id ${e.eventId}`,
+      );
     }
     seenIds.add(e.eventId);
     lastRevision = e.revision;

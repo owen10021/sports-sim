@@ -21,7 +21,10 @@ const memoryHarness = async (): Promise<RecoveryHarness> => {
       store.truncateHistoryForTest(count);
     },
     async tamperEvent(index: number) {
-      store.tamperWithEventForTest(index, (e) => ({ ...e, type: 'TamperedEvent' }));
+      store.tamperWithEventForTest(index, (e) => ({
+        ...e,
+        type: 'TamperedEvent',
+      }));
     },
   };
 };

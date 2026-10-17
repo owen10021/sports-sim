@@ -16,7 +16,8 @@ const utf8 = (s: string): Uint8Array => {
     const cp = ch.codePointAt(0) as number;
     if (cp < 0x80) out.push(cp);
     else if (cp < 0x800) out.push(0xc0 | (cp >> 6), 0x80 | (cp & 63));
-    else if (cp < 0x10000) out.push(0xe0 | (cp >> 12), 0x80 | ((cp >> 6) & 63), 0x80 | (cp & 63));
+    else if (cp < 0x10000)
+      out.push(0xe0 | (cp >> 12), 0x80 | ((cp >> 6) & 63), 0x80 | (cp & 63));
     else
       out.push(
         0xf0 | (cp >> 18),
@@ -27,7 +28,8 @@ const utf8 = (s: string): Uint8Array => {
   }
   return Uint8Array.from(out);
 };
-const text = (b: Uint8Array): string => Array.from(b, (x) => String.fromCharCode(x)).join('');
+const text = (b: Uint8Array): string =>
+  Array.from(b, (x) => String.fromCharCode(x)).join('');
 
 describe('branded ids', () => {
   it('round-trips ids and revisions as plain values', () => {
@@ -117,7 +119,6 @@ describe('canonicalBytes', () => {
     const cyc: Record<string, unknown> = {};
     cyc.self = cyc;
     expect(() => canonicalBytes(cyc)).toThrow();
-    // eslint-disable-next-line no-sparse-arrays
     expect(() => canonicalBytes([1, , 3])).toThrow();
   });
 });
@@ -131,13 +132,17 @@ describe('Hash32.sha256', () => {
 
   it('matches the empty-input vector and returns 64 lowercase hex chars', () => {
     const h = Hash32.sha256(new Uint8Array(0));
-    expect(h).toBe('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
+    expect(h).toBe(
+      'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+    );
     expect(h).toMatch(/^[0-9a-f]{64}$/);
   });
 
   it('matches the two-block NIST vector', () => {
     expect(
-      Hash32.sha256(utf8('abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq')),
+      Hash32.sha256(
+        utf8('abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq'),
+      ),
     ).toBe('248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1');
   });
 });

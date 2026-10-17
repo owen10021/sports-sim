@@ -1,9 +1,19 @@
 import type { CommandEnvelope } from './audit';
-import { commandId, entityId, worldId, worldRevision, type ActorRef } from './ids';
+import {
+  commandId,
+  entityId,
+  worldId,
+  worldRevision,
+  type ActorRef,
+} from './ids';
 import { WorldKernel, type RejectionCode } from './kernel';
 import { loadCareer } from './recovery';
 import { verifyCareerReplay } from './replay';
-import { sealSnapshot, type CareerStore, type CommitRecord } from './persistence';
+import {
+  sealSnapshot,
+  type CareerStore,
+  type CommitRecord,
+} from './persistence';
 import { SYNTHETIC_RULESET, SYNTHETIC_SEED } from './syntheticFixtures';
 import { createWorld, fingerprintWorld } from './world';
 
@@ -18,10 +28,18 @@ import { createWorld, fingerprintWorld } from './world';
 export const GOLDEN_SCENARIO_ID = 'package-a-golden-v1';
 export const GOLDEN_WORLD_ID = 'world-golden-1';
 
-const harness: ActorRef = { kind: 'test_harness', id: entityId('golden-harness') };
+const harness: ActorRef = {
+  kind: 'test_harness',
+  id: entityId('golden-harness'),
+};
 const cpu: ActorRef = { kind: 'cpu_org', id: entityId('golden-cpu') };
 
-const envelope = (n: number, days: number, revision: number, actor: ActorRef = harness): CommandEnvelope =>
+const envelope = (
+  n: number,
+  days: number,
+  revision: number,
+  actor: ActorRef = harness,
+): CommandEnvelope =>
   ({
     commandId: commandId(`cmd-${String(n).padStart(6, '0')}`),
     expectedRevision: worldRevision(revision),
@@ -38,13 +56,41 @@ interface GoldenStepSpec {
 const rev = (k: WorldKernel): number => Number(k.world.revision);
 
 export const GOLDEN_STEPS: readonly GoldenStepSpec[] = [
-  { label: 'advance-1', expect: 'committed', build: (k) => envelope(1, 1, rev(k)) },
-  { label: 'advance-6', expect: 'committed', build: (k) => envelope(2, 6, rev(k)) },
-  { label: 'duplicate-command', expect: 'DUPLICATE_COMMAND', build: (k) => envelope(2, 6, rev(k)) },
-  { label: 'stale-revision', expect: 'STALE_REVISION', build: () => envelope(3, 1, 0) },
-  { label: 'invalid-days', expect: 'INVALID_PAYLOAD', build: (k) => envelope(3, 0, rev(k)) },
-  { label: 'unauthorized-actor', expect: 'UNAUTHORIZED_ACTOR', build: (k) => envelope(3, 1, rev(k), cpu) },
-  { label: 'advance-7', expect: 'committed', build: (k) => envelope(3, 7, rev(k)) },
+  {
+    label: 'advance-1',
+    expect: 'committed',
+    build: (k) => envelope(1, 1, rev(k)),
+  },
+  {
+    label: 'advance-6',
+    expect: 'committed',
+    build: (k) => envelope(2, 6, rev(k)),
+  },
+  {
+    label: 'duplicate-command',
+    expect: 'DUPLICATE_COMMAND',
+    build: (k) => envelope(2, 6, rev(k)),
+  },
+  {
+    label: 'stale-revision',
+    expect: 'STALE_REVISION',
+    build: () => envelope(3, 1, 0),
+  },
+  {
+    label: 'invalid-days',
+    expect: 'INVALID_PAYLOAD',
+    build: (k) => envelope(3, 0, rev(k)),
+  },
+  {
+    label: 'unauthorized-actor',
+    expect: 'UNAUTHORIZED_ACTOR',
+    build: (k) => envelope(3, 1, rev(k), cpu),
+  },
+  {
+    label: 'advance-7',
+    expect: 'committed',
+    build: (k) => envelope(3, 7, rev(k)),
+  },
 ];
 
 export interface GoldenStepResult {
@@ -86,8 +132,12 @@ const stateOf = (k: WorldKernel) => ({
 });
 
 /** Run the scenario on a fresh kernel. `onCommit` receives each committed commit record. */
-export const runGoldenScenario = (onCommit?: (record: CommitRecord) => void): GoldenResult => {
-  const world = createWorld(SYNTHETIC_SEED, SYNTHETIC_RULESET, { newWorldId: () => worldId(GOLDEN_WORLD_ID) });
+export const runGoldenScenario = (
+  onCommit?: (record: CommitRecord) => void,
+): GoldenResult => {
+  const world = createWorld(SYNTHETIC_SEED, SYNTHETIC_RULESET, {
+    newWorldId: () => worldId(GOLDEN_WORLD_ID),
+  });
   const kernel = WorldKernel.fromGenesis(world, SYNTHETIC_RULESET);
   const steps: GoldenStepResult[] = [];
   const commandDays: number[] = [];
@@ -96,7 +146,10 @@ export const runGoldenScenario = (onCommit?: (record: CommitRecord) => void): Go
     const before = stateOf(kernel);
     const result = kernel.execute(env);
     if (spec.expect === 'committed') {
-      if (!result.ok) throw new GoldenScenarioError(`${spec.label} should commit but was rejected: ${result.rejection.code}`);
+      if (!result.ok)
+        throw new GoldenScenarioError(
+          `${spec.label} should commit but was rejected: ${result.rejection.code}`,
+        );
       commandDays.push((env.command as unknown as { days: number }).days);
       onCommit?.({
         snapshot: sealSnapshot({
@@ -105,17 +158,30 @@ export const runGoldenScenario = (onCommit?: (record: CommitRecord) => void): Go
           eventCount: kernel.eventCount,
           knownCommandIds: kernel.knownCommandIds,
         }),
-        commands: [{ envelope: env, resultRevision: Number(result.world.revision) }],
+        commands: [
+          { envelope: env, resultRevision: Number(result.world.revision) },
+        ],
         events: result.events,
       });
     } else {
-      if (result.ok) throw new GoldenScenarioError(`${spec.label} should be rejected as ${spec.expect} but committed`);
+      if (result.ok)
+        throw new GoldenScenarioError(
+          `${spec.label} should be rejected as ${spec.expect} but committed`,
+        );
       if (result.rejection.code !== spec.expect) {
-        throw new GoldenScenarioError(`${spec.label} rejected as ${result.rejection.code}, expected ${spec.expect}`);
+        throw new GoldenScenarioError(
+          `${spec.label} rejected as ${result.rejection.code}, expected ${spec.expect}`,
+        );
       }
       const after = stateOf(kernel);
-      if (after.fingerprint !== before.fingerprint || after.rngDraws !== before.rngDraws || after.chainHead !== before.chainHead) {
-        throw new GoldenScenarioError(`${spec.label} changed state or consumed randomness`);
+      if (
+        after.fingerprint !== before.fingerprint ||
+        after.rngDraws !== before.rngDraws ||
+        after.chainHead !== before.chainHead
+      ) {
+        throw new GoldenScenarioError(
+          `${spec.label} changed state or consumed randomness`,
+        );
       }
     }
     steps.push({
@@ -155,8 +221,12 @@ export interface GoldenStoreRun {
  * store and replay the stored history. Used to prove storage + reload + replay agree with
  * the kernel inside each runtime.
  */
-export const runGoldenThroughStore = async (store: CareerStore): Promise<GoldenStoreRun> => {
-  const world = createWorld(SYNTHETIC_SEED, SYNTHETIC_RULESET, { newWorldId: () => worldId(GOLDEN_WORLD_ID) });
+export const runGoldenThroughStore = async (
+  store: CareerStore,
+): Promise<GoldenStoreRun> => {
+  const world = createWorld(SYNTHETIC_SEED, SYNTHETIC_RULESET, {
+    newWorldId: () => worldId(GOLDEN_WORLD_ID),
+  });
   const genesisKernel = WorldKernel.fromGenesis(world, SYNTHETIC_RULESET);
   await store.initialize();
   await store.saveCommit({
@@ -172,23 +242,46 @@ export const runGoldenThroughStore = async (store: CareerStore): Promise<GoldenS
   const commits: CommitRecord[] = [];
   const result = runGoldenScenario((record) => commits.push(record));
   for (const record of commits) await store.saveCommit(record);
-  const loaded = await loadCareer(store, { ruleset: SYNTHETIC_RULESET, seed: SYNTHETIC_SEED });
+  const loaded = await loadCareer(store, {
+    ruleset: SYNTHETIC_RULESET,
+    seed: SYNTHETIC_SEED,
+  });
   const replay = await verifyCareerReplay(store, SYNTHETIC_RULESET);
   return {
     result,
     loadStatus: loaded.status,
     replayOk: replay.ok,
-    reloadedFingerprint: loaded.status === 'loaded' ? fingerprintWorld(loaded.kernel.world) : null,
-    reloadedChainHead: loaded.status === 'loaded' ? loaded.kernel.chainHead : null,
+    reloadedFingerprint:
+      loaded.status === 'loaded' ? fingerprintWorld(loaded.kernel.world) : null,
+    reloadedChainHead:
+      loaded.status === 'loaded' ? loaded.kernel.chainHead : null,
   };
 };
 
 /** Compare a run against recorded expectations; returns human-readable differences. */
-export const diffGolden = (actual: GoldenResult, expected: GoldenResult): string[] => {
+export const diffGolden = (
+  actual: GoldenResult,
+  expected: GoldenResult,
+): string[] => {
   const diffs: string[] = [];
-  const keys = ['scenario', 'worldId', 'finalSimDate', 'revision', 'eventCount', 'rngDraws', 'fingerprint', 'eventChainHead'] as const;
-  for (const k of keys) if (actual[k] !== expected[k]) diffs.push(`${k}: ${String(actual[k])} != ${String(expected[k])}`);
-  if (JSON.stringify(actual.commandDays) !== JSON.stringify(expected.commandDays)) diffs.push('commandDays differ');
-  if (JSON.stringify(actual.steps) !== JSON.stringify(expected.steps)) diffs.push('per-step results differ');
+  const keys = [
+    'scenario',
+    'worldId',
+    'finalSimDate',
+    'revision',
+    'eventCount',
+    'rngDraws',
+    'fingerprint',
+    'eventChainHead',
+  ] as const;
+  for (const k of keys)
+    if (actual[k] !== expected[k])
+      diffs.push(`${k}: ${String(actual[k])} != ${String(expected[k])}`);
+  if (
+    JSON.stringify(actual.commandDays) !== JSON.stringify(expected.commandDays)
+  )
+    diffs.push('commandDays differ');
+  if (JSON.stringify(actual.steps) !== JSON.stringify(expected.steps))
+    diffs.push('per-step results differ');
   return diffs;
 };

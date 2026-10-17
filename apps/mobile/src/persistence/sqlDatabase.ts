@@ -7,7 +7,10 @@ export type SqlValue = string | number | null;
 
 export interface SqlExecutor {
   run(sql: string, params?: readonly SqlValue[]): Promise<void>;
-  all<T extends object>(sql: string, params?: readonly SqlValue[]): Promise<T[]>;
+  all<T extends object>(
+    sql: string,
+    params?: readonly SqlValue[],
+  ): Promise<T[]>;
 }
 
 export interface SqlDatabase extends SqlExecutor {

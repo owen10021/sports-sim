@@ -52,7 +52,8 @@ const parseArgs = (argv: readonly string[]): Parsed => {
   const options = new Map<string, string | true>();
   for (let i = 0; i < rest.length; i++) {
     const token = rest[i] as string;
-    if (!token.startsWith('--')) throw new UsageError(`unexpected argument "${token}"`);
+    if (!token.startsWith('--'))
+      throw new UsageError(`unexpected argument "${token}"`);
     const key = token.slice(2);
     const next = rest[i + 1];
     if (next !== undefined && !next.startsWith('--')) {
@@ -67,7 +68,8 @@ const parseArgs = (argv: readonly string[]): Parsed => {
 
 const requireString = (p: Parsed, key: string): string => {
   const v = p.options.get(key);
-  if (typeof v !== 'string') throw new UsageError(`--${key} <value> is required`);
+  if (typeof v !== 'string')
+    throw new UsageError(`--${key} <value> is required`);
   return v;
 };
 
@@ -92,7 +94,12 @@ const viewOf = (kernel: WorldKernel) => ({
   eventChainHead: kernel.chainHead,
 });
 
-const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+const repoRoot = join(
+  dirname(fileURLToPath(import.meta.url)),
+  '..',
+  '..',
+  '..',
+);
 
 const renderGoldenExpected = (result: GoldenResult): string =>
   [
@@ -104,13 +111,20 @@ const renderGoldenExpected = (result: GoldenResult): string =>
     ' * `npm run golden:write`; regenerate only after an intentional, reviewed change to the',
     ' * simulation or fixtures.',
     ' */',
-    `export const GOLDEN_EXPECTED: GoldenResult = ${JSON.stringify(result, null, 2)
+    `export const GOLDEN_EXPECTED: GoldenResult = ${JSON.stringify(
+      result,
+      null,
+      2,
+    )
       .replace(`"${result.scenario}"`, 'GOLDEN_SCENARIO_ID')
       .replace(`"${result.worldId}"`, 'GOLDEN_WORLD_ID')};`,
     '',
   ].join('\n');
 
-export const runCli = async (argv: readonly string[], io: CliIo): Promise<number> => {
+export const runCli = async (
+  argv: readonly string[],
+  io: CliIo,
+): Promise<number> => {
   try {
     const parsed = parseArgs(argv);
     switch (parsed.command) {
@@ -134,7 +148,11 @@ export const runCli = async (argv: readonly string[], io: CliIo): Promise<number
       io.err(`${error.message}\n${USAGE_TEXT}`);
       return USAGE;
     }
-    io.err(error instanceof Error ? `${error.name}: ${error.message}` : String(error));
+    io.err(
+      error instanceof Error
+        ? `${error.name}: ${error.message}`
+        : String(error),
+    );
     return FAILED;
   }
 };
@@ -156,10 +174,17 @@ const create = async (p: Parsed, io: CliIo): Promise<number> => {
   }
   const idOption = p.options.get('world-id');
   const id = typeof idOption === 'string' ? idOption : `world-${randomUUID()}`;
-  const world = createWorld(SYNTHETIC_SEED, SYNTHETIC_RULESET, { newWorldId: () => worldId(id) });
+  const world = createWorld(SYNTHETIC_SEED, SYNTHETIC_RULESET, {
+    newWorldId: () => worldId(id),
+  });
   const kernel = WorldKernel.fromGenesis(world, SYNTHETIC_RULESET);
   await store.saveCommit({
-    snapshot: sealSnapshot({ world: kernel.world, chainHead: kernel.chainHead, eventCount: 0, knownCommandIds: [] }),
+    snapshot: sealSnapshot({
+      world: kernel.world,
+      chainHead: kernel.chainHead,
+      eventCount: 0,
+      knownCommandIds: [],
+    }),
     commands: [],
     events: [],
   });
@@ -178,7 +203,8 @@ const requireLoaded = async (store: CareerStore, io: CliIo) => {
 const advance = async (p: Parsed, io: CliIo): Promise<number> => {
   const file = requireString(p, 'file');
   const days = Number(requireString(p, 'days'));
-  if (!Number.isInteger(days)) throw new UsageError('--days must be an integer');
+  if (!Number.isInteger(days))
+    throw new UsageError('--days must be an integer');
   if (!existsSync(file)) {
     io.err(`${file} does not exist; run create first`);
     return FAILED;
@@ -188,7 +214,9 @@ const advance = async (p: Parsed, io: CliIo): Promise<number> => {
   if (loaded === null) return FAILED;
   const kernel = loaded.kernel;
   const envelope = {
-    commandId: commandId(`cmd-${String(kernel.knownCommandIds.length + 1).padStart(6, '0')}`),
+    commandId: commandId(
+      `cmd-${String(kernel.knownCommandIds.length + 1).padStart(6, '0')}`,
+    ),
     expectedRevision: worldRevision(Number(kernel.world.revision)),
     actor: { kind: 'test_harness', id: entityId('headless-cli') },
     command: { type: 'AdvanceDays', days },
@@ -221,7 +249,12 @@ const inspect = async (p: Parsed, io: CliIo): Promise<number> => {
   const store = readOnly(await openStore(file));
   const loaded = await requireLoaded(store, io);
   if (loaded === null) return FAILED;
-  io.out(JSON.stringify({ ...viewOf(loaded.kernel), snapshotRevision: loaded.snapshot.revision }));
+  io.out(
+    JSON.stringify({
+      ...viewOf(loaded.kernel),
+      snapshotRevision: loaded.snapshot.revision,
+    }),
+  );
   return OK;
 };
 
@@ -234,9 +267,19 @@ const verify = async (p: Parsed, io: CliIo): Promise<number> => {
   const store = readOnly(await openStore(file));
   const outcome = await loadCareer(store, loadOptions);
   const replay = await verifyCareerReplay(store, SYNTHETIC_RULESET);
-  const reasons = [...('report' in outcome ? outcome.report.reasons : []), ...replay.reasons];
+  const reasons = [
+    ...('report' in outcome ? outcome.report.reasons : []),
+    ...replay.reasons,
+  ];
   const ok = outcome.status === 'loaded' && replay.ok;
-  io.out(JSON.stringify({ ok, status: outcome.status, replayOk: replay.ok, reasons }));
+  io.out(
+    JSON.stringify({
+      ok,
+      status: outcome.status,
+      replayOk: replay.ok,
+      reasons,
+    }),
+  );
   return ok ? OK : FAILED;
 };
 
@@ -249,30 +292,63 @@ const replay = async (p: Parsed, io: CliIo): Promise<number> => {
   const store = await openStore(file);
   const check = await verifyCareerReplay(readOnly(store), SYNTHETIC_RULESET);
   if (p.options.get('repair') !== true) {
-    io.out(JSON.stringify({ ok: check.ok, reasons: check.reasons, fingerprint: check.fingerprint, chainHead: check.chainHead }));
+    io.out(
+      JSON.stringify({
+        ok: check.ok,
+        reasons: check.reasons,
+        fingerprint: check.fingerprint,
+        chainHead: check.chainHead,
+      }),
+    );
     return check.ok ? OK : FAILED;
   }
   if (check.ok) {
-    io.out(JSON.stringify({ ok: true, repaired: false, note: 'stored state already matches replay; nothing to repair' }));
+    io.out(
+      JSON.stringify({
+        ok: true,
+        repaired: false,
+        note: 'stored state already matches replay; nothing to repair',
+      }),
+    );
     return OK;
   }
-  const repair = await repairLatestFromHistory(store, { ...loadOptions, reasons: check.reasons });
+  const repair = await repairLatestFromHistory(store, {
+    ...loadOptions,
+    reasons: check.reasons,
+  });
   if (repair.status === 'repaired') {
     io.out(JSON.stringify({ ok: true, repaired: true, report: repair.report }));
     return OK;
   }
-  io.out(JSON.stringify({ ok: false, repaired: false, reasons: repair.reasons }));
+  io.out(
+    JSON.stringify({ ok: false, repaired: false, reasons: repair.reasons }),
+  );
   return FAILED;
 };
 
 const golden = (p: Parsed, io: CliIo): number => {
   const result = runGoldenScenario();
   if (p.options.get('write') === true) {
-    const fixture = join(repoRoot, 'fixtures', 'golden', 'package-a-golden-v1.json');
+    const fixture = join(
+      repoRoot,
+      'fixtures',
+      'golden',
+      'package-a-golden-v1.json',
+    );
     mkdirSync(dirname(fixture), { recursive: true });
     writeFileSync(fixture, `${JSON.stringify(result, null, 2)}\n`, 'utf8');
-    writeFileSync(join(repoRoot, 'packages', 'sim-core', 'src', 'goldenExpected.ts'), renderGoldenExpected(result), 'utf8');
-    io.out(JSON.stringify({ written: true, fingerprint: result.fingerprint, eventChainHead: result.eventChainHead }));
+    writeFileSync(
+      join(repoRoot, 'packages', 'sim-core', 'src', 'goldenExpected.ts'),
+      renderGoldenExpected(result),
+      'utf8',
+    );
+    io.out(
+      JSON.stringify({
+        written: true,
+        fingerprint: result.fingerprint,
+        eventChainHead: result.eventChainHead,
+      }),
+    );
     return OK;
   }
   const diffs = diffGolden(result, GOLDEN_EXPECTED);

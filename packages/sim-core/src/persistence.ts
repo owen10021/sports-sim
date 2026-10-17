@@ -1,5 +1,9 @@
 import { canonicalString } from './canonical';
-import { verifyEventChain, type CommandEnvelope, type EventEnvelope } from './audit';
+import {
+  verifyEventChain,
+  type CommandEnvelope,
+  type EventEnvelope,
+} from './audit';
 import { hashCanonical, isHash } from './hash';
 import { SCHEMA_VERSION, UnsupportedSchemaVersionError } from './provenance';
 import { deepFreeze, fingerprintWorld, type FootballWorld } from './world';
@@ -61,10 +65,7 @@ export interface RecoveryReport {
 }
 
 export type PersistenceErrorCode =
-  | 'NOT_INITIALIZED'
-  | 'COMMIT_REJECTED'
-  | 'WRITE_FAILED'
-  | 'CORRUPT_STORE';
+  'NOT_INITIALIZED' | 'COMMIT_REJECTED' | 'WRITE_FAILED' | 'CORRUPT_STORE';
 
 export class PersistenceError extends Error {
   readonly code: PersistenceErrorCode;
@@ -98,7 +99,10 @@ export interface CareerStore {
    * Record a recovery. When `repairedSnapshot` is given it becomes the active snapshot
    * (it must be consistent with the stored history). Reports are append-only.
    */
-  markRecovery(report: RecoveryReport, repairedSnapshot?: CareerSnapshot): Promise<void>;
+  markRecovery(
+    report: RecoveryReport,
+    repairedSnapshot?: CareerSnapshot,
+  ): Promise<void>;
   /** Append-only recovery log, oldest first. */
   loadRecoveryLog(): Promise<readonly RecoveryReport[]>;
 }
@@ -124,8 +128,14 @@ const snapshotBody = (s: Omit<CareerSnapshot, 'contentHash'>) => ({
   world: s.world,
 });
 
-export const hashSnapshotBody = (s: Omit<CareerSnapshot, 'contentHash'>): string =>
-  hashCanonical({ domain: 'sport-sim/career-snapshot', version: 1, body: snapshotBody(s) });
+export const hashSnapshotBody = (
+  s: Omit<CareerSnapshot, 'contentHash'>,
+): string =>
+  hashCanonical({
+    domain: 'sport-sim/career-snapshot',
+    version: 1,
+    body: snapshotBody(s),
+  });
 
 /** Seal kernel state into a snapshot DTO. */
 export const sealSnapshot = (input: SnapshotInput): CareerSnapshot => {
@@ -157,8 +167,14 @@ export const verifySnapshot = (value: unknown): SnapshotVerification => {
   }
   const s = value as Record<string, unknown>;
   if (s.schemaVersion !== SCHEMA_VERSION) {
-    if (typeof s.schemaVersion === 'number' && Number.isInteger(s.schemaVersion)) {
-      throw new UnsupportedSchemaVersionError('career snapshot', s.schemaVersion);
+    if (
+      typeof s.schemaVersion === 'number' &&
+      Number.isInteger(s.schemaVersion)
+    ) {
+      throw new UnsupportedSchemaVersionError(
+        'career snapshot',
+        s.schemaVersion,
+      );
     }
     return { ok: false, reasons: ['schemaVersion missing or not an integer'] };
   }
@@ -169,19 +185,29 @@ export const verifySnapshot = (value: unknown): SnapshotVerification => {
   }
   if (!isHash(s.contentHash)) reasons.push('contentHash malformed');
   if (!isHash(s.chainHead)) reasons.push('chainHead malformed');
-  if (!Array.isArray(s.knownCommandIds)) reasons.push('knownCommandIds malformed');
+  if (!Array.isArray(s.knownCommandIds))
+    reasons.push('knownCommandIds malformed');
   try {
-    const body = snapshotBody(s as unknown as Omit<CareerSnapshot, 'contentHash'>);
+    const body = snapshotBody(
+      s as unknown as Omit<CareerSnapshot, 'contentHash'>,
+    );
     canonicalString(body);
-    if (hashSnapshotBody(s as unknown as Omit<CareerSnapshot, 'contentHash'>) !== s.contentHash) {
+    if (
+      hashSnapshotBody(s as unknown as Omit<CareerSnapshot, 'contentHash'>) !==
+      s.contentHash
+    ) {
       reasons.push('contentHash does not match snapshot content');
     }
-    if (fingerprintWorld(world) !== s.worldFingerprint) reasons.push('worldFingerprint mismatch');
+    if (fingerprintWorld(world) !== s.worldFingerprint)
+      reasons.push('worldFingerprint mismatch');
   } catch (e) {
-    reasons.push(`snapshot not canonical: ${e instanceof Error ? e.message : 'unknown'}`);
+    reasons.push(
+      `snapshot not canonical: ${e instanceof Error ? e.message : 'unknown'}`,
+    );
   }
   if (world.worldId !== s.worldId) reasons.push('worldId disagrees with world');
-  if (world.revision !== s.revision) reasons.push('revision disagrees with world');
+  if (world.revision !== s.revision)
+    reasons.push('revision disagrees with world');
   if (world.nextIds && world.nextIds.event !== (s.eventCount as number) + 1) {
     reasons.push('eventCount disagrees with world.nextIds');
   }
@@ -207,12 +233,17 @@ export const checkCommitContinuity = (
     return 'more commands than events';
   }
   if (latest === null) {
-    if (snapshot.revision !== 0 || snapshot.eventCount !== 0 || events.length !== 0) {
+    if (
+      snapshot.revision !== 0 ||
+      snapshot.eventCount !== 0 ||
+      events.length !== 0
+    ) {
       return 'first save must be the genesis snapshot (revision 0, no events)';
     }
     return null;
   }
-  if (snapshot.worldId !== latest.worldId) return 'snapshot belongs to a different world';
+  if (snapshot.worldId !== latest.worldId)
+    return 'snapshot belongs to a different world';
   if (snapshot.revision <= latest.revision) {
     return `revision ${snapshot.revision} does not advance past ${latest.revision}`;
   }
@@ -220,10 +251,15 @@ export const checkCommitContinuity = (
     return 'eventCount does not equal prior count plus supplied events';
   }
   const chain = verifyEventChain(events, latest.chainHead);
-  if (!chain.ok) return `event chain invalid: ${chain.reason} at ${chain.index}`;
-  if (chain.headHash !== snapshot.chainHead) return 'snapshot chainHead does not match supplied events';
+  if (!chain.ok)
+    return `event chain invalid: ${chain.reason} at ${chain.index}`;
+  if (chain.headHash !== snapshot.chainHead)
+    return 'snapshot chainHead does not match supplied events';
   for (const c of commands) {
-    if (c.resultRevision <= latest.revision || c.resultRevision > snapshot.revision) {
+    if (
+      c.resultRevision <= latest.revision ||
+      c.resultRevision > snapshot.revision
+    ) {
       return 'command resultRevision outside the committed range';
     }
     if (latest.knownCommandIds.includes(c.envelope.commandId)) {
@@ -237,10 +273,13 @@ export const checkCommitContinuity = (
 };
 
 /** Plain-data deep copy via canonical JSON; frozen so callers cannot alias store state. */
-export const cloneData = <T>(value: T): T => deepFreeze(JSON.parse(canonicalString(value)) as T);
+export const cloneData = <T>(value: T): T =>
+  deepFreeze(JSON.parse(canonicalString(value)) as T);
 
 /** Revisions to keep after a save: genesis (0) plus the newest few, so replay can always start at genesis. */
-export const retainedRevisions = (revisions: readonly number[]): Set<number> => {
+export const retainedRevisions = (
+  revisions: readonly number[],
+): Set<number> => {
   const sorted = [...revisions].sort((a, b) => a - b);
   const keep = new Set<number>([0]);
   for (const r of sorted.slice(-SNAPSHOT_RETENTION_NEWEST)) keep.add(r);
@@ -258,8 +297,12 @@ export const checkRepairConsistency = (
   storedTailHash: string,
 ): string | null => {
   const verdict = verifySnapshot(repaired);
-  if (!verdict.ok) return `repaired snapshot invalid: ${verdict.reasons.join('; ')}`;
-  if (repaired.eventCount !== storedEventCount || repaired.chainHead !== storedTailHash) {
+  if (!verdict.ok)
+    return `repaired snapshot invalid: ${verdict.reasons.join('; ')}`;
+  if (
+    repaired.eventCount !== storedEventCount ||
+    repaired.chainHead !== storedTailHash
+  ) {
     return 'repaired snapshot does not match the stored history tail';
   }
   return null;

@@ -15,4 +15,5 @@ export const Hash32 = {
 } as const;
 
 /** SHA-256 over the canonical bytes of a value. */
-export const hashCanonical = (value: unknown): string => Hash32.sha256(canonicalBytes(value));
+export const hashCanonical = (value: unknown): string =>
+  Hash32.sha256(canonicalBytes(value));

@@ -1,10 +1,16 @@
 import { createRequire } from 'node:module';
 import type { DatabaseSync } from 'node:sqlite';
 import { SerialQueue } from '../../src/persistence/serialQueue';
-import type { SqlDatabase, SqlExecutor, SqlValue } from '../../src/persistence/sqlDatabase';
+import type {
+  SqlDatabase,
+  SqlExecutor,
+  SqlValue,
+} from '../../src/persistence/sqlDatabase';
 
 // createRequire keeps bundlers from rewriting the `node:` prefix of this built-in.
-const { DatabaseSync: Database } = createRequire(import.meta.url)('node:sqlite') as {
+const { DatabaseSync: Database } = createRequire(import.meta.url)(
+  'node:sqlite',
+) as {
   DatabaseSync: new (path: string) => DatabaseSync;
 };
 
@@ -33,7 +39,10 @@ export class NodeSqliteDatabase implements SqlDatabase {
     return this.#queue.run(async () => this.#run(sql, params));
   }
 
-  all<T extends object>(sql: string, params: readonly SqlValue[] = []): Promise<T[]> {
+  all<T extends object>(
+    sql: string,
+    params: readonly SqlValue[] = [],
+  ): Promise<T[]> {
     return this.#queue.run(async () => this.#all<T>(sql, params));
   }
 
@@ -41,7 +50,10 @@ export class NodeSqliteDatabase implements SqlDatabase {
     return this.#queue.run(async () => {
       const tx: SqlExecutor = {
         run: async (sql, params = []) => this.#run(sql, params),
-        all: async <R extends object>(sql: string, params: readonly SqlValue[] = []) => this.#all<R>(sql, params),
+        all: async <R extends object>(
+          sql: string,
+          params: readonly SqlValue[] = [],
+        ) => this.#all<R>(sql, params),
       };
       this.raw.exec('BEGIN IMMEDIATE');
       try {

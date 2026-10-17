@@ -35,7 +35,10 @@ describe('createWorld', () => {
     expect(world.ruleset).toEqual(rulesetRefOf(ruleset));
     expect(world.seed).toEqual(seedRefOf(seed));
     expect(world.rng).toEqual(DeterministicRng.fromSeed(12345).snapshot());
-    expect(world.entities.map((e) => e.id)).toEqual([entityId('org-b'), entityId('person-a')]);
+    expect(world.entities.map((e) => e.id)).toEqual([
+      entityId('org-b'),
+      entityId('person-a'),
+    ]);
     expect(world.nextIds.event).toBe(1);
   });
 
@@ -51,7 +54,10 @@ describe('createWorld', () => {
       ruleset,
       fixedIdSource(),
     );
-    expect(a.entities.map((e) => e.id)).toEqual([entityId('x1'), entityId('x2')]);
+    expect(a.entities.map((e) => e.id)).toEqual([
+      entityId('x1'),
+      entityId('x2'),
+    ]);
   });
 
   it('returns a deeply frozen (immutable) world', () => {
@@ -66,23 +72,33 @@ describe('createWorld', () => {
     const ruleset = makeRuleset();
     const seed = makeSeed(ruleset);
     expect(() =>
-      createWorld(seed, { ...ruleset, rules: { maxAdvanceDaysPerCommand: 99 } }, fixedIdSource()),
+      createWorld(
+        seed,
+        { ...ruleset, rules: { maxAdvanceDaysPerCommand: 99 } },
+        fixedIdSource(),
+      ),
     ).toThrow(WorldCreationError);
     const other = makeRuleset({ rulesetVersion: 2 });
-    expect(() => createWorld(seed, other, fixedIdSource())).toThrow(WorldCreationError);
-    const unverified = makeRuleset({
-      provenance: [{ ...ruleset.provenance[0]!, validationStatus: 'unverified' }],
-    });
-    expect(() => createWorld(makeSeed(unverified), unverified, fixedIdSource())).toThrow(
+    expect(() => createWorld(seed, other, fixedIdSource())).toThrow(
       WorldCreationError,
     );
+    const unverified = makeRuleset({
+      provenance: [
+        { ...ruleset.provenance[0]!, validationStatus: 'unverified' },
+      ],
+    });
+    expect(() =>
+      createWorld(makeSeed(unverified), unverified, fixedIdSource()),
+    ).toThrow(WorldCreationError);
     const dup = makeSeed(ruleset, {
       initialEntities: [
         { id: 'dup', kind: 'person', name: 'A' },
         { id: 'dup', kind: 'person', name: 'B' },
       ],
     });
-    expect(() => createWorld(dup, ruleset, fixedIdSource())).toThrow(WorldCreationError);
+    expect(() => createWorld(dup, ruleset, fixedIdSource())).toThrow(
+      WorldCreationError,
+    );
   });
 });
 
@@ -118,7 +134,14 @@ describe('fingerprintWorld', () => {
     const reordered = {
       entities: w.entities,
       nextIds: { event: w.nextIds.event },
-      rng: { draws: w.rng.draws, s3: w.rng.s3, s2: w.rng.s2, s1: w.rng.s1, s0: w.rng.s0, algorithm: w.rng.algorithm },
+      rng: {
+        draws: w.rng.draws,
+        s3: w.rng.s3,
+        s2: w.rng.s2,
+        s1: w.rng.s1,
+        s0: w.rng.s0,
+        algorithm: w.rng.algorithm,
+      },
       revision: w.revision,
       simDate: w.simDate,
       seed: w.seed,

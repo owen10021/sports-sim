@@ -1,0 +1,8 @@
+node_modules
+dist
+.expo
+evidence
+fixtures
+package-lock.json
+packages/sim-core/src/goldenExpected.ts
+docs/handoff

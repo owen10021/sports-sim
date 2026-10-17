@@ -1,14 +1,21 @@
 // Runs the Package A golden scenario inside the Hermes JavaScript engine (standalone CLI).
 // Bundled for Hermes by scripts/hermes-golden.mjs. `print` is Hermes' console output.
-import { GOLDEN_EXPECTED, diffGolden, runGoldenScenario } from '../../packages/sim-core/src/index';
+import {
+  GOLDEN_EXPECTED,
+  diffGolden,
+  runGoldenScenario,
+} from '../../packages/sim-core/src/index';
 
 declare const print: (text: string) => void;
-declare const HermesInternal: { getRuntimeProperties?: () => Record<string, string> } | undefined;
+declare const HermesInternal:
+  { getRuntimeProperties?: () => Record<string, string> } | undefined;
 
 const result = runGoldenScenario();
 const diffs = diffGolden(result, GOLDEN_EXPECTED);
 const properties =
-  typeof HermesInternal !== 'undefined' && HermesInternal !== undefined && HermesInternal.getRuntimeProperties
+  typeof HermesInternal !== 'undefined' &&
+  HermesInternal !== undefined &&
+  HermesInternal.getRuntimeProperties
     ? HermesInternal.getRuntimeProperties()
     : null;
 

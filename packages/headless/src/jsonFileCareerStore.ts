@@ -46,11 +46,22 @@ export class JsonFileCareerStore implements CareerStore {
       try {
         parsed = JSON.parse(readFileSync(this.path, 'utf8'));
       } catch {
-        throw new PersistenceError('CORRUPT_STORE', `${this.path} is not valid JSON`);
+        throw new PersistenceError(
+          'CORRUPT_STORE',
+          `${this.path} is not valid JSON`,
+        );
       }
       const file = parsed as Partial<CareerFile> | null;
-      if (file === null || file.format !== FILE_FORMAT || file.version !== FILE_VERSION || file.state === undefined) {
-        throw new PersistenceError('CORRUPT_STORE', `${this.path} is not a version ${FILE_VERSION} career file`);
+      if (
+        file === null ||
+        file.format !== FILE_FORMAT ||
+        file.version !== FILE_VERSION ||
+        file.state === undefined
+      ) {
+        throw new PersistenceError(
+          'CORRUPT_STORE',
+          `${this.path} is not a version ${FILE_VERSION} career file`,
+        );
       }
       this.#mem = MemoryCareerStore.fromState(file.state);
     }
@@ -59,17 +70,24 @@ export class JsonFileCareerStore implements CareerStore {
   }
 
   #requireInit(): void {
-    if (!this.#initialized) throw new PersistenceError('NOT_INITIALIZED', 'call initialize() first');
+    if (!this.#initialized)
+      throw new PersistenceError('NOT_INITIALIZED', 'call initialize() first');
   }
 
   #write(state: MemoryStoreState): void {
     const temp = `${this.path}.tmp`;
-    const file: CareerFile = { format: FILE_FORMAT, version: FILE_VERSION, state };
+    const file: CareerFile = {
+      format: FILE_FORMAT,
+      version: FILE_VERSION,
+      state,
+    };
     writeFileSync(temp, JSON.stringify(file), 'utf8');
     renameSync(temp, this.path);
   }
 
-  async #mutate(apply: (candidate: MemoryCareerStore) => Promise<void>): Promise<void> {
+  async #mutate(
+    apply: (candidate: MemoryCareerStore) => Promise<void>,
+  ): Promise<void> {
     this.#requireInit();
     const candidate = MemoryCareerStore.fromState(this.#mem.exportState());
     await candidate.initialize();
@@ -81,7 +99,10 @@ export class JsonFileCareerStore implements CareerStore {
     try {
       this.#write(candidate.exportState());
     } catch (error) {
-      throw new PersistenceError('WRITE_FAILED', error instanceof Error ? error.message : String(error));
+      throw new PersistenceError(
+        'WRITE_FAILED',
+        error instanceof Error ? error.message : String(error),
+      );
     }
     this.#mem = candidate;
   }
@@ -90,7 +111,10 @@ export class JsonFileCareerStore implements CareerStore {
     return this.#mutate((c) => c.saveCommit(commit));
   }
 
-  markRecovery(report: RecoveryReport, repairedSnapshot?: CareerSnapshot): Promise<void> {
+  markRecovery(
+    report: RecoveryReport,
+    repairedSnapshot?: CareerSnapshot,
+  ): Promise<void> {
     return this.#mutate((c) => c.markRecovery(report, repairedSnapshot));
   }
 

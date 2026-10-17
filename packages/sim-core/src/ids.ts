@@ -26,17 +26,26 @@ const checkedId = (kind: string, value: string): string => {
   return value;
 };
 
-export const worldId = (value: string): WorldId => checkedId('WorldId', value) as WorldId;
-export const entityId = (value: string): EntityId => checkedId('EntityId', value) as EntityId;
-export const commandId = (value: string): CommandId => checkedId('CommandId', value) as CommandId;
-export const eventId = (value: string): EventId => checkedId('EventId', value) as EventId;
+export const worldId = (value: string): WorldId =>
+  checkedId('WorldId', value) as WorldId;
+export const entityId = (value: string): EntityId =>
+  checkedId('EntityId', value) as EntityId;
+export const commandId = (value: string): CommandId =>
+  checkedId('CommandId', value) as CommandId;
+export const eventId = (value: string): EventId =>
+  checkedId('EventId', value) as EventId;
 
 export const isValidRevision = (value: unknown): value is number =>
-  typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 && !Object.is(value, -0);
+  typeof value === 'number' &&
+  Number.isSafeInteger(value) &&
+  value >= 0 &&
+  !Object.is(value, -0);
 
 export const worldRevision = (value: number): WorldRevision => {
   if (!isValidRevision(value)) {
-    throw new TypeError('Invalid WorldRevision: must be a non-negative safe integer');
+    throw new TypeError(
+      'Invalid WorldRevision: must be a non-negative safe integer',
+    );
   }
   return value as WorldRevision;
 };

@@ -126,11 +126,21 @@ export class CareerLifecycle {
 
   /** Create and durably save a brand-new synthetic career. Never overwrites one. */
   async createCareer(): Promise<void> {
-    if (this.#status === 'closed') throw new Error('Call open() before createCareer()');
-    if (this.#status !== 'empty') throw new Error('A career already exists; refusing to overwrite it');
-    const world = createWorld(this.#deps.seed, this.#deps.ruleset, this.#deps.idSource);
+    if (this.#status === 'closed')
+      throw new Error('Call open() before createCareer()');
+    if (this.#status !== 'empty')
+      throw new Error('A career already exists; refusing to overwrite it');
+    const world = createWorld(
+      this.#deps.seed,
+      this.#deps.ruleset,
+      this.#deps.idSource,
+    );
     const kernel = WorldKernel.fromGenesis(world, this.#deps.ruleset);
-    const genesis: CommitRecord = { snapshot: this.#snapshotOf(kernel), commands: [], events: [] };
+    const genesis: CommitRecord = {
+      snapshot: this.#snapshotOf(kernel),
+      commands: [],
+      events: [],
+    };
     await this.#deps.store.saveCommit(genesis);
     this.#kernel = kernel;
     this.#savedRevision = 0;
@@ -140,9 +150,12 @@ export class CareerLifecycle {
   /** Submit an AdvanceDays command to the kernel, then persist its committed result. */
   async advance(days: number): Promise<AdvanceResult> {
     const kernel = this.#kernel;
-    if (kernel === null || this.#status !== 'ready') throw new Error('No writable career is loaded');
+    if (kernel === null || this.#status !== 'ready')
+      throw new Error('No writable career is loaded');
     const envelope = {
-      commandId: commandId(`cmd-${String(kernel.knownCommandIds.length + 1).padStart(6, '0')}`),
+      commandId: commandId(
+        `cmd-${String(kernel.knownCommandIds.length + 1).padStart(6, '0')}`,
+      ),
       expectedRevision: kernel.world.revision,
       actor: this.#deps.actor,
       command: { type: 'AdvanceDays', days },
@@ -158,7 +171,11 @@ export class CareerLifecycle {
       await this.flush();
       return { ok: true, saved: true };
     } catch (error) {
-      return { ok: true, saved: false, saveError: this.#lastSaveError ?? String(error) };
+      return {
+        ok: true,
+        saved: false,
+        saveError: this.#lastSaveError ?? String(error),
+      };
     }
   }
 
@@ -182,7 +199,8 @@ export class CareerLifecycle {
       try {
         await this.#deps.store.saveCommit(next);
       } catch (error) {
-        this.#lastSaveError = error instanceof Error ? error.message : String(error);
+        this.#lastSaveError =
+          error instanceof Error ? error.message : String(error);
         throw error;
       }
       this.#pending.shift();

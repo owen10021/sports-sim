@@ -51,7 +51,10 @@ export class MemoryCareerStore implements CareerStore {
   ): void {
     const i = this.#snapshots.findIndex((s) => s.revision === revision);
     if (i < 0) throw new Error(`no snapshot at revision ${revision}`);
-    const plain = JSON.parse(JSON.stringify(this.#snapshots[i])) as Record<string, unknown>;
+    const plain = JSON.parse(JSON.stringify(this.#snapshots[i])) as Record<
+      string,
+      unknown
+    >;
     this.#snapshots[i] = mutate(plain) as unknown as CareerSnapshot;
   }
 
@@ -60,13 +63,23 @@ export class MemoryCareerStore implements CareerStore {
     const removed = this.#events.slice(this.#events.length - count);
     const gone = new Set<string>(removed.map((e) => e.commandId));
     this.#events = this.#events.slice(0, this.#events.length - count);
-    this.#commands = this.#commands.filter((c) => !gone.has(c.envelope.commandId));
+    this.#commands = this.#commands.filter(
+      (c) => !gone.has(c.envelope.commandId),
+    );
   }
 
   /** Test seam: rewrite one stored event (by 0-based index) without re-hashing it. */
-  tamperWithEventForTest(index: number, mutate: (plain: Record<string, unknown>) => Record<string, unknown>): void {
-    const plain = JSON.parse(JSON.stringify(this.#events[index])) as Record<string, unknown>;
-    this.#events = this.#events.map((e, i) => (i === index ? (mutate(plain) as unknown as EventEnvelope) : e));
+  tamperWithEventForTest(
+    index: number,
+    mutate: (plain: Record<string, unknown>) => Record<string, unknown>,
+  ): void {
+    const plain = JSON.parse(JSON.stringify(this.#events[index])) as Record<
+      string,
+      unknown
+    >;
+    this.#events = this.#events.map((e, i) =>
+      i === index ? (mutate(plain) as unknown as EventEnvelope) : e,
+    );
   }
 
   /** Plain-data copy of everything stored (for adapters that persist this store as a file). */
@@ -96,12 +109,15 @@ export class MemoryCareerStore implements CareerStore {
   }
 
   #requireInit(): void {
-    if (!this.#initialized) throw new PersistenceError('NOT_INITIALIZED', 'call initialize() first');
+    if (!this.#initialized)
+      throw new PersistenceError('NOT_INITIALIZED', 'call initialize() first');
   }
 
   #active(): CareerSnapshot | null {
     if (this.#activeRevision === null) return null;
-    return this.#snapshots.find((s) => s.revision === this.#activeRevision) ?? null;
+    return (
+      this.#snapshots.find((s) => s.revision === this.#activeRevision) ?? null
+    );
   }
 
   async saveCommit(input: CommitRecord): Promise<void> {
@@ -109,14 +125,23 @@ export class MemoryCareerStore implements CareerStore {
     const commit = cloneData(input);
     // Throws UnsupportedSchemaVersionError for a future schema (fail closed).
     verifySnapshot(commit.snapshot);
-    const reason = checkCommitContinuity(this.#active(), commit, this.#events.length);
+    const reason = checkCommitContinuity(
+      this.#active(),
+      commit,
+      this.#events.length,
+    );
     if (reason !== null) throw new PersistenceError('COMMIT_REJECTED', reason);
     if (this.#failNext) {
       this.#failNext = false;
-      throw new PersistenceError('WRITE_FAILED', 'injected fault before commit');
+      throw new PersistenceError(
+        'WRITE_FAILED',
+        'injected fault before commit',
+      );
     }
     // Build the complete next state, then swap it in as one step.
-    const snapshots = [...this.#snapshots, commit.snapshot].sort((a, b) => a.revision - b.revision);
+    const snapshots = [...this.#snapshots, commit.snapshot].sort(
+      (a, b) => a.revision - b.revision,
+    );
     const keep = retainedRevisions(snapshots.map((s) => s.revision));
     const nextSnapshots = snapshots.filter((s) => keep.has(s.revision));
     const nextCommands = [...this.#commands, ...commit.commands];
@@ -152,7 +177,10 @@ export class MemoryCareerStore implements CareerStore {
     });
   }
 
-  async markRecovery(report: RecoveryReport, repairedSnapshot?: CareerSnapshot): Promise<void> {
+  async markRecovery(
+    report: RecoveryReport,
+    repairedSnapshot?: CareerSnapshot,
+  ): Promise<void> {
     this.#requireInit();
     const entry = cloneData(report);
     if (repairedSnapshot === undefined) {
@@ -160,12 +188,17 @@ export class MemoryCareerStore implements CareerStore {
       return;
     }
     const repaired = cloneData(repairedSnapshot);
-    const tail = this.#events.length === 0 ? GENESIS_HASH : (this.#events[this.#events.length - 1] as EventEnvelope).hash;
+    const tail =
+      this.#events.length === 0
+        ? GENESIS_HASH
+        : (this.#events[this.#events.length - 1] as EventEnvelope).hash;
     const problem = checkRepairConsistency(repaired, this.#events.length, tail);
-    if (problem !== null) throw new PersistenceError('COMMIT_REJECTED', problem);
-    const snapshots = [...this.#snapshots.filter((s) => s.revision !== repaired.revision), repaired].sort(
-      (a, b) => a.revision - b.revision,
-    );
+    if (problem !== null)
+      throw new PersistenceError('COMMIT_REJECTED', problem);
+    const snapshots = [
+      ...this.#snapshots.filter((s) => s.revision !== repaired.revision),
+      repaired,
+    ].sort((a, b) => a.revision - b.revision);
     this.#snapshots = snapshots;
     this.#activeRevision = repaired.revision;
     this.#recovery = [...this.#recovery, entry];

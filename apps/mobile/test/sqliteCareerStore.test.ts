@@ -51,7 +51,9 @@ const newCareer = () => {
     provenance: [provenance],
     initialEntities: [],
   });
-  const world = createWorld(seed, ruleset, { newWorldId: () => worldId('world-sqlite-1') });
+  const world = createWorld(seed, ruleset, {
+    newWorldId: () => worldId('world-sqlite-1'),
+  });
   const kernel = WorldKernel.fromGenesis(world, ruleset);
   const snap = () =>
     sealSnapshot({
@@ -60,7 +62,11 @@ const newCareer = () => {
       eventCount: kernel.eventCount,
       knownCommandIds: kernel.knownCommandIds,
     });
-  const genesis = (): CommitRecord => ({ snapshot: snap(), commands: [], events: [] });
+  const genesis = (): CommitRecord => ({
+    snapshot: snap(),
+    commands: [],
+    events: [],
+  });
   const step = (n: number): CommitRecord => {
     const envelope = {
       commandId: commandId(`cmd-${n}`),
@@ -87,7 +93,11 @@ const open = async (path = ':memory:') => {
 };
 
 const count = async (db: NodeSqliteDatabase, table: string) =>
-  ((await db.all<{ n: number }>(`SELECT COUNT(*) AS n FROM ${table}`))[0] as { n: number }).n;
+  (
+    (await db.all<{ n: number }>(`SELECT COUNT(*) AS n FROM ${table}`))[0] as {
+      n: number;
+    }
+  ).n;
 
 describe('SqliteCareerStore (node:sqlite) satisfies the shared CareerStore contract', () => {
   for (const c of careerStoreContractCases(async () => {
@@ -109,7 +119,9 @@ describe('SqliteCareerStore transactions and fault injection', () => {
     const good = (await store.loadLatest())!;
     const next = career.step(1);
     store.failNextCommit();
-    await expect(store.saveCommit(next)).rejects.toMatchObject({ code: 'WRITE_FAILED' });
+    await expect(store.saveCommit(next)).rejects.toMatchObject({
+      code: 'WRITE_FAILED',
+    });
     expect(await count(db, 'events')).toBe(0);
     expect(await count(db, 'commands')).toBe(0);
     expect(await count(db, 'snapshots')).toBe(1);
@@ -130,7 +142,9 @@ describe('SqliteCareerStore transactions and fault injection', () => {
     const career = newCareer();
     await store.saveCommit(career.genesis());
     armed = true;
-    await expect(store.saveCommit(career.step(1))).rejects.toBeInstanceOf(PersistenceError);
+    await expect(store.saveCommit(career.step(1))).rejects.toBeInstanceOf(
+      PersistenceError,
+    );
     expect((await store.loadLatest())?.revision).toBe(0);
     expect(await count(db, 'events')).toBe(0);
   });
@@ -140,7 +154,9 @@ describe('SqliteCareerStore transactions and fault injection', () => {
     const career = newCareer();
     await store.saveCommit(career.genesis());
     await store.saveCommit(career.step(1));
-    const meta = await db.all<{ active_revision: number }>('SELECT active_revision FROM metadata');
+    const meta = await db.all<{ active_revision: number }>(
+      'SELECT active_revision FROM metadata',
+    );
     expect(meta).toEqual([{ active_revision: 1 }]);
   });
 
@@ -157,9 +173,10 @@ describe('SqliteCareerStore transactions and fault injection', () => {
     const { db } = await open();
     await expect(
       db.transaction(async (tx) => {
-        await tx.run('INSERT INTO metadata (id, schema_version, world_id, active_revision) VALUES (1, 1, ?, 99)', [
-          'w',
-        ]);
+        await tx.run(
+          'INSERT INTO metadata (id, schema_version, world_id, active_revision) VALUES (1, 1, ?, 99)',
+          ['w'],
+        );
       }),
     ).rejects.toThrow(/FOREIGN KEY/i);
   });
@@ -197,7 +214,9 @@ describe('SqliteCareerStore durability, restart and corruption signals', () => {
     first.raw.exec('PRAGMA user_version = 7');
     first.close();
     const db = new NodeSqliteDatabase(path);
-    await expect(new SqliteCareerStore(db).initialize()).rejects.toBeInstanceOf(UnsupportedSchemaVersionError);
+    await expect(new SqliteCareerStore(db).initialize()).rejects.toBeInstanceOf(
+      UnsupportedSchemaVersionError,
+    );
     db.close();
   });
 
@@ -205,10 +224,19 @@ describe('SqliteCareerStore durability, restart and corruption signals', () => {
     const { db, store } = await open();
     const career = newCareer();
     await store.saveCommit(career.genesis());
-    const row = (await db.all<{ snapshot_json: string }>('SELECT snapshot_json FROM snapshots'))[0]!;
-    const tampered = JSON.stringify({ ...JSON.parse(row.snapshot_json), schemaVersion: 2 });
+    const row = (
+      await db.all<{ snapshot_json: string }>(
+        'SELECT snapshot_json FROM snapshots',
+      )
+    )[0]!;
+    const tampered = JSON.stringify({
+      ...JSON.parse(row.snapshot_json),
+      schemaVersion: 2,
+    });
     await db.run('UPDATE snapshots SET snapshot_json = ?', [tampered]);
-    await expect(store.loadLatest()).rejects.toBeInstanceOf(UnsupportedSchemaVersionError);
+    await expect(store.loadLatest()).rejects.toBeInstanceOf(
+      UnsupportedSchemaVersionError,
+    );
   });
 
   it('reports unreadable snapshot text as CORRUPT_STORE and omits it from the verified list', async () => {
@@ -216,9 +244,15 @@ describe('SqliteCareerStore durability, restart and corruption signals', () => {
     const career = newCareer();
     await store.saveCommit(career.genesis());
     await store.saveCommit(career.step(1));
-    await db.run('UPDATE snapshots SET snapshot_json = ? WHERE revision = 1', ['{not json']);
-    await expect(store.loadLatest()).rejects.toMatchObject({ code: 'CORRUPT_STORE' });
-    expect((await store.listVerifiedSnapshots()).map((s) => s.revision)).toEqual([0]);
+    await db.run('UPDATE snapshots SET snapshot_json = ? WHERE revision = 1', [
+      '{not json',
+    ]);
+    await expect(store.loadLatest()).rejects.toMatchObject({
+      code: 'CORRUPT_STORE',
+    });
+    expect(
+      (await store.listVerifiedSnapshots()).map((s) => s.revision),
+    ).toEqual([0]);
   });
 
   it('omits a snapshot whose stored content no longer matches its hash', async () => {
@@ -226,11 +260,19 @@ describe('SqliteCareerStore durability, restart and corruption signals', () => {
     const career = newCareer();
     await store.saveCommit(career.genesis());
     await store.saveCommit(career.step(1));
-    const row = (await db.all<{ snapshot_json: string }>('SELECT snapshot_json FROM snapshots WHERE revision = 1'))[0]!;
+    const row = (
+      await db.all<{ snapshot_json: string }>(
+        'SELECT snapshot_json FROM snapshots WHERE revision = 1',
+      )
+    )[0]!;
     const flipped = row.snapshot_json.replace('2026-10-17', '2026-10-18');
     expect(flipped).not.toBe(row.snapshot_json);
-    await db.run('UPDATE snapshots SET snapshot_json = ? WHERE revision = 1', [flipped]);
-    expect((await store.listVerifiedSnapshots()).map((s) => s.revision)).toEqual([0]);
+    await db.run('UPDATE snapshots SET snapshot_json = ? WHERE revision = 1', [
+      flipped,
+    ]);
+    expect(
+      (await store.listVerifiedSnapshots()).map((s) => s.revision),
+    ).toEqual([0]);
   });
 
   it('refuses to save while stored history is ahead of the active snapshot', async () => {
@@ -241,6 +283,8 @@ describe('SqliteCareerStore durability, restart and corruption signals', () => {
     const second = career.step(2);
     // Simulate a lost pointer update: point back at genesis while history keeps event 1.
     await db.run('UPDATE metadata SET active_revision = 0');
-    await expect(store.saveCommit(second)).rejects.toMatchObject({ code: 'COMMIT_REJECTED' });
+    await expect(store.saveCommit(second)).rejects.toMatchObject({
+      code: 'COMMIT_REJECTED',
+    });
   });
 });

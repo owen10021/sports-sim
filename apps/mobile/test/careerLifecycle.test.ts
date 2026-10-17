@@ -37,8 +37,10 @@ class ObservedStore implements CareerStore {
   }
   loadLatest = (): Promise<CareerSnapshot | null> => this.inner.loadLatest();
   listVerifiedSnapshots = () => this.inner.listVerifiedSnapshots();
-  loadHistorySince = (r: number): Promise<HistorySlice> => this.inner.loadHistorySince(r);
-  markRecovery = (r: RecoveryReport, s?: CareerSnapshot) => this.inner.markRecovery(r, s);
+  loadHistorySince = (r: number): Promise<HistorySlice> =>
+    this.inner.loadHistorySince(r);
+  markRecovery = (r: RecoveryReport, s?: CareerSnapshot) =>
+    this.inner.markRecovery(r, s);
   loadRecoveryLog = () => this.inner.loadRecoveryLog();
 }
 
@@ -79,7 +81,11 @@ describe('CareerLifecycle', () => {
     const { store, life } = await started();
     const res = await life.advance(3);
     expect(res).toMatchObject({ ok: true, saved: true });
-    expect(life.view()).toMatchObject({ revision: 1, simDate: '2026-10-19', pendingCommits: 0 });
+    expect(life.view()).toMatchObject({
+      revision: 1,
+      simDate: '2026-10-19',
+      pendingCommits: 0,
+    });
     expect((await store.loadLatest())?.revision).toBe(1);
   });
 
@@ -125,7 +131,14 @@ describe('CareerLifecycle', () => {
     await life.advance(1);
     const view = life.view();
     const saves = store.saveCalls;
-    for (const e of ['background', 'background', 'inactive', 'active', 'active', 'background'] as const) {
+    for (const e of [
+      'background',
+      'background',
+      'inactive',
+      'active',
+      'active',
+      'background',
+    ] as const) {
       await life.handleLifecycle(e);
     }
     expect(life.view()).toEqual(view);
@@ -135,7 +148,8 @@ describe('CareerLifecycle', () => {
   it('lifecycle events never invent a simulation command', async () => {
     const { life } = await started();
     const before = life.view();
-    for (const e of ['inactive', 'background', 'active'] as const) await life.handleLifecycle(e);
+    for (const e of ['inactive', 'background', 'active'] as const)
+      await life.handleLifecycle(e);
     expect(life.view()).toEqual(before);
     expect(life.kernel?.world.rng.draws).toBe(0);
   });
@@ -148,7 +162,11 @@ describe('CareerLifecycle', () => {
     expect(life.view()).toMatchObject({ revision: 1, pendingCommits: 1 });
     const fingerprint = life.view().fingerprint;
     await life.handleLifecycle('active');
-    expect(life.view()).toMatchObject({ revision: 1, pendingCommits: 0, fingerprint });
+    expect(life.view()).toMatchObject({
+      revision: 1,
+      pendingCommits: 0,
+      fingerprint,
+    });
     expect((await store.loadLatest())?.revision).toBe(1);
   });
 
@@ -156,7 +174,11 @@ describe('CareerLifecycle', () => {
     const { store, life } = await started();
     await Promise.all([life.advance(1), life.advance(2), life.advance(3)]);
     expect((await store.loadLatest())?.revision).toBe(3);
-    expect(life.view()).toMatchObject({ revision: 3, simDate: '2026-10-22', pendingCommits: 0 });
+    expect(life.view()).toMatchObject({
+      revision: 3,
+      simDate: '2026-10-22',
+      pendingCommits: 0,
+    });
   });
 
   it('repairs a corrupt newest snapshot on open and reports it', async () => {
@@ -167,7 +189,10 @@ describe('CareerLifecycle', () => {
     await first.advance(1);
     await first.advance(1);
     const expected = first.view().fingerprint;
-    memory.tamperWithSnapshotForTest(2, (s) => ({ ...s, contentHash: 'f'.repeat(64) }));
+    memory.tamperWithSnapshotForTest(2, (s) => ({
+      ...s,
+      contentHash: 'f'.repeat(64),
+    }));
     const second = lifecycleFor(memory);
     const outcome = await second.open();
     expect(outcome.status).toBe('recovered');

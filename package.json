@@ -17,12 +17,20 @@
     "golden:check": "tsx packages/headless/src/bin.ts golden",
     "golden:write": "tsx packages/headless/src/bin.ts golden --write",
     "export:ios": "npm run export:ios --workspace apps/mobile",
-    "ci": "npm run typecheck && npm test && npm run golden:check && npm run export:ios"
+    "ci": "npm run typecheck && npm test && npm run lint && npm run format:check && npm run golden:check && npm run export:ios",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@types/node": "26.6.5",
+    "eslint": "9.39.5",
+    "eslint-config-expo": "57.0.2",
+    "eslint-config-prettier": "10.1.8",
+    "prettier": "3.9.10",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
-    "vitest": "5.0.5"
+    "vitest": "5.0.5",
+    "eslint-import-resolver-typescript": "3.10.1"
   }
 }

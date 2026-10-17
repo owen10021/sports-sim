@@ -1,5 +1,18 @@
-import { SYNTHETIC_RULESET, SYNTHETIC_SEED, entityId } from '@sport-sim/sim-core';
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import {
+  SYNTHETIC_RULESET,
+  SYNTHETIC_SEED,
+  entityId,
+} from '@sport-sim/sim-core';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import { AppState } from 'react-native';
 import { ExpoSqliteDatabase } from '../persistence/expoSqliteDatabase';
 import { SqliteCareerStore } from '../persistence/sqliteCareerStore';
@@ -21,7 +34,8 @@ const CareerContext = createContext<CareerApi | null>(null);
 
 export const useCareer = (): CareerApi => {
   const api = useContext(CareerContext);
-  if (api === null) throw new Error('useCareer must be used inside <CareerProvider>');
+  if (api === null)
+    throw new Error('useCareer must be used inside <CareerProvider>');
   return api;
 };
 
@@ -32,20 +46,23 @@ export function CareerProvider({ children }: { children: ReactNode }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const guarded = useCallback(async (work: (life: CareerLifecycle) => Promise<void>) => {
-    const life = lifeRef.current;
-    if (life === null) return;
-    setBusy(true);
-    setError(null);
-    try {
-      await work(life);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-    } finally {
-      setView(life.view());
-      setBusy(false);
-    }
-  }, []);
+  const guarded = useCallback(
+    async (work: (life: CareerLifecycle) => Promise<void>) => {
+      const life = lifeRef.current;
+      if (life === null) return;
+      setBusy(true);
+      setError(null);
+      try {
+        await work(life);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : String(e));
+      } finally {
+        setView(life.view());
+        setBusy(false);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -70,7 +87,11 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     const subscription = AppState.addEventListener('change', (state) => {
       const life = lifeRef.current;
       if (life === null) return;
-      if (state === 'active' || state === 'inactive' || state === 'background') {
+      if (
+        state === 'active' ||
+        state === 'inactive' ||
+        state === 'background'
+      ) {
         void life.handleLifecycle(state).then(() => setView(life.view()));
       }
     });
@@ -86,18 +107,25 @@ export function CareerProvider({ children }: { children: ReactNode }) {
       busy,
       error,
       view,
+      // eslint-disable-next-line react-hooks/refs -- lifecycle is created once in an effect; the memo is recomputed whenever `view` changes, which follows every lifecycle change.
       lifecycle: lifeRef.current,
       create: () => guarded((life) => life.createCareer()),
       advance: (days: number) =>
         guarded(async (life) => {
           const result = await life.advance(days);
           if (!result.ok) throw new Error(`Rejected: ${result.rejection.code}`);
-          if (!result.saved) throw new Error(`Committed but not saved yet: ${result.saveError ?? 'unknown'}`);
+          if (!result.saved)
+            throw new Error(
+              `Committed but not saved yet: ${result.saveError ?? 'unknown'}`,
+            );
         }),
       reload: () => guarded(async (life) => void (await life.open())),
     }),
     [view, busy, error, guarded],
   );
 
-  return <CareerContext.Provider value={api}>{children}</CareerContext.Provider>;
+  // eslint-disable-next-line react-hooks/refs -- `api` is the memo above; the ref read is intentional (see the note there).
+  return (
+    <CareerContext.Provider value={api}>{children}</CareerContext.Provider>
+  );
 }

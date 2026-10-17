@@ -23,7 +23,13 @@ export const runSqliteContractOnDevice = async (): Promise<ContractResult[]> =>
     }),
   );
 
-const freshRecoveryHarness = async () => createSqliteRecoveryHarness(await ExpoSqliteDatabase.open(':memory:'));
+const freshRecoveryHarness = async () =>
+  createSqliteRecoveryHarness(await ExpoSqliteDatabase.open(':memory:'));
 
-export const runRecoveryContractOnDevice = async (): Promise<ContractResult[]> =>
-  runContractCases([...recoveryContractCases(freshRecoveryHarness), ...repairContractCases(freshRecoveryHarness)]);
+export const runRecoveryContractOnDevice = async (): Promise<
+  ContractResult[]
+> =>
+  runContractCases([
+    ...recoveryContractCases(freshRecoveryHarness),
+    ...repairContractCases(freshRecoveryHarness),
+  ]);

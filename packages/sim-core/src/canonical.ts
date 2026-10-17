@@ -24,17 +24,24 @@ const hasLoneSurrogate = (s: string): boolean => {
   return false;
 };
 
-const serialize = (value: unknown, ancestors: object[], path: string): string => {
+const serialize = (
+  value: unknown,
+  ancestors: object[],
+  path: string,
+): string => {
   if (value === null) return 'null';
   switch (typeof value) {
     case 'boolean':
       return value ? 'true' : 'false';
     case 'string':
-      if (hasLoneSurrogate(value)) throw new TypeError(`Lone surrogate in string at ${path}`);
+      if (hasLoneSurrogate(value))
+        throw new TypeError(`Lone surrogate in string at ${path}`);
       return JSON.stringify(value);
     case 'number':
       if (!Number.isSafeInteger(value) || Object.is(value, -0)) {
-        throw new TypeError(`Non-canonical number at ${path}: only safe integers (no -0) allowed`);
+        throw new TypeError(
+          `Non-canonical number at ${path}: only safe integers (no -0) allowed`,
+        );
       }
       return String(value);
     case 'object':
@@ -63,8 +70,11 @@ const serialize = (value: unknown, ancestors: object[], path: string): string =>
     const keys = Object.keys(record).sort();
     const parts: string[] = [];
     for (const key of keys) {
-      if (hasLoneSurrogate(key)) throw new TypeError(`Lone surrogate in key at ${path}`);
-      parts.push(`${JSON.stringify(key)}:${serialize(record[key], ancestors, `${path}.${key}`)}`);
+      if (hasLoneSurrogate(key))
+        throw new TypeError(`Lone surrogate in key at ${path}`);
+      parts.push(
+        `${JSON.stringify(key)}:${serialize(record[key], ancestors, `${path}.${key}`)}`,
+      );
     }
     return `{${parts.join(',')}}`;
   } finally {
@@ -91,7 +101,11 @@ export const utf8Encode = (text: string): Uint8Array => {
     } else if (cp < 0x800) {
       out.push(0xc0 | (cp >> 6), 0x80 | (cp & 0x3f));
     } else if (cp < 0x10000) {
-      out.push(0xe0 | (cp >> 12), 0x80 | ((cp >> 6) & 0x3f), 0x80 | (cp & 0x3f));
+      out.push(
+        0xe0 | (cp >> 12),
+        0x80 | ((cp >> 6) & 0x3f),
+        0x80 | (cp & 0x3f),
+      );
     } else {
       out.push(
         0xf0 | (cp >> 18),
@@ -104,6 +118,8 @@ export const utf8Encode = (text: string): Uint8Array => {
   return Uint8Array.from(out);
 };
 
-export const canonicalString = (value: unknown): string => serialize(value, [], '$');
+export const canonicalString = (value: unknown): string =>
+  serialize(value, [], '$');
 
-export const canonicalBytes = (value: unknown): Uint8Array => utf8Encode(canonicalString(value));
+export const canonicalBytes = (value: unknown): Uint8Array =>
+  utf8Encode(canonicalString(value));

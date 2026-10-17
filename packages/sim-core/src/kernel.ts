@@ -7,9 +7,19 @@ import {
   type TraceStep,
 } from './audit';
 import { isHash } from './hash';
-import { eventId, isActorRef, isValidId, isValidRevision, worldRevision } from './ids';
+import {
+  eventId,
+  isActorRef,
+  isValidId,
+  isValidRevision,
+  worldRevision,
+} from './ids';
 import { DeterministicRng } from './rng';
-import { rulesetRefOf, validateRulesetManifest, type LeagueRulesetManifest } from './ruleset';
+import {
+  rulesetRefOf,
+  validateRulesetManifest,
+  type LeagueRulesetManifest,
+} from './ruleset';
 import { SimDate } from './simDate';
 import { deepFreeze, type FootballWorld } from './world';
 
@@ -33,7 +43,11 @@ export type ExecuteResult =
       readonly events: readonly EventEnvelope[];
       readonly trace: DecisionTrace;
     }
-  | { readonly ok: false; readonly rejection: Rejection; readonly trace: DecisionTrace };
+  | {
+      readonly ok: false;
+      readonly rejection: Rejection;
+      readonly trace: DecisionTrace;
+    };
 
 export interface KernelOptions {
   /** Fault-injection seam: runs after resolution, before anything is committed. */
@@ -58,7 +72,8 @@ const CALENDAR_AUTHORITY: ReadonlySet<string> = new Set([
 
 const KNOWN_COMMANDS: ReadonlySet<string> = new Set(['AdvanceDays']);
 
-const eventIdFor = (ordinal: number) => eventId(`evt-${String(ordinal).padStart(6, '0')}`);
+const eventIdFor = (ordinal: number) =>
+  eventId(`evt-${String(ordinal).padStart(6, '0')}`);
 
 /**
  * The only component allowed to change the world.
@@ -91,8 +106,10 @@ export class WorldKernel {
     ) {
       throw new Error('ruleset does not match the world ruleset reference');
     }
-    if (!isHash(chainHead)) throw new Error('chainHead must be a 64-char lowercase hex hash');
-    if (!Number.isSafeInteger(eventCount) || eventCount < 0) throw new Error('invalid eventCount');
+    if (!isHash(chainHead))
+      throw new Error('chainHead must be a 64-char lowercase hex hash');
+    if (!Number.isSafeInteger(eventCount) || eventCount < 0)
+      throw new Error('invalid eventCount');
     this.#world = world;
     this.#ruleset = validated;
     this.#chainHead = chainHead;
@@ -112,7 +129,10 @@ export class WorldKernel {
     return new WorldKernel(world, ruleset, GENESIS_HASH, 0, [], options);
   }
 
-  static resume(state: KernelResumeState, options: KernelOptions = {}): WorldKernel {
+  static resume(
+    state: KernelResumeState,
+    options: KernelOptions = {},
+  ): WorldKernel {
     if (state.eventCount + 1 !== state.world.nextIds.event) {
       throw new Error('eventCount does not agree with world.nextIds.event');
     }
@@ -153,7 +173,11 @@ export class WorldKernel {
       commandId: string | null,
     ): ExecuteResult => {
       steps.push({ stage, outcome: 'fail', detail: `${code}: ${message}` });
-      return { ok: false, rejection: { code, message }, trace: deepFreeze({ commandId, steps }) };
+      return {
+        ok: false,
+        rejection: { code, message },
+        trace: deepFreeze({ commandId, steps }),
+      };
     };
 
     // --- Validation: envelope shape ---
@@ -167,15 +191,30 @@ export class WorldKernel {
       typeof env.command !== 'object' ||
       env.command === null
     ) {
-      return reject('validation', 'SCHEMA_INVALID', 'malformed command envelope', null);
+      return reject(
+        'validation',
+        'SCHEMA_INVALID',
+        'malformed command envelope',
+        null,
+      );
     }
     const cid = env.commandId as string;
     const command = env.command as { type?: unknown; days?: unknown };
     if (typeof command.type !== 'string' || !KNOWN_COMMANDS.has(command.type)) {
-      return reject('validation', 'SCHEMA_INVALID', 'unknown command type', cid);
+      return reject(
+        'validation',
+        'SCHEMA_INVALID',
+        'unknown command type',
+        cid,
+      );
     }
     if (this.#known.has(cid)) {
-      return reject('validation', 'DUPLICATE_COMMAND', `command ${cid} was already committed`, cid);
+      return reject(
+        'validation',
+        'DUPLICATE_COMMAND',
+        `command ${cid} was already committed`,
+        cid,
+      );
     }
     if (env.expectedRevision !== this.#world.revision) {
       return reject(
@@ -187,17 +226,40 @@ export class WorldKernel {
     }
     const max = this.#ruleset.rules.maxAdvanceDaysPerCommand;
     const days = command.days;
-    if (typeof days !== 'number' || !Number.isSafeInteger(days) || days < 1 || days > max) {
-      return reject('validation', 'INVALID_PAYLOAD', `days must be an integer in 1..${max}`, cid);
+    if (
+      typeof days !== 'number' ||
+      !Number.isSafeInteger(days) ||
+      days < 1 ||
+      days > max
+    ) {
+      return reject(
+        'validation',
+        'INVALID_PAYLOAD',
+        `days must be an integer in 1..${max}`,
+        cid,
+      );
     }
-    steps.push({ stage: 'validation', outcome: 'pass', detail: 'envelope, revision and payload valid' });
+    steps.push({
+      stage: 'validation',
+      outcome: 'pass',
+      detail: 'envelope, revision and payload valid',
+    });
 
     // --- Authorization ---
     const actor = env.actor as CommandEnvelope['actor'];
     if (!CALENDAR_AUTHORITY.has(actor.kind)) {
-      return reject('authorization', 'UNAUTHORIZED_ACTOR', `${actor.kind} cannot advance the calendar`, cid);
+      return reject(
+        'authorization',
+        'UNAUTHORIZED_ACTOR',
+        `${actor.kind} cannot advance the calendar`,
+        cid,
+      );
     }
-    steps.push({ stage: 'authorization', outcome: 'pass', detail: `${actor.kind} may advance the calendar` });
+    steps.push({
+      stage: 'authorization',
+      outcome: 'pass',
+      detail: `${actor.kind} may advance the calendar`,
+    });
 
     try {
       // --- Resolution (pure; works on copies only) ---
@@ -209,7 +271,11 @@ export class WorldKernel {
         dayRolls.push({ date: start.addDays(i).toISO(), roll: rng.nextU32() });
       }
       const toDate = start.addDays(days).toISO();
-      steps.push({ stage: 'resolution', outcome: 'pass', detail: `advanced ${days} day(s) to ${toDate}` });
+      steps.push({
+        stage: 'resolution',
+        outcome: 'pass',
+        detail: `advanced ${days} day(s) to ${toDate}`,
+      });
 
       const revision = worldRevision(Number(world.revision) + 1);
       const event = chainEvent(this.#chainHead, {
@@ -232,13 +298,22 @@ export class WorldKernel {
       this.#beforeCommit?.();
 
       // --- Commit (all-or-nothing: nothing above has touched kernel state) ---
-      steps.push({ stage: 'commit', outcome: 'pass', detail: `committed revision ${revision}` });
+      steps.push({
+        stage: 'commit',
+        outcome: 'pass',
+        detail: `committed revision ${revision}`,
+      });
       this.#world = nextWorld;
       this.#chainHead = event.hash;
       this.#eventCount += 1;
       this.#events.push(event);
       this.#known.add(cid);
-      return { ok: true, world: nextWorld, events: [event], trace: deepFreeze({ commandId: cid, steps }) };
+      return {
+        ok: true,
+        world: nextWorld,
+        events: [event],
+        trace: deepFreeze({ commandId: cid, steps }),
+      };
     } catch (error) {
       steps.length = 2;
       return reject(

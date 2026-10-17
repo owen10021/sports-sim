@@ -11,7 +11,11 @@ import {
   type RecoveryReport,
 } from './persistence';
 import { SCHEMA_VERSION, UnsupportedSchemaVersionError } from './provenance';
-import { rulesetRefOf, sealRuleset, type LeagueRulesetManifest } from './ruleset';
+import {
+  rulesetRefOf,
+  sealRuleset,
+  type LeagueRulesetManifest,
+} from './ruleset';
 import { sealSeed } from './seed';
 import { createWorld, fingerprintWorld } from './world';
 
@@ -47,10 +51,14 @@ const check = (condition: boolean, message: string): void => {
 const same = (actual: unknown, expected: unknown, message: string): void => {
   const a = canonicalString(actual);
   const e = canonicalString(expected);
-  if (a !== e) throw new ContractFailure(`${message}\n  actual:   ${a}\n  expected: ${e}`);
+  if (a !== e)
+    throw new ContractFailure(`${message}\n  actual:   ${a}\n  expected: ${e}`);
 };
 
-const rejection = async (fn: () => Promise<unknown>, message: string): Promise<unknown> => {
+const rejection = async (
+  fn: () => Promise<unknown>,
+  message: string,
+): Promise<unknown> => {
   try {
     await fn();
   } catch (error) {
@@ -80,7 +88,10 @@ const makeRuleset = (): LeagueRulesetManifest =>
     rules: { maxAdvanceDaysPerCommand: 30 },
   });
 
-const newCareer = (): { kernel: WorldKernel; ruleset: LeagueRulesetManifest } => {
+const newCareer = (): {
+  kernel: WorldKernel;
+  ruleset: LeagueRulesetManifest;
+} => {
   const ruleset = makeRuleset();
   const seed = sealSeed({
     schemaVersion: SCHEMA_VERSION,
@@ -92,7 +103,9 @@ const newCareer = (): { kernel: WorldKernel; ruleset: LeagueRulesetManifest } =>
     provenance: [provenance],
     initialEntities: [],
   });
-  const world = createWorld(seed, ruleset, { newWorldId: () => worldId('world-contract-1') });
+  const world = createWorld(seed, ruleset, {
+    newWorldId: () => worldId('world-contract-1'),
+  });
   return { kernel: WorldKernel.fromGenesis(world, ruleset), ruleset };
 };
 
@@ -110,7 +123,11 @@ const genesisCommit = (k: WorldKernel): CommitRecord => ({
   events: [],
 });
 
-const envelope = (n: number, days: number, revision: number): CommandEnvelope => ({
+const envelope = (
+  n: number,
+  days: number,
+  revision: number,
+): CommandEnvelope => ({
   commandId: commandId(`cmd-${n}`),
   expectedRevision: worldRevision(revision),
   actor: { kind: 'test_harness', id: entityId('actor-1') },
@@ -121,7 +138,10 @@ const envelope = (n: number, days: number, revision: number): CommandEnvelope =>
 const advance = (k: WorldKernel, n: number, days = 1): CommitRecord => {
   const env = envelope(n, days, Number(k.world.revision));
   const res = k.execute(env);
-  if (!res.ok) throw new ContractFailure(`fixture command rejected: ${res.rejection.message}`);
+  if (!res.ok)
+    throw new ContractFailure(
+      `fixture command rejected: ${res.rejection.message}`,
+    );
   return {
     snapshot: snapshotOf(k),
     commands: [{ envelope: env, resultRevision: Number(res.world.revision) }],
@@ -137,13 +157,21 @@ const open = async (factory: HarnessFactory): Promise<ContractHarness> => {
 
 // ---- Cases -------------------------------------------------------------------------
 
-export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[] => [
+export const careerStoreContractCases = (
+  factory: HarnessFactory,
+): ContractCase[] => [
   {
     name: 'refuses use before initialize()',
     async run() {
       const h = await factory();
-      const err = await rejection(() => h.store.loadLatest(), 'loadLatest before initialize');
-      check(err instanceof PersistenceError && err.code === 'NOT_INITIALIZED', 'NOT_INITIALIZED expected');
+      const err = await rejection(
+        () => h.store.loadLatest(),
+        'loadLatest before initialize',
+      );
+      check(
+        err instanceof PersistenceError && err.code === 'NOT_INITIALIZED',
+        'NOT_INITIALIZED expected',
+      );
     },
   },
   {
@@ -151,10 +179,25 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
     async run() {
       const h = await open(factory);
       await h.store.initialize();
-      check((await h.store.loadLatest()) === null, 'empty store has no latest snapshot');
-      same(await h.store.listVerifiedSnapshots(), [], 'empty store lists no snapshots');
-      same(await h.store.loadHistorySince(0), { commands: [], events: [] }, 'empty store has no history');
-      same(await h.store.loadRecoveryLog(), [], 'empty store has no recovery log');
+      check(
+        (await h.store.loadLatest()) === null,
+        'empty store has no latest snapshot',
+      );
+      same(
+        await h.store.listVerifiedSnapshots(),
+        [],
+        'empty store lists no snapshots',
+      );
+      same(
+        await h.store.loadHistorySince(0),
+        { commands: [], events: [] },
+        'empty store has no history',
+      );
+      same(
+        await h.store.loadRecoveryLog(),
+        [],
+        'empty store has no recovery log',
+      );
     },
   },
   {
@@ -166,8 +209,15 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       await h.store.saveCommit(commit);
       const loaded = await h.store.loadLatest();
       same(loaded, commit.snapshot, 'loaded snapshot equals saved snapshot');
-      check(loaded !== null && loaded.worldFingerprint === fingerprintWorld(kernel.world), 'fingerprint kept');
-      check(loaded !== null && loaded.chainHead === GENESIS_HASH, 'genesis chain head');
+      check(
+        loaded !== null &&
+          loaded.worldFingerprint === fingerprintWorld(kernel.world),
+        'fingerprint kept',
+      );
+      check(
+        loaded !== null && loaded.chainHead === GENESIS_HASH,
+        'genesis chain head',
+      );
     },
   },
   {
@@ -176,9 +226,18 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       const h = await open(factory);
       const { kernel } = newCareer();
       const first = advance(kernel, 1);
-      const err = await rejection(() => h.store.saveCommit(first), 'non-genesis first save');
-      check(err instanceof PersistenceError && err.code === 'COMMIT_REJECTED', 'COMMIT_REJECTED expected');
-      check((await h.store.loadLatest()) === null, 'rejected first save leaves the store empty');
+      const err = await rejection(
+        () => h.store.saveCommit(first),
+        'non-genesis first save',
+      );
+      check(
+        err instanceof PersistenceError && err.code === 'COMMIT_REJECTED',
+        'COMMIT_REJECTED expected',
+      );
+      check(
+        (await h.store.loadLatest()) === null,
+        'rejected first save leaves the store empty',
+      );
     },
   },
   {
@@ -187,17 +246,33 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       const h = await open(factory);
       const { kernel } = newCareer();
       await h.store.saveCommit(genesisCommit(kernel));
-      for (let n = 1; n <= 3; n++) await h.store.saveCommit(advance(kernel, n, n));
+      for (let n = 1; n <= 3; n++)
+        await h.store.saveCommit(advance(kernel, n, n));
       const all = await h.store.loadHistorySince(0);
-      check(all.commands.length === 3 && all.events.length === 3, 'three commands and events stored');
+      check(
+        all.commands.length === 3 && all.events.length === 3,
+        'three commands and events stored',
+      );
       same(all.events, kernel.events, 'events equal the kernel audit trail');
       const chain = verifyEventChain(all.events);
-      check(chain.ok && chain.headHash === kernel.chainHead, 'stored chain verifies to the kernel head');
+      check(
+        chain.ok && chain.headHash === kernel.chainHead,
+        'stored chain verifies to the kernel head',
+      );
       const tail = await h.store.loadHistorySince(2);
-      check(tail.commands.length === 1 && tail.events.length === 1, 'history since revision 2 has one entry');
-      check(tail.commands[0]?.resultRevision === 3, 'tail command produced revision 3');
+      check(
+        tail.commands.length === 1 && tail.events.length === 1,
+        'history since revision 2 has one entry',
+      );
+      check(
+        tail.commands[0]?.resultRevision === 3,
+        'tail command produced revision 3',
+      );
       const none = await h.store.loadHistorySince(3);
-      check(none.commands.length === 0 && none.events.length === 0, 'nothing after the latest revision');
+      check(
+        none.commands.length === 0 && none.events.length === 0,
+        'nothing after the latest revision',
+      );
     },
   },
   {
@@ -208,7 +283,11 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       await h.store.saveCommit(genesisCommit(kernel));
       const c1 = advance(kernel, 1, 2);
       await h.store.saveCommit(c1);
-      same(await h.store.loadLatest(), c1.snapshot, 'latest is the second snapshot');
+      same(
+        await h.store.loadLatest(),
+        c1.snapshot,
+        'latest is the second snapshot',
+      );
     },
   },
   {
@@ -221,13 +300,31 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       const c1 = advance(kernel, 1, 2);
       h.failNextCommit();
       const err = await rejection(() => h.store.saveCommit(c1), 'faulted save');
-      check(err instanceof PersistenceError && err.code === 'WRITE_FAILED', 'WRITE_FAILED expected');
-      same(await h.store.loadLatest(), g.snapshot, 'previous snapshot is still the active one');
-      same(await h.store.loadHistorySince(0), { commands: [], events: [] }, 'no partial history visible');
-      same((await h.store.listVerifiedSnapshots()).map((s) => s.revision), [0], 'no extra snapshot visible');
+      check(
+        err instanceof PersistenceError && err.code === 'WRITE_FAILED',
+        'WRITE_FAILED expected',
+      );
+      same(
+        await h.store.loadLatest(),
+        g.snapshot,
+        'previous snapshot is still the active one',
+      );
+      same(
+        await h.store.loadHistorySince(0),
+        { commands: [], events: [] },
+        'no partial history visible',
+      );
+      same(
+        (await h.store.listVerifiedSnapshots()).map((s) => s.revision),
+        [0],
+        'no extra snapshot visible',
+      );
       await h.store.saveCommit(c1);
       same(await h.store.loadLatest(), c1.snapshot, 'retry succeeds');
-      check((await h.store.loadHistorySince(0)).events.length === 1, 'history written exactly once');
+      check(
+        (await h.store.loadHistorySince(0)).events.length === 1,
+        'history written exactly once',
+      );
     },
   },
   {
@@ -238,9 +335,18 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       await h.store.saveCommit(genesisCommit(kernel));
       const c1 = advance(kernel, 1);
       await h.store.saveCommit(c1);
-      const err = await rejection(() => h.store.saveCommit(c1), 'replayed commit');
-      check(err instanceof PersistenceError && err.code === 'COMMIT_REJECTED', 'COMMIT_REJECTED expected');
-      check((await h.store.loadHistorySince(0)).events.length === 1, 'history unchanged');
+      const err = await rejection(
+        () => h.store.saveCommit(c1),
+        'replayed commit',
+      );
+      check(
+        err instanceof PersistenceError && err.code === 'COMMIT_REJECTED',
+        'COMMIT_REJECTED expected',
+      );
+      check(
+        (await h.store.loadHistorySince(0)).events.length === 1,
+        'history unchanged',
+      );
     },
   },
   {
@@ -251,8 +357,14 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       await h.store.saveCommit(genesisCommit(kernel));
       advance(kernel, 1); // never saved
       const c2 = advance(kernel, 2);
-      const err = await rejection(() => h.store.saveCommit(c2), 'gapped commit');
-      check(err instanceof PersistenceError && err.code === 'COMMIT_REJECTED', 'COMMIT_REJECTED expected');
+      const err = await rejection(
+        () => h.store.saveCommit(c2),
+        'gapped commit',
+      );
+      check(
+        err instanceof PersistenceError && err.code === 'COMMIT_REJECTED',
+        'COMMIT_REJECTED expected',
+      );
       check((await h.store.loadLatest())?.revision === 0, 'still at genesis');
     },
   },
@@ -264,9 +376,19 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       await h.store.saveCommit(genesisCommit(kernel));
       const c1 = advance(kernel, 1);
       const forged = { ...c1, events: [] };
-      const err = await rejection(() => h.store.saveCommit(forged), 'events withheld');
-      check(err instanceof PersistenceError && err.code === 'COMMIT_REJECTED', 'COMMIT_REJECTED expected');
-      same((await h.store.listVerifiedSnapshots()).map((s) => s.revision), [0], 'nothing stored');
+      const err = await rejection(
+        () => h.store.saveCommit(forged),
+        'events withheld',
+      );
+      check(
+        err instanceof PersistenceError && err.code === 'COMMIT_REJECTED',
+        'COMMIT_REJECTED expected',
+      );
+      same(
+        (await h.store.listVerifiedSnapshots()).map((s) => s.revision),
+        [0],
+        'nothing stored',
+      );
     },
   },
   {
@@ -278,10 +400,19 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       const c1 = advance(kernel, 1);
       const tampered = {
         ...c1,
-        snapshot: { ...c1.snapshot, world: { ...c1.snapshot.world, simDate: '2030-01-01' } },
+        snapshot: {
+          ...c1.snapshot,
+          world: { ...c1.snapshot.world, simDate: '2030-01-01' },
+        },
       };
-      const err = await rejection(() => h.store.saveCommit(tampered), 'tampered snapshot');
-      check(err instanceof PersistenceError && err.code === 'COMMIT_REJECTED', 'COMMIT_REJECTED expected');
+      const err = await rejection(
+        () => h.store.saveCommit(tampered),
+        'tampered snapshot',
+      );
+      check(
+        err instanceof PersistenceError && err.code === 'COMMIT_REJECTED',
+        'COMMIT_REJECTED expected',
+      );
     },
   },
   {
@@ -292,11 +423,23 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       const g = genesisCommit(kernel);
       await h.store.saveCommit(g);
       const c1 = advance(kernel, 1);
-      const future = { ...c1, snapshot: { ...c1.snapshot, schemaVersion: SCHEMA_VERSION + 1 } };
-      const err = await rejection(() => h.store.saveCommit(future), 'future schema');
-      check(err instanceof UnsupportedSchemaVersionError, 'UnsupportedSchemaVersionError expected');
+      const future = {
+        ...c1,
+        snapshot: { ...c1.snapshot, schemaVersion: SCHEMA_VERSION + 1 },
+      };
+      const err = await rejection(
+        () => h.store.saveCommit(future),
+        'future schema',
+      );
+      check(
+        err instanceof UnsupportedSchemaVersionError,
+        'UnsupportedSchemaVersionError expected',
+      );
       same(await h.store.loadLatest(), g.snapshot, 'active snapshot unchanged');
-      check((await h.store.loadHistorySince(0)).events.length === 0, 'no history written');
+      check(
+        (await h.store.loadHistorySince(0)).events.length === 0,
+        'no history written',
+      );
     },
   },
   {
@@ -310,10 +453,24 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       const c2 = advance(kernel, 2);
       const dup = {
         ...c2,
-        commands: [{ ...c2.commands[0]!, envelope: { ...c2.commands[0]!.envelope, commandId: commandId('cmd-1') } }],
+        commands: [
+          {
+            ...c2.commands[0]!,
+            envelope: {
+              ...c2.commands[0]!.envelope,
+              commandId: commandId('cmd-1'),
+            },
+          },
+        ],
       };
-      const err = await rejection(() => h.store.saveCommit(dup), 'duplicate command id');
-      check(err instanceof PersistenceError && err.code === 'COMMIT_REJECTED', 'COMMIT_REJECTED expected');
+      const err = await rejection(
+        () => h.store.saveCommit(dup),
+        'duplicate command id',
+      );
+      check(
+        err instanceof PersistenceError && err.code === 'COMMIT_REJECTED',
+        'COMMIT_REJECTED expected',
+      );
     },
   },
   {
@@ -324,7 +481,11 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       await h.store.saveCommit(genesisCommit(kernel));
       for (let n = 1; n <= 2; n++) await h.store.saveCommit(advance(kernel, n));
       const list = await h.store.listVerifiedSnapshots();
-      same(list.map((s) => s.revision), [2, 1, 0], 'newest first, previous snapshots retained');
+      same(
+        list.map((s) => s.revision),
+        [2, 1, 0],
+        'newest first, previous snapshots retained',
+      );
       same(list[1], list[1], 'snapshots are plain data');
     },
   },
@@ -335,13 +496,20 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       const { kernel } = newCareer();
       await h.store.saveCommit(genesisCommit(kernel));
       const total = SNAPSHOT_RETENTION_NEWEST + 4;
-      for (let n = 1; n <= total; n++) await h.store.saveCommit(advance(kernel, n));
-      const revisions = (await h.store.listVerifiedSnapshots()).map((s) => s.revision);
+      for (let n = 1; n <= total; n++)
+        await h.store.saveCommit(advance(kernel, n));
+      const revisions = (await h.store.listVerifiedSnapshots()).map(
+        (s) => s.revision,
+      );
       const expected = [] as number[];
-      for (let r = total; r > total - SNAPSHOT_RETENTION_NEWEST; r--) expected.push(r);
+      for (let r = total; r > total - SNAPSHOT_RETENTION_NEWEST; r--)
+        expected.push(r);
       expected.push(0);
       same(revisions, expected, 'genesis + newest retained snapshots');
-      check((await h.store.loadHistorySince(0)).events.length === total, 'full history is never pruned');
+      check(
+        (await h.store.loadHistorySince(0)).events.length === total,
+        'full history is never pruned',
+      );
     },
   },
   {
@@ -365,7 +533,8 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       const h = await open(factory);
       const { kernel, ruleset } = newCareer();
       await h.store.saveCommit(genesisCommit(kernel));
-      for (let n = 1; n <= 3; n++) await h.store.saveCommit(advance(kernel, n, n));
+      for (let n = 1; n <= 3; n++)
+        await h.store.saveCommit(advance(kernel, n, n));
       const snap = await h.store.loadLatest();
       check(snap !== null, 'snapshot present');
       if (snap === null) return;
@@ -376,11 +545,20 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
         eventCount: snap.eventCount,
         knownCommandIds: snap.knownCommandIds,
       });
-      check(resumed.execute(envelope(2, 1, 3)).ok === false, 'duplicate stays rejected after reload');
+      check(
+        resumed.execute(envelope(2, 1, 3)).ok === false,
+        'duplicate stays rejected after reload',
+      );
       kernel.execute(envelope(9, 2, 3));
       resumed.execute(envelope(9, 2, 3));
-      check(fingerprintWorld(resumed.world) === fingerprintWorld(kernel.world), 'identical world after reload');
-      check(resumed.chainHead === kernel.chainHead, 'identical audit head after reload');
+      check(
+        fingerprintWorld(resumed.world) === fingerprintWorld(kernel.world),
+        'identical world after reload',
+      );
+      check(
+        resumed.chainHead === kernel.chainHead,
+        'identical audit head after reload',
+      );
     },
   },
   {
@@ -404,7 +582,11 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
       await h.store.markRecovery(r1);
       await h.store.markRecovery(r2);
       same(await h.store.loadRecoveryLog(), [r1, r2], 'reports kept in order');
-      same((await h.store.loadLatest())?.revision, 0, 'a log-only recovery does not change the active snapshot');
+      same(
+        (await h.store.loadLatest())?.revision,
+        0,
+        'a log-only recovery does not change the active snapshot',
+      );
     },
   },
   {
@@ -422,9 +604,19 @@ export const careerStoreContractCases = (factory: HarnessFactory): ContractCase[
         restoredRevision: 1,
         reasons: ['test'],
       };
-      const err = await rejection(() => h.store.markRecovery(report, stale), 'inconsistent repair');
-      check(err instanceof PersistenceError && err.code === 'COMMIT_REJECTED', 'COMMIT_REJECTED expected');
-      same((await h.store.loadRecoveryLog()).length, 0, 'rejected repair is not logged');
+      const err = await rejection(
+        () => h.store.markRecovery(report, stale),
+        'inconsistent repair',
+      );
+      check(
+        err instanceof PersistenceError && err.code === 'COMMIT_REJECTED',
+        'COMMIT_REJECTED expected',
+      );
+      same(
+        (await h.store.loadRecoveryLog()).length,
+        0,
+        'rejected repair is not logged',
+      );
       await h.store.markRecovery(report, c1.snapshot);
       same(await h.store.loadLatest(), c1.snapshot, 'repaired snapshot active');
       same((await h.store.loadRecoveryLog()).length, 1, 'repair logged');
@@ -439,14 +631,20 @@ export interface ContractResult {
 }
 
 /** Runs every case without a test framework (used by the on-device diagnostics harness). */
-export const runContractCases = async (cases: readonly ContractCase[]): Promise<ContractResult[]> => {
+export const runContractCases = async (
+  cases: readonly ContractCase[],
+): Promise<ContractResult[]> => {
   const results: ContractResult[] = [];
   for (const c of cases) {
     try {
       await c.run();
       results.push({ name: c.name, passed: true });
     } catch (error) {
-      results.push({ name: c.name, passed: false, error: error instanceof Error ? error.message : String(error) });
+      results.push({
+        name: c.name,
+        passed: false,
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   }
   return results;

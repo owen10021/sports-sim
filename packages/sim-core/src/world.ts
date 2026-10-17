@@ -1,7 +1,18 @@
 import { hashCanonical } from './hash';
-import { entityId, worldId, worldRevision, type EntityId, type WorldId, type WorldRevision } from './ids';
+import {
+  entityId,
+  worldId,
+  worldRevision,
+  type EntityId,
+  type WorldId,
+  type WorldRevision,
+} from './ids';
 import { SCHEMA_VERSION, type ValidationIssue } from './provenance';
-import { rulesetRefOf, validateRulesetManifest, type RulesetRef } from './ruleset';
+import {
+  rulesetRefOf,
+  validateRulesetManifest,
+  type RulesetRef,
+} from './ruleset';
 import { DeterministicRng, type RngState } from './rng';
 import {
   seedRefOf,
@@ -51,7 +62,9 @@ export interface IdSource {
 export class WorldCreationError extends Error {
   readonly issues: readonly ValidationIssue[];
   constructor(issues: readonly ValidationIssue[]) {
-    super(`Cannot create world: ${issues.map((i) => `${i.code} (${i.message})`).join('; ')}`);
+    super(
+      `Cannot create world: ${issues.map((i) => `${i.code} (${i.message})`).join('; ')}`,
+    );
     this.name = 'WorldCreationError';
     this.issues = issues;
   }
@@ -60,12 +73,17 @@ export class WorldCreationError extends Error {
 export const deepFreeze = <T>(value: T): T => {
   if (typeof value === 'object' && value !== null && !Object.isFrozen(value)) {
     Object.freeze(value);
-    for (const key of Object.keys(value)) deepFreeze((value as Record<string, unknown>)[key]);
+    for (const key of Object.keys(value))
+      deepFreeze((value as Record<string, unknown>)[key]);
   }
   return value;
 };
 
-export const createWorld = (seedIn: unknown, rulesetIn: unknown, idSource: IdSource): FootballWorld => {
+export const createWorld = (
+  seedIn: unknown,
+  rulesetIn: unknown,
+  idSource: IdSource,
+): FootballWorld => {
   const verdict = validateForWorldCreation(seedIn, rulesetIn);
   if (!verdict.ok) throw new WorldCreationError(verdict.issues);
   const ruleset = validateRulesetManifest(rulesetIn);

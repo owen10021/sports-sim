@@ -7,7 +7,8 @@
  */
 const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
-const isLeap = (y: number): boolean => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+const isLeap = (y: number): boolean =>
+  (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
 const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] as const;
 const daysInMonth = (y: number, m: number): number =>
   m === 2 && isLeap(y) ? 29 : (DAYS_IN_MONTH[m - 1] as number);
@@ -26,7 +27,11 @@ const civilFromDays = (zIn: number): [number, number, number] => {
   const era = Math.floor(z / 146097);
   const doe = z - era * 146097;
   const yoe = Math.floor(
-    (doe - Math.floor(doe / 1460) + Math.floor(doe / 36524) - Math.floor(doe / 146096)) / 365,
+    (doe -
+      Math.floor(doe / 1460) +
+      Math.floor(doe / 36524) -
+      Math.floor(doe / 146096)) /
+      365,
   );
   const doy = doe - (365 * yoe + Math.floor(yoe / 4) - Math.floor(yoe / 100));
   const mp = Math.floor((5 * doy + 2) / 153);
@@ -36,7 +41,8 @@ const civilFromDays = (zIn: number): [number, number, number] => {
   return [y, m, d];
 };
 
-const pad = (n: number, width: number): string => String(n).padStart(width, '0');
+const pad = (n: number, width: number): string =>
+  String(n).padStart(width, '0');
 
 export class SimDate {
   /** Days since 1970-01-01 (proleptic Gregorian). */
@@ -45,7 +51,12 @@ export class SimDate {
   readonly month: number;
   readonly day: number;
 
-  private constructor(epochDay: number, year: number, month: number, day: number) {
+  private constructor(
+    epochDay: number,
+    year: number,
+    month: number,
+    day: number,
+  ) {
     this.epochDay = epochDay;
     this.year = year;
     this.month = month;
@@ -56,20 +67,33 @@ export class SimDate {
   /** Parse strict `YYYY-MM-DD`. Anything else (times, zones, short forms) throws. */
   static parse(iso: string): SimDate {
     const match = typeof iso === 'string' ? ISO_DATE.exec(iso) : null;
-    if (!match) throw new RangeError(`Invalid SimDate "${String(iso)}": expected YYYY-MM-DD`);
+    if (!match)
+      throw new RangeError(
+        `Invalid SimDate "${String(iso)}": expected YYYY-MM-DD`,
+      );
     const year = Number(match[1]);
     const month = Number(match[2]);
     const day = Number(match[3]);
-    if (year < 1 || month < 1 || month > 12 || day < 1 || day > daysInMonth(year, month)) {
-      throw new RangeError(`Invalid SimDate "${iso}": not a real calendar date`);
+    if (
+      year < 1 ||
+      month < 1 ||
+      month > 12 ||
+      day < 1 ||
+      day > daysInMonth(year, month)
+    ) {
+      throw new RangeError(
+        `Invalid SimDate "${iso}": not a real calendar date`,
+      );
     }
     return new SimDate(daysFromCivil(year, month, day), year, month, day);
   }
 
   static fromEpochDay(epochDay: number): SimDate {
-    if (!Number.isSafeInteger(epochDay)) throw new RangeError('epochDay must be a safe integer');
+    if (!Number.isSafeInteger(epochDay))
+      throw new RangeError('epochDay must be a safe integer');
     const [y, m, d] = civilFromDays(epochDay);
-    if (y < 1 || y > 9999) throw new RangeError('SimDate out of supported range (years 1-9999)');
+    if (y < 1 || y > 9999)
+      throw new RangeError('SimDate out of supported range (years 1-9999)');
     return new SimDate(epochDay, y, m, d);
   }
 
@@ -83,7 +107,8 @@ export class SimDate {
   }
 
   addDays(n: number): SimDate {
-    if (!Number.isSafeInteger(n)) throw new RangeError('addDays requires a safe integer');
+    if (!Number.isSafeInteger(n))
+      throw new RangeError('addDays requires a safe integer');
     return SimDate.fromEpochDay(this.epochDay + n);
   }
 

@@ -24,7 +24,10 @@ import {
 } from './ruleset';
 
 export type SeedEntityKind = 'person' | 'organization';
-export const SEED_ENTITY_KINDS: readonly SeedEntityKind[] = ['person', 'organization'];
+export const SEED_ENTITY_KINDS: readonly SeedEntityKind[] = [
+  'person',
+  'organization',
+];
 
 export interface SeedEntity {
   readonly id: string;
@@ -69,34 +72,64 @@ const BODY_KEYS = [
 
 const parseRulesetRef = (value: unknown): RulesetRef => {
   const rec = asRecord(value, 'seed.ruleset');
-  requireExactKeys(rec, ['rulesetId', 'rulesetVersion', 'contentHash'], [], 'seed.ruleset');
-  if (!isHash(rec.contentHash)) throw new ManifestFormatError('seed.ruleset.contentHash must be a sha256 hex');
+  requireExactKeys(
+    rec,
+    ['rulesetId', 'rulesetVersion', 'contentHash'],
+    [],
+    'seed.ruleset',
+  );
+  if (!isHash(rec.contentHash))
+    throw new ManifestFormatError(
+      'seed.ruleset.contentHash must be a sha256 hex',
+    );
   return {
     rulesetId: asString(rec.rulesetId, 'seed.ruleset.rulesetId', 128),
-    rulesetVersion: asSafeInt(rec.rulesetVersion, 'seed.ruleset.rulesetVersion', 1, 1_000_000),
+    rulesetVersion: asSafeInt(
+      rec.rulesetVersion,
+      'seed.ruleset.rulesetVersion',
+      1,
+      1_000_000,
+    ),
     contentHash: rec.contentHash,
   };
 };
 
 const parseEntities = (value: unknown): SeedEntity[] => {
-  if (!Array.isArray(value)) throw new ManifestFormatError('seed.initialEntities must be an array');
+  if (!Array.isArray(value))
+    throw new ManifestFormatError('seed.initialEntities must be an array');
   return value.map((raw, i) => {
     const rec = asRecord(raw, `seed.initialEntities[${i}]`);
-    requireExactKeys(rec, ['id', 'kind', 'name'], [], `seed.initialEntities[${i}]`);
+    requireExactKeys(
+      rec,
+      ['id', 'kind', 'name'],
+      [],
+      `seed.initialEntities[${i}]`,
+    );
     const id = asString(rec.id, `seed.initialEntities[${i}].id`, 128);
-    if (!isValidId(id)) throw new ManifestFormatError(`seed.initialEntities[${i}].id is not a valid id`);
+    if (!isValidId(id))
+      throw new ManifestFormatError(
+        `seed.initialEntities[${i}].id is not a valid id`,
+      );
     if (!(SEED_ENTITY_KINDS as readonly unknown[]).includes(rec.kind)) {
-      throw new ManifestFormatError(`seed.initialEntities[${i}].kind is not recognized`);
+      throw new ManifestFormatError(
+        `seed.initialEntities[${i}].kind is not recognized`,
+      );
     }
-    return { id, kind: rec.kind as SeedEntityKind, name: asString(rec.name, `seed.initialEntities[${i}].name`, 200) };
+    return {
+      id,
+      kind: rec.kind as SeedEntityKind,
+      name: asString(rec.name, `seed.initialEntities[${i}].name`, 200),
+    };
   });
 };
 
 const parseBody = (rec: Record<string, unknown>): WorldSeedBody => {
   const seedId = asString(rec.seedId, 'seed.seedId', 128);
-  if (!isValidId(seedId)) throw new ManifestFormatError('seed.seedId is not a valid id');
+  if (!isValidId(seedId))
+    throw new ManifestFormatError('seed.seedId is not a valid id');
   const startDate = asString(rec.startDate, 'seed.startDate', 10);
-  if (!SimDate.isValidISO(startDate)) throw new ManifestFormatError('seed.startDate must be a valid YYYY-MM-DD');
+  if (!SimDate.isValidISO(startDate))
+    throw new ManifestFormatError('seed.startDate must be a valid YYYY-MM-DD');
   return {
     schemaVersion: SCHEMA_VERSION,
     seedId,
@@ -133,10 +166,15 @@ export const validateSeedManifest = (value: unknown): WorldSeedManifest => {
   requireSupportedSchema(rec, 'seed');
   requireExactKeys(rec, [...BODY_KEYS, 'contentHash'], [], 'seed manifest');
   const stored = rec.contentHash;
-  if (!isHash(stored)) throw new ManifestFormatError('seed.contentHash must be 64 lowercase hex chars');
+  if (!isHash(stored))
+    throw new ManifestFormatError(
+      'seed.contentHash must be 64 lowercase hex chars',
+    );
   const parsed = parseBody(rec);
   if (hashCanonical(bodyOf(parsed)) !== stored) {
-    throw new ManifestTamperError(`seed "${parsed.seedId}" v${parsed.seedVersion}: content hash mismatch`);
+    throw new ManifestTamperError(
+      `seed "${parsed.seedId}" v${parsed.seedVersion}: content hash mismatch`,
+    );
   }
   return { ...parsed, contentHash: stored };
 };
@@ -155,7 +193,8 @@ const classify = (
   if (e instanceof UnsupportedSchemaVersionError) {
     return { code: `${prefix}_UNSUPPORTED_SCHEMA`, message: e.message };
   }
-  if (e instanceof ManifestTamperError) return { code: hashCode, message: e.message };
+  if (e instanceof ManifestTamperError)
+    return { code: hashCode, message: e.message };
   const message = e instanceof Error ? e.message : String(e);
   return { code: `${prefix}_MALFORMED`, message };
 };
@@ -165,7 +204,10 @@ const classify = (
  * (b) untampered, (c) sourced from synthetic or verified provenance, and (d) an exact
  * seed->ruleset identity/version/hash match. Never throws; returns every issue found.
  */
-export const validateForWorldCreation = (seedIn: unknown, rulesetIn: unknown): ValidationResult => {
+export const validateForWorldCreation = (
+  seedIn: unknown,
+  rulesetIn: unknown,
+): ValidationResult => {
   const issues: ValidationIssue[] = [];
   let ruleset: LeagueRulesetManifest | undefined;
   let seed: WorldSeedManifest | undefined;
@@ -181,13 +223,17 @@ export const validateForWorldCreation = (seedIn: unknown, rulesetIn: unknown): V
     issues.push(classify(e, 'SEED', 'SEED_HASH_MISMATCH'));
   }
 
-  if (ruleset) issues.push(...unacceptableProvenance(ruleset.provenance, 'ruleset'));
+  if (ruleset)
+    issues.push(...unacceptableProvenance(ruleset.provenance, 'ruleset'));
   if (seed) {
     issues.push(...unacceptableProvenance(seed.provenance, 'seed'));
     const seen = new Set<string>();
     for (const entity of seed.initialEntities) {
       if (seen.has(entity.id)) {
-        issues.push({ code: 'SEED_DUPLICATE_ENTITY', message: `duplicate initial entity id "${entity.id}"` });
+        issues.push({
+          code: 'SEED_DUPLICATE_ENTITY',
+          message: `duplicate initial entity id "${entity.id}"`,
+        });
       }
       seen.add(entity.id);
     }

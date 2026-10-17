@@ -6,14 +6,8 @@
     "scheme": "sportsim",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
-    "platforms": [
-      "ios"
-    ],
-    "plugins": [
-      "expo-router",
-      "expo-sqlite",
-      "expo-status-bar"
-    ],
+    "platforms": ["ios"],
+    "plugins": ["expo-router", "expo-sqlite", "expo-status-bar"],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.sportsim.app",

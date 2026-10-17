@@ -18,7 +18,9 @@ import {
   type WorldSeedBody,
 } from '../src/index';
 
-const provenance = (validationStatus: ValidationStatus = 'synthetic'): SourceProvenance => ({
+const provenance = (
+  validationStatus: ValidationStatus = 'synthetic',
+): SourceProvenance => ({
   sourceId: 'synthetic-fixture',
   sourceKind: 'synthetic',
   retrievedAt: '2026-10-16T00:00:00Z',
@@ -27,7 +29,9 @@ const provenance = (validationStatus: ValidationStatus = 'synthetic'): SourcePro
   note: 'test fixture',
 });
 
-const rulesetBody = (over: Partial<LeagueRulesetBody> = {}): LeagueRulesetBody => ({
+const rulesetBody = (
+  over: Partial<LeagueRulesetBody> = {},
+): LeagueRulesetBody => ({
   schemaVersion: SCHEMA_VERSION,
   rulesetId: 'synthetic-minimal',
   rulesetVersion: 1,
@@ -64,17 +68,31 @@ describe('ruleset + seed provenance contracts', () => {
   });
 
   it('accepts verified provenance but rejects unverified or conflicted sources', () => {
-    const ok = sealRuleset(rulesetBody({ provenance: [provenance('verified')] }));
-    expect(validateForWorldCreation(sealSeed(seedBodyFor(rulesetRefOf(ok))), ok)).toEqual({ ok: true });
+    const ok = sealRuleset(
+      rulesetBody({ provenance: [provenance('verified')] }),
+    );
+    expect(
+      validateForWorldCreation(sealSeed(seedBodyFor(rulesetRefOf(ok))), ok),
+    ).toEqual({ ok: true });
 
     for (const bad of ['unverified', 'conflicted'] as const) {
-      const ruleset = sealRuleset(rulesetBody({ provenance: [provenance(bad)] }));
-      const result = validateForWorldCreation(sealSeed(seedBodyFor(rulesetRefOf(ruleset))), ruleset);
+      const ruleset = sealRuleset(
+        rulesetBody({ provenance: [provenance(bad)] }),
+      );
+      const result = validateForWorldCreation(
+        sealSeed(seedBodyFor(rulesetRefOf(ruleset))),
+        ruleset,
+      );
       expect(result.ok).toBe(false);
-      if (!result.ok) expect(result.issues.map((i) => i.code)).toContain('PROVENANCE_NOT_ACCEPTABLE');
+      if (!result.ok)
+        expect(result.issues.map((i) => i.code)).toContain(
+          'PROVENANCE_NOT_ACCEPTABLE',
+        );
     }
     const seedBad = sealSeed(
-      seedBodyFor(rulesetRefOf(sealRuleset(rulesetBody())), { provenance: [provenance('unverified')] }),
+      seedBodyFor(rulesetRefOf(sealRuleset(rulesetBody())), {
+        provenance: [provenance('unverified')],
+      }),
     );
     const res = validateForWorldCreation(seedBad, sealRuleset(rulesetBody()));
     expect(res.ok).toBe(false);
@@ -83,11 +101,14 @@ describe('ruleset + seed provenance contracts', () => {
   it('detects a tampered ruleset body (hash no longer matches)', () => {
     const ruleset = sealRuleset(rulesetBody());
     const tampered = { ...ruleset, rules: { maxAdvanceDaysPerCommand: 31 } };
-    expect(() => validateRulesetManifest(tampered)).toThrow(ManifestTamperError);
+    expect(() => validateRulesetManifest(tampered)).toThrow(
+      ManifestTamperError,
+    );
     const seed = sealSeed(seedBodyFor(rulesetRefOf(ruleset)));
     const res = validateForWorldCreation(seed, tampered);
     expect(res.ok).toBe(false);
-    if (!res.ok) expect(res.issues.map((i) => i.code)).toContain('RULESET_HASH_MISMATCH');
+    if (!res.ok)
+      expect(res.issues.map((i) => i.code)).toContain('RULESET_HASH_MISMATCH');
   });
 
   it('detects a tampered seed body', () => {
@@ -97,31 +118,45 @@ describe('ruleset + seed provenance contracts', () => {
     expect(() => validateSeedManifest(tampered)).toThrow(ManifestTamperError);
     const res = validateForWorldCreation(tampered, ruleset);
     expect(res.ok).toBe(false);
-    if (!res.ok) expect(res.issues.map((i) => i.code)).toContain('SEED_HASH_MISMATCH');
+    if (!res.ok)
+      expect(res.issues.map((i) => i.code)).toContain('SEED_HASH_MISMATCH');
   });
 
   it('rejects a seed that points at a different ruleset id, version or hash', () => {
     const ruleset = sealRuleset(rulesetBody());
     const ref = rulesetRefOf(ruleset);
-    const cases: Array<[string, WorldSeedBody['ruleset']]> = [
+    const cases: [string, WorldSeedBody['ruleset']][] = [
       ['id', { ...ref, rulesetId: 'other' }],
       ['version', { ...ref, rulesetVersion: 2 }],
       ['hash', { ...ref, contentHash: 'f'.repeat(64) }],
     ];
     for (const [, badRef] of cases) {
-      const res = validateForWorldCreation(sealSeed(seedBodyFor(badRef)), ruleset);
+      const res = validateForWorldCreation(
+        sealSeed(seedBodyFor(badRef)),
+        ruleset,
+      );
       expect(res.ok).toBe(false);
-      if (!res.ok) expect(res.issues.map((i) => i.code)).toContain('SEED_RULESET_MISMATCH');
+      if (!res.ok)
+        expect(res.issues.map((i) => i.code)).toContain(
+          'SEED_RULESET_MISMATCH',
+        );
     }
   });
 
   it('fails explicitly on a future schema version instead of guessing', () => {
     const future = { ...sealRuleset(rulesetBody()), schemaVersion: 2 };
-    expect(() => validateRulesetManifest(future)).toThrow(UnsupportedSchemaVersionError);
+    expect(() => validateRulesetManifest(future)).toThrow(
+      UnsupportedSchemaVersionError,
+    );
     expect(() => validateRulesetManifest(future)).toThrow(/2/);
     const ruleset = sealRuleset(rulesetBody());
-    const futureSeed = { ...sealSeed(seedBodyFor(rulesetRefOf(ruleset))), schemaVersion: 2 };
-    expect(() => validateSeedManifest(futureSeed)).toThrow(UnsupportedSchemaVersionError);
+    const futureSeed = {
+      ...sealSeed(seedBodyFor(rulesetRefOf(ruleset))),
+      schemaVersion: 2,
+    };
+    expect(() => validateSeedManifest(futureSeed)).toThrow(
+      UnsupportedSchemaVersionError,
+    );
   });
 
   it('hashes a canonical body that excludes the embedded content hash and ignores key order', () => {
@@ -135,13 +170,17 @@ describe('ruleset + seed provenance contracts', () => {
       schemaVersion: SCHEMA_VERSION,
     });
     expect(a.contentHash).toBe(b.contentHash);
-    expect(sealRuleset(rulesetBody({ displayName: 'Changed' })).contentHash).not.toBe(a.contentHash);
+    expect(
+      sealRuleset(rulesetBody({ displayName: 'Changed' })).contentHash,
+    ).not.toBe(a.contentHash);
   });
 
   it('shipped synthetic fixtures validate and form a matching pair', () => {
     const ruleset = validateRulesetManifest(rulesetFixture);
     const seed = validateSeedManifest(seedFixture);
     expect(validateForWorldCreation(seed, ruleset)).toEqual({ ok: true });
-    expect(ruleset.provenance.every((p) => p.sourceKind === 'synthetic')).toBe(true);
+    expect(ruleset.provenance.every((p) => p.sourceKind === 'synthetic')).toBe(
+      true,
+    );
   });
 });

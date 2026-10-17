@@ -23,7 +23,9 @@ export const syntheticProvenance = (): SourceProvenance => ({
   note: 'test fixture',
 });
 
-export const makeRuleset = (over: Partial<LeagueRulesetBody> = {}): LeagueRulesetManifest =>
+export const makeRuleset = (
+  over: Partial<LeagueRulesetBody> = {},
+): LeagueRulesetManifest =>
   sealRuleset({
     schemaVersion: SCHEMA_VERSION,
     rulesetId: 'synthetic-minimal',

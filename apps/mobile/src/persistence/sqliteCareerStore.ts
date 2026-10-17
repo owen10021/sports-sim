@@ -98,7 +98,9 @@ export class SqliteCareerStore implements CareerStore {
 
   async initialize(): Promise<void> {
     await this.#db.exec('PRAGMA foreign_keys = ON;');
-    const rows = await this.#db.all<{ user_version: number }>('PRAGMA user_version');
+    const rows = await this.#db.all<{ user_version: number }>(
+      'PRAGMA user_version',
+    );
     const version = rows[0]?.user_version ?? 0;
     if (version > SQLITE_STORE_VERSION) {
       throw new UnsupportedSchemaVersionError('sqlite career store', version);
@@ -113,7 +115,8 @@ export class SqliteCareerStore implements CareerStore {
   }
 
   #requireInit(): void {
-    if (!this.#initialized) throw new PersistenceError('NOT_INITIALIZED', 'call initialize() first');
+    if (!this.#initialized)
+      throw new PersistenceError('NOT_INITIALIZED', 'call initialize() first');
   }
 
   async #readActive(tx: SqlExecutor): Promise<CareerSnapshot | null> {
@@ -123,13 +126,24 @@ export class SqliteCareerStore implements CareerStore {
         WHERE m.id = 1`,
     );
     const row = rows[0];
-    return row === undefined ? null : parseJson<CareerSnapshot>(row.snapshot_json, 'active snapshot');
+    return row === undefined
+      ? null
+      : parseJson<CareerSnapshot>(row.snapshot_json, 'active snapshot');
   }
 
-  async #storedTail(tx: SqlExecutor): Promise<{ count: number; tailHash: string }> {
-    const counts = await tx.all<{ n: number }>('SELECT COUNT(*) AS n FROM events');
-    const tail = await tx.all<{ hash: string }>('SELECT hash FROM events ORDER BY ordinal DESC LIMIT 1');
-    return { count: counts[0]?.n ?? 0, tailHash: tail[0]?.hash ?? GENESIS_HASH };
+  async #storedTail(
+    tx: SqlExecutor,
+  ): Promise<{ count: number; tailHash: string }> {
+    const counts = await tx.all<{ n: number }>(
+      'SELECT COUNT(*) AS n FROM events',
+    );
+    const tail = await tx.all<{ hash: string }>(
+      'SELECT hash FROM events ORDER BY ordinal DESC LIMIT 1',
+    );
+    return {
+      count: counts[0]?.n ?? 0,
+      tailHash: tail[0]?.hash ?? GENESIS_HASH,
+    };
   }
 
   async saveCommit(input: CommitRecord): Promise<void> {
@@ -141,21 +155,36 @@ export class SqliteCareerStore implements CareerStore {
         const latest = await this.#readActive(tx);
         const stored = await this.#storedTail(tx);
         const reason = checkCommitContinuity(latest, commit, stored.count);
-        if (reason !== null) throw new PersistenceError('COMMIT_REJECTED', reason);
+        if (reason !== null)
+          throw new PersistenceError('COMMIT_REJECTED', reason);
 
-        const commandCount = (await tx.all<{ n: number }>('SELECT COUNT(*) AS n FROM commands'))[0]?.n ?? 0;
+        const commandCount =
+          (await tx.all<{ n: number }>('SELECT COUNT(*) AS n FROM commands'))[0]
+            ?.n ?? 0;
         for (let i = 0; i < commit.commands.length; i++) {
           const c = commit.commands[i] as CommandRecord;
           await tx.run(
             'INSERT INTO commands (command_id, ordinal, result_revision, envelope_json) VALUES (?, ?, ?, ?)',
-            [c.envelope.commandId, commandCount + i + 1, c.resultRevision, canonicalString(c.envelope)],
+            [
+              c.envelope.commandId,
+              commandCount + i + 1,
+              c.resultRevision,
+              canonicalString(c.envelope),
+            ],
           );
         }
         for (let i = 0; i < commit.events.length; i++) {
           const e = commit.events[i] as EventEnvelope;
           await tx.run(
             'INSERT INTO events (ordinal, event_id, revision, command_id, hash, event_json) VALUES (?, ?, ?, ?, ?, ?)',
-            [stored.count + i + 1, e.eventId, e.revision, e.commandId, e.hash, canonicalString(e)],
+            [
+              stored.count + i + 1,
+              e.eventId,
+              e.revision,
+              e.commandId,
+              e.hash,
+              canonicalString(e),
+            ],
           );
         }
         const s = commit.snapshot;
@@ -163,12 +192,13 @@ export class SqliteCareerStore implements CareerStore {
           'INSERT INTO snapshots (revision, event_count, content_hash, snapshot_json) VALUES (?, ?, ?, ?)',
           [s.revision, s.eventCount, s.contentHash, canonicalString(s)],
         );
-        const revisions = (await tx.all<{ revision: number }>('SELECT revision FROM snapshots')).map(
-          (r) => r.revision,
-        );
+        const revisions = (
+          await tx.all<{ revision: number }>('SELECT revision FROM snapshots')
+        ).map((r) => r.revision);
         const keep = retainedRevisions(revisions);
         for (const r of revisions) {
-          if (!keep.has(r)) await tx.run('DELETE FROM snapshots WHERE revision = ?', [r]);
+          if (!keep.has(r))
+            await tx.run('DELETE FROM snapshots WHERE revision = ?', [r]);
         }
         // FINAL statement: only now does the new snapshot become the active one.
         await tx.run(
@@ -180,12 +210,22 @@ export class SqliteCareerStore implements CareerStore {
         this.#options.faultBeforeCommit?.();
         if (this.#failNext) {
           this.#failNext = false;
-          throw new PersistenceError('WRITE_FAILED', 'injected fault before commit');
+          throw new PersistenceError(
+            'WRITE_FAILED',
+            'injected fault before commit',
+          );
         }
       });
     } catch (error) {
-      if (error instanceof PersistenceError || error instanceof UnsupportedSchemaVersionError) throw error;
-      throw new PersistenceError('WRITE_FAILED', error instanceof Error ? error.message : String(error));
+      if (
+        error instanceof PersistenceError ||
+        error instanceof UnsupportedSchemaVersionError
+      )
+        throw error;
+      throw new PersistenceError(
+        'WRITE_FAILED',
+        error instanceof Error ? error.message : String(error),
+      );
     }
   }
 
@@ -217,7 +257,10 @@ export class SqliteCareerStore implements CareerStore {
 
   async loadHistorySince(revision: number): Promise<HistorySlice> {
     this.#requireInit();
-    const commandRows = await this.#db.all<{ result_revision: number; envelope_json: string }>(
+    const commandRows = await this.#db.all<{
+      result_revision: number;
+      envelope_json: string;
+    }>(
       'SELECT result_revision, envelope_json FROM commands WHERE result_revision > ? ORDER BY ordinal',
       [revision],
     );
@@ -227,31 +270,50 @@ export class SqliteCareerStore implements CareerStore {
     );
     return cloneData({
       commands: commandRows.map((r) => ({
-        envelope: parseJson<CommandRecord['envelope']>(r.envelope_json, 'stored command'),
+        envelope: parseJson<CommandRecord['envelope']>(
+          r.envelope_json,
+          'stored command',
+        ),
         resultRevision: r.result_revision,
       })),
-      events: eventRows.map((r) => parseJson<EventEnvelope>(r.event_json, 'stored event')),
+      events: eventRows.map((r) =>
+        parseJson<EventEnvelope>(r.event_json, 'stored event'),
+      ),
     });
   }
 
-  async markRecovery(report: RecoveryReport, repairedSnapshot?: CareerSnapshot): Promise<void> {
+  async markRecovery(
+    report: RecoveryReport,
+    repairedSnapshot?: CareerSnapshot,
+  ): Promise<void> {
     this.#requireInit();
     const entry = cloneData(report);
-    const repaired = repairedSnapshot === undefined ? undefined : cloneData(repairedSnapshot);
+    const repaired =
+      repairedSnapshot === undefined ? undefined : cloneData(repairedSnapshot);
     try {
       await this.#db.transaction(async (tx) => {
         if (repaired !== undefined) {
           const stored = await this.#storedTail(tx);
-          const problem = checkRepairConsistency(repaired, stored.count, stored.tailHash);
-          if (problem !== null) throw new PersistenceError('COMMIT_REJECTED', problem);
-          await tx.run('INSERT OR REPLACE INTO snapshots (revision, event_count, content_hash, snapshot_json) VALUES (?, ?, ?, ?)', [
-            repaired.revision,
-            repaired.eventCount,
-            repaired.contentHash,
-            canonicalString(repaired),
-          ]);
+          const problem = checkRepairConsistency(
+            repaired,
+            stored.count,
+            stored.tailHash,
+          );
+          if (problem !== null)
+            throw new PersistenceError('COMMIT_REJECTED', problem);
+          await tx.run(
+            'INSERT OR REPLACE INTO snapshots (revision, event_count, content_hash, snapshot_json) VALUES (?, ?, ?, ?)',
+            [
+              repaired.revision,
+              repaired.eventCount,
+              repaired.contentHash,
+              canonicalString(repaired),
+            ],
+          );
         }
-        await tx.run('INSERT INTO recovery_log (report_json) VALUES (?)', [canonicalString(entry)]);
+        await tx.run('INSERT INTO recovery_log (report_json) VALUES (?)', [
+          canonicalString(entry),
+        ]);
         if (repaired !== undefined) {
           // FINAL statement: the repaired snapshot becomes active.
           await tx.run(
@@ -262,14 +324,27 @@ export class SqliteCareerStore implements CareerStore {
         }
       });
     } catch (error) {
-      if (error instanceof PersistenceError || error instanceof UnsupportedSchemaVersionError) throw error;
-      throw new PersistenceError('WRITE_FAILED', error instanceof Error ? error.message : String(error));
+      if (
+        error instanceof PersistenceError ||
+        error instanceof UnsupportedSchemaVersionError
+      )
+        throw error;
+      throw new PersistenceError(
+        'WRITE_FAILED',
+        error instanceof Error ? error.message : String(error),
+      );
     }
   }
 
   async loadRecoveryLog(): Promise<readonly RecoveryReport[]> {
     this.#requireInit();
-    const rows = await this.#db.all<{ report_json: string }>('SELECT report_json FROM recovery_log ORDER BY id');
-    return cloneData(rows.map((r) => parseJson<RecoveryReport>(r.report_json, 'recovery report')));
+    const rows = await this.#db.all<{ report_json: string }>(
+      'SELECT report_json FROM recovery_log ORDER BY id',
+    );
+    return cloneData(
+      rows.map((r) =>
+        parseJson<RecoveryReport>(r.report_json, 'recovery report'),
+      ),
+    );
   }
 }

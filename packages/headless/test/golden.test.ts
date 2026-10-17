@@ -24,7 +24,12 @@ describe('golden scenario (Node)', () => {
   });
 
   it('matches the committed fixture file', () => {
-    const fixture = JSON.parse(readFileSync(join(root, 'fixtures/golden/package-a-golden-v1.json'), 'utf8'));
+    const fixture = JSON.parse(
+      readFileSync(
+        join(root, 'fixtures/golden/package-a-golden-v1.json'),
+        'utf8',
+      ),
+    );
     expect(fixture).toEqual(JSON.parse(JSON.stringify(GOLDEN_EXPECTED)));
   });
 

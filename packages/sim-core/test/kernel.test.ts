@@ -70,7 +70,11 @@ describe('WorldKernel mutation pipeline', () => {
     });
     expect(kernel.world).toBe(res.world);
     expect(kernel.chainHead).toBe(ev.hash);
-    expect(verifyEventChain(kernel.events)).toEqual({ ok: true, headHash: ev.hash, count: 1 });
+    expect(verifyEventChain(kernel.events)).toEqual({
+      ok: true,
+      headHash: ev.hash,
+      count: 1,
+    });
     expect(res.trace.steps.map((s) => s.stage)).toEqual([
       'validation',
       'authorization',
@@ -86,7 +90,10 @@ describe('WorldKernel mutation pipeline', () => {
       const res = kernel.execute(cmd(n, 1));
       expect(res.ok).toBe(true);
       expect(Number(kernel.world.revision)).toBe(n);
-      if (res.ok) expect(String(res.events[0]!.eventId)).toBe(`evt-${String(n).padStart(6, '0')}`);
+      if (res.ok)
+        expect(String(res.events[0]!.eventId)).toBe(
+          `evt-${String(n).padStart(6, '0')}`,
+        );
     }
     expect(kernel.events).toHaveLength(4);
     expect(kernel.world.nextIds.event).toBe(5);
@@ -122,7 +129,17 @@ describe('WorldKernel mutation pipeline', () => {
   it('rejects invalid day counts and unknown commands without side effects', () => {
     const { kernel } = setup();
     const before = state(kernel);
-    for (const days of [0, -1, 1.5, 31, Number.NaN, Number.POSITIVE_INFINITY, '3', null, undefined]) {
+    for (const days of [
+      0,
+      -1,
+      1.5,
+      31,
+      Number.NaN,
+      Number.POSITIVE_INFINITY,
+      '3',
+      null,
+      undefined,
+    ]) {
       const res = kernel.execute(cmd(1, days));
       expect(res.ok).toBe(false);
       if (!res.ok) expect(res.rejection.code).toBe('INVALID_PAYLOAD');
@@ -161,14 +178,23 @@ describe('WorldKernel mutation pipeline', () => {
     const { kernel } = setup();
     const before = state(kernel);
     for (const kind of ['cpu_org', 'delegate'] as const) {
-      const res = kernel.execute(cmd(1, 1, 0, { kind, id: entityId('someone') }));
+      const res = kernel.execute(
+        cmd(1, 1, 0, { kind, id: entityId('someone') }),
+      );
       expect(res.ok).toBe(false);
       if (!res.ok) expect(res.rejection.code).toBe('UNAUTHORIZED_ACTOR');
       expect(state(kernel)).toEqual(before);
     }
-    for (const kind of ['human_gm', 'commissioner', 'system', 'test_harness'] as const) {
+    for (const kind of [
+      'human_gm',
+      'commissioner',
+      'system',
+      'test_harness',
+    ] as const) {
       const { kernel: k2 } = setup();
-      expect(k2.execute(cmd(1, 1, 0, { kind, id: entityId('someone') })).ok).toBe(true);
+      expect(
+        k2.execute(cmd(1, 1, 0, { kind, id: entityId('someone') })).ok,
+      ).toBe(true);
     }
   });
 

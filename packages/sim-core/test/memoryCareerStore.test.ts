@@ -48,23 +48,35 @@ describe('MemoryCareerStore corruption behaviour (test seams)', () => {
     const { store, step } = await career();
     await step(1);
     await step(2);
-    store.tamperWithSnapshotForTest(2, (s) => ({ ...s, contentHash: 'f'.repeat(64) }));
-    expect((await store.listVerifiedSnapshots()).map((s) => s.revision)).toEqual([1, 0]);
+    store.tamperWithSnapshotForTest(2, (s) => ({
+      ...s,
+      contentHash: 'f'.repeat(64),
+    }));
+    expect(
+      (await store.listVerifiedSnapshots()).map((s) => s.revision),
+    ).toEqual([1, 0]);
   });
 
   it('fails closed when the active snapshot declares a future schema', async () => {
     const { store, step } = await career();
     await step(1);
     store.tamperWithSnapshotForTest(1, (s) => ({ ...s, schemaVersion: 99 }));
-    await expect(store.loadLatest()).rejects.toBeInstanceOf(UnsupportedSchemaVersionError);
-    await expect(store.listVerifiedSnapshots()).rejects.toBeInstanceOf(UnsupportedSchemaVersionError);
+    await expect(store.loadLatest()).rejects.toBeInstanceOf(
+      UnsupportedSchemaVersionError,
+    );
+    await expect(store.listVerifiedSnapshots()).rejects.toBeInstanceOf(
+      UnsupportedSchemaVersionError,
+    );
   });
 
   it('can install a verified repair over a corrupt active snapshot', async () => {
     const { store, step } = await career();
     await step(1);
     const good = (await store.loadLatest())!;
-    store.tamperWithSnapshotForTest(1, (s) => ({ ...s, contentHash: '0'.repeat(64) }));
+    store.tamperWithSnapshotForTest(1, (s) => ({
+      ...s,
+      contentHash: '0'.repeat(64),
+    }));
     await store.markRecovery(
       {
         action: 'REPAIRED_LATEST_FROM_REPLAY',
@@ -75,6 +87,8 @@ describe('MemoryCareerStore corruption behaviour (test seams)', () => {
       good,
     );
     expect(await store.loadLatest()).toEqual(good);
-    expect((await store.listVerifiedSnapshots()).map((s) => s.revision)).toEqual([1, 0]);
+    expect(
+      (await store.listVerifiedSnapshots()).map((s) => s.revision),
+    ).toEqual([1, 0]);
   });
 });

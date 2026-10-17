@@ -7,7 +7,9 @@ import { SqliteCareerStore } from './sqliteCareerStore';
  * interface so the SAME damage is inflicted under Node (node:sqlite) and on device
  * (expo-sqlite). It deliberately bypasses every integrity check, like real disk corruption.
  */
-export const createSqliteRecoveryHarness = (db: SqlDatabase): RecoveryHarness => {
+export const createSqliteRecoveryHarness = (
+  db: SqlDatabase,
+): RecoveryHarness => {
   const store = new SqliteCareerStore(db);
   return {
     store,
@@ -17,7 +19,8 @@ export const createSqliteRecoveryHarness = (db: SqlDatabase): RecoveryHarness =>
         [revision],
       );
       const row = rows[0];
-      if (row === undefined) throw new Error(`no snapshot at revision ${revision}`);
+      if (row === undefined)
+        throw new Error(`no snapshot at revision ${revision}`);
       const parsed = JSON.parse(row.snapshot_json) as Record<string, unknown>;
       const next =
         kind === 'hash'
@@ -25,7 +28,10 @@ export const createSqliteRecoveryHarness = (db: SqlDatabase): RecoveryHarness =>
           : kind === 'future'
             ? JSON.stringify({ ...parsed, schemaVersion: 99 })
             : '{not json';
-      await db.run('UPDATE snapshots SET snapshot_json = ? WHERE revision = ?', [next, revision]);
+      await db.run(
+        'UPDATE snapshots SET snapshot_json = ? WHERE revision = ?',
+        [next, revision],
+      );
     },
     async truncateHistory(count: number) {
       const rows = await db.all<{ ordinal: number; command_id: string }>(
@@ -34,7 +40,9 @@ export const createSqliteRecoveryHarness = (db: SqlDatabase): RecoveryHarness =>
       );
       for (const r of rows) {
         await db.run('DELETE FROM events WHERE ordinal = ?', [r.ordinal]);
-        await db.run('DELETE FROM commands WHERE command_id = ?', [r.command_id]);
+        await db.run('DELETE FROM commands WHERE command_id = ?', [
+          r.command_id,
+        ]);
       }
     },
     async tamperEvent(index: number) {

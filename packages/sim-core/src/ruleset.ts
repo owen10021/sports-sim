@@ -39,21 +39,39 @@ export interface LeagueRulesetManifest extends LeagueRulesetBody {
   readonly contentHash: string;
 }
 
-const BODY_KEYS = ['schemaVersion', 'rulesetId', 'rulesetVersion', 'displayName', 'provenance', 'rules'] as const;
+const BODY_KEYS = [
+  'schemaVersion',
+  'rulesetId',
+  'rulesetVersion',
+  'displayName',
+  'provenance',
+  'rules',
+] as const;
 
 const parseBody = (rec: Record<string, unknown>): LeagueRulesetBody => {
   const rulesId = asString(rec.rulesetId, 'ruleset.rulesetId', 128);
-  if (!isValidId(rulesId)) throw new ManifestFormatError('ruleset.rulesetId is not a valid id');
+  if (!isValidId(rulesId))
+    throw new ManifestFormatError('ruleset.rulesetId is not a valid id');
   const rules = asRecord(rec.rules, 'ruleset.rules');
   requireExactKeys(rules, ['maxAdvanceDaysPerCommand'], [], 'ruleset.rules');
   return {
     schemaVersion: SCHEMA_VERSION,
     rulesetId: rulesId,
-    rulesetVersion: asSafeInt(rec.rulesetVersion, 'ruleset.rulesetVersion', 1, 1_000_000),
+    rulesetVersion: asSafeInt(
+      rec.rulesetVersion,
+      'ruleset.rulesetVersion',
+      1,
+      1_000_000,
+    ),
     displayName: asString(rec.displayName, 'ruleset.displayName', 200),
     provenance: parseProvenanceList(rec.provenance, 'ruleset.provenance'),
     rules: {
-      maxAdvanceDaysPerCommand: asSafeInt(rules.maxAdvanceDaysPerCommand, 'rules.maxAdvanceDaysPerCommand', 1, 3650),
+      maxAdvanceDaysPerCommand: asSafeInt(
+        rules.maxAdvanceDaysPerCommand,
+        'rules.maxAdvanceDaysPerCommand',
+        1,
+        3650,
+      ),
     },
   };
 };
@@ -82,15 +100,22 @@ export const sealRuleset = (body: LeagueRulesetBody): LeagueRulesetManifest => {
  *  - ManifestFormatError for structural problems,
  *  - ManifestTamperError if the embedded hash does not match the body.
  */
-export const validateRulesetManifest = (value: unknown): LeagueRulesetManifest => {
+export const validateRulesetManifest = (
+  value: unknown,
+): LeagueRulesetManifest => {
   const rec = asRecord(value, 'ruleset manifest');
   requireSupportedSchema(rec, 'ruleset');
   requireExactKeys(rec, [...BODY_KEYS, 'contentHash'], [], 'ruleset manifest');
   const stored = rec.contentHash;
-  if (!isHash(stored)) throw new ManifestFormatError('ruleset.contentHash must be 64 lowercase hex chars');
+  if (!isHash(stored))
+    throw new ManifestFormatError(
+      'ruleset.contentHash must be 64 lowercase hex chars',
+    );
   const parsed = parseBody(rec);
   if (hashCanonical(bodyOf(parsed)) !== stored) {
-    throw new ManifestTamperError(`ruleset "${parsed.rulesetId}" v${parsed.rulesetVersion}: content hash mismatch`);
+    throw new ManifestTamperError(
+      `ruleset "${parsed.rulesetId}" v${parsed.rulesetVersion}: content hash mismatch`,
+    );
   }
   return { ...parsed, contentHash: stored };
 };

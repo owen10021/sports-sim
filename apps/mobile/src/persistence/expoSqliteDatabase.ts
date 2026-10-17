@@ -29,7 +29,10 @@ export class ExpoSqliteDatabase implements SqlDatabase {
     });
   }
 
-  all<T extends object>(sql: string, params: readonly SqlValue[] = []): Promise<T[]> {
+  all<T extends object>(
+    sql: string,
+    params: readonly SqlValue[] = [],
+  ): Promise<T[]> {
     return this.#queue.run(() => this.#db.getAllAsync<T>(sql, [...params]));
   }
 
@@ -41,8 +44,10 @@ export class ExpoSqliteDatabase implements SqlDatabase {
         run: async (sql, params = []) => {
           await this.#db.runAsync(sql, [...params]);
         },
-        all: <R extends object>(sql: string, params: readonly SqlValue[] = []) =>
-          this.#db.getAllAsync<R>(sql, [...params]),
+        all: <R extends object>(
+          sql: string,
+          params: readonly SqlValue[] = [],
+        ) => this.#db.getAllAsync<R>(sql, [...params]),
       };
       // Rolls back automatically if `work` throws.
       await this.#db.withTransactionAsync(async () => {

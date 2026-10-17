@@ -1,6 +1,10 @@
 import { GENESIS_HASH, verifyEventChain, type EventEnvelope } from './audit';
 import { canonicalString } from './canonical';
-import { historySupports, requireMatchingRefs, type LoadOptions } from './careerIntegrity';
+import {
+  historySupports,
+  requireMatchingRefs,
+  type LoadOptions,
+} from './careerIntegrity';
 import { WorldKernel } from './kernel';
 import {
   PersistenceError,
@@ -14,7 +18,8 @@ import {
 import type { LeagueRulesetManifest } from './ruleset';
 import { fingerprintWorld } from './world';
 
-export type ReplayErrorCode = 'COMMAND_REJECTED' | 'REVISION_MISMATCH' | 'EVENT_MISMATCH';
+export type ReplayErrorCode =
+  'COMMAND_REJECTED' | 'REVISION_MISMATCH' | 'EVENT_MISMATCH';
 
 export class ReplayError extends Error {
   readonly code: ReplayErrorCode;
@@ -70,11 +75,17 @@ export const replayFrom = (
   }
   if (expectedEvents !== undefined) {
     if (produced.length !== expectedEvents.length) {
-      throw new ReplayError('EVENT_MISMATCH', `replay produced ${produced.length} events, history has ${expectedEvents.length}`);
+      throw new ReplayError(
+        'EVENT_MISMATCH',
+        `replay produced ${produced.length} events, history has ${expectedEvents.length}`,
+      );
     }
     for (let i = 0; i < produced.length; i++) {
       if (canonicalString(produced[i]) !== canonicalString(expectedEvents[i])) {
-        throw new ReplayError('EVENT_MISMATCH', `replayed event ${i} differs from stored event ${i}`);
+        throw new ReplayError(
+          'EVENT_MISMATCH',
+          `replayed event ${i} differs from stored event ${i}`,
+        );
       }
     }
   }
@@ -99,11 +110,14 @@ export interface ReplayVerification {
   readonly chainHead?: string;
 }
 
-const activeOrNull = async (store: CareerStore): Promise<CareerSnapshot | null> => {
+const activeOrNull = async (
+  store: CareerStore,
+): Promise<CareerSnapshot | null> => {
   try {
     return await store.loadLatest();
   } catch (error) {
-    if (error instanceof PersistenceError && error.code === 'CORRUPT_STORE') return null;
+    if (error instanceof PersistenceError && error.code === 'CORRUPT_STORE')
+      return null;
     throw error;
   }
 };
@@ -117,11 +131,20 @@ export const verifyCareerReplay = async (
   ruleset: LeagueRulesetManifest,
 ): Promise<ReplayVerification> => {
   const reasons: string[] = [];
-  const genesis = (await store.listVerifiedSnapshots()).find((s) => s.revision === 0);
-  if (genesis === undefined) return { ok: false, reasons: ['no verified genesis snapshot to replay from'] };
+  const genesis = (await store.listVerifiedSnapshots()).find(
+    (s) => s.revision === 0,
+  );
+  if (genesis === undefined)
+    return {
+      ok: false,
+      reasons: ['no verified genesis snapshot to replay from'],
+    };
   const history = await store.loadHistorySince(0);
   const chain = verifyEventChain(history.events);
-  if (!chain.ok) reasons.push(`event history failed verification at event ${chain.index} (${chain.reason})`);
+  if (!chain.ok)
+    reasons.push(
+      `event history failed verification at event ${chain.index} (${chain.reason})`,
+    );
   let result: ReplayResult;
   try {
     result = replayFrom(genesis, ruleset, history.commands, history.events);
@@ -138,11 +161,16 @@ export const verifyCareerReplay = async (
     reasons.push('no readable active snapshot to compare against');
   } else {
     const verdict = verifySnapshot(active);
-    if (!verdict.ok) reasons.push(...verdict.reasons.map((r) => `active snapshot: ${r}`));
-    if (active.worldFingerprint !== fingerprint) reasons.push('active snapshot fingerprint differs from replayed history');
-    if (active.chainHead !== chainHead) reasons.push('active snapshot chainHead differs from replayed history');
+    if (!verdict.ok)
+      reasons.push(...verdict.reasons.map((r) => `active snapshot: ${r}`));
+    if (active.worldFingerprint !== fingerprint)
+      reasons.push('active snapshot fingerprint differs from replayed history');
+    if (active.chainHead !== chainHead)
+      reasons.push('active snapshot chainHead differs from replayed history');
     if (active.eventCount !== history.events.length) {
-      reasons.push(`active snapshot expects ${active.eventCount} events, history has ${history.events.length}`);
+      reasons.push(
+        `active snapshot expects ${active.eventCount} events, history has ${history.events.length}`,
+      );
     }
   }
   return { ok: reasons.length === 0, reasons, fingerprint, chainHead };
@@ -171,12 +199,17 @@ export const repairLatestFromHistory = async (
   store: CareerStore,
   options: RepairOptions,
 ): Promise<RepairOutcome> => {
-  const refuse = (...reasons: string[]): RepairOutcome => ({ status: 'refused', reasons });
+  const refuse = (...reasons: string[]): RepairOutcome => ({
+    status: 'refused',
+    reasons,
+  });
   const history = await store.loadHistorySince(0);
   const events = history.events;
   const chain = verifyEventChain(events);
   if (!chain.ok) {
-    return refuse(`event history failed verification at event ${chain.index} (${chain.reason})`);
+    return refuse(
+      `event history failed verification at event ${chain.index} (${chain.reason})`,
+    );
   }
   const active = await activeOrNull(store);
   if (active !== null && verifySnapshot(active).ok) {
@@ -185,23 +218,43 @@ export const repairLatestFromHistory = async (
         `history ends at event ${events.length} but the active snapshot expects ${active.eventCount}; repair would discard committed work`,
       );
     }
-    if (active.eventCount === events.length && active.chainHead === chain.headHash) {
-      return refuse('active snapshot already matches history; nothing to repair');
+    if (
+      active.eventCount === events.length &&
+      active.chainHead === chain.headHash
+    ) {
+      return refuse(
+        'active snapshot already matches history; nothing to repair',
+      );
     }
   }
-  const base = (await store.listVerifiedSnapshots()).find((s) => historySupports(s, events, events.length));
-  if (base === undefined) return refuse('no verified snapshot is supported by the stored history');
+  const base = (await store.listVerifiedSnapshots()).find((s) =>
+    historySupports(s, events, events.length),
+  );
+  if (base === undefined)
+    return refuse('no verified snapshot is supported by the stored history');
   requireMatchingRefs(base, options);
   const tail = await store.loadHistorySince(base.revision);
   let result: ReplayResult;
   try {
-    result = replayFrom(base, options.ruleset, tail.commands, events.slice(base.eventCount));
+    result = replayFrom(
+      base,
+      options.ruleset,
+      tail.commands,
+      events.slice(base.eventCount),
+    );
   } catch (error) {
-    if (error instanceof Error && error.name === 'ReplayError') return refuse(error.message);
+    if (error instanceof Error && error.name === 'ReplayError')
+      return refuse(error.message);
     throw error;
   }
-  const tailHash = events.length === 0 ? GENESIS_HASH : (events[events.length - 1] as EventEnvelope).hash;
-  if (result.snapshot.eventCount !== events.length || result.snapshot.chainHead !== tailHash) {
+  const tailHash =
+    events.length === 0
+      ? GENESIS_HASH
+      : (events[events.length - 1] as EventEnvelope).hash;
+  if (
+    result.snapshot.eventCount !== events.length ||
+    result.snapshot.chainHead !== tailHash
+  ) {
     return refuse('replayed state does not end at the stored history tail');
   }
   const report: RecoveryReport = {
@@ -211,5 +264,10 @@ export const repairLatestFromHistory = async (
     reasons: options.reasons ?? ['repair requested'],
   };
   await store.markRecovery(report, result.snapshot);
-  return { status: 'repaired', kernel: result.kernel, snapshot: result.snapshot, report };
+  return {
+    status: 'repaired',
+    kernel: result.kernel,
+    snapshot: result.snapshot,
+    report,
+  };
 };
