@@ -1,0 +1,89 @@
+
+> sport-sim@0.0.0 typecheck
+> npm run typecheck --workspaces --if-present
+
+
+> @sport-sim/mobile@0.0.0 typecheck
+> tsc -p tsconfig.json && tsc -p tsconfig.test.json
+
+
+> @sport-sim/headless@0.0.0 typecheck
+> tsc -p tsconfig.json
+
+
+> @sport-sim/sim-core@0.0.0 typecheck
+> tsc -p tsconfig.json && tsc -p tsconfig.test.json
+
+
+> sport-sim@0.0.0 test
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90mC:/dev/sport-sim[39m
+
+ [32m✓[39m packages/sim-core/test/architecture.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m packages/headless/test/golden.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 255[2mms[22m[39m
+ [32m✓[39m apps/mobile/test/sqliteCareerStore.test.ts [2m([22m[2m30 tests[22m[2m)[22m[33m 376[2mms[22m[39m
+ [32m✓[39m packages/sim-core/test/rng.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 251[2mms[22m[39m
+ [32m✓[39m apps/mobile/test/sqliteRecovery.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 221[2mms[22m[39m
+ [32m✓[39m packages/headless/test/cli.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 190[2mms[22m[39m
+ [32m✓[39m apps/mobile/test/careerLifecycle.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 169[2mms[22m[39m
+ [32m✓[39m packages/sim-core/test/replay.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 177[2mms[22m[39m
+ [32m✓[39m packages/sim-core/test/persistenceContract.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 98[2mms[22m[39m
+ [32m✓[39m packages/sim-core/test/recovery.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 107[2mms[22m[39m
+ [32m✓[39m packages/sim-core/test/memoryCareerStore.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m packages/sim-core/test/kernel.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 54[2mms[22m[39m
+ [32m✓[39m packages/sim-core/test/provenance.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m packages/sim-core/test/primitives.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m packages/sim-core/test/audit.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m packages/sim-core/test/world.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32m✓[39m packages/sim-core/test/syntheticFixtures.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m17 passed[39m[22m[90m (17)[39m
+[2m      Tests [22m [1m[32m186 passed[39m[22m[90m (186)[39m
+[2m   Start at [22m 23:30:17
+[2m   Duration [22m 2.98s[2m (tests 50%, import 38%, transform 9%, worker 3%)[22m
+
+[2m    Isolate [22m [33m17 workers spawned[39m[2m · ~232ms startup each (spawn + environment, per file)[22m
+[2m            [22m [2mat least ~1.08s faster with [22m[33misolate: false[39m[2m — reuses workers across files instead of one per file[22m
+
+
+> sport-sim@0.0.0 golden:check
+> tsx packages/headless/src/bin.ts golden
+
+{"match":true,"diffs":[],"fingerprint":"fd3baa44a20b08e5e6f4948adc6f123da62c7239ad04062f185f8cec96a53bda","eventChainHead":"d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a","finalSimDate":"2026-10-30","revision":3,"eventCount":3,"commandDays":[1,6,7]}
+
+> sport-sim@0.0.0 export:ios
+> npm run export:ios --workspace apps/mobile
+
+
+> @sport-sim/mobile@0.0.0 export:ios
+> expo export --platform ios
+
+Expo Autolinking module resolution enabled
+Starting Metro Bundler
+
+iOS Bundled 11387ms node_modules\expo-router\entry.js (1177 modules)
+
+› Assets (23):
+..\..\node_modules\expo-router\assets\arrow_down.png (9.5KB)
+..\..\node_modules\expo-router\assets\error.png (469B)
+..\..\node_modules\expo-router\assets\file.png (138B)
+..\..\node_modules\expo-router\assets\forward.png (188B)
+..\..\node_modules\expo-router\assets\pkg.png (364B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\back-icon-mask.png (653B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\back-icon.png (4 variations | 566B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\clear-icon.png (4 variations | 425B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\close-icon.png (4 variations | 235B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\search-icon.png (3 variations | 582B)
+..\..\node_modules\expo-router\assets\sitemap.png (465B)
+..\..\node_modules\expo-router\assets\unmatched.png (4.8KB)
+
+› ios bundles (1):
+_expo/static/js/ios/entry-7844e38ff28d580df3903f43d5087c06.hbc (2.7MB)
+
+› Files (1):
+metadata.json (1.6KB)
+
+Exported: dist
+EXIT-DONE

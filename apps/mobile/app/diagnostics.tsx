@@ -7,6 +7,7 @@ import {
   verifySavedReplay,
   type DiagnosticLine,
 } from '../src/diagnostics/careerDiagnostics';
+import { runGoldenOnDevice, type GoldenDiagnostics } from '../src/diagnostics/goldenDiagnostics';
 import { useCareer } from '../src/lifecycle/CareerProvider';
 import { runRecoveryContractOnDevice, runSqliteContractOnDevice } from '../src/persistence/runtimeContract';
 import { Button, Card, Row, colors } from '../src/ui';
@@ -20,6 +21,8 @@ export default function Diagnostics() {
   const [replay, setReplay] = useState<DiagnosticLine | null>(null);
   const [sqlite, setSqlite] = useState<DiagnosticLine | null>(null);
   const [recovery, setRecovery] = useState<DiagnosticLine | null>(null);
+  const [golden, setGolden] = useState<GoldenDiagnostics | null>(null);
+  const [goldenError, setGoldenError] = useState<DiagnosticLine | null>(null);
   const [running, setRunning] = useState(false);
 
   const verify = useCallback(async () => {
@@ -38,6 +41,19 @@ export default function Diagnostics() {
     try {
       setSqlite(summarizeContract(await runSqliteContractOnDevice()));
       setRecovery(summarizeContract(await runRecoveryContractOnDevice()));
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  const runGolden = async () => {
+    setRunning(true);
+    try {
+      setGoldenError(null);
+      setGolden(await runGoldenOnDevice());
+    } catch (e) {
+      setGolden(null);
+      setGoldenError({ ok: false, text: `ERROR: ${e instanceof Error ? e.message : String(e)}` });
     } finally {
       setRunning(false);
     }
@@ -66,6 +82,13 @@ export default function Diagnostics() {
           <Row label="CareerStore contract" value={text(sqlite)} tone={tone(sqlite)} />
           <Row label="Recovery + repair contract" value={text(recovery)} tone={tone(recovery)} />
         </Card>
+        <Card title="Golden scenario (cross-runtime)">
+          <Row label="Kernel vs Node" value={text(golden?.kernel ?? goldenError)} tone={tone(golden?.kernel ?? goldenError)} />
+          <Row label="SQLite round trip" value={text(golden?.store ?? null)} tone={tone(golden?.store ?? null)} />
+          <Row label="Fingerprint" value={golden?.fingerprint ?? '-'} />
+          <Row label="Event-chain head" value={golden?.chainHead ?? '-'} />
+        </Card>
+        <Button label="Run golden scenario" disabled={running} onPress={() => void runGolden()} />
         <Button label="Re-verify saved career" disabled={running} onPress={() => void verify()} />
         <Button label={running ? 'Running...' : 'Run SQLite contracts'} disabled={running} onPress={() => void runContracts()} />
         <Text style={{ color: colors.dim, marginTop: 12 }}>

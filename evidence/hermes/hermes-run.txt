@@ -1,0 +1,13 @@
+Hermes cross-runtime golden proof (Acceptance #1/#2)
+Engine: facebook/hermes tag hermes-v250829098.0.17 (commit 3477757eb2475555cf8d8df24bfb1deb0613880d),
+built from source on Linux x86_64, Release, HERMES_UNICODE_LITE=ON, `hermes` CLI.
+Reported bytecode version: 98. NOTE: the RN 0.86.3 app was earlier recorded as bytecode 99; this CLI build
+is the same source tag but the on-device Hermes has NOT been run yet. On-device iPhone confirmation is still required.
+
+Bundles (sha256 in SHA256SUMS.txt): golden.hermes.js (esbuild es2015), golden.metro.js (Metro).
+Both bundles, run unmodified under this Hermes, printed:
+  match=true diffs=[]
+  fingerprint    fd3baa44a20b08e5e6f4948adc6f123da62c7239ad04062f185f8cec96a53bda
+  eventChainHead d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a
+  finalSimDate 2026-10-30, revision 3, eventCount 3, rngDraws 14, commandDays [1,6,7]
+These equal the Node values (GOLDEN_EXPECTED) and the independent Python reference.
