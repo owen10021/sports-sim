@@ -124,6 +124,10 @@ The draft clock tests conviction, not mouse speed. Single-player pause is allowe
 
 Draft selections, draft-rights ownership, later contracts, undrafted free agency, roster capacity, and market alternatives use the same underlying authoritative player/asset state.
 
+At first useful depth, Package C also carries that same state through **cutdown/release → waivers → practice squad**. Waiver claims resolve at a logical ruleset-owned boundary with deterministic priority; a claim assumes the linked contract/rights rather than creating a duplicate player or contract. An unclaimed waived player follows the same contract-termination/free-agent path, and practice-squad signings use the same agent/offer/contract/rights machinery. Detailed accrued-season/protection/elevation and other obscure CBA edge cases remain later ruleset depth.
+
+Before a consequential acquisition commits, the simulation must be able to derive a non-authoritative **acquisition-impact preview** from the same contract/rights/asset data used by commit validation: cap deltas, roster-capacity deltas, incoming/outgoing assets, draft capital, and active reservations. Package D may later add opportunity/repetition effects. The preview is never an alternate source of truth or a hidden-value score.
+
 ## LeagueRuleset ownership
 
 League-specific transaction mechanics belong to the active `LeagueRuleset`. Examples include rookie-contract rules, franchise/transition mechanisms, compensatory-pick treatment, free-agency windows, trade deadlines, roster-rights rules, draft rounds/order constraints, salary-cap rules, and related timing semantics.

@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Status:** PLAN FOR REVIEW — do not implement until Owen approves this written plan. Even after approval, Task 1 is blocked until Package B's physical-iPhone gate is green and Package B has been accepted/tagged.
+**Status:** PLAN FOR REVIEW — do not implement until Owen approves this written plan.
 
-**Authoring baseline:** Package B automated-gate head `155df37c4b8a4f7a338a899158d47579d807f0a2`; Package C design-basis commit `314652f88e1da440a3f5994219e4bf59b9588bb2`. Package B currently has one open acceptance gate: physical iPhone Diagnostics → Run Package B scenario → MATCH/MATCH.
+**Authoring baseline:** Accepted Package B commit `f50cb21` tagged `package-b-acceptance-20261017`; Package C design-basis commit `314652f88e1da440a3f5994219e4bf59b9588bb2`. Package B's physical-iPhone gate is closed with MATCH/MATCH; its accepted evidence/tag are immutable historical inputs to this plan.
 
 **Goal:** Implement the first substantively real GM acquisition ecology: player/roster rights, basic contract/cap mechanics, contextual trade and free-agent markets, persistent agents, value-of-information scouting, organizational draft boards, draft assets/order, and live draft transactions, all through Package B authority/knowledge/decision infrastructure.
 
@@ -16,16 +16,16 @@
 
 ## Global Constraints
 
-- Package B must be accepted/tagged before Package C product code begins. Preparing/reviewing this plan does not waive that gate.
+- Package B is accepted/tagged at `f50cb21` / `package-b-acceptance-20261017`; Package C starts from that accepted boundary and never rewrites it.
 - One authoritative `FootballWorld`; only `WorldKernel` commits authoritative reality.
 - Human, CPU, delegated, commissioner, system, and test actors use the same transaction legality and knowledge rules.
 - Ordinary organizations/actors never receive hidden player capability truth, rival private beliefs, rival boards, client private preferences, or opponent maximum willingness to pay.
 - No universal OVR, fixed-destiny potential, universal trade-value number, hidden offer-score minigame, or oracle trade finder.
 - Scouting reveal and player development are separate. Package C does not implement progression, practice, opportunity, medical/readiness evolution, or scheme learning; those belong to Package D.
 - Package C may establish baseline player football-capability/role state required by roster/scouting/draft, but no Package C decision policy may read that latent capability state directly.
-- Draft, trade, contract, free agency, roster rights, agents, cap, and draft assets form one acquisition ecology and must conserve shared resources coherently.
+- Draft, UDFA, cutdown/release, waivers, practice squad, trade, contract, free agency, roster rights, agents, cap, and draft assets form one acquisition ecology and must conserve shared resources coherently.
 - Every actual transaction revalidates authority, approvals, current terms, deadlines, ownership, cap/resources, roster rights/capacity, and protected constraints immediately before commit.
-- A trade, contract execution/termination, offer acceptance, draft selection, or roster-rights transfer is all-or-nothing. Rejection/fault leaves authoritative world, RNG, chain, assets, obligations, and rights unchanged.
+- A trade, contract execution/termination, offer acceptance, draft selection, waiver resolution, practice-squad signing, or roster-rights transfer is all-or-nothing. Rejection/fault leaves authoritative world, RNG, chain, assets, obligations, and rights unchanged.
 - Repeating an already accepted command ID is idempotent under the kernel. Repeating an unchanged external offer may return its recorded response/state but must not reroll willingness.
 - Market resolution uses logical league time. Human UI ordering, wall-clock speed, renderer timing, or device performance are never tie-breakers.
 - `LeagueRuleset` owns league-specific transaction mechanics. Package C acceptance uses an explicit synthetic transaction profile; synthetic values are test boundaries, not claims about current NFL rules/economics.
@@ -35,7 +35,7 @@
 - Historical claims, beliefs, proposals, approvals, market communications, agreements, and decision receipts remain immutable as-of records; later revisions link forward.
 - Package B's knowledge filter remains the only organization-facing evidence boundary. Scouting/market modules plug into it rather than creating a second truth store.
 - Package B plans/decision receipts remain the transaction authorization substrate. Package C does not create a parallel approval system.
-- Derived cap summaries, trade-interest summaries, roster read models, draft views, and market comparisons are rebuildable; they are not second authoritative truth.
+- Derived cap summaries, trade-interest summaries, acquisition-impact previews, roster read models, draft views, and market comparisons are rebuildable; they are not second authoritative truth.
 - `packages/sim-core` stays free of React, React Native, Expo, SQLite, filesystem, wall clock, and network imports.
 - Package C does **not** implement Package D development/practice/medical/opportunity, Package E football resolution, or Package F polished Command Center UX.
 - Preserve Package A and Package B accepted tags/evidence/goldens. World-model evolution is explicit, migrated, and tested rather than silently mutating old accepted fixtures.
@@ -53,7 +53,7 @@
 
 ### Task 1: Freeze Accepted Package B and Version the World Model for Package C
 
-**Precondition:** Package B physical-iPhone Diagnostics is MATCH/MATCH, acceptance evidence is committed, Package B milestone tag exists, and the accepted Package B commit SHA is known. Do not substitute `155df37` if acceptance moves after the iPhone run.
+**Precondition:** Satisfied: Package B physical-iPhone Diagnostics is MATCH/MATCH and accepted/tagged at `f50cb21` / `package-b-acceptance-20261017`. Freeze from that accepted boundary, not the earlier automated-gate commit `155df37`.
 
 **Files:**
 - Create: `fixtures/legacy/package-b-world-v2-snapshot.json`
@@ -77,7 +77,7 @@
 - Set `WORLD_MODEL_VERSION = 3`.
 - `FootballWorld` gains authoritative states: `roster`, `contracts`, `market`, `scouting`, `draft`.
 - Initial empty state shapes:
-  - `RosterState { players, rights, memberships }`
+  - `RosterState { players, rights, memberships, waivers, waiverClaims, waiverPriority }`
   - `ContractsState { agreements, terminations }`
   - `MarketState { agentClients, playerPreferences, inquiries, tradeOffers, contractOffers, reservations }`
   - `ScoutingState { evaluatorProfiles, questions, evidenceSamples, assignments }`
@@ -109,7 +109,7 @@
 - `TransactionRulesV1` contains explicit synthetic acceptance rules:
   - `moneyUnit: 'synthetic-unit'`
   - `salaryCaps: readonly { season: number; amount: MoneyAmount }[]`
-  - `roster: { activeLimit: number; reserveLimit: number }`
+  - `roster: { activeLimit: number; reserveLimit: number; practiceSquadLimit: number; waiverClaimWindowDays: number; releasedPlayerWaiverPolicy: 'all' | 'none'; claimWinnerMovesToEnd: boolean }`
   - `contracts: { minYears: number; maxYears: number; signingBonusProrationMaxYears: number; minimumBaseSalary: MoneyAmount; guaranteedFutureBaseOnRelease: boolean; signingBonusStaysWithOriginalClubOnTrade: boolean }`
   - `market: { freeAgencyOpen: string; freeAgencyClose: string; tradeDeadline: string; defaultOfferValidityDays: number; futurePickTradeHorizonSeasons: number }`
   - `draft: { rounds: number }`
@@ -139,13 +139,14 @@
 - Extend `WorldSeedManifest` with optional `packageCSubstrate`; historical seeds remain valid when absent.
 - `PlayerRecord { personId, birthDate, primaryRole, roleTags, capabilities }` where capabilities are canonical `PlayerCapability { key: string; valueBp: number }` values in `0..10000`. There is **no overall, potential, ceiling, star rating, trade value, or destination rating** field.
 - `PlayerRightsRecord { id, playerId, holderOrganizationId, kind, sourceRecordId, effectiveFrom, effectiveUntil }`, with `kind = 'contract' | 'draft' | 'exclusive'` and no record when no organization owns rights.
-- `RosterMembership { id, playerId, organizationId, status, effectiveFrom, effectiveUntil, sourceRecordId }`, with Package C statuses `active | reserve` only; later packages may add richer states through explicit versioning/rules.
+- `RosterMembership { id, playerId, organizationId, status, effectiveFrom, effectiveUntil, sourceRecordId }`, with Package C statuses `active | reserve | practice_squad`. These statuses share the same authoritative rights/contract state; practice squad is not a separate player copy.
 - `AgentClientRecord { id, agentPersonId, playerPersonId, effectiveFrom, effectiveUntil }` references existing Package B people; agents are not recreated as market-only identities.
 - `PlayerMarketPreferenceProfile { playerPersonId, security, earlyCash, roleOpportunity, contenderPreference, flexibility }` uses ordinal bands `low | medium | high`, is authoritative private person/market state, and is **not** added to organization knowledge views automatically.
 - `ScoutEvaluatorProfile { personId, strongDimensions, weakDimensions, riskTolerance }` uses small categorical/ordinal fields; do not introduce cosmetic staff-rating bloat.
 - `DraftClass { id, season, eligiblePlayerIds }`.
 - `DraftPickAsset { id, season, round, slot, originalOrganizationId, ownerOrganizationId, status }`, where pre-draft `slot` may be known in the synthetic fixture and `status = available | used | forfeited`.
-- Seed validation requires every player/scout/agent to reference a real person entity, every rights/membership/pick owner to reference an organization, unique IDs, no double active rights holder, no duplicate active roster membership, and canonical ordering.
+- `waiverPriority` seeds one canonical organization order used by the synthetic Package C rules profile; resolution updates that order only according to the active ruleset.
+- Seed validation requires every player/scout/agent to reference a real person entity, every rights/membership/pick owner to reference an organization, unique IDs, no double active rights holder, no duplicate active roster membership, a complete unique waiver-priority order, and canonical ordering.
 
 - [ ] Write RED validation tests for wrong entity kinds, duplicate player records, duplicate ownership, malformed capabilities, forbidden OVR/potential-like fields, invalid agent clients, and duplicate draft-pick ownership.
 - [ ] Write a positive synthetic fixture with at least four organizations, veteran players, free agents, draft prospects, persistent agents, scouts, draft picks, Package B plans/beliefs/authority, and hidden capability profiles.
@@ -166,8 +167,8 @@
 
 **Interfaces:**
 - Pure queries: `currentRightsHolder(world, playerId, date)`, `currentRosterMembership(world, playerId, date)`, `organizationRoster(world, organizationId, date)`, `rosterCapacity(world, organizationId, date, ruleset)`.
-- `RosterInvariantFinding` covers duplicate active rights, duplicate active membership, membership without compatible rights/contract context, and limit violations.
-- Package C user-facing roster action: `CommitRosterStatusProposal` with proposal `termsType = 'roster_status_v1'`, category `roster`, action `active_to_reserve | reserve_to_active`.
+- `RosterInvariantFinding` covers duplicate active rights, duplicate active membership, membership without compatible rights/contract context, and active/reserve/practice-squad limit violations.
+- Package C user-facing roster action: `CommitRosterStatusProposal` with proposal `termsType = 'roster_status_v1'`, category `roster`, action `active_to_reserve | reserve_to_active | practice_squad_to_active | practice_squad_to_reserve`. A rostered player may not be demoted directly to the practice squad; that must pass through the Task 6 waiver/release and Task 9 signing path. Practice-squad promotion still requires compatible rights/contract state and ruleset capacity.
 - Acquisitions/releases are **not** implemented by this command. Contract, trade, draft, and termination adapters later own rights acquisition/release so there is no bypass around money/asset consequences.
 - Revalidate active `execute` right, current proposal authorization, exact terms hash/revision, protected constraints, and target roster capacity immediately before commit.
 - One accepted command updates membership, proposal state, decision receipt, and events atomically; it consumes no gameplay RNG.
@@ -199,7 +200,7 @@
 - Signing-bonus proration follows Task 2 rules. On trade, future base/roster obligations move with the player while unamortized signing-bonus cap remains with the original club when the rules profile says so. On release, guaranteed future base and unamortized bonus follow the Task 2 rules.
 - Cap totals are **derived from agreements/terminations**, not stored as an independent authoritative total.
 - `CommitReleaseProposal` uses category `roster` and atomically terminates the active contract, records dead-cap/cash obligations, ends roster membership/contract rights, and makes the player eligible for the free-agent market. It cannot silently erase guaranteed obligations.
-- Actual contract signing is exposed as pure `applyContractAgreement(...)` in this task; external player/agent acceptance and the command that calls it arrive in Task 8.
+- Actual contract signing is exposed as pure `applyContractAgreement(...)` in this task; external player/agent acceptance and the command that calls it arrive in Task 9.
 
 - [ ] Write RED hand-calculated contract tests for cash, guarantees, signing-bonus proration/remainder, cap by season, trade treatment, release/dead cap, max/min term rules, and no floating-point money.
 - [ ] Write RED release tests: bad contract cannot disappear, cap consequence survives release, protected constraint blocks, revoked authority blocks, commit fault rolls back every roster/contract/cap effect.
@@ -207,7 +208,36 @@
 - [ ] Run full tests/typecheck.
 - [ ] Commit: `feat(core): add basic contract and cap obligations`.
 
-### Task 6: Draft-Pick and Player Asset Ledger for Transactions
+### Task 6: Basic Waivers, Claims, and Practice-Squad Path
+
+**Files:**
+- Modify: `packages/sim-core/src/roster.ts`
+- Create: `packages/sim-core/src/waiverCommands.ts`
+- Modify: `packages/sim-core/src/contracts.ts`
+- Modify: `packages/sim-core/src/commandRouter.ts`
+- Modify: `packages/sim-core/src/index.ts`
+- Test: `packages/sim-core/test/waivers.test.ts`
+- Test: `packages/sim-core/test/practiceSquad.test.ts`
+
+**Interfaces:**
+- `WaiverRecord { id, playerId, waivingOrganizationId, contractAgreementId, openedAt, claimDeadline, status, winnerOrganizationId }`, where `status = 'open' | 'awarded' | 'unclaimed' | 'cancelled'`.
+- `WaiverClaim { id, waiverId, claimingOrganizationId, submittedAt, active }`.
+- `RosterState.waiverPriority` is an ordered list of organization IDs. The synthetic rules profile uses that priority deterministically; when `claimWinnerMovesToEnd` is true, an awarded claimant moves to the end after resolution. No wall-clock or UI order decides a claim.
+- `CommitWaivePlayerProposal` uses category `roster`. Under `releasedPlayerWaiverPolicy: 'all'`, it removes the player from active/reserve membership, creates an open waiver record linked to the active contract, and preserves the waiving club's contract/right state until resolution. It does **not** erase the contract or dead-cap exposure.
+- `SubmitWaiverClaim` records a claim only when the claiming organization has current roster/acquisition authority, a legal target active-roster slot, and sufficient cap room to assume the contract. Claim submission reserves the required slot/cap so two pending commitments cannot double-spend it.
+- `ResolveWaivers` is a system/commissioner/test-harness logical-boundary command. It considers all claims existing before `claimDeadline` from one snapshot. If claimed, the highest-priority legal claimant receives the player rights, active contract obligations, and active roster membership atomically; the winner's priority update is ruleset-owned. If unclaimed, the contract is terminated through Task 5's termination math, dead-cap/guaranteed-cash consequences remain with the waiving club, rights end, and the player becomes eligible for free agency.
+- Practice-squad acquisition is **not** a separate market. Task 9 contract/free-agency offers may declare `targetRosterStatus: 'active' | 'reserve' | 'practice_squad'`; practice-squad signings use the same agent, offer, contract, cap, rights, authorization, and persistence path, subject to `practiceSquadLimit`.
+- This is intentionally a first-useful-depth waiver model. Detailed accrued-season eligibility, protected practice-squad slots, elevations, claim-order calendar resets, and obscure CBA edge cases are deferred unless a later ruleset explicitly adds them.
+
+- [ ] Write RED tests for waiver window boundaries, claim eligibility, deterministic priority independent of claim insertion/UI order, two claims for one player, cap/roster reservation conflicts, and `beforeCommit` rollback.
+- [ ] Write RED claimed-waiver test proving contract/right/membership transfer is atomic and the old club cannot also retain active rights.
+- [ ] Write RED unclaimed-waiver test proving the player becomes a free agent while guaranteed cash/dead cap survives through Task 5's termination path.
+- [ ] Write RED practice-squad capacity/rights test and prove there is no second contract/player copy.
+- [ ] Implement waiver/claim resolution through the static router and existing contract/roster primitives.
+- [ ] Run full tests/typecheck.
+- [ ] Commit: `feat(core): add basic waiver and practice squad path`.
+
+### Task 7: Draft-Pick and Player Asset Ledger for Transactions
 
 **Files:**
 - Create: `packages/sim-core/src/assets.ts`
@@ -223,14 +253,16 @@
 - Package C first implementation transfers only whole player-rights and whole draft-pick assets; no partial rights, cash trades, or obscure conditional-pick settlement.
 - Future picks beyond the ruleset horizon are illegal, not silently assigned zero value.
 - Duplicate asset references in one package and the same asset on both sides are invalid.
-- Asset conservation audit proves every transferred asset has exactly one pre-owner and one post-owner; no transaction creates/deletes a player right or pick except draft selection consuming a pick in Task 11.
+- Asset conservation audit proves every transferred asset has exactly one pre-owner and one post-owner; no transaction creates/deletes a player right or pick except draft selection consuming a pick in Task 12.
+- `AcquisitionImpactPreview { capDeltaBySeason, activeSlotsBefore, activeSlotsAfter, reserveSlotsBefore, reserveSlotsAfter, practiceSquadSlotsBefore, practiceSquadSlotsAfter, incomingAssets, outgoingAssets, draftPickIdsGained, draftPickIdsLost, reservationIdsAffected }` is a **derived, non-authoritative** projection built from authoritative contracts/rights/assets/reservations. It contains no hidden capability/preference/value score.
+- `previewAcquisitionImpact(world, ruleset, organizationId, proposedChanges)` is the one shared calculation used by trade/free-agency/draft legality and later Package F UI; presentation never owns a second impact formula. Package D may later extend a separate opportunity/repetition preview without changing Package C truth.
 
-- [ ] Write RED tests for player/pick ownership lookup, future-pick horizon, duplicate asset references, self-trade, already-transferred asset, and conservation.
+- [ ] Write RED tests for player/pick ownership lookup, future-pick horizon, duplicate asset references, self-trade, already-transferred asset, conservation, and impact-preview agreement with authoritative post-transaction state.
 - [ ] Implement asset references/validation as pure domain helpers; no trade decision logic yet.
 - [ ] Run full tests/typecheck.
 - [ ] Commit: `feat(core): add acquisition asset ownership ledger`.
 
-### Task 7: Contextual Trade Discovery, Negotiation, and Atomic Execution
+### Task 8: Contextual Trade Discovery, Negotiation, and Atomic Execution
 
 **Files:**
 - Modify: `packages/sim-core/src/market.ts`
@@ -259,7 +291,7 @@
 - [ ] Run full tests/typecheck.
 - [ ] Commit: `feat(core): add contextual trade market`.
 
-### Task 8: Persistent Agents, Contract Offers, Concurrent Free Agency, and Fallbacks
+### Task 9: Persistent Agents, Contract Offers, Concurrent Free Agency, and Fallbacks
 
 **Files:**
 - Modify: `packages/sim-core/src/market.ts`
@@ -273,7 +305,7 @@
 - Test: `packages/sim-core/test/freeAgencyConcurrency.test.ts`
 
 **Interfaces:**
-- `ContractOfferRecord { id, revision, organizationId, playerId, agentPersonId, organizationProposalId, terms, roleCommitment, contingencyGroupId, priority, submittedAt, expiresAt, status, supersedesRevision }`.
+- `ContractOfferRecord { id, revision, organizationId, playerId, agentPersonId, organizationProposalId, terms, roleCommitment, targetRosterStatus, contingencyGroupId, priority, submittedAt, expiresAt, status, supersedesRevision }`, where `targetRosterStatus = 'active' | 'reserve' | 'practice_squad'` and the relevant ruleset limit is validated/reserved.
 - Offer states: `draft | communicated | countered | accepted_pending_commit | committed | rejected | withdrawn | expired | superseded`.
 - `MarketReservation { id, organizationId, sourceOfferId, capBySeason, rosterSlots, contingencyGroupId, active }` prevents impossible double commitment. Mutually exclusive fallback offers may share one `contingencyGroupId`; only the declared priority winner can commit and the rest release reservation/state according to the resolver.
 - `submitContractOffer` requires a currently authorized internal `contract` proposal and legitimate `communicate`/`execute` rights as defined by the domain adapter; it creates a real market communication and reservation but does not itself sign the player.
@@ -291,7 +323,7 @@
 - [ ] Run full tests/typecheck.
 - [ ] Commit: `feat(core): add concurrent free agency and agents`.
 
-### Task 9: Value-of-Information Scouting Workflow on Top of Package B Knowledge
+### Task 10: Value-of-Information Scouting Workflow on Top of Package B Knowledge
 
 **Files:**
 - Modify: `packages/sim-core/src/scouting.ts`
@@ -321,7 +353,7 @@
 - [ ] Run full tests/typecheck.
 - [ ] Commit: `feat(core): add value-of-information scouting`.
 
-### Task 10: Organizational Draft Boards, Tiers, and Need Without Rewriting Evaluation
+### Task 11: Organizational Draft Boards, Tiers, and Need Without Rewriting Evaluation
 
 **Files:**
 - Modify: `packages/sim-core/src/draft.ts`
@@ -346,7 +378,7 @@
 - [ ] Run full tests/typecheck.
 - [ ] Commit: `feat(core): add organizational draft boards`.
 
-### Task 11: Live Draft Order, Pick Trades, Selections, and Draft Rights
+### Task 12: Live Draft Order, Pick Trades, Selections, and Draft Rights
 
 **Files:**
 - Modify: `packages/sim-core/src/draft.ts`
@@ -362,19 +394,19 @@
 - `DraftSelection { id, sessionId, pickId, organizationId, playerId, organizationProposalId, selectedAt, boardRevision }`.
 - `OpenDraft` is an authorized/system league command at the ruleset-defined checkpoint.
 - `MakeDraftSelection` requires the current pick asset to be owned by the selecting organization, the player to remain eligible/undrafted, current acquisition/draft authority, exact proposal/board context, and no rights conflict. It atomically marks the pick used, records selection, grants draft rights, changes prospect lifecycle, writes receipt/events, and advances `currentIndex`.
-- A draft pick can be traded through the Task 7 trade path before it is used. Pre-draft/live offers may include contingencies such as `validIfPickCurrent` and `validIfPlayerAvailable`; they are validated at commit, not treated as promises that alter reality early.
+- A draft pick can be traded through the Task 8 trade path before it is used. Pre-draft/live offers may include contingencies such as `validIfPickCurrent` and `validIfPlayerAvailable`; they are validated at commit, not treated as promises that alter reality early.
 - There is no wall-clock reaction-speed rule. The single-player draft remains paused until a command advances it; presentation timers are non-authoritative.
 - After final pick, undrafted prospects become eligible for the existing free-agent offer path; Package C proves at least one UDFA signing uses the same agent/contract/roster machinery rather than a draft-specific shortcut.
 
 - [ ] Write RED draft-order/pick-owner/duplicate-selection/stale-pick tests.
 - [ ] Write RED live pick-trade test: trade the current pick, then only the new owner can select; every asset/right/contract/receipt event remains atomic.
 - [ ] Write RED conditional-framework tests and prove no wall-clock/timer value enters authoritative resolution.
-- [ ] Write RED UDFA integration test through Task 8.
+- [ ] Write RED UDFA integration test through Task 9.
 - [ ] Implement live draft commands and reuse the existing trade/contract/free-agency adapters rather than duplicating them.
 - [ ] Run full tests/typecheck.
 - [ ] Commit: `feat(core): add live draft transactions`.
 
-### Task 12: Acquisition-Ecology Audit and House-Rule Graveyard Probes
+### Task 13: Acquisition-Ecology Audit and House-Rule Graveyard Probes
 
 **Files:**
 - Create: `packages/sim-core/src/acquisitionAudit.ts`
@@ -407,7 +439,7 @@
 - [ ] Run full tests/typecheck.
 - [ ] Commit: `test(package-c): add acquisition exploit audits`.
 
-### Task 13: Integrated Package C GM-Acquisition Golden Scenario, Persistence, and Replay
+### Task 14: Integrated Package C GM-Acquisition Golden Scenario, Persistence, and Replay
 
 **Files:**
 - Create: `packages/sim-core/src/packageCScenario.ts`
@@ -426,6 +458,8 @@
 - A submits concurrent FA offers with an explicit fallback group while a rival competes; one signing occurs without cap overcommit, another target legitimately signs elsewhere or no-deals.
 - A makes/extends one contract and later demonstrates the real future cap consequence in the world state.
 - Draft opens; current pick is traded under a valid conditional framework; new owner selects a prospect; draft rights update; an undrafted player later signs through the same free-agent path.
+- A cutdown/release enters the basic waiver process; two legal claims demonstrate deterministic priority and contract assumption, and one eligible free agent/practice-squad signing demonstrates the same contract/rights/cap path.
+- At least one acquisition-impact preview is captured before a transaction and exactly matches the authoritative cap/roster/asset deltas after commit.
 - At least one stale/expired/revoked transaction attempt fails without mutation/RNG draw.
 - Final audit has no error-severity findings.
 
@@ -441,7 +475,7 @@
 - [ ] Run `npm run typecheck && npm test && npm run golden:package-c:check`.
 - [ ] Commit: `test(package-c): add GM acquisition golden scenario`.
 
-### Task 14: Cross-Runtime/iPhone Package C Gate and Release Evidence
+### Task 15: Cross-Runtime/iPhone Package C Gate and Release Evidence
 
 **Files:**
 - Modify: root `package.json` scripts/CI only as needed
@@ -499,12 +533,14 @@ Package C is complete only when fresh evidence demonstrates all of the following
 17. Organizational draft boards use beliefs/tiers; need changes decision priority without rewriting talent evaluation; different organizations may hold different boards without one being the hidden truth board.
 18. Live draft order/pick ownership/selection are authoritative, pauseable in single-player, free of reaction-speed advantage, and integrate with the same trade/rights/agent/contract machinery.
 19. At least one UDFA acquisition uses the free-agent path rather than a special draft shortcut.
-20. Acquisition audits catch duplicate ownership, cap/resource overcommit, stale offers, used-pick trading, bad receipt/event linkage, and information leakage without auto-repairing truth.
-21. Package C save/reload at every command boundary, replay, and corrupt-latest recovery reproduce identical authoritative state and immutable transaction/scouting history.
-22. The integrated golden proves a complete scouting → plan/board → market → contract/trade/FA/draft → roster/cap/history acquisition loop rather than disconnected mini-games.
-23. Node, standalone Hermes, and physical iPhone direct/SQLite diagnostics agree on the Package C golden fingerprint and event-chain head.
-24. Clean-checkout CI, lint, format, tests, architecture guard, accepted golden checks, and iOS export all pass.
-25. Package D can consume the resulting players/rosters/contracts/roles/scouting evidence without creating a second player truth, development system, medical model, or acquisition ledger.
+20. Basic cutdown/waiver/practice-squad flow uses the same roster rights, contracts, cap, authority, logical-time, and asset-conservation rules; claim priority is deterministic and ruleset-owned rather than UI-order based.
+21. Acquisition-impact previews are rebuildable projections whose predicted cap/roster/asset deltas agree with committed authoritative outcomes and expose no hidden-value oracle.
+22. Acquisition audits catch duplicate ownership, cap/resource overcommit, stale offers, used-pick trading, bad receipt/event linkage, and information leakage without auto-repairing truth.
+23. Package C save/reload at every command boundary, replay, and corrupt-latest recovery reproduce identical authoritative state and immutable transaction/scouting history.
+24. The integrated golden proves a complete scouting → plan/board → market → contract/trade/FA/draft/waiver → roster/cap/history acquisition loop rather than disconnected mini-games.
+25. Node, standalone Hermes, and physical iPhone direct/SQLite diagnostics agree on the Package C golden fingerprint and event-chain head.
+26. Clean-checkout CI, lint, format, tests, architecture guard, accepted golden checks, and iOS export all pass.
+27. Package D can consume the resulting players/rosters/contracts/roles/scouting evidence without creating a second player truth, development system, medical model, or acquisition ledger.
 
 ## Explicitly Out of Scope for Package C
 
@@ -514,7 +550,7 @@ Do not smuggle later packages into this implementation. Specifically out of scop
 - play-level football, game plans, scheme/concept execution, injuries generated by games, GameCast/Sunday Proof (Package E);
 - polished Today/Watchboard/Plans/Notebook/History UX, knowledge-safe global search UI, onboarding, production negotiation/scouting screens (Package F);
 - complete multi-decade Simulation Lab, full Synthetic GM population, exhaustive market calibration, century-save ecology certification (Package G);
-- deep agent politics/network gameplay, every obscure CBA mechanism, full compensatory-pick/franchise-tag/waiver edge-case parity, licensed/current NFL economy calibration, cloud/accounts, optional LLM prose.
+- deep agent politics/network gameplay, every obscure CBA mechanism, full compensatory-pick/franchise-tag/waiver **edge-case** parity beyond the basic Package C waiver/practice-squad path, licensed/current NFL economy calibration, cloud/accounts, optional LLM prose.
 
 ## Handoff to Package D
 
