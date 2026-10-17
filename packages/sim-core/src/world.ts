@@ -31,6 +31,11 @@ import {
 } from './organizations';
 import { seededPeopleState, type PeopleState } from './people';
 import { emptyPlansState, type PlansState } from './plans';
+import { emptyContractsState, type ContractsState } from './contracts';
+import { emptyDraftState, type DraftState } from './draft';
+import { emptyMarketState, type MarketState } from './market';
+import { emptyRosterState, type RosterState } from './roster';
+import { emptyScoutingState, type ScoutingState } from './scouting';
 import {
   emptyRelationshipsState,
   type RelationshipsState,
@@ -86,6 +91,11 @@ export interface FootballWorld {
   readonly relationships: RelationshipsState;
   readonly plans: PlansState;
   readonly decisions: DecisionsState;
+  readonly roster: RosterState;
+  readonly contracts: ContractsState;
+  readonly market: MarketState;
+  readonly scouting: ScoutingState;
+  readonly draft: DraftState;
 }
 
 /** Platform-supplied identity source (the only impure input to world creation). */
@@ -141,20 +151,26 @@ export const createWorld = (
     relationships: emptyRelationshipsState(),
     plans: emptyPlansState(),
     decisions: emptyDecisionsState(),
+    roster: emptyRosterState(),
+    contracts: emptyContractsState(),
+    market: emptyMarketState(),
+    scouting: emptyScoutingState(),
+    draft: emptyDraftState(),
   });
 };
 
 /**
  * SHA-256 over the canonical bytes of the ENTIRE current-model authoritative world
- * (domain-separated; version 2 = world model 2). Package A worlds use
- * `fingerprintLegacyPackageAWorld` (version 1) and are migrated before comparison.
+ * (domain-separated; version 3 = world model 3). Package A worlds use
+ * `fingerprintLegacyPackageAWorld` (version 1) and Package B worlds use
+ * `fingerprintLegacyPackageBWorld` (version 2); both are migrated before comparison.
  */
 export const fingerprintWorld = (world: FootballWorld): string =>
-  hashCanonical({ domain: 'sport-sim/world-fingerprint', version: 2, world });
+  hashCanonical({ domain: 'sport-sim/world-fingerprint', version: 3, world });
 
 /**
- * Fingerprint of a stored world in the CURRENT model: a Package A world is migrated first,
- * so snapshots of either generation can be compared with replayed (current) state.
+ * Fingerprint of a stored world in the CURRENT model: a Package A or B world is migrated
+ * first, so snapshots of any generation can be compared with replayed (current) state.
  */
 export const currentModelFingerprintOf = (world: StoredWorld): string =>
   fingerprintWorld(requireCurrentWorld(world));

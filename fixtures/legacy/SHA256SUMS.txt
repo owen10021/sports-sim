@@ -1,1 +1,2 @@
 da67913b6d2cbeea39424120129930cbb2fa4e9a673a3df7e45b6e8f51d44683  package-a-world-v1-snapshot.json
+68a6bbc87cecc252a6695be284bf0ba0796a3d383388c561d3f5dd5352b86d84  package-b-world-v2-snapshot.json

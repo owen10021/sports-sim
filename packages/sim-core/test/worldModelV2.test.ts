@@ -34,11 +34,11 @@ const asLegacy = (w: FootballWorld): Record<string, unknown> => {
   return copy;
 };
 
-describe('current world model (v2)', () => {
-  it('declares world model version 2, independent of the persistence schema version', () => {
-    expect(WORLD_MODEL_VERSION).toBe(2);
+describe('current world model (v3, Package B domains)', () => {
+  it('declares world model version 3, independent of the persistence schema version', () => {
+    expect(WORLD_MODEL_VERSION).toBe(3);
     const w = build();
-    expect(w.worldModelVersion).toBe(2);
+    expect(w.worldModelVersion).toBe(3);
     expect(w.schemaVersion).toBe(1);
   });
 
@@ -53,6 +53,11 @@ describe('current world model (v2)', () => {
       'relationships',
       'plans',
       'decisions',
+      'roster',
+      'contracts',
+      'market',
+      'scouting',
+      'draft',
     ]);
     for (const [domain, collections] of Object.entries(DOMAIN_STATE_KEYS)) {
       const state = (w as unknown as Record<string, Record<string, unknown>>)[
@@ -123,7 +128,7 @@ describe('world model validation (fail closed)', () => {
 
   it('refuses a future world model version instead of guessing', () => {
     const w = JSON.parse(JSON.stringify(build())) as Record<string, unknown>;
-    w.worldModelVersion = 3;
+    w.worldModelVersion = 4;
     expect(() => requireCurrentWorld(w)).toThrow(
       UnsupportedWorldModelVersionError,
     );
@@ -135,7 +140,7 @@ describe('world model validation (fail closed)', () => {
       }
       return null;
     })();
-    expect(err?.found).toBe(3);
+    expect(err?.found).toBe(4);
   });
 
   it('keeps legacy and current detection mutually exclusive', () => {
@@ -161,7 +166,7 @@ describe('kernel and snapshot boundaries', () => {
     ).toThrow(InvalidWorldModelError);
     const future = {
       ...build(),
-      worldModelVersion: 3,
+      worldModelVersion: 4,
     } as unknown as FootballWorld;
     expect(() => WorldKernel.fromGenesis(future, ruleset)).toThrow(
       UnsupportedWorldModelVersionError,
@@ -178,7 +183,7 @@ describe('kernel and snapshot boundaries', () => {
     });
     expect(verifySnapshot(snap)).toEqual({ ok: true });
     expect(snap.worldFingerprint).toBe(fingerprintWorld(w));
-    const future = { ...snap, world: { ...snap.world, worldModelVersion: 3 } };
+    const future = { ...snap, world: { ...snap.world, worldModelVersion: 4 } };
     expect(() => verifySnapshot(future)).toThrow(
       UnsupportedWorldModelVersionError,
     );

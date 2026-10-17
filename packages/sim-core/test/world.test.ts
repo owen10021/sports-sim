@@ -140,6 +140,11 @@ describe('fingerprintWorld', () => {
   it('does not depend on object key insertion order', () => {
     const w = build();
     const reordered = {
+      draft: w.draft,
+      scouting: w.scouting,
+      market: w.market,
+      contracts: w.contracts,
+      roster: w.roster,
       decisions: w.decisions,
       plans: w.plans,
       relationships: w.relationships,

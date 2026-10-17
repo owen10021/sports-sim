@@ -10,8 +10,10 @@ import { deepFreeze, fingerprintWorld, type FootballWorld } from './world';
 import {
   UnsupportedWorldModelVersionError,
   fingerprintLegacyPackageAWorld,
+  fingerprintLegacyPackageBWorld,
   futureWorldModelVersion,
   isLegacyPackageAWorld,
+  isLegacyPackageBWorld,
   worldModelProblems,
   type StoredWorld,
 } from './worldModel';
@@ -200,8 +202,9 @@ export const verifySnapshot = (value: unknown): SnapshotVerification => {
   const futureModel = futureWorldModelVersion(world);
   if (futureModel !== null)
     throw new UnsupportedWorldModelVersionError('career snapshot', futureModel);
-  const legacyWorld = isLegacyPackageAWorld(world);
-  const modelProblems = legacyWorld ? [] : worldModelProblems(world);
+  const legacyA = isLegacyPackageAWorld(world);
+  const legacyB = isLegacyPackageBWorld(world);
+  const modelProblems = legacyA || legacyB ? [] : worldModelProblems(world);
   if (modelProblems.length > 0) {
     return {
       ok: false,
@@ -223,9 +226,11 @@ export const verifySnapshot = (value: unknown): SnapshotVerification => {
     ) {
       reasons.push('contentHash does not match snapshot content');
     }
-    const fingerprint = legacyWorld
+    const fingerprint = legacyA
       ? fingerprintLegacyPackageAWorld(world)
-      : fingerprintWorld(world as FootballWorld);
+      : legacyB
+        ? fingerprintLegacyPackageBWorld(world)
+        : fingerprintWorld(world as FootballWorld);
     if (fingerprint !== s.worldFingerprint)
       reasons.push('worldFingerprint mismatch');
   } catch (e) {

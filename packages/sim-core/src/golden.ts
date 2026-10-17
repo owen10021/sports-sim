@@ -25,7 +25,7 @@ import { createWorld, fingerprintWorld } from './world';
  * It mixes accepted commands with rejected ones (duplicate, stale, invalid, unauthorized)
  * and checks that every rejection leaves the world, the RNG and the audit chain untouched.
  */
-export const GOLDEN_SCENARIO_ID = 'package-a-golden-v2';
+export const GOLDEN_SCENARIO_ID = 'package-a-golden-v3';
 export const GOLDEN_WORLD_ID = 'world-golden-1';
 
 const harness: ActorRef = {

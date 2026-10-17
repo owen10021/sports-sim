@@ -51,6 +51,23 @@ describe('Package B golden scenario', () => {
     );
   });
 
+  it('keeps the accepted model-2 golden file as history beside the current-model one', () => {
+    const read = (name: string) =>
+      JSON.parse(
+        readFileSync(
+          join(__dirname, '..', '..', '..', 'fixtures', 'golden', name),
+          'utf8',
+        ),
+      ) as { scenario: string; fingerprint: string; eventChainHead: string };
+    const accepted = read('package-b-golden-v1.json');
+    const current = read('package-b-golden-v2.json');
+    expect(accepted.scenario).toBe('package-b-golden-v1');
+    expect(current.scenario).toBe('package-b-golden-v2');
+    expect(current).toEqual(JSON.parse(JSON.stringify(PACKAGE_B_EXPECTED)));
+    expect(current.fingerprint).not.toBe(accepted.fingerprint);
+    expect(current.eventChainHead).toBe(accepted.eventChainHead);
+  });
+
   it('is deterministic and matches the recorded expectation', () => {
     const a = runPackageBScenario();
     const b = runPackageBScenario();

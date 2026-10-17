@@ -1,0 +1,73 @@
+{
+  "scenario": "package-a-golden-v3",
+  "worldId": "world-golden-1",
+  "finalSimDate": "2026-10-30",
+  "revision": 3,
+  "eventCount": 3,
+  "rngDraws": 14,
+  "commandDays": [
+    1,
+    6,
+    7
+  ],
+  "fingerprint": "a9267285b9c9af04a32f7474b39cb40690d4d0af43f76d50e2e784fd3fc3fb0d",
+  "eventChainHead": "d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a",
+  "steps": [
+    {
+      "label": "advance-1",
+      "outcome": "committed",
+      "revision": 1,
+      "rngDraws": 1,
+      "fingerprint": "54f9904c4da096616ba89ae62d853bd8a34e9d4749260a122955e1037c2a9e6a",
+      "chainHead": "88527b7579aff9d4dead44d04099536268aacbbbf42a1d0fd256964f5d6078d1"
+    },
+    {
+      "label": "advance-6",
+      "outcome": "committed",
+      "revision": 2,
+      "rngDraws": 7,
+      "fingerprint": "d2d463de341e48154f53b655108614534a8ff4378b167b34f10e50f45efb27a6",
+      "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77"
+    },
+    {
+      "label": "duplicate-command",
+      "outcome": "DUPLICATE_COMMAND",
+      "revision": 2,
+      "rngDraws": 7,
+      "fingerprint": "d2d463de341e48154f53b655108614534a8ff4378b167b34f10e50f45efb27a6",
+      "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77"
+    },
+    {
+      "label": "stale-revision",
+      "outcome": "STALE_REVISION",
+      "revision": 2,
+      "rngDraws": 7,
+      "fingerprint": "d2d463de341e48154f53b655108614534a8ff4378b167b34f10e50f45efb27a6",
+      "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77"
+    },
+    {
+      "label": "invalid-days",
+      "outcome": "INVALID_PAYLOAD",
+      "revision": 2,
+      "rngDraws": 7,
+      "fingerprint": "d2d463de341e48154f53b655108614534a8ff4378b167b34f10e50f45efb27a6",
+      "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77"
+    },
+    {
+      "label": "unauthorized-actor",
+      "outcome": "UNAUTHORIZED_ACTOR",
+      "revision": 2,
+      "rngDraws": 7,
+      "fingerprint": "d2d463de341e48154f53b655108614534a8ff4378b167b34f10e50f45efb27a6",
+      "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77"
+    },
+    {
+      "label": "advance-7",
+      "outcome": "committed",
+      "revision": 3,
+      "rngDraws": 14,
+      "fingerprint": "a9267285b9c9af04a32f7474b39cb40690d4d0af43f76d50e2e784fd3fc3fb0d",
+      "chainHead": "d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a"
+    }
+  ]
+}
