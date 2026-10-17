@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Status:** PLAN FOR REVIEW - NOT YET AUTHORIZED FOR IMPLEMENTATION
+**Status:** APPROVED FOR IMPLEMENTATION - amended after repository review on 2026-10-17
 
 **Goal:** Add causal player development, scarce opportunity, practice intent, coaching/teaching context, role/scheme learning, workload/readiness, and medical/recovery state without XP, fixed potential, hidden-development oracles, or a second player-truth ledger.
 
@@ -14,7 +14,7 @@
 
 ## Global constraints
 
-- Preserve accepted Package A/B/C evidence and tags; never rewrite an old golden to make D pass.
+- Preserve accepted Package A/B/C evidence and tags; never rewrite an old golden to make D pass. A world-model bump creates new versioned current-model golden files while accepted prior versions remain immutable historical evidence.
 - One authoritative `FootballWorld`; only `WorldKernel` commits authoritative reality.
 - `packages/sim-core` remains pure TypeScript: no React/React Native/Expo/SQLite/filesystem/network/wall-clock imports.
 - `roster.players[].capabilities` remains the only authoritative football-capability ledger. D may update it; D may not copy it into another rating store.
@@ -32,6 +32,18 @@
 - Medical diagnosis, structural healing, functional readiness, conditioning, reinjury risk, performance limitation, player preference, recommendation, clearance, and actual usage remain distinguishable.
 - Synthetic Package D calibration is labeled synthetic and must not be described as validated NFL empirical truth.
 - Package D stops before play-level football resolution, game-generated football injuries, GameCast/Sunday Proof, polished Command Center UX, or century-scale release calibration.
+
+## Repository-review amendment (approved 2026-10-17)
+
+The post-plan repository review identified three implementation-contract corrections and four clarifications. They are incorporated below and are implementation authority:
+
+1. **World-model-4 golden versioning:** accepted golden files remain untouched. Task 1 creates `package-a-golden-v4.json`, `package-b-golden-v3.json`, and `package-c-golden-v2.json`; event-chain heads, event counts, revisions, RNG state/draw counts, and non-fingerprint scenario outputs must remain equal to their accepted predecessors. Current-model world fingerprints (including per-step fingerprints) are expected to change because the authoritative world shape changes.
+2. **Legacy Package C persistence:** model-3 snapshots become a supported legacy input to persistence verification/loading, parallel to existing legacy A/B handling.
+3. **Package D authority categories:** `workload_usage`, `medical_clearance`, and `scheme` are opened additively for proposals/domain commits in Task 4; no A/B/C category semantics are changed. Opportunity-allocation proposals use the organization and/or development plan as subjects; allocation details live in proposal terms rather than attempting to make an opportunity window a new `SubjectRef` kind.
+4. **AdvanceDays equivalence:** Task 7 compares a D-domain projection rather than whole-world fingerprints across one 14-day command versus fourteen 1-day commands, because revision/event counters legitimately differ. D RNG draws are interleaved inside the existing per-day loop immediately after that day's `dayRoll`.
+5. **Record IDs:** every task that introduces new authoritative D records updates `commandSupport.ts` record-ID collision accounting.
+6. **Hermes scenario construction:** Package D scenario-driver loops that create closure-capturing steps use `forEach`/helpers, preserving the Package C Hermes fix pattern.
+7. **Opportunity-window lifecycle:** D does not invent recurring automatic window creation. Tests/scenarios explicitly open windows through the system command; `AdvanceDays` only resolves due work whose allocations/defaults already exist authoritatively.
 
 ## Review focus
 
@@ -75,12 +87,23 @@ Do not fold these concerns into the already-large Package C market/free-agency/t
 - Create: `packages/sim-core/src/development.ts`
 - Create: `packages/sim-core/src/medical.ts`
 - Modify: `packages/sim-core/src/index.ts`
+- Modify: `packages/sim-core/src/persistence.ts`
+- Modify: `packages/sim-core/test/persistenceContract.test.ts`
 - Create: `fixtures/legacy/package-c-world-v3-snapshot.json`
 - Modify: `fixtures/legacy/README.md`
 - Modify: `fixtures/legacy/SHA256SUMS.txt`
 - Create: `packages/sim-core/test/worldModelV4.test.ts`
 - Create: `packages/sim-core/test/packageCWorldMigration.test.ts`
 - Modify: `packages/sim-core/test/legacyFixtureIntegrity.test.ts`
+- Create: `fixtures/golden/package-a-golden-v4.json`
+- Create: `fixtures/golden/package-b-golden-v3.json`
+- Create: `fixtures/golden/package-c-golden-v2.json`
+- Modify: `packages/sim-core/src/goldenExpected.ts`
+- Modify: `packages/sim-core/src/packageBGoldenExpected.ts`
+- Modify: `packages/sim-core/src/packageCGoldenExpected.ts`
+- Modify: `packages/headless/src/cli.ts` as needed so write/check commands target the new current-model files while retaining older files
+- Verify/update: `scripts/hermes/entry.ts`, `scripts/hermes/entryPackageB.ts`, `scripts/hermes/entryPackageC.ts`
+- Verify/update: `apps/mobile/src/diagnostics/goldenDiagnostics.ts`, `packageBJudgement.ts`, `packageCJudgement.ts`
 
 **Interfaces:**
 - `WORLD_MODEL_VERSION = 4`.
@@ -89,7 +112,8 @@ Do not fold these concerns into the already-large Package C market/free-agency/t
 - `FootballWorld` gains `development: DevelopmentState` and `medical: MedicalState`.
 - Add `LegacyPackageCWorld` = exact accepted world-model-3 shape.
 - Add `migrateLegacyPackageCWorld(world: LegacyPackageCWorld): FootballWorld` and `fingerprintLegacyPackageCWorld(world)`.
-- `requireCurrentWorld` migrates A -> B -> C -> D explicitly and fails closed on future versions.
+- `StoredWorld`, `requireCurrentWorld`, and persistence snapshot verification/loading recognize legacy C explicitly; A -> B -> C -> D migration stays explicit and future versions fail closed.
+- Accepted golden versions remain immutable; new current-model versions become the active expected constants/Node/Hermes/mobile judgement targets.
 
 - [ ] **Step 1: Capture accepted C fixture before changing the model**
 
@@ -99,17 +123,21 @@ Generate `fixtures/legacy/package-c-world-v3-snapshot.json` from accepted tag `p
 
 Tests must assert model 3 -> 4 adds exactly empty `development`/`medical`, preserves world id/date/revision/RNG/next ids/entities/all B/C domain canonical bytes, creates no event, consumes no RNG, and rejects incomplete/future shapes.
 
-- [ ] **Step 3: Implement model 4 skeleton and explicit migration**
+- [ ] **Step 3: Implement model 4 skeleton, legacy-C persistence support, and explicit migration**
 
-Create empty state factories; update domain-key validation and fingerprints. Do not change existing Package A/B/C historical fingerprint functions.
+Create empty state factories; update domain-key validation, stored-world handling, persistence verification, and fingerprints. Do not change existing Package A/B/C historical fingerprint functions. A stored model-3 snapshot must verify under its own legacy-C fingerprint and load/migrate to model 4 without history mutation.
 
-- [ ] **Step 4: Run targeted and legacy gates**
+- [ ] **Step 4: Create new current-model A/B/C golden versions**
 
-Run: `npm test -- packages/sim-core/test/worldModelV4.test.ts packages/sim-core/test/packageCWorldMigration.test.ts packages/sim-core/test/legacyFixtureIntegrity.test.ts`
+Keep every accepted golden file unchanged. Generate `package-a-golden-v4.json`, `package-b-golden-v3.json`, and `package-c-golden-v2.json` under world model 4. Assert each new file preserves its predecessor's event-chain head, revision, event count, RNG state/draw count, record IDs/domain outputs, and command outcomes; only current-model world fingerprints/per-step fingerprints may change. Update expected-constant modules and Node/Hermes/mobile judgement paths to the new current-model versions.
 
-Expected: PASS; accepted A/B/C legacy hashes/fingerprints unchanged.
+- [ ] **Step 5: Run targeted and legacy gates**
 
-- [ ] **Step 5: Run full CI and commit**
+Run: `npm test -- packages/sim-core/test/worldModelV4.test.ts packages/sim-core/test/packageCWorldMigration.test.ts packages/sim-core/test/legacyFixtureIntegrity.test.ts packages/sim-core/test/persistenceContract.test.ts` plus all A/B/C golden checks.
+
+Expected: PASS; accepted historical files/hashes remain untouched and new current-model goldens preserve all non-fingerprint accepted semantics.
+
+- [ ] **Step 6: Run full CI and commit**
 
 Run: `npm run ci`
 
@@ -168,7 +196,7 @@ Synthetic fixture provenance must explicitly say synthetic calibration/not empir
 
 - [ ] **Step 4: Seed `development` / `medical` in `createWorld`**
 
-Current D seed initializes D state; old seeds still initialize empty D state after migration.
+The D seed extends/contains the Package C seed substrate so every D `capabilityResponses.capabilityKey` references a real seeded Package C player capability. Current D seed initializes D state; old seeds still initialize empty D state after migration.
 
 - [ ] **Step 5: Verify and commit**
 
@@ -229,7 +257,11 @@ Commit: `feat(core): add development truth and readiness substrate`
 - Modify: `packages/sim-core/src/plans.ts`
 - Create: `packages/sim-core/src/developmentCommands.ts`
 - Modify: `packages/sim-core/src/commandRouter.ts`
+- Modify: `packages/sim-core/src/decisionCommands.ts`
+- Modify: `packages/sim-core/src/transactionCommit.ts`
+- Modify: `packages/sim-core/src/commandSupport.ts`
 - Modify: `packages/sim-core/src/index.ts`
+- Modify: `packages/sim-core/test/transactionCommit.test.ts`
 - Create: `packages/sim-core/test/opportunity.test.ts`
 - Create: `packages/sim-core/test/developmentIntent.test.ts`
 - Create: `packages/sim-core/test/opportunityCommands.test.ts`
@@ -243,6 +275,10 @@ Add `development` to `PLAN_KINDS`; a Package B plan remains the authoritative GM
 
 `OpportunityAllocation`:
 - `id`, `windowId`, `organizationId`, `playerId`, `resourceKey`, `scopeKey`, `units`, `teacherPersonId | null`, `responsibilityKeys[]`, `basisPlanIds[]`, `sourceProposalId`, `committedAt`.
+
+Package D opens exactly these additional proposal/domain-commit categories through a dedicated exported `PACKAGE_D_PROPOSAL_CATEGORIES`: `workload_usage`, `medical_clearance`, `scheme`. Existing Package C categories remain unchanged. `transactionCommit.test.ts` must prove the D categories are accepted while still rejecting categories outside B/C/D domain commits.
+
+Opportunity-allocation proposals use `{ kind: 'entity', id: organizationId }` and/or an existing `{ kind: 'plan', id: developmentPlanId }` as proposal subjects. Do not add `opportunity_window` to `SubjectRef`; the canonical allocation list/window id belongs in proposal terms, avoiding the existing eight-subject limit.
 
 Commands:
 - `OpenOpportunityWindow` - `system|commissioner|test_harness` only; creates ruleset-owned finite pools.
@@ -264,7 +300,7 @@ Adding more rostered prospects does not add pool capacity. Starter-quality alloc
 
 - [ ] **Step 4: Implement window/allocation commands via existing proposal gate**
 
-No hidden capability/profile input is permitted in allocation validation.
+No hidden capability/profile input is permitted in allocation validation. Update `commandSupport.ts` so every new authoritative D record ID introduced by this task participates in `takenRecordIds` and any shared `Changes` plumbing needed by the router.
 
 - [ ] **Step 5: Verify and commit**
 
@@ -325,6 +361,7 @@ Commit: `feat(core): add role and scheme learning`
 - Create: `packages/sim-core/src/developmentResolution.ts`
 - Expand: `packages/sim-core/src/developmentCommands.ts`
 - Modify: `packages/sim-core/src/commandRouter.ts`
+- Modify: `packages/sim-core/src/commandSupport.ts`
 - Create: `packages/sim-core/test/developmentResolution.test.ts`
 - Create: `packages/sim-core/test/agingDevelopment.test.ts`
 - Create: `packages/sim-core/test/developmentCheckpoint.test.ts`
@@ -384,7 +421,7 @@ Commit: `feat(core): resolve causal development checkpoints`
 
 **Interfaces:**
 
-Add pure `advanceDevelopmentThrough(world, ruleset, fromDate, toDate, rng): { world, eventSpecs, rng }` used only by `AdvanceDays` when D rules/state require due automatic checkpoints.
+Add pure `advanceDevelopmentForDay(world, ruleset, date, rng): { world, eventSpecs, rng }`. `routeAdvanceDays` invokes it inside the existing per-day loop immediately after that day's existing `dayRoll = rng.nextU32()` and before the next day's roll. This locks cross-command RNG ordering.
 
 Contract:
 - Package A/B/C worlds/rulesets with no D work preserve existing `AdvanceDays` RNG/event behavior byte-for-byte.
@@ -399,15 +436,15 @@ Accepted A/B/C `AdvanceDays` fixture outputs/RNG remain unchanged.
 
 - [ ] **Step 2: RED coarse-vs-fine advance equivalence**
 
-Advancing 14 days once and advancing the same D world one day 14 times yields identical authoritative D state/fingerprint/event semantics after equivalent accepted commands.
+With identical explicitly opened windows and committed allocations/defaults, advancing 14 days once and advancing the same D starting state one day 14 times must yield an identical D-domain projection: `development`, `medical`, `roster.players[].capabilities`, final `simDate`, and RNG state/draw count. Do **not** compare whole-world fingerprint, revision, event count, or event-chain head because one command versus fourteen commands legitimately changes those command/audit fields.
 
 - [ ] **Step 3: RED unattended-routine test**
 
-Routine committed practice resolves automatically as time advances; no user drill-click command is required.
+The test explicitly opens the opportunity window through `OpenOpportunityWindow` and commits its allocation/default first. Time advancement then resolves the due routine work automatically; no user drill-click command and no automatic recurring-window invention is required.
 
 - [ ] **Step 4: Implement calendar hook**
 
-Preserve deterministic draw order and old-package no-op path.
+Preserve deterministic draw order and old-package no-op path. D draws for each logical day occur after that day's legacy day roll and before the following day's roll.
 
 - [ ] **Step 5: Verify and commit**
 
@@ -423,6 +460,7 @@ Commit: `feat(core): advance development on logical time`
 - Expand: `packages/sim-core/src/medical.ts`
 - Create: `packages/sim-core/src/medicalCommands.ts`
 - Modify: `packages/sim-core/src/commandRouter.ts`
+- Modify: `packages/sim-core/src/commandSupport.ts`
 - Create: `packages/sim-core/test/medicalState.test.ts`
 - Create: `packages/sim-core/test/medicalReassessment.test.ts`
 - Create: `packages/sim-core/test/medicalKnowledgeBoundary.test.ts`
@@ -478,6 +516,7 @@ Commit: `feat(core): add medical recovery and reassessment`
 - Expand: `packages/sim-core/src/medicalCommands.ts`
 - Modify: `packages/sim-core/src/opportunity.ts`
 - Modify: `packages/sim-core/src/developmentCommands.ts`
+- Modify: `packages/sim-core/src/commandSupport.ts`
 - Create: `packages/sim-core/test/medicalAuthority.test.ts`
 - Create: `packages/sim-core/test/readinessUsage.test.ts`
 
@@ -491,7 +530,7 @@ Append-only records:
 Commands:
 - `RecordParticipationPreference` - future-facing factual communication path; restricted in D harness to system/test input and cannot mutate healing/readiness.
 - `RecordMedicalRecommendation` - actor must possess appropriate `medical_clearance` advise/communicate right and cite legitimate evidence.
-- `CommitMedicalClearanceProposal` - category `medical_clearance` through shared proposal/receipt gate.
+- `CommitMedicalClearanceProposal` - category `medical_clearance` through the shared proposal/receipt gate opened in Task 4; Task 9 must not add a parallel authorization path.
 
 Opportunity/workload allocation must not exceed active clearance hard limits. Recommendation/preference can disagree with actual usage and remain separately inspectable; preference is not silently treated as medical truth or as a magical veto unless an explicit authority/protected constraint says so.
 
@@ -523,6 +562,7 @@ Commit: `feat(core): separate clearance recommendation and usage`
 - Expand: `packages/sim-core/src/developmentCommands.ts`
 - Modify: `packages/sim-core/src/roster.ts`
 - Modify: `packages/sim-core/src/roleLearning.ts`
+- Modify: `packages/sim-core/src/commandSupport.ts`
 - Create: `packages/sim-core/test/roleTransition.test.ts`
 - Create: `packages/sim-core/test/playerMovementContinuity.test.ts`
 
@@ -530,7 +570,7 @@ Commit: `feat(core): separate clearance recommendation and usage`
 
 `CommitRoleTransitionProposal`:
 - category `roster`;
-- if the same action changes scheme responsibilities, it also requires a current authorized `scheme` proposal and uses the existing multi-proposal commit gate;
+- if the same action changes scheme responsibilities, it also requires a current authorized `scheme` proposal (category opened in Task 4) and uses the existing multi-proposal commit gate;
 - may change `PlayerRecord.primaryRole` / `roleTags` only;
 - cannot change capability values, D profile values, role familiarity, readiness, or medical state by labeling alone.
 
@@ -724,6 +764,8 @@ Commit: `test(package-d): add development exploit audits`
 
 **Scenario obligations:**
 
+Scenario-driver construction rule: when loops create closure-capturing scenario steps, use `forEach` callbacks or explicit helper functions rather than `for (const ...)` closures, matching the verified Package C Hermes fix. The scenario must explicitly open every required opportunity window; Package D does not auto-create recurring windows.
+
 One integrated synthetic career slice must include all six named D obligations from the design basis:
 1. developmental QB succession with finite reps;
 2. staff/scheme transition retaining capability but creating installation debt;
@@ -742,7 +784,7 @@ Also include at least one rejected unauthorized/stale D command and one legitima
 - corrupt latest snapshot -> repair from history yields identical D history and does not rewrite old claims/reports;
 - rejected/stale commands consume no RNG/mutate nothing;
 - final acquisition + D audits contain zero error findings;
-- accepted Package A/B/C goldens still match independently.
+- accepted historical Package A/B/C golden files remain unchanged, while the new model-4 current-model A-v4/B-v3/C-v2 goldens match their updated expected constants independently and preserve their accepted non-fingerprint semantics.
 
 - [ ] **Step 1: Write scenario RED gate before expected golden**
 
@@ -811,7 +853,7 @@ Commit sequence at the end should separate any diagnostic fix from the final acc
 
 Do not declare Package D accepted until all are true:
 
-1. World model 4 migration preserves accepted A/B/C historical evidence.
+1. World model 4 migration preserves accepted A/B/C historical evidence and adds versioned current-model A-v4/B-v3/C-v2 goldens without rewriting prior files.
 2. D rules/seed profiles fail closed and contain no fixed-destiny field.
 3. Current capability truth remains only in `roster.players[].capabilities`.
 4. Capability updates are per-dimension, causal, bounded, and allow zero/plateau/decline.
