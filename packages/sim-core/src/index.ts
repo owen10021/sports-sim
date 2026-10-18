@@ -90,3 +90,7 @@ export * from './medicalCommands';
 export * from './roleLearning';
 export * from './developmentResolution';
 export * from './developmentCalendar';
+export * from './developmentAudit';
+export * from './packageDScenario';
+export * from './packageDScenarioRun';
+export { PACKAGE_D_EXPECTED } from './packageDGoldenExpected';

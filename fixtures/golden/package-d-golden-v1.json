@@ -1,0 +1,538 @@
+{
+  "scenario": "package-d-golden-v1",
+  "worldId": "world-package-d-golden-v1",
+  "finalSimDate": "2027-03-31",
+  "revision": 41,
+  "eventCount": 125,
+  "rngDraws": 82,
+  "rngState": {
+    "algorithm": "xoshiro128ss-v1",
+    "s0": 1762549536,
+    "s1": 476738090,
+    "s2": 4158248179,
+    "s3": 1715999327,
+    "draws": 82
+  },
+  "fingerprint": "30406fda343b9d8f4c25d560b12033a8bb27eb11de58cb8d5ce14989a2da3849",
+  "eventChainHead": "e692b2516edefdaf1475e212cfe90b0d671d0cd77353fbba476afc443215e483",
+  "auditErrorFindings": {
+    "acquisition": 0,
+    "development": 0
+  },
+  "evidence": {
+    "qbSuccession": {
+      "veteranPlayerId": "player-fa-04",
+      "developmentalPlayerId": "player-nf-05",
+      "veteranFirstTeamUnits": 40,
+      "developmentalFirstTeamUnits": 60,
+      "developmentalDevelopmentUnits": 20,
+      "firstTeamCapacityUnits": 100
+    },
+    "schemeTransition": {
+      "playerId": "player-nf-02",
+      "sourceFamiliarityBp": 4984,
+      "targetFamiliarityBeforeWorkBp": 0,
+      "targetFamiliarityAfterWorkBp": 150,
+      "capabilityUnchangedAtTransition": true
+    },
+    "roleTransition": {
+      "playerId": "player-nf-05",
+      "roleLabelChanged": true,
+      "capabilityUnchangedAtTransition": true,
+      "knowledgeCreatedAtTransition": false
+    },
+    "medical": {
+      "playerId": "player-nf-01",
+      "episodeId": "rec-000015",
+      "reportCount": 2,
+      "firstUncertainty": "broad",
+      "secondUncertainty": "moderate",
+      "structuralHealingBp": 6203,
+      "reinjuryRiskBp": 5666,
+      "functionalReadinessBp": 3684,
+      "conditioningBp": 6885,
+      "preference": "unwilling",
+      "recommendationParticipation": "limited",
+      "recommendationMaxLoadUnits": 40,
+      "clearanceParticipation": "full",
+      "clearanceMaxLoadUnits": null,
+      "usageUnits": 60
+    },
+    "lateBloomer": {
+      "playerAId": "player-nf-05",
+      "playerBId": "player-nf-01",
+      "initialBeliefParity": true,
+      "playerANetCapabilityDeltaBp": -661,
+      "playerBNetCapabilityDeltaBp": -156
+    },
+    "acquisitionSqueeze": {
+      "incomingPlayerId": "player-fa-04",
+      "crowdingBand": "low",
+      "planRevisionBefore": 1,
+      "planRevisionAfter": 2
+    }
+  },
+  "zeroGrowthCheckpointIds": [
+    "rec-004583"
+  ],
+  "keyRecordIds": {
+    "youngSchemeProposal": "rec-000004",
+    "youngRoleProposal": "rec-000005",
+    "youngCapabilitiesBefore": "[{\"key\":\"agility\",\"valueBp\":6553},{\"key\":\"burst\",\"valueBp\":3824},{\"key\":\"hands\",\"valueBp\":6011},{\"key\":\"strength\",\"valueBp\":9282},{\"key\":\"vision\",\"valueBp\":8740}]",
+    "youngTargetKnowledgeBefore": "0",
+    "youngCapabilitiesAfterTransition": "[{\"key\":\"agility\",\"valueBp\":6553},{\"key\":\"burst\",\"valueBp\":3824},{\"key\":\"hands\",\"valueBp\":6011},{\"key\":\"strength\",\"valueBp\":9282},{\"key\":\"vision\",\"valueBp\":8740}]",
+    "youngRoleAfter": "quarterback",
+    "youngTargetKnowledgeAfterTransition": "0",
+    "lineSchemeProposal": "rec-000008",
+    "lineRoleProposal": "rec-000009",
+    "lineCapabilitiesBefore": "[{\"key\":\"agility\",\"valueBp\":6254},{\"key\":\"block_technique\",\"valueBp\":4067},{\"key\":\"processing\",\"valueBp\":3525},{\"key\":\"strength\",\"valueBp\":6796}]",
+    "lineSourceFamiliarity": "4984",
+    "lineTargetFamiliarityBefore": "0",
+    "lineCapabilitiesAfterTransition": "[{\"key\":\"agility\",\"valueBp\":6254},{\"key\":\"block_technique\",\"valueBp\":4067},{\"key\":\"processing\",\"valueBp\":3525},{\"key\":\"strength\",\"valueBp\":6796}]",
+    "planProposal": "rec-000012",
+    "planId": "rec-000013",
+    "planRevisionBefore": "1",
+    "medicalEpisode": "rec-000015",
+    "febWindow": "rec-000017",
+    "febWorkProposal": "rec-000018",
+    "lineTargetFamiliarityAfterWork": "150",
+    "firstMedicalReport": "rec-000757",
+    "firstMedicalUncertainty": "broad",
+    "secondMedicalReport": "rec-002384",
+    "secondMedicalUncertainty": "moderate",
+    "clearanceProposal": "rec-002386",
+    "marchWindow": "rec-002389",
+    "preAcquisitionWorkProposal": "rec-002390",
+    "squeezeBand": "low",
+    "veteranContractProposal": "rec-002395",
+    "veteranOffer": "rec-002396",
+    "reconcilePlanProposal": "rec-002403",
+    "planRevisionAfter": "2",
+    "successionWindow": "rec-003135",
+    "successionWorkProposal": "rec-003136",
+    "zeroWindow": "rec-003871",
+    "zeroWorkProposal": "rec-003872"
+  },
+  "steps": [
+    {
+      "label": "grant-gm-workload",
+      "outcome": "committed",
+      "revision": 1,
+      "rngDraws": 0,
+      "fingerprint": "cea7aed2c6cea5eb487f9d0c3bb4f7ae183a9b18115bdc601390bbe3eb77de55",
+      "chainHead": "cb7b6b57fdbf8601ec83ffe42ebded39941dd8740ecd88f4e7339486ab4de030",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "grant-coach-workload",
+      "outcome": "committed",
+      "revision": 2,
+      "rngDraws": 0,
+      "fingerprint": "c2b5c8e4f195af0659c40a15b1bedd6ebb4d99efdec7210f1436b421265050d0",
+      "chainHead": "af6bf1f5747fb7b77725ddaee6292637a32591decacf91cf6ab385171380a543",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "grant-scout-medical",
+      "outcome": "committed",
+      "revision": 3,
+      "rngDraws": 0,
+      "fingerprint": "0e7c849a6207b939e20439bc761a846649b04ae924cbbd7bae78e8f66470df8e",
+      "chainHead": "de0de5c63691d7805a0d7ff882b22ad5e648affd29f514f9abd511b59b7e6f19",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "stale-window-attempt",
+      "outcome": "STALE_REVISION",
+      "revision": 3,
+      "rngDraws": 0,
+      "fingerprint": "0e7c849a6207b939e20439bc761a846649b04ae924cbbd7bae78e8f66470df8e",
+      "chainHead": "de0de5c63691d7805a0d7ff882b22ad5e648affd29f514f9abd511b59b7e6f19",
+      "stateUnchanged": true,
+      "rngUnchanged": true
+    },
+    {
+      "label": "young-scheme-proposal",
+      "outcome": "committed",
+      "revision": 4,
+      "rngDraws": 0,
+      "fingerprint": "263bbb4550904f4f89336e164571c020cec2835ca92c397a8a45363502b919ed",
+      "chainHead": "1e106aee8aa310b7aa99992608ad90af9dd17789727fd1042455cdb7f185762b",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "young-role-proposal",
+      "outcome": "committed",
+      "revision": 5,
+      "rngDraws": 0,
+      "fingerprint": "259def6fb69544bff71b817c8b5322147694743b0b9068364dd59771aa9e9519",
+      "chainHead": "492aa78c1949c49d46e3f80ee55ed1b90024bed3386beb6bbab7f148218575f6",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "young-role-commit",
+      "outcome": "committed",
+      "revision": 6,
+      "rngDraws": 0,
+      "fingerprint": "c98d9c21d55652f931506e2225cd780081e4c09f68ebdb02aaaa1e2961305943",
+      "chainHead": "d4ab302ded821d0bc7bf5e47148ccc28fa7f6a973fea4c6eab904b6364f5c2d4",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "line-scheme-proposal",
+      "outcome": "committed",
+      "revision": 7,
+      "rngDraws": 0,
+      "fingerprint": "a3ff62f0ea5f09b5fd39add1ce5825ac44b5ce2e090179264c4cfa3df8fca8ca",
+      "chainHead": "39eb093e7729da28dd33cb2ab8d866f1642ae00cebbc0600e04a5be6ffa3b168",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "line-role-proposal",
+      "outcome": "committed",
+      "revision": 8,
+      "rngDraws": 0,
+      "fingerprint": "7070eaa0c2e471e261eaa4d8f7c84fc0a94115e30988a4528708fdb6129ad839",
+      "chainHead": "4fabdf7c67bb76cf6eba3f682c6c390870ba823561fe7b02916200674244fc36",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "line-scheme-commit",
+      "outcome": "committed",
+      "revision": 9,
+      "rngDraws": 0,
+      "fingerprint": "c79c7d4183c65d3bf4df4ca9f9271714e7bf8862c35fb0099d5d8a4a959bf6b1",
+      "chainHead": "daa5e05d542017dbd7b7663e61e43fdcb8dee804e0dc66db8038f54f6bf43ec3",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "initial-development-plan-proposal",
+      "outcome": "committed",
+      "revision": 10,
+      "rngDraws": 0,
+      "fingerprint": "92eafc941c84328f2e0c3817c490a63069243b48247669abd206c082c5c79f34",
+      "chainHead": "09034a1aa2a4e86e9f79c3c924d4753b68acc03644d3d6ee566c8e0af1750345",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "initial-development-plan-commit",
+      "outcome": "committed",
+      "revision": 11,
+      "rngDraws": 0,
+      "fingerprint": "1810434b8a2e53fb2d8d717c36137f378dd7fe48b83e40b68133b81d3262f2b3",
+      "chainHead": "479e0b979a4b8e430c504598e11538b6bd3eae28b8aad8ba3b48c8ecd8db1d7d",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "create-medical-episode",
+      "outcome": "committed",
+      "revision": 12,
+      "rngDraws": 0,
+      "fingerprint": "4a6d8bb559f00438454797cb888c50a01fe65e7555a6ec997be645e08ed7600a",
+      "chainHead": "f809c293932810b5ab4de8b1f9e3126cc607aabdc8440768b06481f3d2dad01c",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "record-player-preference",
+      "outcome": "committed",
+      "revision": 13,
+      "rngDraws": 0,
+      "fingerprint": "428a4ffff73c9c4d8462e5653b6c2032cc849ced2259b8fb0881d47e10122105",
+      "chainHead": "9155f8703dad1808933a2fc6e74cb34c57105dc5e7d92223d48da5474af2b530",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "open-february-window",
+      "outcome": "committed",
+      "revision": 14,
+      "rngDraws": 0,
+      "fingerprint": "1178b66377fa8438c26470f0db2b17f1ee69e1f45dff10ea31d6473a2b77b504",
+      "chainHead": "6857609a881848c1774cf163feeb1b669c687cf9bc47a775e0ce59748478bd27",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "submit-february-work",
+      "outcome": "committed",
+      "revision": 15,
+      "rngDraws": 0,
+      "fingerprint": "a9f6f51290414fa2d33eaaedea4c95848b51b75391c890aa0f047be19a234800",
+      "chainHead": "2e7a07ecbeca1fc7e108fd7e083f50396b8cd703d8fa327cf127e077951acc6f",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "commit-february-work",
+      "outcome": "committed",
+      "revision": 16,
+      "rngDraws": 0,
+      "fingerprint": "95d22df29eff01564457db64ea281a711b2df70dae58aa2f89938bca2c1de368",
+      "chainHead": "f7d4e5440039493b93466a95cf2d3711f89119e8c5c3d02961bc3527f4fbeb81",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "advance-february-window",
+      "outcome": "committed",
+      "revision": 17,
+      "rngDraws": 16,
+      "fingerprint": "54894ad26d5a9859b75070fc9abd258e474b235450c289c34137298910d0cf17",
+      "chainHead": "0e03aceb8cf2751e036e0c4bb28e66d0f929c868c39d960d1989483bdcc9a535",
+      "stateUnchanged": false,
+      "rngUnchanged": false
+    },
+    {
+      "label": "first-medical-reassessment",
+      "outcome": "committed",
+      "revision": 18,
+      "rngDraws": 18,
+      "fingerprint": "33971608336ba5a561cbc6d8df19dc527fdd210e8b709c2f0343578849717b88",
+      "chainHead": "1213f97afbb2a4ebbab2c2ba288af0e449b4d23bbe50e0d8193d95cf929ac804",
+      "stateUnchanged": false,
+      "rngUnchanged": false
+    },
+    {
+      "label": "advance-to-free-agency",
+      "outcome": "committed",
+      "revision": 19,
+      "rngDraws": 34,
+      "fingerprint": "ecc2c5571463439243facbbe17f8d1398d0e232ed9c8a38bac8e77745785b009",
+      "chainHead": "5f5e1ab5af064aeafab7b40e27895134919f45bbbeea0c9c397773f738e985d7",
+      "stateUnchanged": false,
+      "rngUnchanged": false
+    },
+    {
+      "label": "second-medical-reassessment",
+      "outcome": "committed",
+      "revision": 20,
+      "rngDraws": 36,
+      "fingerprint": "6ce9c622e2d30d6fad755d1152454dc5a05fb493f3ce36544fa5fc0332ab2075",
+      "chainHead": "f3c27112deff6c668c442372d9fcf9b7ee4c99d0f9bd49c2716401f2d6e7e0e8",
+      "stateUnchanged": false,
+      "rngUnchanged": false
+    },
+    {
+      "label": "medical-recommendation",
+      "outcome": "committed",
+      "revision": 21,
+      "rngDraws": 36,
+      "fingerprint": "2f30c7e7e5fb01eb64ff947d2db6f8b17a396121275a648897b8b2905654a682",
+      "chainHead": "99c42c82bb498375d8153254704424fe77762522c21a8e2e0e208c61e994b9f0",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "medical-clearance-proposal",
+      "outcome": "committed",
+      "revision": 22,
+      "rngDraws": 36,
+      "fingerprint": "0937463ab3824e9882e8a2cb574832f90a686a92b14c3cbb2a5b03a95416276b",
+      "chainHead": "d13cb7e21de041db79985c9a811438e08c65b2174bc0a15db0a2beeb8490a1e5",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "medical-clearance-commit",
+      "outcome": "committed",
+      "revision": 23,
+      "rngDraws": 36,
+      "fingerprint": "f90be1c4985fe4c04203203e15062d56595c5c314a73587839c33f4a30a5d4d0",
+      "chainHead": "98f8af96f3f5fd212fa54811d4e94cfcdfc5abb3f6b0aaf083d5833618ad1fc4",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "open-post-acquisition-window",
+      "outcome": "committed",
+      "revision": 24,
+      "rngDraws": 36,
+      "fingerprint": "775473ca8c807c488fbe99607daaa88bdf680c68948a6a42d22bdc3062e1b5a9",
+      "chainHead": "664667528d8059c203f2a3e5a03efa92d6f3cdcfc2327500738ef79bc4ed37a6",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "submit-pre-acquisition-work",
+      "outcome": "committed",
+      "revision": 25,
+      "rngDraws": 36,
+      "fingerprint": "56a6a2a3225251df98da53204f86776c0b08e9ab3fab3c9dd8dc6cb0776b0664",
+      "chainHead": "b6b7538efee01fbbcd09979ed1044a3d04a12125a43f008117261d00d2ec50ef",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "commit-pre-acquisition-work",
+      "outcome": "committed",
+      "revision": 26,
+      "rngDraws": 36,
+      "fingerprint": "bb562857d142cfc1908bb0c4cb4abb8293457fe29efd22464f1da530bef3eb8e",
+      "chainHead": "7c383ae42a721efe48aff0f2433595659e1e300a2732dc0a729f41badd4663fb",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "veteran-contract-proposal",
+      "outcome": "committed",
+      "revision": 27,
+      "rngDraws": 36,
+      "fingerprint": "a4afb7a16f3fae8e5d56a23e60bdf24da0d38031ace8ca8d885792268a124ec4",
+      "chainHead": "3f400b278bdab523e62e0eedc055686c3dbae220ef8d613b5dcf758cdab84ef8",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "veteran-contract-offer",
+      "outcome": "committed",
+      "revision": 28,
+      "rngDraws": 36,
+      "fingerprint": "521379b65360b0fd703e8be703b55e0c02e913a0d7b6526627c5cd0c4c004dee",
+      "chainHead": "48c836184420f155673a58f792b1920dd49ec775e2c7a50c4db0b982eedf71d4",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "resolve-veteran-free-agency",
+      "outcome": "committed",
+      "revision": 29,
+      "rngDraws": 36,
+      "fingerprint": "ed3aff5cd32f839559832eefc88bc5329491a5550eff40fe7bad17ea524290dd",
+      "chainHead": "8f3bf69c5728f3eb9615059c0b5d2bd488f433725fce2c42110bd944b274371a",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "commit-veteran-signing",
+      "outcome": "committed",
+      "revision": 30,
+      "rngDraws": 36,
+      "fingerprint": "d2f8417696b33025159183c316a01accf175a8d371b7f21e89b575ba7daafd5b",
+      "chainHead": "2ccb1e41697524e026c3e68c906f725ba085a8b7dcf836961e6cbed12297ffa6",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "reconcile-plan-proposal",
+      "outcome": "committed",
+      "revision": 31,
+      "rngDraws": 36,
+      "fingerprint": "653c99fc473362da99134393cbc662cbeff357f0cecb1c2044a346b8a1ba1d31",
+      "chainHead": "eda59a779808e33f20dd93cf490e2082ed80d4823061ef2f76eb2488c171767d",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "reconcile-plan-commit",
+      "outcome": "committed",
+      "revision": 32,
+      "rngDraws": 36,
+      "fingerprint": "08542f47fa85d32afe9d4eb028687f7d1b875fd1715905ff8d7bafbe64602fec",
+      "chainHead": "5a5cd88e48fb74c87f241bfd78aa485854ac94f406f70ae941ec6535382b78bd",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "advance-post-acquisition-window",
+      "outcome": "committed",
+      "revision": 33,
+      "rngDraws": 53,
+      "fingerprint": "04851f135612f4469eb4144d5d1110017c01094ab9039732611aed5e051f349e",
+      "chainHead": "f50905a2c2cd5d40ee776093b2637a61529565dcd0ae2416ec847eb46cb86d44",
+      "stateUnchanged": false,
+      "rngUnchanged": false
+    },
+    {
+      "label": "open-succession-window",
+      "outcome": "committed",
+      "revision": 34,
+      "rngDraws": 53,
+      "fingerprint": "fea89d8c36c41ea5bacbe27af1a3b5ce072119274b756074ede4b2ab8c563ac1",
+      "chainHead": "9813146a4bec7c4a112b3125e5a08504f99139a95c5ddc0e38637dd5ee62b7bf",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "submit-succession-work",
+      "outcome": "committed",
+      "revision": 35,
+      "rngDraws": 53,
+      "fingerprint": "f144ae06ac4452f5d6b4c09fe67bce5d80f3b82ea2d6cbe0033594d5c4608227",
+      "chainHead": "2e1a494d9818145a21d5dec9106ee44e3dde1217b40a03f1664c9549b8532a64",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "commit-succession-work",
+      "outcome": "committed",
+      "revision": 36,
+      "rngDraws": 53,
+      "fingerprint": "e9ac899259e868e6ee1b5271abefdd62a7c04eec6eab8525cda53553857b6719",
+      "chainHead": "eb392ac7f72bd016917b96dabd5bc4b88df292dab888a75e2c4ac96463a30534",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "advance-succession-window",
+      "outcome": "committed",
+      "revision": 37,
+      "rngDraws": 70,
+      "fingerprint": "0f5a74c2e4d19e3595b2454a250d5d3f15912c81987fa05c251f8554abf81558",
+      "chainHead": "bfa34f87994fb549242e04d9b756899308d45ac34256b0b9b141e58c4d2312a5",
+      "stateUnchanged": false,
+      "rngUnchanged": false
+    },
+    {
+      "label": "open-zero-growth-window",
+      "outcome": "committed",
+      "revision": 38,
+      "rngDraws": 70,
+      "fingerprint": "00a72f83e37bde444779de90c599609c9c3fad7dbd6d43112e8836f9bf3e058b",
+      "chainHead": "f426f1a019753891c83055335e3b5116a02291a9f3250e38ee737ca4556c2ce0",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "submit-zero-growth-work",
+      "outcome": "committed",
+      "revision": 39,
+      "rngDraws": 70,
+      "fingerprint": "58cb8a59026a414df5d25afa70b31cf5d88f4b1e6f6052eaadc6bf0b66d153a9",
+      "chainHead": "0377f442cbd2953b8e231378dffb858b9938039f5260db6284405c191fa4831b",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "commit-zero-growth-work",
+      "outcome": "committed",
+      "revision": 40,
+      "rngDraws": 70,
+      "fingerprint": "1b927492f49f0639e2d9ec0fe335a13d5ce756c2de25e4750f44167b6be8ca42",
+      "chainHead": "ff12fafe34524e088c5cc76b2268992acf0da91282b35012d09bc250c6f34821",
+      "stateUnchanged": false,
+      "rngUnchanged": true
+    },
+    {
+      "label": "advance-zero-growth-window",
+      "outcome": "committed",
+      "revision": 41,
+      "rngDraws": 82,
+      "fingerprint": "30406fda343b9d8f4c25d560b12033a8bb27eb11de58cb8d5ce14989a2da3849",
+      "chainHead": "e692b2516edefdaf1475e212cfe90b0d671d0cd77353fbba476afc443215e483",
+      "stateUnchanged": false,
+      "rngUnchanged": false
+    }
+  ]
+}
