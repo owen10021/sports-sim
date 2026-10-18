@@ -1,0 +1,2926 @@
+{
+  "schemaVersion": 1,
+  "rulesetId": "synthetic-package-e-rules",
+  "rulesetVersion": 1,
+  "displayName": "Synthetic Package E Football Rules",
+  "provenance": [
+    {
+      "sourceId": "sport-sim-synthetic-package-e-rules",
+      "sourceKind": "synthetic",
+      "retrievedAt": "2026-10-18T00:00:00Z",
+      "effectiveAsOf": "2026-10-18",
+      "validationStatus": "synthetic",
+      "note": "Synthetic engineering/calibration fixture for Package E football. Values are test boundaries, NOT empirically validated NFL football, injury or tactical truth."
+    }
+  ],
+  "rules": {
+    "maxAdvanceDaysPerCommand": 30,
+    "transactions": {
+      "moneyUnit": "synthetic-unit",
+      "seasonRules": [
+        {
+          "season": 2026,
+          "salaryCap": 20000000,
+          "activeRosterLimit": 40,
+          "reserveRosterLimit": 8,
+          "practiceSquadLimit": 8,
+          "freeAgencyOpen": "2026-03-10",
+          "freeAgencyClose": "2026-07-15",
+          "tradeDeadline": "2026-11-03",
+          "draftDate": "2026-04-25"
+        },
+        {
+          "season": 2027,
+          "salaryCap": 20000000,
+          "activeRosterLimit": 40,
+          "reserveRosterLimit": 8,
+          "practiceSquadLimit": 8,
+          "freeAgencyOpen": "2027-03-10",
+          "freeAgencyClose": "2027-07-15",
+          "tradeDeadline": "2027-11-03",
+          "draftDate": "2027-04-25"
+        },
+        {
+          "season": 2028,
+          "salaryCap": 20000000,
+          "activeRosterLimit": 40,
+          "reserveRosterLimit": 8,
+          "practiceSquadLimit": 8,
+          "freeAgencyOpen": "2028-03-10",
+          "freeAgencyClose": "2028-07-15",
+          "tradeDeadline": "2028-11-03",
+          "draftDate": "2028-04-25"
+        },
+        {
+          "season": 2029,
+          "salaryCap": 20000000,
+          "activeRosterLimit": 40,
+          "reserveRosterLimit": 8,
+          "practiceSquadLimit": 8,
+          "freeAgencyOpen": "2029-03-10",
+          "freeAgencyClose": "2029-07-15",
+          "tradeDeadline": "2029-11-03",
+          "draftDate": "2029-04-25"
+        },
+        {
+          "season": 2030,
+          "salaryCap": 20000000,
+          "activeRosterLimit": 40,
+          "reserveRosterLimit": 8,
+          "practiceSquadLimit": 8,
+          "freeAgencyOpen": "2030-03-10",
+          "freeAgencyClose": "2030-07-15",
+          "tradeDeadline": "2030-11-03",
+          "draftDate": "2030-04-25"
+        }
+      ],
+      "contracts": {
+        "minYears": 1,
+        "maxYears": 5,
+        "signingBonusProrationMaxYears": 5,
+        "minimumBaseSalary": 10000,
+        "guaranteedFutureBaseOnRelease": true,
+        "signingBonusStaysWithOriginalClubOnTrade": true
+      },
+      "market": {
+        "defaultOfferValidityDays": 7,
+        "futurePickTradeHorizonSeasons": 2,
+        "resolutionPolicy": "checkpoint"
+      },
+      "waivers": {
+        "claimWindowDays": 1,
+        "releasedPlayerWaiverPolicy": "all",
+        "claimWinnerMovesToEnd": true
+      },
+      "draft": {
+        "rounds": 3,
+        "rookieContractByRound": [
+          {
+            "round": 1,
+            "years": 4,
+            "baseSalaryBySeason": [
+              60000,
+              70000,
+              80000,
+              90000
+            ],
+            "signingBonus": 100000
+          },
+          {
+            "round": 2,
+            "years": 4,
+            "baseSalaryBySeason": [
+              40000,
+              45000,
+              50000,
+              55000
+            ],
+            "signingBonus": 40000
+          },
+          {
+            "round": 3,
+            "years": 3,
+            "baseSalaryBySeason": [
+              20000,
+              22000,
+              24000
+            ],
+            "signingBonus": 10000
+          }
+        ]
+      }
+    },
+    "development": {
+      "modelVersion": 1,
+      "checkpointCadenceDays": 7,
+      "opportunityPools": [
+        {
+          "resourceKey": "first_team_reps",
+          "scopeKey": "quarterback",
+          "capacityUnits": 100
+        },
+        {
+          "resourceKey": "development_reps",
+          "scopeKey": "quarterback",
+          "capacityUnits": 60
+        },
+        {
+          "resourceKey": "meeting_attention",
+          "scopeKey": "quarterback",
+          "capacityUnits": 40
+        },
+        {
+          "resourceKey": "installation_work",
+          "scopeKey": "quarterback",
+          "capacityUnits": 30
+        },
+        {
+          "resourceKey": "first_team_reps",
+          "scopeKey": "running_back",
+          "capacityUnits": 100
+        },
+        {
+          "resourceKey": "development_reps",
+          "scopeKey": "running_back",
+          "capacityUnits": 60
+        },
+        {
+          "resourceKey": "meeting_attention",
+          "scopeKey": "running_back",
+          "capacityUnits": 40
+        },
+        {
+          "resourceKey": "installation_work",
+          "scopeKey": "running_back",
+          "capacityUnits": 30
+        },
+        {
+          "resourceKey": "first_team_reps",
+          "scopeKey": "wide_receiver",
+          "capacityUnits": 100
+        },
+        {
+          "resourceKey": "development_reps",
+          "scopeKey": "wide_receiver",
+          "capacityUnits": 60
+        },
+        {
+          "resourceKey": "meeting_attention",
+          "scopeKey": "wide_receiver",
+          "capacityUnits": 40
+        },
+        {
+          "resourceKey": "installation_work",
+          "scopeKey": "wide_receiver",
+          "capacityUnits": 30
+        },
+        {
+          "resourceKey": "first_team_reps",
+          "scopeKey": "offensive_line",
+          "capacityUnits": 100
+        },
+        {
+          "resourceKey": "development_reps",
+          "scopeKey": "offensive_line",
+          "capacityUnits": 60
+        },
+        {
+          "resourceKey": "meeting_attention",
+          "scopeKey": "offensive_line",
+          "capacityUnits": 40
+        },
+        {
+          "resourceKey": "installation_work",
+          "scopeKey": "offensive_line",
+          "capacityUnits": 30
+        },
+        {
+          "resourceKey": "first_team_reps",
+          "scopeKey": "defensive_line",
+          "capacityUnits": 100
+        },
+        {
+          "resourceKey": "development_reps",
+          "scopeKey": "defensive_line",
+          "capacityUnits": 60
+        },
+        {
+          "resourceKey": "meeting_attention",
+          "scopeKey": "defensive_line",
+          "capacityUnits": 40
+        },
+        {
+          "resourceKey": "installation_work",
+          "scopeKey": "defensive_line",
+          "capacityUnits": 30
+        },
+        {
+          "resourceKey": "first_team_reps",
+          "scopeKey": "linebacker",
+          "capacityUnits": 100
+        },
+        {
+          "resourceKey": "development_reps",
+          "scopeKey": "linebacker",
+          "capacityUnits": 60
+        },
+        {
+          "resourceKey": "meeting_attention",
+          "scopeKey": "linebacker",
+          "capacityUnits": 40
+        },
+        {
+          "resourceKey": "installation_work",
+          "scopeKey": "linebacker",
+          "capacityUnits": 30
+        },
+        {
+          "resourceKey": "first_team_reps",
+          "scopeKey": "cornerback",
+          "capacityUnits": 100
+        },
+        {
+          "resourceKey": "development_reps",
+          "scopeKey": "cornerback",
+          "capacityUnits": 60
+        },
+        {
+          "resourceKey": "meeting_attention",
+          "scopeKey": "cornerback",
+          "capacityUnits": 40
+        },
+        {
+          "resourceKey": "installation_work",
+          "scopeKey": "cornerback",
+          "capacityUnits": 30
+        },
+        {
+          "resourceKey": "first_team_reps",
+          "scopeKey": "safety",
+          "capacityUnits": 100
+        },
+        {
+          "resourceKey": "development_reps",
+          "scopeKey": "safety",
+          "capacityUnits": 60
+        },
+        {
+          "resourceKey": "meeting_attention",
+          "scopeKey": "safety",
+          "capacityUnits": 40
+        },
+        {
+          "resourceKey": "installation_work",
+          "scopeKey": "safety",
+          "capacityUnits": 30
+        },
+        {
+          "resourceKey": "first_team_reps",
+          "scopeKey": "tight_end",
+          "capacityUnits": 100
+        },
+        {
+          "resourceKey": "development_reps",
+          "scopeKey": "tight_end",
+          "capacityUnits": 60
+        },
+        {
+          "resourceKey": "meeting_attention",
+          "scopeKey": "tight_end",
+          "capacityUnits": 40
+        },
+        {
+          "resourceKey": "installation_work",
+          "scopeKey": "tight_end",
+          "capacityUnits": 30
+        },
+        {
+          "resourceKey": "first_team_reps",
+          "scopeKey": "kicker",
+          "capacityUnits": 100
+        },
+        {
+          "resourceKey": "development_reps",
+          "scopeKey": "kicker",
+          "capacityUnits": 60
+        },
+        {
+          "resourceKey": "meeting_attention",
+          "scopeKey": "kicker",
+          "capacityUnits": 40
+        },
+        {
+          "resourceKey": "installation_work",
+          "scopeKey": "kicker",
+          "capacityUnits": 30
+        },
+        {
+          "resourceKey": "first_team_reps",
+          "scopeKey": "punter",
+          "capacityUnits": 100
+        },
+        {
+          "resourceKey": "development_reps",
+          "scopeKey": "punter",
+          "capacityUnits": 60
+        },
+        {
+          "resourceKey": "meeting_attention",
+          "scopeKey": "punter",
+          "capacityUnits": 40
+        },
+        {
+          "resourceKey": "installation_work",
+          "scopeKey": "punter",
+          "capacityUnits": 30
+        }
+      ],
+      "maxPlayerLoadUnitsPerCheckpoint": 100,
+      "recoveryUnitsPerDay": 8,
+      "roleLearningScaleBp": 2500,
+      "conditioningScaleBp": 2000,
+      "medicalRecoveryScaleBp": 1500,
+      "capabilityFamilies": [
+        {
+          "familyKey": "explosive_athleticism",
+          "capabilityKeys": [
+            "burst",
+            "agility"
+          ],
+          "maturationMidpointAgeDays": 8036,
+          "declineOnsetAgeDays": 9862,
+          "adaptationScaleBp": 3000,
+          "declineScaleBpPerYear": 250
+        },
+        {
+          "familyKey": "physical_strength",
+          "capabilityKeys": [
+            "strength",
+            "arm_power"
+          ],
+          "maturationMidpointAgeDays": 9131,
+          "declineOnsetAgeDays": 11323,
+          "adaptationScaleBp": 2500,
+          "declineScaleBpPerYear": 120
+        },
+        {
+          "familyKey": "technique",
+          "capabilityKeys": [
+            "hands",
+            "block_technique",
+            "tackling",
+            "run_stopping",
+            "route_craft",
+            "pass_rush",
+            "accuracy"
+          ],
+          "maturationMidpointAgeDays": 9497,
+          "declineOnsetAgeDays": 12053,
+          "adaptationScaleBp": 3500,
+          "declineScaleBpPerYear": 60
+        },
+        {
+          "familyKey": "processing_recognition",
+          "capabilityKeys": [
+            "processing",
+            "vision",
+            "anticipation",
+            "coverage_instincts"
+          ],
+          "maturationMidpointAgeDays": 9862,
+          "declineOnsetAgeDays": 12784,
+          "adaptationScaleBp": 4000,
+          "declineScaleBpPerYear": 30
+        }
+      ]
+    },
+    "football": {
+      "modelVersion": 1,
+      "profileKey": "synthetic_football_v1",
+      "field": {
+        "fieldLengthYards": 100,
+        "firstDownYards": 10,
+        "downsPerSeries": 4,
+        "kickoffYardLine": 35,
+        "touchbackYardLine": 25,
+        "safetyKickYardLine": 20,
+        "extraPointYardLine": 85,
+        "twoPointYardLine": 97
+      },
+      "clock": {
+        "quartersPerGame": 4,
+        "quarterSeconds": 900,
+        "overtimePeriods": 1,
+        "overtimeSeconds": 600,
+        "timeoutsPerHalf": 3,
+        "tieAllowedAfterOvertime": true,
+        "playDurations": [
+          {
+            "playCategory": "run",
+            "minSeconds": 25,
+            "maxSeconds": 40
+          },
+          {
+            "playCategory": "pass",
+            "minSeconds": 15,
+            "maxSeconds": 40
+          },
+          {
+            "playCategory": "defense",
+            "minSeconds": 15,
+            "maxSeconds": 40
+          },
+          {
+            "playCategory": "kickoff",
+            "minSeconds": 5,
+            "maxSeconds": 12
+          },
+          {
+            "playCategory": "punt",
+            "minSeconds": 8,
+            "maxSeconds": 15
+          },
+          {
+            "playCategory": "field_goal",
+            "minSeconds": 5,
+            "maxSeconds": 10
+          },
+          {
+            "playCategory": "extra_point",
+            "minSeconds": 0,
+            "maxSeconds": 5
+          }
+        ]
+      },
+      "scoring": {
+        "touchdown": 6,
+        "fieldGoal": 3,
+        "safety": 2,
+        "extraPoint": 1,
+        "twoPointConversion": 2
+      },
+      "penalties": [
+        {
+          "penaltyKey": "false_start",
+          "against": "offense",
+          "yards": 5,
+          "automaticFirstDown": false,
+          "lossOfDown": false,
+          "enforcement": "dead_ball",
+          "weightBp": 3000
+        },
+        {
+          "penaltyKey": "offensive_holding",
+          "against": "offense",
+          "yards": 10,
+          "automaticFirstDown": false,
+          "lossOfDown": false,
+          "enforcement": "previous_spot",
+          "weightBp": 2500
+        },
+        {
+          "penaltyKey": "offside_defense",
+          "against": "defense",
+          "yards": 5,
+          "automaticFirstDown": false,
+          "lossOfDown": false,
+          "enforcement": "dead_ball",
+          "weightBp": 2000
+        },
+        {
+          "penaltyKey": "defensive_holding",
+          "against": "defense",
+          "yards": 5,
+          "automaticFirstDown": true,
+          "lossOfDown": false,
+          "enforcement": "spot",
+          "weightBp": 1500
+        },
+        {
+          "penaltyKey": "pass_interference_defense",
+          "against": "defense",
+          "yards": 15,
+          "automaticFirstDown": true,
+          "lossOfDown": false,
+          "enforcement": "spot",
+          "weightBp": 1000
+        }
+      ],
+      "substitution": {
+        "playersPerSide": 11,
+        "minOffensiveLinemenOnLine": 5,
+        "eligibleReceiverRoles": [
+          "wide_receiver",
+          "tight_end",
+          "running_back"
+        ],
+        "maxActiveGameDayPlayers": 46
+      },
+      "schemes": [
+        {
+          "schemeKey": "base_offense",
+          "side": "offense"
+        },
+        {
+          "schemeKey": "base_defense",
+          "side": "defense"
+        },
+        {
+          "schemeKey": "special_teams",
+          "side": "special_teams"
+        }
+      ],
+      "personnelGroups": [
+        {
+          "personnelKey": "personnel_11",
+          "side": "offense"
+        },
+        {
+          "personnelKey": "personnel_21",
+          "side": "offense"
+        },
+        {
+          "personnelKey": "personnel_12",
+          "side": "offense"
+        },
+        {
+          "personnelKey": "base_defense_43",
+          "side": "defense"
+        },
+        {
+          "personnelKey": "nickel_defense",
+          "side": "defense"
+        },
+        {
+          "personnelKey": "kickoff_team",
+          "side": "kicking"
+        },
+        {
+          "personnelKey": "punt_team",
+          "side": "kicking"
+        },
+        {
+          "personnelKey": "field_goal_team",
+          "side": "kicking"
+        },
+        {
+          "personnelKey": "return_team",
+          "side": "returning"
+        }
+      ],
+      "formations": [
+        {
+          "formationKey": "single_back_11",
+          "side": "offense",
+          "personnelKey": "personnel_11",
+          "slots": [
+            {
+              "slotKey": "qb",
+              "eligibleRoles": [
+                "quarterback"
+              ]
+            },
+            {
+              "slotKey": "rb",
+              "eligibleRoles": [
+                "running_back"
+              ]
+            },
+            {
+              "slotKey": "wr1",
+              "eligibleRoles": [
+                "wide_receiver"
+              ]
+            },
+            {
+              "slotKey": "wr2",
+              "eligibleRoles": [
+                "wide_receiver"
+              ]
+            },
+            {
+              "slotKey": "wr3",
+              "eligibleRoles": [
+                "wide_receiver"
+              ]
+            },
+            {
+              "slotKey": "te1",
+              "eligibleRoles": [
+                "tight_end"
+              ]
+            },
+            {
+              "slotKey": "ol1",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            },
+            {
+              "slotKey": "ol2",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            },
+            {
+              "slotKey": "ol3",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            },
+            {
+              "slotKey": "ol4",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            },
+            {
+              "slotKey": "ol5",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            }
+          ]
+        },
+        {
+          "formationKey": "two_back_21",
+          "side": "offense",
+          "personnelKey": "personnel_21",
+          "slots": [
+            {
+              "slotKey": "qb",
+              "eligibleRoles": [
+                "quarterback"
+              ]
+            },
+            {
+              "slotKey": "rb",
+              "eligibleRoles": [
+                "running_back"
+              ]
+            },
+            {
+              "slotKey": "rb2",
+              "eligibleRoles": [
+                "running_back"
+              ]
+            },
+            {
+              "slotKey": "wr1",
+              "eligibleRoles": [
+                "wide_receiver"
+              ]
+            },
+            {
+              "slotKey": "wr2",
+              "eligibleRoles": [
+                "wide_receiver"
+              ]
+            },
+            {
+              "slotKey": "te1",
+              "eligibleRoles": [
+                "tight_end"
+              ]
+            },
+            {
+              "slotKey": "ol1",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            },
+            {
+              "slotKey": "ol2",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            },
+            {
+              "slotKey": "ol3",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            },
+            {
+              "slotKey": "ol4",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            },
+            {
+              "slotKey": "ol5",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            }
+          ]
+        },
+        {
+          "formationKey": "two_tight_12",
+          "side": "offense",
+          "personnelKey": "personnel_12",
+          "slots": [
+            {
+              "slotKey": "qb",
+              "eligibleRoles": [
+                "quarterback"
+              ]
+            },
+            {
+              "slotKey": "rb",
+              "eligibleRoles": [
+                "running_back"
+              ]
+            },
+            {
+              "slotKey": "wr1",
+              "eligibleRoles": [
+                "wide_receiver"
+              ]
+            },
+            {
+              "slotKey": "wr2",
+              "eligibleRoles": [
+                "wide_receiver"
+              ]
+            },
+            {
+              "slotKey": "te1",
+              "eligibleRoles": [
+                "tight_end"
+              ]
+            },
+            {
+              "slotKey": "te2",
+              "eligibleRoles": [
+                "tight_end"
+              ]
+            },
+            {
+              "slotKey": "ol1",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            },
+            {
+              "slotKey": "ol2",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            },
+            {
+              "slotKey": "ol3",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            },
+            {
+              "slotKey": "ol4",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            },
+            {
+              "slotKey": "ol5",
+              "eligibleRoles": [
+                "offensive_line"
+              ]
+            }
+          ]
+        },
+        {
+          "formationKey": "four_three_base",
+          "side": "defense",
+          "personnelKey": "base_defense_43",
+          "slots": [
+            {
+              "slotKey": "dl1",
+              "eligibleRoles": [
+                "defensive_line"
+              ]
+            },
+            {
+              "slotKey": "dl2",
+              "eligibleRoles": [
+                "defensive_line"
+              ]
+            },
+            {
+              "slotKey": "dl3",
+              "eligibleRoles": [
+                "defensive_line"
+              ]
+            },
+            {
+              "slotKey": "dl4",
+              "eligibleRoles": [
+                "defensive_line"
+              ]
+            },
+            {
+              "slotKey": "lb1",
+              "eligibleRoles": [
+                "linebacker"
+              ]
+            },
+            {
+              "slotKey": "lb2",
+              "eligibleRoles": [
+                "linebacker"
+              ]
+            },
+            {
+              "slotKey": "lb3",
+              "eligibleRoles": [
+                "linebacker"
+              ]
+            },
+            {
+              "slotKey": "cb1",
+              "eligibleRoles": [
+                "cornerback"
+              ]
+            },
+            {
+              "slotKey": "cb2",
+              "eligibleRoles": [
+                "cornerback"
+              ]
+            },
+            {
+              "slotKey": "s1",
+              "eligibleRoles": [
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "s2",
+              "eligibleRoles": [
+                "safety"
+              ]
+            }
+          ]
+        },
+        {
+          "formationKey": "nickel_425",
+          "side": "defense",
+          "personnelKey": "nickel_defense",
+          "slots": [
+            {
+              "slotKey": "dl1",
+              "eligibleRoles": [
+                "defensive_line"
+              ]
+            },
+            {
+              "slotKey": "dl2",
+              "eligibleRoles": [
+                "defensive_line"
+              ]
+            },
+            {
+              "slotKey": "dl3",
+              "eligibleRoles": [
+                "defensive_line"
+              ]
+            },
+            {
+              "slotKey": "dl4",
+              "eligibleRoles": [
+                "defensive_line"
+              ]
+            },
+            {
+              "slotKey": "lb1",
+              "eligibleRoles": [
+                "linebacker"
+              ]
+            },
+            {
+              "slotKey": "lb2",
+              "eligibleRoles": [
+                "linebacker"
+              ]
+            },
+            {
+              "slotKey": "cb1",
+              "eligibleRoles": [
+                "cornerback"
+              ]
+            },
+            {
+              "slotKey": "cb2",
+              "eligibleRoles": [
+                "cornerback"
+              ]
+            },
+            {
+              "slotKey": "cb3",
+              "eligibleRoles": [
+                "cornerback"
+              ]
+            },
+            {
+              "slotKey": "s1",
+              "eligibleRoles": [
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "s2",
+              "eligibleRoles": [
+                "safety"
+              ]
+            }
+          ]
+        },
+        {
+          "formationKey": "kickoff_unit",
+          "side": "kicking",
+          "personnelKey": "kickoff_team",
+          "slots": [
+            {
+              "slotKey": "kicker",
+              "eligibleRoles": [
+                "kicker"
+              ]
+            },
+            {
+              "slotKey": "cover1",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "cover2",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "cover3",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "cover4",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "cover5",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "cover6",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "cover7",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "cover8",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "cover9",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "cover10",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            }
+          ]
+        },
+        {
+          "formationKey": "kick_return_unit",
+          "side": "returning",
+          "personnelKey": "return_team",
+          "slots": [
+            {
+              "slotKey": "returner",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "cornerback"
+              ]
+            },
+            {
+              "slotKey": "wall1",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "wall2",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "wall3",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "wall4",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "wall5",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "wall6",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "wall7",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "wall8",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "wall9",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "wall10",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            }
+          ]
+        },
+        {
+          "formationKey": "punt_unit",
+          "side": "kicking",
+          "personnelKey": "punt_team",
+          "slots": [
+            {
+              "slotKey": "punter",
+              "eligibleRoles": [
+                "punter"
+              ]
+            },
+            {
+              "slotKey": "shield1",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "shield2",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "shield3",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "shield4",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "shield5",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "shield6",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "shield7",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "shield8",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "shield9",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "shield10",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            }
+          ]
+        },
+        {
+          "formationKey": "punt_return_unit",
+          "side": "returning",
+          "personnelKey": "return_team",
+          "slots": [
+            {
+              "slotKey": "returner",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "cornerback"
+              ]
+            },
+            {
+              "slotKey": "rusher1",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rusher2",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rusher3",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rusher4",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rusher5",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rusher6",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rusher7",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rusher8",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rusher9",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rusher10",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            }
+          ]
+        },
+        {
+          "formationKey": "field_goal_unit",
+          "side": "kicking",
+          "personnelKey": "field_goal_team",
+          "slots": [
+            {
+              "slotKey": "kicker",
+              "eligibleRoles": [
+                "kicker"
+              ]
+            },
+            {
+              "slotKey": "holder",
+              "eligibleRoles": [
+                "punter"
+              ]
+            },
+            {
+              "slotKey": "protect1",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "protect2",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "protect3",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "protect4",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "protect5",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "protect6",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "protect7",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "protect8",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "protect9",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            }
+          ]
+        },
+        {
+          "formationKey": "field_goal_block_unit",
+          "side": "returning",
+          "personnelKey": "return_team",
+          "slots": [
+            {
+              "slotKey": "rush1",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rush2",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rush3",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rush4",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rush5",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rush6",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rush7",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rush8",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rush9",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rush10",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            },
+            {
+              "slotKey": "rush11",
+              "eligibleRoles": [
+                "running_back",
+                "wide_receiver",
+                "tight_end",
+                "offensive_line",
+                "defensive_line",
+                "linebacker",
+                "cornerback",
+                "safety"
+              ]
+            }
+          ]
+        }
+      ],
+      "responsibilities": [
+        {
+          "responsibilityKey": "progression_reads",
+          "transferFamilyKey": "qb_processing"
+        },
+        {
+          "responsibilityKey": "protection_calls",
+          "transferFamilyKey": "qb_processing"
+        },
+        {
+          "responsibilityKey": "run_reads",
+          "transferFamilyKey": "ball_carrier"
+        },
+        {
+          "responsibilityKey": "route_tree",
+          "transferFamilyKey": "route_running"
+        },
+        {
+          "responsibilityKey": "protection_scheme",
+          "transferFamilyKey": "blocking"
+        },
+        {
+          "responsibilityKey": "gap_responsibility",
+          "transferFamilyKey": "front_play"
+        },
+        {
+          "responsibilityKey": "run_fits",
+          "transferFamilyKey": "front_play"
+        },
+        {
+          "responsibilityKey": "coverage_drops",
+          "transferFamilyKey": "coverage"
+        },
+        {
+          "responsibilityKey": "coverage_rules",
+          "transferFamilyKey": "coverage"
+        },
+        {
+          "responsibilityKey": "kick_mechanics",
+          "transferFamilyKey": "kicking"
+        }
+      ],
+      "actions": [
+        {
+          "actionKey": "pass_protect",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "block_technique",
+              "weightBp": 4000
+            },
+            {
+              "capabilityKey": "strength",
+              "weightBp": 2500
+            },
+            {
+              "capabilityKey": "processing",
+              "weightBp": 1500
+            },
+            {
+              "capabilityKey": "agility",
+              "weightBp": 2000
+            }
+          ],
+          "responsibilityKeys": [
+            "protection_scheme"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 2500,
+            "familiarityFloorBp": 3000,
+            "belowFloorExecutionScaleBp": 7000
+          }
+        },
+        {
+          "actionKey": "run_block",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "block_technique",
+              "weightBp": 4000
+            },
+            {
+              "capabilityKey": "strength",
+              "weightBp": 4000
+            },
+            {
+              "capabilityKey": "agility",
+              "weightBp": 2000
+            }
+          ],
+          "responsibilityKeys": [
+            "protection_scheme"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 2500,
+            "familiarityFloorBp": 3000,
+            "belowFloorExecutionScaleBp": 7000
+          }
+        },
+        {
+          "actionKey": "read_progression",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "processing",
+              "weightBp": 5000
+            },
+            {
+              "capabilityKey": "anticipation",
+              "weightBp": 5000
+            }
+          ],
+          "responsibilityKeys": [
+            "progression_reads",
+            "protection_calls"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 2500,
+            "familiarityFloorBp": 3500,
+            "belowFloorExecutionScaleBp": 6500
+          }
+        },
+        {
+          "actionKey": "throw_pass",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "accuracy",
+              "weightBp": 4500
+            },
+            {
+              "capabilityKey": "arm_power",
+              "weightBp": 2000
+            },
+            {
+              "capabilityKey": "processing",
+              "weightBp": 2000
+            },
+            {
+              "capabilityKey": "anticipation",
+              "weightBp": 1500
+            }
+          ],
+          "responsibilityKeys": [
+            "progression_reads"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 3000,
+            "familiarityFloorBp": 3500,
+            "belowFloorExecutionScaleBp": 6500
+          }
+        },
+        {
+          "actionKey": "run_route",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "route_craft",
+              "weightBp": 4500
+            },
+            {
+              "capabilityKey": "burst",
+              "weightBp": 2000
+            },
+            {
+              "capabilityKey": "agility",
+              "weightBp": 2000
+            },
+            {
+              "capabilityKey": "anticipation",
+              "weightBp": 1500
+            }
+          ],
+          "responsibilityKeys": [
+            "route_tree"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 2500,
+            "familiarityFloorBp": 3000,
+            "belowFloorExecutionScaleBp": 7000
+          }
+        },
+        {
+          "actionKey": "catch_ball",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "hands",
+              "weightBp": 7000
+            },
+            {
+              "capabilityKey": "agility",
+              "weightBp": 1500
+            },
+            {
+              "capabilityKey": "anticipation",
+              "weightBp": 1500
+            }
+          ],
+          "responsibilityKeys": [
+            "route_tree"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 2500,
+            "familiarityFloorBp": 3000,
+            "belowFloorExecutionScaleBp": 7500
+          }
+        },
+        {
+          "actionKey": "carry_ball",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "vision",
+              "weightBp": 3000
+            },
+            {
+              "capabilityKey": "burst",
+              "weightBp": 3000
+            },
+            {
+              "capabilityKey": "strength",
+              "weightBp": 2000
+            },
+            {
+              "capabilityKey": "agility",
+              "weightBp": 2000
+            }
+          ],
+          "responsibilityKeys": [
+            "run_reads"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 2500,
+            "familiarityFloorBp": 3000,
+            "belowFloorExecutionScaleBp": 7000
+          }
+        },
+        {
+          "actionKey": "kick_field_goal",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "accuracy",
+              "weightBp": 5000
+            },
+            {
+              "capabilityKey": "arm_power",
+              "weightBp": 5000
+            }
+          ],
+          "responsibilityKeys": [
+            "kick_mechanics"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 4000,
+            "familiarityFloorBp": 3000,
+            "belowFloorExecutionScaleBp": 7000
+          }
+        },
+        {
+          "actionKey": "kick_off",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "arm_power",
+              "weightBp": 6000
+            },
+            {
+              "capabilityKey": "accuracy",
+              "weightBp": 4000
+            }
+          ],
+          "responsibilityKeys": [
+            "kick_mechanics"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 4000,
+            "familiarityFloorBp": 3000,
+            "belowFloorExecutionScaleBp": 7000
+          }
+        },
+        {
+          "actionKey": "punt_ball",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "arm_power",
+              "weightBp": 6000
+            },
+            {
+              "capabilityKey": "accuracy",
+              "weightBp": 4000
+            }
+          ],
+          "responsibilityKeys": [
+            "kick_mechanics"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 4000,
+            "familiarityFloorBp": 3000,
+            "belowFloorExecutionScaleBp": 7000
+          }
+        },
+        {
+          "actionKey": "rush_passer",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "pass_rush",
+              "weightBp": 5000
+            },
+            {
+              "capabilityKey": "burst",
+              "weightBp": 2500
+            },
+            {
+              "capabilityKey": "strength",
+              "weightBp": 2500
+            }
+          ],
+          "responsibilityKeys": [
+            "gap_responsibility"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 2500,
+            "familiarityFloorBp": 3000,
+            "belowFloorExecutionScaleBp": 7000
+          }
+        },
+        {
+          "actionKey": "defend_run",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "run_stopping",
+              "weightBp": 4500
+            },
+            {
+              "capabilityKey": "tackling",
+              "weightBp": 2500
+            },
+            {
+              "capabilityKey": "strength",
+              "weightBp": 1500
+            },
+            {
+              "capabilityKey": "processing",
+              "weightBp": 1500
+            }
+          ],
+          "responsibilityKeys": [
+            "run_fits",
+            "gap_responsibility"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 2500,
+            "familiarityFloorBp": 3000,
+            "belowFloorExecutionScaleBp": 7000
+          }
+        },
+        {
+          "actionKey": "cover_receiver",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "coverage_instincts",
+              "weightBp": 4000
+            },
+            {
+              "capabilityKey": "agility",
+              "weightBp": 2000
+            },
+            {
+              "capabilityKey": "burst",
+              "weightBp": 2000
+            },
+            {
+              "capabilityKey": "anticipation",
+              "weightBp": 2000
+            }
+          ],
+          "responsibilityKeys": [
+            "coverage_rules",
+            "coverage_drops"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 2500,
+            "familiarityFloorBp": 3000,
+            "belowFloorExecutionScaleBp": 6500
+          }
+        },
+        {
+          "actionKey": "tackle_ball_carrier",
+          "capabilityBindings": [
+            {
+              "capabilityKey": "tackling",
+              "weightBp": 7000
+            },
+            {
+              "capabilityKey": "burst",
+              "weightBp": 1500
+            },
+            {
+              "capabilityKey": "anticipation",
+              "weightBp": 1500
+            }
+          ],
+          "responsibilityKeys": [
+            "run_fits",
+            "coverage_rules"
+          ],
+          "participation": {
+            "minFunctionalReadinessBp": 2500,
+            "familiarityFloorBp": 3000,
+            "belowFloorExecutionScaleBp": 7500
+          }
+        }
+      ],
+      "concepts": [
+        {
+          "conceptKey": "inside_run",
+          "side": "offense",
+          "playCategory": "run",
+          "schemeKey": "base_offense",
+          "formationKeys": [
+            "single_back_11",
+            "two_back_21",
+            "two_tight_12"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "run_reads",
+              "actionKey": "carry_ball",
+              "slotKeys": [
+                "rb"
+              ]
+            },
+            {
+              "responsibilityKey": "protection_scheme",
+              "actionKey": "run_block",
+              "slotKeys": [
+                "ol1",
+                "ol2",
+                "ol3",
+                "ol4",
+                "ol5"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "outside_run",
+          "side": "offense",
+          "playCategory": "run",
+          "schemeKey": "base_offense",
+          "formationKeys": [
+            "single_back_11",
+            "two_back_21",
+            "two_tight_12"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "run_reads",
+              "actionKey": "carry_ball",
+              "slotKeys": [
+                "rb"
+              ]
+            },
+            {
+              "responsibilityKey": "protection_scheme",
+              "actionKey": "run_block",
+              "slotKeys": [
+                "ol1",
+                "ol2",
+                "ol3",
+                "ol4",
+                "ol5"
+              ]
+            },
+            {
+              "responsibilityKey": "route_tree",
+              "actionKey": "run_route",
+              "slotKeys": [
+                "wr1",
+                "wr2"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "quick_pass",
+          "side": "offense",
+          "playCategory": "pass",
+          "schemeKey": "base_offense",
+          "formationKeys": [
+            "single_back_11",
+            "two_back_21",
+            "two_tight_12"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "progression_reads",
+              "actionKey": "throw_pass",
+              "slotKeys": [
+                "qb"
+              ]
+            },
+            {
+              "responsibilityKey": "route_tree",
+              "actionKey": "run_route",
+              "slotKeys": [
+                "wr1",
+                "wr2"
+              ]
+            },
+            {
+              "responsibilityKey": "route_tree",
+              "actionKey": "catch_ball",
+              "slotKeys": [
+                "wr1",
+                "wr2"
+              ]
+            },
+            {
+              "responsibilityKey": "protection_scheme",
+              "actionKey": "pass_protect",
+              "slotKeys": [
+                "ol1",
+                "ol2",
+                "ol3",
+                "ol4",
+                "ol5"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "deep_pass",
+          "side": "offense",
+          "playCategory": "pass",
+          "schemeKey": "base_offense",
+          "formationKeys": [
+            "single_back_11",
+            "two_back_21",
+            "two_tight_12"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "progression_reads",
+              "actionKey": "read_progression",
+              "slotKeys": [
+                "qb"
+              ]
+            },
+            {
+              "responsibilityKey": "progression_reads",
+              "actionKey": "throw_pass",
+              "slotKeys": [
+                "qb"
+              ]
+            },
+            {
+              "responsibilityKey": "route_tree",
+              "actionKey": "run_route",
+              "slotKeys": [
+                "wr1",
+                "wr2"
+              ]
+            },
+            {
+              "responsibilityKey": "route_tree",
+              "actionKey": "catch_ball",
+              "slotKeys": [
+                "wr1",
+                "wr2"
+              ]
+            },
+            {
+              "responsibilityKey": "protection_scheme",
+              "actionKey": "pass_protect",
+              "slotKeys": [
+                "ol1",
+                "ol2",
+                "ol3",
+                "ol4",
+                "ol5"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "zone_shell",
+          "side": "defense",
+          "playCategory": "defense",
+          "schemeKey": "base_defense",
+          "formationKeys": [
+            "four_three_base",
+            "nickel_425"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "coverage_drops",
+              "actionKey": "cover_receiver",
+              "slotKeys": [
+                "lb1",
+                "lb2",
+                "cb1",
+                "cb2",
+                "s1",
+                "s2"
+              ]
+            },
+            {
+              "responsibilityKey": "gap_responsibility",
+              "actionKey": "rush_passer",
+              "slotKeys": [
+                "dl1",
+                "dl2",
+                "dl3",
+                "dl4"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "man_press",
+          "side": "defense",
+          "playCategory": "defense",
+          "schemeKey": "base_defense",
+          "formationKeys": [
+            "four_three_base",
+            "nickel_425"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "coverage_rules",
+              "actionKey": "cover_receiver",
+              "slotKeys": [
+                "cb1",
+                "cb2",
+                "s1",
+                "s2"
+              ]
+            },
+            {
+              "responsibilityKey": "gap_responsibility",
+              "actionKey": "rush_passer",
+              "slotKeys": [
+                "dl1",
+                "dl2",
+                "dl3",
+                "dl4"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "run_commit_front",
+          "side": "defense",
+          "playCategory": "defense",
+          "schemeKey": "base_defense",
+          "formationKeys": [
+            "four_three_base"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "run_fits",
+              "actionKey": "defend_run",
+              "slotKeys": [
+                "dl1",
+                "dl2",
+                "dl3",
+                "dl4",
+                "lb1",
+                "lb2",
+                "lb3"
+              ]
+            },
+            {
+              "responsibilityKey": "run_fits",
+              "actionKey": "tackle_ball_carrier",
+              "slotKeys": [
+                "s1",
+                "s2"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "kickoff_deep",
+          "side": "kicking",
+          "playCategory": "kickoff",
+          "schemeKey": "special_teams",
+          "formationKeys": [
+            "kickoff_unit"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "kick_mechanics",
+              "actionKey": "kick_off",
+              "slotKeys": [
+                "kicker"
+              ]
+            },
+            {
+              "responsibilityKey": "run_fits",
+              "actionKey": "tackle_ball_carrier",
+              "slotKeys": [
+                "cover1",
+                "cover2",
+                "cover3",
+                "cover4",
+                "cover5",
+                "cover6",
+                "cover7",
+                "cover8",
+                "cover9",
+                "cover10"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "kick_return_middle",
+          "side": "returning",
+          "playCategory": "kickoff",
+          "schemeKey": "special_teams",
+          "formationKeys": [
+            "kick_return_unit"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "run_reads",
+              "actionKey": "carry_ball",
+              "slotKeys": [
+                "returner"
+              ]
+            },
+            {
+              "responsibilityKey": "protection_scheme",
+              "actionKey": "run_block",
+              "slotKeys": [
+                "wall1",
+                "wall2",
+                "wall3",
+                "wall4",
+                "wall5",
+                "wall6",
+                "wall7",
+                "wall8",
+                "wall9",
+                "wall10"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "punt_standard",
+          "side": "kicking",
+          "playCategory": "punt",
+          "schemeKey": "special_teams",
+          "formationKeys": [
+            "punt_unit"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "kick_mechanics",
+              "actionKey": "punt_ball",
+              "slotKeys": [
+                "punter"
+              ]
+            },
+            {
+              "responsibilityKey": "protection_scheme",
+              "actionKey": "pass_protect",
+              "slotKeys": [
+                "shield1",
+                "shield2",
+                "shield3",
+                "shield4",
+                "shield5",
+                "shield6",
+                "shield7",
+                "shield8",
+                "shield9",
+                "shield10"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "punt_return_safe",
+          "side": "returning",
+          "playCategory": "punt",
+          "schemeKey": "special_teams",
+          "formationKeys": [
+            "punt_return_unit"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "run_reads",
+              "actionKey": "carry_ball",
+              "slotKeys": [
+                "returner"
+              ]
+            },
+            {
+              "responsibilityKey": "gap_responsibility",
+              "actionKey": "rush_passer",
+              "slotKeys": [
+                "rusher1",
+                "rusher2",
+                "rusher3",
+                "rusher4",
+                "rusher5",
+                "rusher6",
+                "rusher7",
+                "rusher8",
+                "rusher9",
+                "rusher10"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "field_goal_attempt",
+          "side": "kicking",
+          "playCategory": "field_goal",
+          "schemeKey": "special_teams",
+          "formationKeys": [
+            "field_goal_unit"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "kick_mechanics",
+              "actionKey": "kick_field_goal",
+              "slotKeys": [
+                "kicker"
+              ]
+            },
+            {
+              "responsibilityKey": "protection_scheme",
+              "actionKey": "pass_protect",
+              "slotKeys": [
+                "protect1",
+                "protect2",
+                "protect3",
+                "protect4",
+                "protect5",
+                "protect6",
+                "protect7",
+                "protect8",
+                "protect9"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "field_goal_block",
+          "side": "returning",
+          "playCategory": "field_goal",
+          "schemeKey": "special_teams",
+          "formationKeys": [
+            "field_goal_block_unit"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "gap_responsibility",
+              "actionKey": "rush_passer",
+              "slotKeys": [
+                "rush1",
+                "rush2",
+                "rush3",
+                "rush4",
+                "rush5",
+                "rush6",
+                "rush7",
+                "rush8",
+                "rush9",
+                "rush10",
+                "rush11"
+              ]
+            }
+          ]
+        },
+        {
+          "conceptKey": "extra_point_attempt",
+          "side": "kicking",
+          "playCategory": "extra_point",
+          "schemeKey": "special_teams",
+          "formationKeys": [
+            "field_goal_unit"
+          ],
+          "assignments": [
+            {
+              "responsibilityKey": "kick_mechanics",
+              "actionKey": "kick_field_goal",
+              "slotKeys": [
+                "kicker"
+              ]
+            }
+          ]
+        }
+      ],
+      "matchupEdges": [
+        {
+          "offenseConceptKey": "inside_run",
+          "defenseConceptKey": "run_commit_front",
+          "edgeBp": -1200
+        },
+        {
+          "offenseConceptKey": "inside_run",
+          "defenseConceptKey": "zone_shell",
+          "edgeBp": 600
+        },
+        {
+          "offenseConceptKey": "outside_run",
+          "defenseConceptKey": "run_commit_front",
+          "edgeBp": -400
+        },
+        {
+          "offenseConceptKey": "quick_pass",
+          "defenseConceptKey": "zone_shell",
+          "edgeBp": -300
+        },
+        {
+          "offenseConceptKey": "quick_pass",
+          "defenseConceptKey": "man_press",
+          "edgeBp": 400
+        },
+        {
+          "offenseConceptKey": "deep_pass",
+          "defenseConceptKey": "man_press",
+          "edgeBp": -500
+        },
+        {
+          "offenseConceptKey": "deep_pass",
+          "defenseConceptKey": "zone_shell",
+          "edgeBp": 300
+        },
+        {
+          "offenseConceptKey": "deep_pass",
+          "defenseConceptKey": "run_commit_front",
+          "edgeBp": 1000
+        }
+      ],
+      "exposureConversion": [
+        {
+          "actionKey": "pass_protect",
+          "loadUnitsPerExposure": 2
+        },
+        {
+          "actionKey": "run_block",
+          "loadUnitsPerExposure": 2
+        },
+        {
+          "actionKey": "read_progression",
+          "loadUnitsPerExposure": 1
+        },
+        {
+          "actionKey": "throw_pass",
+          "loadUnitsPerExposure": 2
+        },
+        {
+          "actionKey": "run_route",
+          "loadUnitsPerExposure": 2
+        },
+        {
+          "actionKey": "catch_ball",
+          "loadUnitsPerExposure": 2
+        },
+        {
+          "actionKey": "carry_ball",
+          "loadUnitsPerExposure": 3
+        },
+        {
+          "actionKey": "kick_field_goal",
+          "loadUnitsPerExposure": 1
+        },
+        {
+          "actionKey": "kick_off",
+          "loadUnitsPerExposure": 1
+        },
+        {
+          "actionKey": "punt_ball",
+          "loadUnitsPerExposure": 1
+        },
+        {
+          "actionKey": "rush_passer",
+          "loadUnitsPerExposure": 3
+        },
+        {
+          "actionKey": "defend_run",
+          "loadUnitsPerExposure": 3
+        },
+        {
+          "actionKey": "cover_receiver",
+          "loadUnitsPerExposure": 2
+        },
+        {
+          "actionKey": "tackle_ball_carrier",
+          "loadUnitsPerExposure": 3
+        }
+      ],
+      "outcome": {
+        "marginScaleBp": 2500,
+        "executionNoiseBp": 1500,
+        "baselineCompletionBp": 6200,
+        "baselineSackBp": 600,
+        "baselineInterceptionBp": 250,
+        "baselineFumbleBp": 120,
+        "baselineRushYardsTenths": 42,
+        "baselineCompletionYardsTenths": 70,
+        "yardsPerMarginTenths": 30,
+        "maxPlayYards": 99,
+        "baselineKickMakeBp": 8500,
+        "kickDistancePenaltyBpPerYard": 120,
+        "baselinePuntYards": 44,
+        "baselineKickoffYards": 62,
+        "baselineReturnYardsTenths": 220,
+        "penaltyChanceBp": 600
+      },
+      "injury": {
+        "baseRiskBpPerExposure": 6,
+        "fatigueRiskScaleBp": 3000,
+        "durabilityProtectionScaleBp": 5000,
+        "exposureRiskBpByCategory": [
+          {
+            "playCategory": "run",
+            "riskBp": 10000
+          },
+          {
+            "playCategory": "pass",
+            "riskBp": 8000
+          },
+          {
+            "playCategory": "defense",
+            "riskBp": 8000
+          },
+          {
+            "playCategory": "kickoff",
+            "riskBp": 12000
+          },
+          {
+            "playCategory": "punt",
+            "riskBp": 6000
+          },
+          {
+            "playCategory": "field_goal",
+            "riskBp": 3000
+          },
+          {
+            "playCategory": "extra_point",
+            "riskBp": 2000
+          }
+        ],
+        "conditions": [
+          {
+            "conditionKey": "synthetic_lower_leg_strain",
+            "affectedActionKeys": [
+              "carry_ball",
+              "run_route",
+              "cover_receiver",
+              "rush_passer"
+            ],
+            "weightBp": 5000,
+            "severityMinBp": 1500,
+            "severityMaxBp": 6000
+          },
+          {
+            "conditionKey": "synthetic_upper_body_strain",
+            "affectedActionKeys": [
+              "throw_pass",
+              "catch_ball",
+              "run_block",
+              "pass_protect"
+            ],
+            "weightBp": 3500,
+            "severityMinBp": 1000,
+            "severityMaxBp": 5000
+          },
+          {
+            "conditionKey": "synthetic_contact_impairment",
+            "affectedActionKeys": [
+              "tackle_ball_carrier",
+              "defend_run",
+              "kick_off"
+            ],
+            "weightBp": 1500,
+            "severityMinBp": 2500,
+            "severityMaxBp": 8000
+          }
+        ],
+        "recoveryResponsivenessMinBp": 3000,
+        "recoveryResponsivenessMaxBp": 8000,
+        "baselineReinjuryRiskBp": 500
+      },
+      "ordering": {
+        "selectionOrder": [
+          "offense",
+          "defense"
+        ],
+        "participantOrder": "slot_declaration",
+        "phaseOrder": [
+          "pre_snap_recognition",
+          "assignment_execution",
+          "protection_and_pressure",
+          "progression_and_target",
+          "coverage_and_contest",
+          "ball_progression_and_result",
+          "contact_and_exposure",
+          "flags_and_administration",
+          "clock_possession_score"
+        ]
+      }
+    }
+  },
+  "contentHash": "0b598910c6fa9f9bc90e12b0ccc802153eea3fcbe9c414ddc4c83244b4af5565"
+}

@@ -3,6 +3,7 @@ import {
   parseDevelopmentRulesV1,
   type DevelopmentRulesV1,
 } from './developmentRules';
+import { parseFootballRulesV1, type FootballRulesV1 } from './footballRules';
 import { hashCanonical, isHash } from './hash';
 import { isValidId } from './ids';
 import {
@@ -34,6 +35,12 @@ export interface LeagueRules {
    * `requireDevelopmentRules` and fail closed when it is absent.
    */
   readonly development?: DevelopmentRulesV1;
+  /**
+   * Package E football rules and SYNTHETIC calibration. OPTIONAL: Package A-D rulesets omit
+   * it and keep their content hashes. Package E commands call `requireFootballRules` and
+   * fail closed when it is absent.
+   */
+  readonly football?: FootballRulesV1;
 }
 
 export interface RulesetRef {
@@ -73,7 +80,7 @@ const parseBody = (rec: Record<string, unknown>): LeagueRulesetBody => {
   requireExactKeys(
     rules,
     ['maxAdvanceDaysPerCommand'],
-    ['transactions', 'development'],
+    ['transactions', 'development', 'football'],
     'ruleset.rules',
   );
   const transactions =
@@ -87,6 +94,10 @@ const parseBody = (rec: Record<string, unknown>): LeagueRulesetBody => {
     rules.development === undefined
       ? undefined
       : parseDevelopmentRulesV1(rules.development, 'ruleset.rules.development');
+  const football =
+    rules.football === undefined
+      ? undefined
+      : parseFootballRulesV1(rules.football, 'ruleset.rules.football');
   return {
     schemaVersion: SCHEMA_VERSION,
     rulesetId: rulesId,
@@ -107,6 +118,7 @@ const parseBody = (rec: Record<string, unknown>): LeagueRulesetBody => {
       ),
       ...(transactions === undefined ? {} : { transactions }),
       ...(development === undefined ? {} : { development }),
+      ...(football === undefined ? {} : { football }),
     },
   };
 };

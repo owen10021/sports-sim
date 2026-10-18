@@ -2,6 +2,7 @@ import { SCHEMA_VERSION, type SourceProvenance } from './provenance';
 import { moneyAmount as m } from './economy';
 import { rulesetRefOf, sealRuleset } from './ruleset';
 import { sealSeed } from './seed';
+import { SYNTHETIC_FOOTBALL_RULES } from './footballSynthetic';
 
 /**
  * The synthetic Package A ruleset and seed, built with the production sealing code.
@@ -228,5 +229,64 @@ export const SYNTHETIC_PACKAGE_D_RULESET = sealRuleset({
         },
       ],
     },
+  },
+});
+
+const packageEProvenance: SourceProvenance = {
+  sourceId: 'sport-sim-synthetic-package-e-rules',
+  sourceKind: 'synthetic',
+  retrievedAt: '2026-10-18T00:00:00Z',
+  effectiveAsOf: '2026-10-18',
+  validationStatus: 'synthetic',
+  note: 'Synthetic engineering/calibration fixture for Package E football. Values are test boundaries, NOT empirically validated NFL football, injury or tactical truth.',
+};
+
+/** Position scopes Package E adds to Package D's opportunity pools (synthetic). */
+const PACKAGE_E_POSITION_SCOPES = [
+  ...POSITION_SCOPES,
+  'tight_end',
+  'kicker',
+  'punter',
+] as const;
+
+/**
+ * The explicit synthetic football profile Package E acceptance runs on: Package D's
+ * development rules and Package C's transaction rules, with roster limits and the cap
+ * enlarged so the two fixture clubs can field full 11-on-11 rosters, plus the versioned
+ * `football` rules. Nothing here claims to be real football, injury or tactical truth. The
+ * committed JSON in /fixtures is generated from this module and tested against it.
+ */
+export const SYNTHETIC_PACKAGE_E_RULESET = sealRuleset({
+  schemaVersion: SCHEMA_VERSION,
+  rulesetId: 'synthetic-package-e-rules',
+  rulesetVersion: 1,
+  displayName: 'Synthetic Package E Football Rules',
+  provenance: [packageEProvenance],
+  rules: {
+    maxAdvanceDaysPerCommand: 30,
+    transactions: {
+      ...SYNTHETIC_PACKAGE_C_RULESET.rules.transactions!,
+      seasonRules:
+        SYNTHETIC_PACKAGE_C_RULESET.rules.transactions!.seasonRules.map(
+          (s) => ({
+            ...s,
+            salaryCap: m(20_000_000),
+            activeRosterLimit: 40,
+            reserveRosterLimit: 8,
+            practiceSquadLimit: 8,
+          }),
+        ),
+    },
+    development: {
+      ...SYNTHETIC_PACKAGE_D_RULESET.rules.development!,
+      opportunityPools: PACKAGE_E_POSITION_SCOPES.flatMap((scopeKey) =>
+        RESOURCE_CAPACITY.map(([resourceKey, capacityUnits]) => ({
+          resourceKey,
+          scopeKey,
+          capacityUnits,
+        })),
+      ),
+    },
+    football: SYNTHETIC_FOOTBALL_RULES,
   },
 });

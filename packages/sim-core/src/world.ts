@@ -34,7 +34,7 @@ import { emptyPlansState, type PlansState } from './plans';
 import { seededContractsState, type ContractsState } from './contracts';
 import { seededDevelopmentState, type DevelopmentState } from './development';
 import { seededMedicalState, type MedicalState } from './medical';
-import { emptyFootballState, type FootballState } from './football';
+import { seededFootballState, type FootballState } from './football';
 import { seededDraftState, type DraftState } from './draft';
 import { seededMarketState, type MarketState } from './market';
 import { seededRosterState, type RosterState } from './roster';
@@ -164,7 +164,7 @@ export const createWorld = (
     draft: seededDraftState(seed.packageCSubstrate),
     development: seededDevelopmentState(seed.packageDSubstrate, seed.startDate),
     medical: seededMedicalState(seed.packageDSubstrate),
-    football: emptyFootballState(),
+    football: seededFootballState(seed.packageESubstrate),
   });
 };
 
