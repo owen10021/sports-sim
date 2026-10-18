@@ -108,3 +108,4 @@ export * from './packageDScenarioRun';
 export { PACKAGE_D_EXPECTED } from './packageDGoldenExpected';
 export * from './playResolver';
 export * from './gameState';
+export * from './gameResolver';

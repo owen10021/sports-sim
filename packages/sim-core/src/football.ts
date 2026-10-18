@@ -144,9 +144,39 @@ export interface GameState extends FootballSelectionSituation {
 
 export interface FootballGameRecord {
   readonly id: RecordId;
+  readonly fixtureId: RecordId;
+  readonly playedAt: string;
+  readonly homeOrganizationId: EntityId;
+  readonly awayOrganizationId: EntityId;
+  readonly homeScore: number;
+  readonly awayScore: number;
+  readonly gamePlanSnapshotIds: readonly [RecordId, RecordId];
+  readonly playIds: readonly RecordId[];
+  readonly participationSummary: readonly {
+    readonly playerId: string;
+    readonly organizationId: EntityId;
+    readonly plays: number;
+    readonly workloadUnits: number;
+  }[];
+  readonly teamStatSummary: {
+    readonly homeOffensivePlays: number;
+    readonly awayOffensivePlays: number;
+  };
+  readonly medicalEpisodeIds: readonly RecordId[];
+  readonly rngDrawStart: number;
+  readonly rngDrawCount: number;
+  readonly reconciliation: {
+    readonly playCount: number;
+    readonly finalPeriod: number;
+    readonly finalClockSecondsRemaining: number;
+    readonly hash: string;
+  };
 }
 export interface ResolvedPlayFact {
   readonly id: RecordId;
+  readonly gameId: RecordId;
+  readonly fixtureId: RecordId;
+  readonly sequence: number;
 }
 export interface FootballCausalLink {
   readonly id: RecordId;

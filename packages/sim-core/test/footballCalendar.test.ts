@@ -3,6 +3,7 @@ import {
   DeterministicRng,
   SYNTHETIC_PACKAGE_E_RULESET,
   WorldKernel,
+  fingerprintWorld,
   nextBlockingFootballFixture,
   scheduledGameProblems,
   type FootballWorld,
@@ -16,6 +17,7 @@ import {
   eWorld,
 } from './support/packageEHarness';
 import { dRunner } from './support/packageDHarness';
+import { selectionWorld } from './support/footballSelectionHarness';
 import {
   codeOf,
   messageOf,
@@ -127,7 +129,7 @@ describe('AdvanceDays at a scheduled game', () => {
   });
 });
 
-describe('ResolveScheduledGame skeleton', () => {
+describe('ResolveScheduledGame validation and progression', () => {
   const kinds = ['human_gm', 'commissioner', 'system', 'test_harness'] as const;
   const outcome = (r: Runner, kind: (typeof kinds)[number]) => {
     const res = r.run(
@@ -148,17 +150,36 @@ describe('ResolveScheduledGame skeleton', () => {
     for (const o of unplanned) expect(o).toEqual(unplanned[0]);
     expect(unplanned[0]!.message).toContain('exactly one committed game plan');
 
-    // Due and fully planned: still refused until the resolver exists.
-    const ready = kinds.map((k) => {
+    // Plans alone are not enough: there are still no legal game-day designations.
+    const undesignated = kinds.map((k) => {
       const r = eRunner(E_GAME_DAY_1);
       commitBothGamePlans(r);
       return outcome(r, k);
     });
-    for (const o of ready) expect(o).toEqual(ready[0]);
-    expect(ready[0]).toEqual({
-      code: 'INVALID_PAYLOAD',
-      message: 'game resolution is not available yet',
+    for (const o of undesignated) expect(o).toEqual(undesignated[0]);
+    expect(undesignated[0]!.code).toBe('INVALID_PAYLOAD');
+    expect(undesignated[0]!.message).toContain(
+      'no kickoff kicking concept can be fielded',
+    );
+  });
+
+  it('produces the identical football world for every permitted progression actor', () => {
+    const fingerprints = kinds.map((kind) => {
+      const kernel = WorldKernel.fromGenesis(
+        selectionWorld(),
+        SYNTHETIC_PACKAGE_E_RULESET,
+      );
+      const r = runnerFor(kernel);
+      const res = okResult(
+        r.run({ type: 'ResolveScheduledGame', fixtureId: E_FIXTURE_1 }, kind),
+      );
+      return {
+        fingerprint: fingerprintWorld(res.world),
+        football: JSON.stringify(res.world.football),
+        rng: res.world.rng,
+      };
     });
+    for (const result of fingerprints) expect(result).toEqual(fingerprints[0]);
   });
 
   it('refuses CPU orgs and delegates, and changes nothing on any rejection', () => {

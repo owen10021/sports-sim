@@ -23,6 +23,10 @@ import {
 } from './gameDay';
 import { scheduledGameProblems } from './footballCalendar';
 import {
+  FootballGameResolutionError,
+  resolveScheduledGameChange,
+} from './gameResolver';
+import {
   GAME_PLAN_EXECUTION_TERMS_TYPE,
   buildGamePlanExecutionSnapshot,
   isGamePlanFailure,
@@ -242,8 +246,8 @@ const GAME_RESOLUTION_AUTHORITY: ReadonlySet<string> = new Set([
 ]);
 
 /**
- * Skeleton: validates that a game is due and fully prepared, then rejects until the
- * resolver exists. The actor kind is checked once and is never an input to validation.
+ * Resolves one due scheduled game through the single complete-game resolver. Actor kind
+ * authorizes progression only; it never reaches the football calls, probabilities or RNG.
  */
 const routeResolveScheduledGame = (ctx: RouteContext, c: Cmd): RouteOutcome => {
   if (!GAME_RESOLUTION_AUTHORITY.has(ctx.actor.kind))
@@ -267,7 +271,25 @@ const routeResolveScheduledGame = (ctx: RouteContext, c: Cmd): RouteOutcome => {
     return bad('ResolveScheduledGame needs exactly { fixtureId }');
   const problems = scheduledGameProblems(ctx.world, c.fixtureId);
   if (problems.length > 0) return bad(problems.join('; '));
-  return bad('game resolution is not available yet');
+  try {
+    const resolved = resolveScheduledGameChange(
+      ctx.world,
+      ctx.ruleset,
+      c.fixtureId,
+    );
+    return {
+      ok: true,
+      authorizationDetail: `${ctx.actor.kind} may resolve scheduled games`,
+      resolution: {
+        nextWorld: resolved.nextWorld,
+        eventSpecs: resolved.eventSpecs,
+        detail: `resolved scheduled game ${c.fixtureId}`,
+      },
+    };
+  } catch (e) {
+    if (e instanceof FootballGameResolutionError) return bad(e.message);
+    throw e;
+  }
 };
 
 export const routeFootballCommand = (
