@@ -105,6 +105,8 @@ describe('the Package E synthetic world seed', () => {
       homeOrganizationId: 'org-northfield',
       awayOrganizationId: 'org-southport',
       rulesProfileKey: 'synthetic_football_v1',
+      status: 'scheduled',
+      finalGameId: null,
     });
     expect(w.football.designations).toEqual([]);
     expect(w.football.gamePlans).toEqual([]);

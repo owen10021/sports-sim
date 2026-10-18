@@ -30,6 +30,8 @@ export * from './developmentRules';
 export * from './packageDSeedParse';
 export * from './packageDWorldSeed';
 export * from './developmentFootballUsage';
+export * from './gameDay';
+export * from './footballCommands';
 export * from './footballRules';
 export * from './footballSynthetic';
 export * from './packageESeedParse';

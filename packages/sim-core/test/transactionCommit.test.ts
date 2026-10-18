@@ -63,9 +63,9 @@ describe('Package C proposal categories', () => {
     }
   });
 
-  it('keeps game-day and staff-hiring categories reserved', () => {
+  it('keeps the staff-hiring category reserved (game-day activation opened in Package E)', () => {
     const r = fresh();
-    for (const category of ['game_day_activation', 'staff_hiring']) {
+    for (const category of ['staff_hiring']) {
       const before = snapshotOf(r.kernel);
       const res = r.run(submitDomain(NF.org, NF.gm, category));
       expect(codeOf(res)).toBe('INVALID_PAYLOAD');

@@ -4,9 +4,8 @@ import type { PackageESubstrateSeed } from './packageESeedParse';
 /**
  * Package E football state (world model 5).
  *
- * Owns the six authoritative collection boundaries. Task 2 adds the fixture schedule only;
- * later Package E tasks add the remaining record fields and behavior, and no gameplay truth
- * is invented here.
+ * Owns the six authoritative collection boundaries. Later Package E tasks add the remaining
+ * record fields and behavior, and no gameplay truth is invented here.
  */
 export interface FootballFixture {
   readonly id: RecordId;
@@ -16,9 +15,33 @@ export interface FootballFixture {
   readonly awayOrganizationId: EntityId;
   /** Which football rules profile governs the game. */
   readonly rulesProfileKey: string;
+  /** `final` once the complete game has been resolved; never rewound. */
+  readonly status: 'scheduled' | 'final';
+  /** The game record that finalized this fixture, or `null` while it is scheduled. */
+  readonly finalGameId: RecordId | null;
 }
+
+/**
+ * One organization's committed game-day designation of one player for one fixture. An
+ * `active` designation names the unit, role and depth the coach intends; an `inactive` one
+ * names none of them. Designations never alter Package C roster membership, rights or
+ * contracts: they are a per-game layer over the roster.
+ */
 export interface GameDayDesignation {
   readonly id: RecordId;
+  readonly fixtureId: RecordId;
+  readonly organizationId: EntityId;
+  readonly playerId: EntityId;
+  readonly status: 'active' | 'inactive';
+  /** Formation side (`offense`, `defense`, `kicking`, `returning`); `null` when inactive. */
+  readonly unitKey: string | null;
+  /** Player role the designation fills in that unit; `null` when inactive. */
+  readonly roleKey: string | null;
+  /** 1-based order within the unit and role (1 = first choice); `null` when inactive. */
+  readonly depthOrder: number | null;
+  /** The authorized proposal whose exact terms created this record. */
+  readonly sourceProposalId: RecordId;
+  readonly committedAt: string;
 }
 export interface GamePlanExecutionSnapshot {
   readonly id: RecordId;
@@ -56,6 +79,8 @@ export const seededFootballState = (
     homeOrganizationId: entityId(f.homeOrganizationId),
     awayOrganizationId: entityId(f.awayOrganizationId),
     rulesProfileKey: f.rulesProfileKey,
+    status: 'scheduled' as const,
+    finalGameId: null,
   })),
 });
 

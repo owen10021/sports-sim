@@ -5,6 +5,10 @@ import {
 import { advanceDevelopmentForDay } from './developmentCalendar';
 import { DevelopmentResolutionError } from './developmentResolution';
 import {
+  routeFootballCommand,
+  type FootballCommandType,
+} from './footballCommands';
+import {
   routeMedicalCommand,
   type MedicalCommandType,
 } from './medicalCommands';
@@ -162,7 +166,12 @@ interface MedicalRoutedCommand extends CommandPayloadBase {
   readonly type: MedicalCommandType;
 }
 
+interface FootballRoutedCommand extends CommandPayloadBase {
+  readonly type: FootballCommandType;
+}
+
 type RoutableCommand =
+  | FootballRoutedCommand
   | MedicalRoutedCommand
   | DevelopmentRoutedCommand
   | AdvanceDaysCommand
@@ -181,6 +190,7 @@ type RoutableCommand =
   | ContractRoutedCommand;
 
 const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
+  CommitGameDayActivationProposal: true,
   CreateMedicalEpisode: true,
   ReassessMedicalEpisode: true,
   RecordParticipationPreference: true,
@@ -327,6 +337,8 @@ const routeAdvanceDays = (
 export const routeCommand = (ctx: RouteContext): RouteOutcome => {
   const command = ctx.command as RoutableCommand;
   switch (command.type) {
+    case 'CommitGameDayActivationProposal':
+      return routeFootballCommand(ctx, command);
     case 'CreateMedicalEpisode':
     case 'ReassessMedicalEpisode':
     case 'RecordParticipationPreference':
