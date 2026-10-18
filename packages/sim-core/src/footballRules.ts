@@ -216,6 +216,8 @@ export type FootballInjuryCondition = {
 };
 
 export type FootballInjuryParameters = {
+  /** Ruleset-declared contact classes a play participant's exposure may be tagged with. */
+  readonly contactClasses: readonly string[];
   readonly baseRiskBpPerExposure: number;
   readonly fatigueRiskScaleBp: number;
   readonly durabilityProtectionScaleBp: number;
@@ -815,6 +817,7 @@ const parseInjury = (v: unknown, path: string): FootballInjuryParameters => {
   requireExactKeys(
     r,
     [
+      'contactClasses',
       'baseRiskBpPerExposure',
       'fatigueRiskScaleBp',
       'durabilityProtectionScaleBp',
@@ -905,7 +908,11 @@ const parseInjury = (v: unknown, path: string): FootballInjuryParameters => {
       path,
       'recoveryResponsivenessMinBp must not exceed recoveryResponsivenessMaxBp',
     );
+  const contactClasses = keyList(r.contactClasses, `${path}.contactClasses`);
+  if (contactClasses.length === 0)
+    fail(`${path}.contactClasses`, 'must not be empty');
   return {
+    contactClasses,
     baseRiskBpPerExposure: asBp(
       r.baseRiskBpPerExposure,
       `${path}.baseRiskBpPerExposure`,

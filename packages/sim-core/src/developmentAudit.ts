@@ -235,7 +235,9 @@ export const auditDevelopmentWorld = (
   }
 
   for (const checkpoint of world.development.checkpoints) {
-    if (checkpoint.kind === 'passive') continue;
+    // Passive ticks and football-usage records own no opportunity window or allocations.
+    if (checkpoint.kind === 'passive' || checkpoint.kind === 'football_usage')
+      continue;
     const missingAllocation = checkpoint.allocationIds.some(
       (id) =>
         !allocationsById.has(id) ||
@@ -380,10 +382,19 @@ export const auditDevelopmentWorld = (
   for (const event of world.development.events) {
     const checkpoint = checkpointsById.get(event.checkpointId);
     const passive = checkpoint?.kind === 'passive';
+    // Football usage is caused by a fixture and the play it happened in; the play record
+    // itself lands with the game, so fixtures are the only id required to exist.
+    const usage = checkpoint?.kind === 'football_usage';
     if (
       checkpoint === undefined ||
       !checkpoint.eventIds.includes(event.id) ||
+      (usage &&
+        !(
+          event.causalRecordIds.length > 0 &&
+          world.football.fixtures.some((f) => f.id === event.causalRecordIds[0])
+        )) ||
       (!passive &&
+        !usage &&
         (event.causalRecordIds.length === 0 ||
           event.causalRecordIds.some((id) => !knownCausalIds.has(id))))
     )

@@ -144,6 +144,12 @@ const takenRecordIds = (world: FootballWorld): Set<string> =>
     ...world.medical.preferences.map((x) => x.id),
     ...world.medical.recommendations.map((x) => x.id),
     ...world.medical.clearances.map((x) => x.id),
+    ...world.football.fixtures.map((x) => x.id),
+    ...world.football.designations.map((x) => x.id),
+    ...world.football.gamePlans.map((x) => x.id),
+    ...world.football.games.map((x) => x.id),
+    ...world.football.plays.map((x) => x.id),
+    ...world.football.causalLinks.map((x) => x.id),
   ]);
 
 /**

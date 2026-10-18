@@ -6,7 +6,11 @@ import type {
   OpportunityAllocation,
   RoleKnowledgeRecord,
 } from './development';
-import { developmentProfileFor, readinessFor } from './development';
+import {
+  developmentProfileFor,
+  readinessAfterLoad,
+  readinessFor,
+} from './development';
 import {
   familyOfCapability,
   requireDevelopmentRules,
@@ -412,29 +416,16 @@ export const resolveDevelopmentWindow = (
       );
     }
     if (prior !== undefined) {
-      const nextFatigue = bp(
-        fatigue +
-          Math.floor((load * 10000) / rules.maxPlayerLoadUnitsPerCheckpoint),
+      const nextReadiness = readinessAfterLoad(
+        prior,
+        load,
+        rules,
+        window.toDate,
       );
-      const conditioningDelta =
-        load > 0
-          ? Math.floor(
-              (Math.min(load, rules.maxPlayerLoadUnitsPerCheckpoint) *
-                rules.conditioningScaleBp) /
-                rules.maxPlayerLoadUnitsPerCheckpoint,
-            )
-          : 0;
-      const nextConditioning = bp(prior.conditioningBp + conditioningDelta);
+      const nextFatigue = nextReadiness.acuteFatigueBp;
+      const nextConditioning = nextReadiness.conditioningBp;
       readiness = readiness.map((r) =>
-        r.playerId !== player.personId
-          ? r
-          : {
-              ...r,
-              conditioningBp: nextConditioning,
-              acuteFatigueBp: nextFatigue,
-              accumulatedLoadUnits: r.accumulatedLoadUnits + load,
-              updatedAt: window.toDate,
-            },
+        r.playerId !== player.personId ? r : nextReadiness,
       );
       addEvent(
         player.personId,

@@ -806,6 +806,7 @@ export const SYNTHETIC_FOOTBALL_RULES: FootballRulesV1 = {
     penaltyChanceBp: 600,
   },
   injury: {
+    contactClasses: ['none', 'incidental', 'engaged', 'tackle'],
     baseRiskBpPerExposure: 6,
     fatigueRiskScaleBp: 3000,
     durabilityProtectionScaleBp: 5000,

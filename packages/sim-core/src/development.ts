@@ -106,8 +106,11 @@ export interface OpportunityAllocation {
 
 export interface DevelopmentCheckpointRecord {
   readonly id: RecordId;
-  /** Passive ticks own person-time; opportunity checkpoints own only committed work. */
-  readonly kind?: 'passive';
+  /**
+   * Passive ticks own person-time; opportunity checkpoints (no kind) own only committed
+   * work; `football_usage` checkpoints own already-resolved football exposure (Package E).
+   */
+  readonly kind?: 'passive' | 'football_usage';
   readonly organizationId: EntityId | null;
   readonly windowId: RecordId | null;
   readonly fromDate: string;
@@ -225,6 +228,40 @@ export const seededDevelopmentState = (
     opportunityAllocations: [],
     checkpoints: [],
     events: [],
+  };
+};
+
+const boundedBp = (v: number): number =>
+  Math.max(0, Math.min(10000, Math.floor(v)));
+
+/**
+ * THE one Package D formula for how workload moves readiness: fatigue rises with load
+ * against the per-checkpoint maximum, conditioning rises with capped load, accumulated load
+ * adds up. Used by opportunity checkpoints and football usage alike so there is never a
+ * second readiness formula. Pure; consumes no randomness.
+ */
+export const readinessAfterLoad = (
+  prior: PlayerReadinessRecord,
+  loadUnits: number,
+  rules: {
+    readonly maxPlayerLoadUnitsPerCheckpoint: number;
+    readonly conditioningScaleBp: number;
+  },
+  updatedAt: string,
+): PlayerReadinessRecord => {
+  const max = rules.maxPlayerLoadUnitsPerCheckpoint;
+  const conditioningDelta =
+    loadUnits > 0
+      ? Math.floor((Math.min(loadUnits, max) * rules.conditioningScaleBp) / max)
+      : 0;
+  return {
+    ...prior,
+    conditioningBp: boundedBp(prior.conditioningBp + conditioningDelta),
+    acuteFatigueBp: boundedBp(
+      prior.acuteFatigueBp + Math.floor((loadUnits * 10000) / max),
+    ),
+    accumulatedLoadUnits: prior.accumulatedLoadUnits + loadUnits,
+    updatedAt,
   };
 };
 

@@ -29,6 +29,7 @@ export * from './football';
 export * from './developmentRules';
 export * from './packageDSeedParse';
 export * from './packageDWorldSeed';
+export * from './developmentFootballUsage';
 export * from './footballRules';
 export * from './footballSynthetic';
 export * from './packageESeedParse';

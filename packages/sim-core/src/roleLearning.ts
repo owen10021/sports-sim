@@ -148,6 +148,35 @@ const mulBp = (value: number, factor: number): number =>
   Math.floor((value * factor) / 10000);
 
 /**
+ * THE one Package D role-learning gain formula: saturating toward mastery, scaled by the
+ * share of the per-checkpoint maximum actually spent, teaching quality and the player's own
+ * processing and adaptability. Taught work passes a weighted teaching quality; exposure
+ * learned in games passes the neutral 10000 (there is no teacher, and no second formula).
+ */
+export const roleLearningGainBp = (input: {
+  readonly beforeBp: number;
+  readonly meaningfulUnits: number;
+  readonly teachingBp: number;
+  readonly processingBp: number;
+  readonly adaptabilityBp: number;
+  readonly rules: Pick<
+    DevelopmentRulesV1,
+    'maxPlayerLoadUnitsPerCheckpoint' | 'roleLearningScaleBp'
+  >;
+}): number => {
+  const unitBp = Math.floor(
+    (input.meaningfulUnits * 10000) /
+      input.rules.maxPlayerLoadUnitsPerCheckpoint,
+  );
+  let gain = mulBp(10000 - input.beforeBp, input.rules.roleLearningScaleBp);
+  gain = mulBp(gain, unitBp);
+  gain = mulBp(gain, input.teachingBp);
+  gain = mulBp(gain, input.processingBp);
+  gain = mulBp(gain, input.adaptabilityBp);
+  return gain;
+};
+
+/**
  * Only installed/development work can teach named responsibilities. Shared lesson units
  * are divided across those responsibilities; teaching quality is a weighted average,
  * not a sum of coach bonuses. Learning saturates toward actual responsibility mastery.
@@ -194,15 +223,15 @@ export const resolveRoleLearning = (
     input.rules.maxPlayerLoadUnitsPerCheckpoint,
     units,
   );
-  const unitBp = Math.floor(
-    (meaningfulUnits * 10000) / input.rules.maxPlayerLoadUnitsPerCheckpoint,
-  );
   const teachingBp = units > 0 ? Math.floor(weightedTeaching / units) : 0;
-  let gain = mulBp(10000 - beforeBp, input.rules.roleLearningScaleBp);
-  gain = mulBp(gain, unitBp);
-  gain = mulBp(gain, teachingBp);
-  gain = mulBp(gain, input.processingBp);
-  gain = mulBp(gain, input.adaptabilityBp);
+  const gain = roleLearningGainBp({
+    beforeBp,
+    meaningfulUnits,
+    teachingBp,
+    processingBp: input.processingBp,
+    adaptabilityBp: input.adaptabilityBp,
+    rules: input.rules,
+  });
   return {
     playerId: input.playerId,
     schemeKey: input.schemeKey,

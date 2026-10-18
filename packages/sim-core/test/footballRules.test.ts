@@ -292,7 +292,7 @@ describe('the synthetic Package E ruleset', () => {
       JSON.parse(JSON.stringify(SYNTHETIC_PACKAGE_E_RULESET)),
     );
     expect(SYNTHETIC_PACKAGE_E_RULESET.contentHash).toBe(
-      '0b598910c6fa9f9bc90e12b0ccc802153eea3fcbe9c414ddc4c83244b4af5565',
+      '6e3e878da3159402e337c6dde51b6d674258c00d38d90e94a9e4c2ec2da7fa4c',
     );
     expect(validateRulesetManifest(file).contentHash).toBe(file.contentHash);
   });
