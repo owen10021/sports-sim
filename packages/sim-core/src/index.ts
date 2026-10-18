@@ -114,3 +114,4 @@ export * from './footballStats';
 export * from './footballEvidence';
 export * from './footballView';
 export * from './sundayProof';
+export * from './gameCast';
