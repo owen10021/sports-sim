@@ -177,6 +177,7 @@ export interface ResolvedPlayFact {
   readonly gameId: RecordId;
   readonly fixtureId: RecordId;
   readonly sequence: number;
+  readonly medicalEpisodeIds: readonly RecordId[];
 }
 export interface FootballCausalLink {
   readonly id: RecordId;

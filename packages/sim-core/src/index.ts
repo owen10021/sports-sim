@@ -109,3 +109,4 @@ export { PACKAGE_D_EXPECTED } from './packageDGoldenExpected';
 export * from './playResolver';
 export * from './gameState';
 export * from './gameResolver';
+export * from './footballInjuries';

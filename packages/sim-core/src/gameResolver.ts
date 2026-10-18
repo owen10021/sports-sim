@@ -1,5 +1,10 @@
 import type { EventSpec } from './commandRouter';
-import { mintRecordIds } from './commandSupport';
+import { mintRecordId } from './commandSupport';
+import { developmentProfileFor } from './development';
+import {
+  applyFootballUsageEvidence,
+  type FootballUsageEvidence,
+} from './developmentFootballUsage';
 import {
   createInitialGameState,
   designationProblems,
@@ -13,9 +18,12 @@ import {
   type ResolvedPlayFact,
 } from './football';
 import { scheduledGameProblems } from './footballCalendar';
+import { resolveFootballInjuryOccurrence } from './footballInjuries';
 import { requireFootballRules, type FootballRulesV1 } from './footballRules';
 import { hashCanonical } from './hash';
+import type { RecordId } from './ids';
 import { medicalWorkloadCap } from './medical';
+import { createMedicalEpisodeChange } from './medicalCommands';
 import { resolvePlay, type ResolvedPlayDraft } from './playResolver';
 import { DeterministicRng } from './rng';
 import type { LeagueRulesetManifest } from './ruleset';
@@ -28,9 +36,14 @@ export class FootballGameResolutionError extends Error {
   }
 }
 
+export interface CompleteGamePlayDraft extends ResolvedPlayDraft {
+  readonly id: RecordId;
+  readonly medicalEpisodeIds: readonly RecordId[];
+}
+
 export interface CompleteGameDraft {
   readonly gameRecord: FootballGameRecord;
-  readonly plays: readonly ResolvedPlayDraft[];
+  readonly plays: readonly CompleteGamePlayDraft[];
   readonly finalState: GameState;
   readonly rngDrawStart: number;
   readonly rngDrawCount: number;
@@ -127,7 +140,37 @@ const assertMedicalCaps = (
   }
 };
 
-const participationSummary = (plays: readonly ResolvedPlayDraft[]) => {
+const usageEvidenceFor = (
+  playId: RecordId,
+  occurredAt: string,
+  play: ResolvedPlayDraft,
+): readonly FootballUsageEvidence[] =>
+  play.participation.map((p) => ({
+    fixtureId: play.fixtureId,
+    playId,
+    organizationId: p.organizationId,
+    playerId: p.playerId,
+    occurredAt,
+    workloadUnits: p.workloadUnits,
+    contactClass: p.contactClass,
+    responsibilityExposures: p.responsibilityExposures,
+    actionExposures: p.actionExposures,
+  }));
+
+const createdEpisodeId = (
+  before: FootballWorld,
+  after: FootballWorld,
+): RecordId => {
+  const prior = new Set(before.medical.episodes.map((e) => e.id));
+  const created = after.medical.episodes.filter((e) => !prior.has(e.id));
+  if (created.length !== 1)
+    return fail(
+      `football medical ingress created ${created.length} episodes, expected 1`,
+    );
+  return created[0]!.id;
+};
+
+const participationSummary = (plays: readonly CompleteGamePlayDraft[]) => {
   const byPlayer = new Map<
     string,
     {
@@ -189,13 +232,22 @@ export const resolveScheduledGameChange = (
 
   const rng = DeterministicRng.fromState(world.rng);
   const rngDrawStart = rng.snapshot().draws;
+  let workingWorld = world;
+  const gameMint = mintRecordId(workingWorld);
+  const gameId = gameMint.id;
+  workingWorld = {
+    ...workingWorld,
+    nextIds: { ...workingWorld.nextIds, record: gameMint.next },
+  };
   let state = createInitialGameState(
     rules,
     orgs,
     fixture.id,
     fixture.awayOrganizationId,
   );
-  const plays: ResolvedPlayDraft[] = [];
+  const plays: CompleteGamePlayDraft[] = [];
+  const eventSpecs: EventSpec[] = [];
+  const medicalEpisodeIds: RecordId[] = [];
   const MAX_PLAYS = 2000;
 
   while (state.status !== 'final') {
@@ -203,7 +255,7 @@ export const resolveScheduledGameChange = (
       fail(
         `game ${fixture.id} exceeded ${MAX_PLAYS} plays without reaching final`,
       );
-    const football = footballForAvailablePlayers(world, state, rules);
+    const football = footballForAvailablePlayers(workingWorld, state, rules);
     let resolved;
     try {
       resolved = resolvePlay(
@@ -211,9 +263,9 @@ export const resolveScheduledGameChange = (
           ruleset,
           football,
           latent: {
-            roster: world.roster,
-            development: world.development,
-            medical: world.medical,
+            roster: workingWorld.roster,
+            development: workingWorld.development,
+            medical: workingWorld.medical,
           },
           gameState: state,
         },
@@ -224,19 +276,98 @@ export const resolveScheduledGameChange = (
       throw error;
     }
     state = resolved.nextGameState;
-    assertMedicalCaps(world, state, resolved.resolved);
-    plays.push(resolved.resolved);
+    assertMedicalCaps(workingWorld, state, resolved.resolved);
+
+    const playMint = mintRecordId(workingWorld);
+    const playId = playMint.id;
+    const provisional: ResolvedPlayFact = {
+      id: playId,
+      gameId,
+      fixtureId: fixture.id,
+      sequence: resolved.resolved.sequence,
+      medicalEpisodeIds: [],
+    };
+    workingWorld = {
+      ...workingWorld,
+      rng: rng.snapshot(),
+      nextIds: { ...workingWorld.nextIds, record: playMint.next },
+      football: {
+        ...workingWorld.football,
+        plays: [...workingWorld.football.plays, provisional],
+      },
+    };
+
+    const usage = applyFootballUsageEvidence(
+      workingWorld,
+      ruleset,
+      usageEvidenceFor(playId, world.simDate, resolved.resolved),
+    );
+    workingWorld = usage.nextWorld;
+    eventSpecs.push(...usage.eventSpecs);
+
+    const playMedicalIds: RecordId[] = [];
+    const participants = [...resolved.resolved.participation].sort((a, b) =>
+      a.playerId < b.playerId ? -1 : a.playerId > b.playerId ? 1 : 0,
+    );
+    for (const participant of participants) {
+      const readiness =
+        workingWorld.development.readiness.find(
+          (r) => r.playerId === participant.playerId,
+        ) ?? fail(`missing D readiness for ${participant.playerId}`);
+      const profile =
+        developmentProfileFor(workingWorld.development, participant.playerId) ??
+        fail(`missing D development profile for ${participant.playerId}`);
+      const occurrence = resolveFootballInjuryOccurrence(
+        rules,
+        {
+          fixtureId: fixture.id,
+          playId,
+          organizationId: participant.organizationId,
+          playerId: participant.playerId,
+          occurredAt: world.simDate,
+          playCategory: resolved.resolved.playCategory,
+          contactClass: participant.contactClass,
+          actionExposures: participant.actionExposures,
+          fatigueBp: readiness.acuteFatigueBp,
+          durabilityBp: profile.durabilityBp,
+        },
+        rng.nextU32(),
+      );
+      if (occurrence === null) continue;
+      const beforeMedical = {
+        ...workingWorld,
+        rng: rng.snapshot(),
+      };
+      const medical = createMedicalEpisodeChange(
+        beforeMedical,
+        occurrence.medicalInput,
+      );
+      const episodeId = createdEpisodeId(beforeMedical, medical.nextWorld);
+      workingWorld = medical.nextWorld;
+      eventSpecs.push(...medical.eventSpecs);
+      playMedicalIds.push(episodeId);
+      medicalEpisodeIds.push(episodeId);
+    }
+    workingWorld = { ...workingWorld, rng: rng.snapshot() };
+    if (playMedicalIds.length > 0) {
+      workingWorld = {
+        ...workingWorld,
+        football: {
+          ...workingWorld.football,
+          plays: workingWorld.football.plays.map((p) =>
+            p.id === playId ? { ...p, medicalEpisodeIds: playMedicalIds } : p,
+          ),
+        },
+      };
+    }
+    plays.push({
+      ...resolved.resolved,
+      id: playId,
+      medicalEpisodeIds: playMedicalIds,
+    });
   }
 
-  const minted = mintRecordIds(world, 1 + plays.length);
-  const gameId = minted.ids[0]!;
-  const playIds = minted.ids.slice(1);
-  const playRecords: ResolvedPlayFact[] = playIds.map((id, index) => ({
-    id,
-    gameId,
-    fixtureId: fixture.id,
-    sequence: index + 1,
-  }));
+  const playIds = plays.map((p) => p.id);
   const rngDrawCount = rng.snapshot().draws - rngDrawStart;
   const summary = participationSummary(plays);
   const gameRecord: FootballGameRecord = {
@@ -258,7 +389,7 @@ export const resolveScheduledGameChange = (
         (p) => p.offenseOrganizationId === fixture.awayOrganizationId,
       ).length,
     },
-    medicalEpisodeIds: [],
+    medicalEpisodeIds: [...medicalEpisodeIds],
     rngDrawStart,
     rngDrawCount,
     reconciliation: {
@@ -276,40 +407,38 @@ export const resolveScheduledGameChange = (
   };
 
   const nextFootball: FootballState = {
-    ...world.football,
-    fixtures: world.football.fixtures.map((f) =>
+    ...workingWorld.football,
+    fixtures: workingWorld.football.fixtures.map((f) =>
       f.id === fixture.id
         ? { ...f, status: 'final' as const, finalGameId: gameId }
         : f,
     ),
-    games: [...world.football.games, gameRecord],
-    plays: [...world.football.plays, ...playRecords],
+    games: [...workingWorld.football.games, gameRecord],
   };
   const nextWorld: FootballWorld = {
-    ...world,
+    ...workingWorld,
     football: nextFootball,
     rng: rng.snapshot(),
-    nextIds: { ...world.nextIds, record: minted.next },
   };
+
+  eventSpecs.push({
+    type: 'ScheduledGameResolved',
+    payload: {
+      fixtureId: fixture.id,
+      gameId,
+      homeOrganizationId: fixture.homeOrganizationId,
+      awayOrganizationId: fixture.awayOrganizationId,
+      homeScore: state.homeScore,
+      awayScore: state.awayScore,
+      playCount: plays.length,
+      rngDrawStart,
+      rngDrawCount,
+    },
+  });
 
   return {
     nextWorld,
-    eventSpecs: [
-      {
-        type: 'ScheduledGameResolved',
-        payload: {
-          fixtureId: fixture.id,
-          gameId,
-          homeOrganizationId: fixture.homeOrganizationId,
-          awayOrganizationId: fixture.awayOrganizationId,
-          homeScore: state.homeScore,
-          awayScore: state.awayScore,
-          playCount: plays.length,
-          rngDrawStart,
-          rngDrawCount,
-        },
-      },
-    ],
+    eventSpecs,
     gameDraft: {
       gameRecord,
       plays,
