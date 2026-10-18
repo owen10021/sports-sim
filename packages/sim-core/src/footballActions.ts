@@ -4,7 +4,11 @@ import {
   personOwnedRoleKnowledge,
   projectTransferFamiliarity,
 } from './roleLearning';
-import { footballAction, requireFootballRules } from './footballRules';
+import {
+  footballAction,
+  requireFootballRules,
+  type FootballRulesV1,
+} from './footballRules';
 import type { LeagueRulesetManifest } from './ruleset';
 import type { FootballWorld } from './world';
 
@@ -69,8 +73,25 @@ export const deriveFootballActionInput = (
   actionKey: string,
   schemeKey: string,
   responsibilityKey: string,
+): FootballActionInput =>
+  deriveFootballActionInputFromRules(
+    world,
+    requireFootballRules(ruleset),
+    playerId,
+    actionKey,
+    schemeKey,
+    responsibilityKey,
+  );
+
+/** Same derivation for a caller that already holds the validated football rules. */
+export const deriveFootballActionInputFromRules = (
+  world: Pick<FootballWorld, 'roster' | 'development' | 'medical'>,
+  rules: FootballRulesV1,
+  playerId: EntityId,
+  actionKey: string,
+  schemeKey: string,
+  responsibilityKey: string,
 ): FootballActionInput => {
-  const rules = requireFootballRules(ruleset);
   const action = footballAction(rules, actionKey);
   if (action === undefined)
     return fail(`unknown football action "${actionKey}"`);

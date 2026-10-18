@@ -104,6 +104,20 @@ export interface FootballSelectionSituation {
   }[];
 }
 
+/**
+ * Ephemeral complete-game resolution state that the pure play resolver reads and returns.
+ * It is the public scoreboard plus resolver bookkeeping, and it is NOT a world collection.
+ * Task 8 owns down/distance/possession/score/period transitions; until then
+ * `resolvePlay` advances only the bookkeeping it determines itself.
+ */
+export interface GameState extends FootballSelectionSituation {
+  readonly fixtureId: RecordId;
+  /** Plays already resolved in this game; the next play is sequence `playsResolved + 1`. */
+  readonly playsResolved: number;
+  /** What the next snap is. Scrimmage plays are the only kind the V1 play resolver runs yet. */
+  readonly nextSnap: 'scrimmage' | 'extra_point' | 'kickoff';
+}
+
 export interface FootballGameRecord {
   readonly id: RecordId;
 }

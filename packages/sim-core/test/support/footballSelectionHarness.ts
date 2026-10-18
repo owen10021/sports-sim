@@ -7,6 +7,8 @@ import {
   type FootballWorld,
   type GameDayDesignation,
   type GamePlanExecutionSnapshot,
+  type GameState,
+  type PlayStateInput,
 } from '../../src/index';
 import {
   E_FIXTURE_1,
@@ -133,6 +135,34 @@ export const situationFor = (
   awayTimeoutsRemaining: 3,
   resolvedCalls: [],
   ...over,
+});
+
+/** A fresh game: scoreboard at kickoff of the first scrimmage down, no plays resolved. */
+export const gameStateFor = (
+  possession: EntityId,
+  over: Partial<GameState> = {},
+): GameState => ({
+  ...situationFor(possession),
+  fixtureId: recordId(E_FIXTURE_1),
+  playsResolved: 0,
+  nextSnap: 'scrimmage',
+  ...over,
+});
+
+/** The exact accepted resolver input for a world: no team rating or control flag exists. */
+export const playInput = (
+  world: FootballWorld,
+  gameState: GameState,
+  ruleset: PlayStateInput['ruleset'] = RULESET,
+): PlayStateInput => ({
+  ruleset,
+  football: world.football,
+  latent: {
+    roster: world.roster,
+    development: world.development,
+    medical: world.medical,
+  },
+  gameState,
 });
 
 /** `n` well-spread unsigned 32-bit rolls, deterministic and RNG-free. */

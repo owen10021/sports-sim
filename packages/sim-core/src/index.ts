@@ -106,3 +106,4 @@ export * from './developmentAudit';
 export * from './packageDScenario';
 export * from './packageDScenarioRun';
 export { PACKAGE_D_EXPECTED } from './packageDGoldenExpected';
+export * from './playResolver';
