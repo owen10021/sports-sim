@@ -19,6 +19,11 @@ import {
   type ResolvedPlayFact,
 } from './football';
 import { scheduledGameProblems } from './footballCalendar';
+import {
+  createFootballObservationClaims,
+  defaultFootballObserver,
+  type FootballObservationInput,
+} from './footballEvidence';
 import { resolveFootballInjuryOccurrence } from './footballInjuries';
 import { requireFootballRules, type FootballRulesV1 } from './footballRules';
 import { deriveGameStatistics, reconcileFinalGame } from './footballStats';
@@ -479,7 +484,7 @@ export const resolveScheduledGameChange = (
     ),
     games: [...workingWorld.football.games, gameRecord],
   };
-  const nextWorld: FootballWorld = {
+  let nextWorld: FootballWorld = {
     ...workingWorld,
     football: nextFootball,
     rng: rng.snapshot(),
@@ -499,6 +504,43 @@ export const resolveScheduledGameChange = (
       rngDrawCount,
     },
   });
+
+  const observationInputs: FootballObservationInput[] = [];
+  for (const organizationId of [
+    fixture.homeOrganizationId,
+    fixture.awayOrganizationId,
+  ] as const) {
+    const sourcePersonId = defaultFootballObserver(nextWorld, organizationId);
+    const observedPlay = finalGamePlays.find((play) =>
+      play.participation.some((p) => p.organizationId === organizationId),
+    );
+    const subject = observedPlay?.participation.find(
+      (p) => p.organizationId === organizationId,
+    );
+    if (
+      sourcePersonId === null ||
+      observedPlay === undefined ||
+      subject === undefined
+    )
+      continue;
+    observationInputs.push({
+      sourcePersonId,
+      organizationId,
+      fixtureId: fixture.id,
+      gameId,
+      playId: observedPlay.id,
+      observationType: 'execution_result',
+      subjectPlayerId: subject.playerId,
+    });
+  }
+  if (observationInputs.length > 0) {
+    const observations = createFootballObservationClaims(
+      nextWorld,
+      observationInputs,
+    );
+    nextWorld = observations.nextWorld;
+    eventSpecs.push(...observations.eventSpecs);
+  }
 
   return {
     nextWorld,
