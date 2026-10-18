@@ -12,10 +12,12 @@ import {
   runPackageBOnDevice,
   runPackageCOnDevice,
   runPackageDOnDevice,
+  runPackageEOnDevice,
   type GoldenDiagnostics,
   type PackageBDiagnostics,
   type PackageCDiagnostics,
   type PackageDDiagnostics,
+  type PackageEDiagnostics,
 } from '../src/diagnostics/goldenDiagnostics';
 import { useCareer } from '../src/lifecycle/CareerProvider';
 import {
@@ -46,6 +48,10 @@ export default function Diagnostics() {
   );
   const [packageD, setPackageD] = useState<PackageDDiagnostics | null>(null);
   const [packageDError, setPackageDError] = useState<DiagnosticLine | null>(
+    null,
+  );
+  const [packageE, setPackageE] = useState<PackageEDiagnostics | null>(null);
+  const [packageEError, setPackageEError] = useState<DiagnosticLine | null>(
     null,
   );
   const [running, setRunning] = useState(false);
@@ -136,6 +142,22 @@ export default function Diagnostics() {
     }
   };
 
+  const runPackageE = async () => {
+    setRunning(true);
+    try {
+      setPackageEError(null);
+      setPackageE(await runPackageEOnDevice());
+    } catch (e) {
+      setPackageE(null);
+      setPackageEError({
+        ok: false,
+        text: `ERROR: ${e instanceof Error ? e.message : String(e)}`,
+      });
+    } finally {
+      setRunning(false);
+    }
+  };
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: colors.bg }}
@@ -211,6 +233,35 @@ export default function Diagnostics() {
           <Row label="Fingerprint" value={packageB?.fingerprint ?? '-'} />
           <Row label="Event-chain head" value={packageB?.chainHead ?? '-'} />
         </Card>
+        <Card title="Package E scenario (football engine + Sunday Proof)">
+          <Row
+            label="Kernel vs Node/Hermes"
+            value={text(packageE?.kernel ?? packageEError)}
+            tone={tone(packageE?.kernel ?? packageEError)}
+          />
+          <Row
+            label="SQLite round trip"
+            value={text(packageE?.store ?? null)}
+            tone={tone(packageE?.store ?? null)}
+          />
+          <Row label="Fingerprint" value={packageE?.fingerprint ?? '-'} />
+          <Row label="Event-chain head" value={packageE?.chainHead ?? '-'} />
+          <Row
+            label="Fast Sim + GameCast reads"
+            value={text(packageE?.projectionSafety ?? null)}
+            tone={tone(packageE?.projectionSafety ?? null)}
+          />
+          <Row label="RNG draws" value={String(packageE?.rngDraws ?? '-')} />
+          <Row
+            label="Final score"
+            value={
+              packageE == null
+                ? '-'
+                : `${packageE.homeScore}-${packageE.awayScore}`
+            }
+          />
+          <Row label="Play count" value={String(packageE?.playCount ?? '-')} />
+        </Card>
         <Card title="Package D scenario (development + medical)">
           <Row
             label="Kernel vs Node/Hermes"
@@ -240,6 +291,11 @@ export default function Diagnostics() {
           <Row label="Fingerprint" value={packageC?.fingerprint ?? '-'} />
           <Row label="Event-chain head" value={packageC?.chainHead ?? '-'} />
         </Card>
+        <Button
+          label="Run Package E scenario"
+          disabled={running}
+          onPress={() => void runPackageE()}
+        />
         <Button
           label="Run Package D scenario"
           disabled={running}

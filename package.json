@@ -24,12 +24,13 @@
     "golden:package-d:write": "tsx packages/headless/src/bin.ts package-d-golden --write",
     "hermes:package-d:check": "node scripts/hermes-golden.mjs --scenario package-d",
     "export:ios": "npm run export:ios --workspace apps/mobile",
-    "ci": "npm run typecheck && npm test && npm run lint && npm run format:check && npm run golden:check && npm run golden:package-b:check && npm run golden:package-c:check && npm run golden:package-d:check && npm run golden:package-e:check && npm run export:ios",
+    "ci": "npm run typecheck && npm test && npm run lint && npm run format:check && npm run golden:check && npm run golden:package-b:check && npm run golden:package-c:check && npm run golden:package-d:check && npm run golden:package-e:check && npm run hermes:package-d:check && npm run hermes:package-e:check && npm run export:ios",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "golden:package-e:check": "tsx packages/headless/src/bin.ts package-e-golden",
-    "golden:package-e:write": "tsx packages/headless/src/bin.ts package-e-golden --write"
+    "golden:package-e:write": "tsx packages/headless/src/bin.ts package-e-golden --write",
+    "hermes:package-e:check": "node scripts/hermes-golden.mjs --scenario package-e"
   },
   "devDependencies": {
     "@babel/core": "7.29.7",

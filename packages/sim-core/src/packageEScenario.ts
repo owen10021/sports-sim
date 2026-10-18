@@ -401,10 +401,12 @@ const add = (
   });
 };
 
-for (const club of [
-  { key: 'nf', org: NF_ORG_E, gm: NF_GM_E },
-  { key: 'sp', org: SP_ORG_E, gm: SP_GM_E },
-] as const) {
+(
+  [
+    { key: 'nf', org: NF_ORG_E, gm: NF_GM_E },
+    { key: 'sp', org: SP_ORG_E, gm: SP_GM_E },
+  ] as const
+).forEach((club) => {
   add(
     `${club.key}-strategy-proposal`,
     proposal(
@@ -433,7 +435,7 @@ for (const club of [
       },
     },
   );
-}
+});
 
 add(
   'pregame-medical-episode',
@@ -485,10 +487,12 @@ add(
   },
 );
 
-for (const club of [
-  { key: 'nf', org: NF_ORG_E, gm: NF_GM_E, coach: NF_COACH_E, playerOf: nf },
-  { key: 'sp', org: SP_ORG_E, gm: SP_GM_E, coach: SP_COACH_E, playerOf: sp },
-] as const) {
+(
+  [
+    { key: 'nf', org: NF_ORG_E, gm: NF_GM_E, coach: NF_COACH_E, playerOf: nf },
+    { key: 'sp', org: SP_ORG_E, gm: SP_GM_E, coach: SP_COACH_E, playerOf: sp },
+  ] as const
+).forEach((club) => {
   add(
     `${club.key}-activation-proposal`,
     proposal(
@@ -547,7 +551,7 @@ for (const club of [
       },
     },
   );
-}
+});
 
 add(
   'advance-to-game-day',

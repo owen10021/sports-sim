@@ -1,5 +1,6 @@
 import {
   GOLDEN_EXPECTED,
+  canonicalString,
   PACKAGE_B_EXPECTED,
   diffGolden,
   diffPackageB,
@@ -11,9 +12,15 @@ import {
   runPackageCThroughStore,
   runPackageDScenario,
   runPackageDThroughStore,
+  executePackageEScenario,
+  fastSimSummary,
+  fingerprintWorld,
+  gameCastFrames,
+  runPackageEThroughStore,
   type PackageBResult,
   type PackageCResult,
   type PackageDResult,
+  type PackageEResult,
 } from '@sport-sim/sim-core';
 import {
   disposeScratchDatabases,
@@ -30,6 +37,10 @@ import {
   judgePackageDDirectRun,
   judgePackageDStoreRun,
 } from './packageDJudgement';
+import {
+  judgePackageEDirectRun,
+  judgePackageEStoreRun,
+} from './packageEJudgement';
 
 export interface GoldenDiagnostics {
   readonly kernel: DiagnosticLine;
@@ -179,6 +190,68 @@ export const runPackageDOnDevice = async (): Promise<PackageDDiagnostics> => {
     fingerprint: direct.fingerprint,
     chainHead: direct.eventChainHead,
     rngDraws: direct.rngDraws,
+    keyRecordIds: direct.keyRecordIds,
+  };
+};
+
+export interface PackageEDiagnostics {
+  readonly kernel: DiagnosticLine;
+  readonly store: DiagnosticLine;
+  readonly projectionSafety: DiagnosticLine;
+  readonly fingerprint: string;
+  readonly chainHead: string;
+  readonly rngDraws: number;
+  readonly homeScore: number;
+  readonly awayScore: number;
+  readonly playCount: number;
+  readonly keyRecordIds: PackageEResult['keyRecordIds'];
+}
+
+/** Run the accepted Package E scenario in this app runtime and prove projections are inert. */
+export const runPackageEOnDevice = async (): Promise<PackageEDiagnostics> => {
+  const directRun = executePackageEScenario();
+  const direct = directRun.result;
+  const game = directRun.kernel.world.football.games.find(
+    (candidate) => candidate.id === direct.game.id,
+  );
+  if (game === undefined)
+    throw new Error('Package E direct run has no accepted game');
+
+  const before = {
+    fingerprint: fingerprintWorld(directRun.kernel.world),
+    rng: canonicalString(directRun.kernel.world.rng),
+    football: canonicalString(directRun.kernel.world.football),
+  };
+  void fastSimSummary(directRun.kernel.world, game.id);
+  void gameCastFrames(directRun.kernel.world, game.id, game.homeOrganizationId);
+  const projectionUnchanged =
+    fingerprintWorld(directRun.kernel.world) === before.fingerprint &&
+    canonicalString(directRun.kernel.world.rng) === before.rng &&
+    canonicalString(directRun.kernel.world.football) === before.football;
+
+  let run;
+  try {
+    const db = await openScratchDatabase();
+    run = await runPackageEThroughStore(new SqliteCareerStore(db));
+  } finally {
+    await disposeScratchDatabases();
+  }
+
+  return {
+    kernel: judgePackageEDirectRun(direct),
+    store: judgePackageEStoreRun(run),
+    projectionSafety: projectionUnchanged
+      ? { ok: true, text: 'MATCH after Fast Sim + GameCast reads' }
+      : {
+          ok: false,
+          text: 'MISMATCH: presentation read changed accepted identity',
+        },
+    fingerprint: direct.fingerprint,
+    chainHead: direct.eventChainHead,
+    rngDraws: direct.rngDraws,
+    homeScore: direct.game.homeScore,
+    awayScore: direct.game.awayScore,
+    playCount: direct.game.playCount,
     keyRecordIds: direct.keyRecordIds,
   };
 };
