@@ -689,6 +689,13 @@ export const SYNTHETIC_FOOTBALL_RULES: FootballRulesV1 = {
     eligibleReceiverRoles: ['wide_receiver', 'tight_end', 'running_back'],
     maxActiveGameDayPlayers: 46,
   },
+  specialTeams: {
+    kickDepthYards: 17,
+    neutralExecutionBp: 5000,
+    fieldGoalMaxKickYards: 52,
+    goForItMaxYardsToGo: 2,
+    goForItMinYardLine: 55,
+  },
   schemes: [
     { schemeKey: 'base_offense', side: 'offense' },
     { schemeKey: 'base_defense', side: 'defense' },

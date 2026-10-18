@@ -12728,7 +12728,7 @@
   "ruleset": {
     "rulesetId": "synthetic-package-e-rules",
     "rulesetVersion": 1,
-    "contentHash": "6e3e878da3159402e337c6dde51b6d674258c00d38d90e94a9e4c2ec2da7fa4c"
+    "contentHash": "5738a2a0d47f5fdd2be22dd5c936e6d313b851c5955cd06a39863b7ac36135eb"
   },
   "rngSeed32": 20261018,
   "startDate": "2027-02-15",
@@ -13369,5 +13369,5 @@
       "name": "Nolan Quarry (synthetic)"
     }
   ],
-  "contentHash": "e7b44631f51a3439311df97ebc9bd2e6dd4b8b08d16f841d52f212ac88e3b891"
+  "contentHash": "12422b3ab5e6acf3975165b9ed1ce357ec4e55dfc6cc9fd9cc75026f94b73320"
 }

@@ -536,6 +536,13 @@
         ],
         "maxActiveGameDayPlayers": 46
       },
+      "specialTeams": {
+        "kickDepthYards": 17,
+        "fieldGoalMaxKickYards": 52,
+        "goForItMaxYardsToGo": 2,
+        "neutralExecutionBp": 5000,
+        "goForItMinYardLine": 55
+      },
       "schemes": [
         {
           "schemeKey": "base_offense",
@@ -2928,5 +2935,5 @@
       }
     }
   },
-  "contentHash": "6e3e878da3159402e337c6dde51b6d674258c00d38d90e94a9e4c2ec2da7fa4c"
+  "contentHash": "5738a2a0d47f5fdd2be22dd5c936e6d313b851c5955cd06a39863b7ac36135eb"
 }

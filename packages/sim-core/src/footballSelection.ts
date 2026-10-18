@@ -112,6 +112,22 @@ export interface DefensiveSelectionView extends SelectionViewBase {
   readonly observedOffensiveConcepts: readonly ObservedConceptCount[];
 }
 
+/** The snaps taken by the special-teams units. */
+export type SpecialTeamsCategory =
+  'kickoff' | 'punt' | 'field_goal' | 'extra_point';
+
+/** The kicking unit's own view: its plan, its designated kickers and the public scoreboard. */
+export interface KickingSelectionView extends SelectionViewBase {
+  readonly side: 'kicking';
+  readonly playCategory: SpecialTeamsCategory;
+}
+
+/** The receiving / blocking unit's own view; it never carries the kicking side's call. */
+export interface ReturningSelectionView extends SelectionViewBase {
+  readonly side: 'returning';
+  readonly playCategory: SpecialTeamsCategory;
+}
+
 export interface LineupSlot {
   readonly slotKey: string;
   readonly playerId: EntityId;
@@ -133,6 +149,14 @@ export interface CommittedOffensiveCall extends CommittedCallBase {
 
 export interface CommittedDefensiveCall extends CommittedCallBase {
   readonly side: 'defense';
+}
+
+export interface CommittedKickingCall extends CommittedCallBase {
+  readonly side: 'kicking';
+}
+
+export interface CommittedReturningCall extends CommittedCallBase {
+  readonly side: 'returning';
 }
 
 /** The two explicit unsigned 32-bit draws one side's selection consumes. */
@@ -255,7 +279,8 @@ const buildSideView = (
   ruleset: Pick<LeagueRulesetManifest, 'rulesetId' | 'rules'>,
   fixtureId: string,
   situation: FootballSelectionSituation,
-  side: SelectionSide,
+  side: SelectionSide | 'kicking' | 'returning',
+  playCategory: SpecialTeamsCategory | null = null,
 ) => {
   const rules = requireFootballRules(ruleset);
   const fixture = world.football.fixtures.find((f) => f.id === fixtureId);
@@ -272,7 +297,10 @@ const buildSideView = (
     return fail('possession organization does not play in this fixture');
   const offenseOrg = situation.possessionOrganizationId;
   const defenseOrg = offenseOrg === home ? away : home;
-  const organizationId = side === 'offense' ? offenseOrg : defenseOrg;
+  // The organization with the ball (the possessor, or the kicker) fields the offense or
+  // the kicking unit; the other organization fields the defense or the returning unit.
+  const organizationId =
+    side === 'offense' || side === 'kicking' ? offenseOrg : defenseOrg;
 
   const plans = world.football.gamePlans.filter(
     (p) => p.fixtureId === fixtureId && p.organizationId === organizationId,
@@ -315,7 +343,12 @@ const buildSideView = (
   const fieldable = new Set(formations.map((f) => f.formationKey));
 
   const concepts: SelectionConcept[] = rules.concepts
-    .filter((c) => c.side === side && plan.conceptKeys.includes(c.conceptKey))
+    .filter(
+      (c) =>
+        c.side === side &&
+        (playCategory === null || c.playCategory === playCategory) &&
+        plan.conceptKeys.includes(c.conceptKey),
+    )
     .map((c) => ({
       conceptKey: c.conceptKey,
       playCategory: c.playCategory,
@@ -359,6 +392,7 @@ const buildSideView = (
     concepts,
     tacticalEdges: rules.matchupEdges
       .filter((e) => {
+        if (side === 'kicking' || side === 'returning') return false;
         const own =
           side === 'offense' ? e.offenseConceptKey : e.defenseConceptKey;
         return concepts.some((c) => c.conceptKey === own);
@@ -417,6 +451,48 @@ export const buildDefensiveSelectionView = (
   };
 };
 
+/**
+ * The kicking unit's view. The organization with the ball (`possessionOrganizationId`,
+ * which is the kicker for a kickoff) kicks; its plan must list a kicking concept for the
+ * play category, and its designated `kicking` unit must be able to field the formation.
+ */
+export const buildKickingSelectionView = (
+  world: { readonly football: FootballState },
+  ruleset: Pick<LeagueRulesetManifest, 'rulesetId' | 'rules'>,
+  fixtureId: string,
+  gameState: FootballSelectionSituation,
+  playCategory: SpecialTeamsCategory,
+): KickingSelectionView => {
+  const { view } = buildSideView(
+    world,
+    ruleset,
+    fixtureId,
+    gameState,
+    'kicking',
+    playCategory,
+  );
+  return { side: 'kicking', playCategory, ...view };
+};
+
+/** The receiving (or blocking) unit's view; the other organization from the kicker. */
+export const buildReturningSelectionView = (
+  world: { readonly football: FootballState },
+  ruleset: Pick<LeagueRulesetManifest, 'rulesetId' | 'rules'>,
+  fixtureId: string,
+  gameState: FootballSelectionSituation,
+  playCategory: SpecialTeamsCategory,
+): ReturningSelectionView => {
+  const { view } = buildSideView(
+    world,
+    ruleset,
+    fixtureId,
+    gameState,
+    'returning',
+    playCategory,
+  );
+  return { side: 'returning', playCategory, ...view };
+};
+
 // ---------------------------------------------------------------------------
 // Selectors
 // ---------------------------------------------------------------------------
@@ -449,9 +525,20 @@ const validateRolls = (rolls: SelectorRolls): void => {
     fail('selector rolls must be unsigned 32-bit integers');
 };
 
+type AnySelectionView =
+  | OffensiveSelectionView
+  | DefensiveSelectionView
+  | KickingSelectionView
+  | ReturningSelectionView;
+
 const conceptWeights = (
-  view: OffensiveSelectionView | DefensiveSelectionView,
+  view: AnySelectionView,
 ): { item: SelectionConcept; weight: number }[] => {
+  // Special-teams units choose among their listed concepts with no situational lean.
+  if (view.side === 'kicking' || view.side === 'returning')
+    return [...view.concepts]
+      .sort((a, b) => byText(a.conceptKey, b.conceptKey))
+      .map((concept) => ({ item: concept, weight: BASE_WEIGHT }));
   const s = view.situation;
   const observed =
     view.side === 'offense'
@@ -502,7 +589,7 @@ const conceptWeights = (
 };
 
 const selectCall = (
-  view: OffensiveSelectionView | DefensiveSelectionView,
+  view: AnySelectionView,
   rolls: SelectorRolls,
 ): CommittedCallBase => {
   validateRolls(rolls);
@@ -553,4 +640,22 @@ export const selectDefensiveCall = (
   if (view.side !== 'defense')
     fail('a defensive call needs a defensive selection view');
   return { side: 'defense', ...selectCall(view, selectorRolls) };
+};
+
+export const selectKickingCall = (
+  view: KickingSelectionView,
+  selectorRolls: SelectorRolls,
+): CommittedKickingCall => {
+  if (view.side !== 'kicking')
+    fail('a kicking call needs a kicking selection view');
+  return { side: 'kicking', ...selectCall(view, selectorRolls) };
+};
+
+export const selectReturningCall = (
+  view: ReturningSelectionView,
+  selectorRolls: SelectorRolls,
+): CommittedReturningCall => {
+  if (view.side !== 'returning')
+    fail('a returning call needs a returning selection view');
+  return { side: 'returning', ...selectCall(view, selectorRolls) };
 };

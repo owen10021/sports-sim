@@ -69,7 +69,7 @@ describe('the Package E synthetic world seed', () => {
       validateSeedManifest(fixtureJson()).contentHash,
     );
     expect(PACKAGE_E_SEED.contentHash).toBe(
-      'e7b44631f51a3439311df97ebc9bd2e6dd4b8b08d16f841d52f212ac88e3b891',
+      '12422b3ab5e6acf3975165b9ed1ce357ec4e55dfc6cc9fd9cc75026f94b73320',
     );
   });
 

@@ -48,13 +48,22 @@ export const OFFENSE_CONCEPTS = [
   'deep_pass',
 ];
 export const DEFENSE_CONCEPTS = ['zone_shell', 'man_press', 'run_commit_front'];
+export const SPECIAL_TEAMS_CONCEPTS = [
+  'kickoff_deep',
+  'kick_return_middle',
+  'punt_standard',
+  'punt_return_safe',
+  'field_goal_attempt',
+  'field_goal_block',
+  'extra_point_attempt',
+];
 
 export const designationsFor = (
   organizationId: string,
   playerOf: (n: number) => string,
 ): GameDayDesignation[] => {
   let n = 0;
-  return LAYOUT.flatMap(({ role, unit, count }) =>
+  const primary = LAYOUT.flatMap(({ role, unit, count }) =>
     Array.from({ length: count }, (_, i) => {
       n += 1;
       return {
@@ -71,6 +80,35 @@ export const designationsFor = (
       };
     }),
   );
+  const roleByNumber = (i: number): string => {
+    let cursor = 0;
+    for (const entry of LAYOUT) {
+      cursor += entry.count;
+      if (i <= cursor) return entry.role;
+    }
+    throw new Error(`no synthetic role for player ${i}`);
+  };
+  const special = [
+    {
+      unit: 'kicking',
+      numbers: [33, 34, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    },
+    { unit: 'returning', numbers: [5, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27] },
+  ].flatMap(({ unit, numbers }) =>
+    numbers.map((playerNumber, i) => ({
+      id: recordId(`designation-${organizationId}-st-${unit}-${i + 1}`),
+      fixtureId: recordId(E_FIXTURE_1),
+      organizationId: entityId(organizationId),
+      playerId: entityId(playerOf(playerNumber)),
+      status: 'active' as const,
+      unitKey: unit,
+      roleKey: roleByNumber(playerNumber),
+      depthOrder: i + 1,
+      sourceProposalId: recordId(`proposal-${organizationId}`),
+      committedAt: E_GAME_DAY_1,
+    })),
+  );
+  return [...primary, ...special];
 };
 
 export const planFor = (
@@ -89,7 +127,11 @@ export const planFor = (
   },
   authorizedStaffPersonIds: [],
   schemeKey: 'base_offense',
-  conceptKeys: [...OFFENSE_CONCEPTS, ...DEFENSE_CONCEPTS],
+  conceptKeys: [
+    ...OFFENSE_CONCEPTS,
+    ...DEFENSE_CONCEPTS,
+    ...SPECIAL_TEAMS_CONCEPTS,
+  ],
   personnelPreferenceKeys: ['personnel_11'],
   constraints: { maxBlitzRateBp: 2500 },
   sourceProposalId: recordId(`proposal-${organizationId}`),
@@ -146,6 +188,12 @@ export const gameStateFor = (
   fixtureId: recordId(E_FIXTURE_1),
   playsResolved: 0,
   nextSnap: 'scrimmage',
+  status: 'in_progress',
+  kickoffKind: null,
+  openingReceiverOrganizationId: possession,
+  driveCount: 1,
+  drivePlays: 0,
+  workloadByPlayer: [],
   ...over,
 });
 

@@ -107,6 +107,19 @@ export type FootballPenaltyRule = {
   readonly weightBp: number;
 };
 
+export type FootballSpecialTeamsRules = {
+  /** Snap-and-hold depth added to the distance from the line of scrimmage to the goal line. */
+  readonly kickDepthYards: number;
+  /** Execution level treated as an average kicker; kick distance moves with the difference. */
+  readonly neutralExecutionBp: number;
+  /** Longest field goal (measured as kick distance) the fourth-down policy will attempt. */
+  readonly fieldGoalMaxKickYards: number;
+  /** On fourth down at or beyond the go-for-it line, a try this short is attempted. */
+  readonly goForItMaxYardsToGo: number;
+  /** Yards advanced from own goal line from which a short fourth down is attempted. */
+  readonly goForItMinYardLine: number;
+};
+
 export type FootballSubstitutionRules = {
   readonly playersPerSide: number;
   readonly minOffensiveLinemenOnLine: number;
@@ -245,6 +258,7 @@ export type FootballRulesV1 = {
   readonly scoring: FootballScoringRules;
   readonly penalties: readonly FootballPenaltyRule[];
   readonly substitution: FootballSubstitutionRules;
+  readonly specialTeams: FootballSpecialTeamsRules;
   readonly schemes: readonly FootballSchemeRule[];
   readonly personnelGroups: readonly FootballPersonnelRule[];
   readonly formations: readonly FootballFormationRule[];
@@ -493,6 +507,55 @@ const parsePenalty = (v: unknown, path: string): FootballPenaltyRule => {
       `${path}.enforcement`,
     ),
     weightBp: asSafeInt(r.weightBp, `${path}.weightBp`, 1, 10000),
+  };
+};
+
+const parseSpecialTeams = (
+  v: unknown,
+  path: string,
+): FootballSpecialTeamsRules => {
+  const r = asRecord(v, path);
+  requireExactKeys(
+    r,
+    [
+      'kickDepthYards',
+      'neutralExecutionBp',
+      'fieldGoalMaxKickYards',
+      'goForItMaxYardsToGo',
+      'goForItMinYardLine',
+    ],
+    [],
+    path,
+  );
+  return {
+    kickDepthYards: asSafeInt(
+      r.kickDepthYards,
+      `${path}.kickDepthYards`,
+      0,
+      30,
+    ),
+    fieldGoalMaxKickYards: asSafeInt(
+      r.fieldGoalMaxKickYards,
+      `${path}.fieldGoalMaxKickYards`,
+      1,
+      100,
+    ),
+    goForItMaxYardsToGo: asSafeInt(
+      r.goForItMaxYardsToGo,
+      `${path}.goForItMaxYardsToGo`,
+      0,
+      20,
+    ),
+    neutralExecutionBp: asBp(
+      r.neutralExecutionBp,
+      `${path}.neutralExecutionBp`,
+    ),
+    goForItMinYardLine: asSafeInt(
+      r.goForItMinYardLine,
+      `${path}.goForItMinYardLine`,
+      0,
+      100,
+    ),
   };
 };
 
@@ -1000,6 +1063,7 @@ export const parseFootballRulesV1 = (
       'scoring',
       'penalties',
       'substitution',
+      'specialTeams',
       'schemes',
       'personnelGroups',
       'formations',
@@ -1085,6 +1149,7 @@ export const parseFootballRulesV1 = (
     scoring: parseScoring(r.scoring, `${path}.scoring`),
     penalties,
     substitution: parseSubstitution(r.substitution, `${path}.substitution`),
+    specialTeams: parseSpecialTeams(r.specialTeams, `${path}.specialTeams`),
     schemes,
     personnelGroups,
     formations,

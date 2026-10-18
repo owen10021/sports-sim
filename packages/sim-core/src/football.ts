@@ -104,18 +104,42 @@ export interface FootballSelectionSituation {
   }[];
 }
 
+/** Why a kickoff is being taken; it decides the kicking spot. */
+export type KickoffKind =
+  'opening' | 'after_score' | 'after_safety' | 'second_half' | 'overtime';
+
 /**
  * Ephemeral complete-game resolution state that the pure play resolver reads and returns.
  * It is the public scoreboard plus resolver bookkeeping, and it is NOT a world collection.
- * Task 8 owns down/distance/possession/score/period transitions; until then
- * `resolvePlay` advances only the bookkeeping it determines itself.
+ *
+ * `possessionOrganizationId` is the organization that has the ball on the NEXT snap: the
+ * offense for a scrimmage play, the scoring team for an extra point, and the KICKING team
+ * for a kickoff. All field coordinates are yards advanced from that organization's own
+ * goal line.
  */
 export interface GameState extends FootballSelectionSituation {
   readonly fixtureId: RecordId;
   /** Plays already resolved in this game; the next play is sequence `playsResolved + 1`. */
   readonly playsResolved: number;
-  /** What the next snap is. Scrimmage plays are the only kind the V1 play resolver runs yet. */
+  /** What the next snap is. */
   readonly nextSnap: 'scrimmage' | 'extra_point' | 'kickoff';
+  readonly status: 'in_progress' | 'final';
+  /** Set exactly while `nextSnap` is `kickoff`. */
+  readonly kickoffKind: KickoffKind | null;
+  /** The organization that received the game's opening kickoff. */
+  readonly openingReceiverOrganizationId: EntityId;
+  /** Drives started so far, including the one in progress. */
+  readonly driveCount: number;
+  /** Scrimmage plays run in the current drive. */
+  readonly drivePlays: number;
+  /**
+   * Football workload units each participant has accumulated this game, sorted by player
+   * id. The complete-game resolver enforces medical hard caps against these counters.
+   */
+  readonly workloadByPlayer: readonly {
+    readonly playerId: EntityId;
+    readonly workloadUnits: number;
+  }[];
 }
 
 export interface FootballGameRecord {

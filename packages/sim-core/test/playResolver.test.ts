@@ -172,7 +172,7 @@ describe('resolved play facts', () => {
     expect(keys).not.toContain('executionBp');
   });
 
-  it('advance only the bookkeeping the play determines', () => {
+  it('reconciles the play into the authoritative next game state', () => {
     plays.forEach(({ resolved: r, nextGameState: n }) => {
       expect(n.playsResolved).toBe(1);
       expect(n.resolvedCalls).toEqual([
@@ -181,9 +181,11 @@ describe('resolved play facts', () => {
           defenseConceptKey: r.defense.conceptKey,
         },
       ]);
-      expect(n.clockSecondsRemaining).toBe(
-        Math.max(0, 900 - r.clockSecondsUsed),
-      );
+      const expectedClock =
+        r.penaltyAccepted === true && r.penalty?.enforcement === 'dead_ball'
+          ? 900
+          : Math.max(0, 900 - r.clockSecondsUsed);
+      expect(n.clockSecondsRemaining).toBe(expectedClock);
       expect(n.fixtureId).toBe(E_FIXTURE_1);
     });
   });
@@ -262,8 +264,11 @@ describe('resolvePlay validates before it draws', () => {
     unchanged(run(withState({ yardsToGo: -2 })));
     unchanged(run(withState({ playsResolved: -1 })));
     unchanged(run(withState({ clockSecondsRemaining: 0.5 })));
-    unchanged(run(withState({ nextSnap: 'kickoff' })));
-    unchanged(run(withState({ nextSnap: 'extra_point' })));
+    unchanged(run(withState({ nextSnap: 'kickoff', kickoffKind: null })));
+    unchanged(
+      run(withState({ nextSnap: 'scrimmage', kickoffKind: 'opening' })),
+    );
+    unchanged(run(withState({ status: 'final' })));
     unchanged(run(withState({ nextSnap: 'nonsense' })));
   });
 
