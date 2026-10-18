@@ -118,3 +118,54 @@ describe('teaching legality and scarce attention', () => {
     ).toContain('TEACHER_NOT_IN_ORGANIZATION');
   });
 });
+
+it('reserves person-owned bandwidth across overlapping organization windows but releases it for adjacent windows', () => {
+  const base = dWorld(),
+    a = allocation(50);
+  const first = {
+    id: a.windowId,
+    organizationId: NF.org,
+    phaseKey: 'practice',
+    fromDate: D_TODAY,
+    toDate: D_END,
+    pools: [],
+    status: 'open' as const,
+  };
+  const second = {
+    ...first,
+    id: recordId('window-b'),
+    organizationId: entityId('org-sp'),
+  };
+  const candidate = {
+    ...allocation(40),
+    id: recordId('lesson-b'),
+    windowId: second.id,
+  };
+  const world = {
+    ...base,
+    development: {
+      ...base.development,
+      opportunityWindows: [first, second],
+      opportunityAllocations: [a],
+    },
+  };
+  expect(teachingProblems(world, [candidate])).toContain(
+    'TEACHING_BANDWIDTH_EXCEEDED',
+  );
+  expect(teachingProblems(world, [a])).not.toContain(
+    'TEACHING_BANDWIDTH_EXCEEDED',
+  );
+  const adjacent = {
+    ...world,
+    development: {
+      ...world.development,
+      opportunityWindows: [
+        first,
+        { ...second, fromDate: D_END, toDate: '2027-03-01' },
+      ],
+    },
+  };
+  expect(
+    teachingProblems(adjacent, [{ ...candidate, committedAt: D_END }]),
+  ).not.toContain('TEACHING_BANDWIDTH_EXCEEDED');
+});

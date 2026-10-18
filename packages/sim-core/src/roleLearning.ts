@@ -14,12 +14,13 @@ const byText = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
 export const teachingProblems = (
   world: Pick<FootballWorld, 'roster' | 'people' | 'development'>,
   allocations: readonly OpportunityAllocation[],
+  options: { readonly committedHistory?: boolean } = {},
 ): readonly string[] => {
   const problems = new Set<string>();
-  const spent = new Map<string, number>();
   for (const a of allocations) {
     const player = world.roster.players.find((p) => p.personId === a.playerId);
     if (
+      !options.committedHistory &&
       player !== undefined &&
       player.primaryRole !== a.scopeKey &&
       !player.roleTags.includes(a.scopeKey)
@@ -34,6 +35,7 @@ export const teachingProblems = (
       continue;
     }
     if (
+      !options.committedHistory &&
       !holdsRoleAt(
         world.people,
         a.organizationId,
@@ -45,10 +47,32 @@ export const teachingProblems = (
     for (const key of a.responsibilityKeys)
       if (!teacher.expertise.some((e) => e.responsibilityKey === key))
         problems.add('TEACHER_LACKS_RESPONSIBILITY_EXPERTISE');
-    // Separate windows have separate budgets; within a window all resources/players share it.
-    const key = a.windowId + '|' + teacher.personId;
-    const total = (spent.get(key) ?? 0) + a.units;
-    spent.set(key, total);
+    // Personal attention is reserved once across every intersecting window. Resolved
+    // work still consumed historical bandwidth. Adjacent windows release the reservation.
+    const window = world.development.opportunityWindows.find(
+      (w) => w.id === a.windowId,
+    );
+    const candidates = new Map(
+      [...world.development.opportunityAllocations, ...allocations].map((x) => [
+        x.id,
+        x,
+      ]),
+    );
+    const total = [...candidates.values()]
+      .filter((x) => {
+        if (x.teacherPersonId !== teacher.personId) return false;
+        if (x.windowId === a.windowId) return true;
+        const other = world.development.opportunityWindows.find(
+          (w) => w.id === x.windowId,
+        );
+        return (
+          window !== undefined &&
+          other !== undefined &&
+          window.fromDate < other.toDate &&
+          other.fromDate < window.toDate
+        );
+      })
+      .reduce((n, x) => n + x.units, 0);
     if (!Number.isSafeInteger(total) || total > teacher.bandwidthUnits)
       problems.add('TEACHING_BANDWIDTH_EXCEEDED');
   }

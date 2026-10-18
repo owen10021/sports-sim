@@ -12,7 +12,7 @@ import {
 import { NF, SP, runnerFor, okResult, type Runner } from './orgHarness';
 export { NF, SP };
 export const D_TODAY = '2027-02-15';
-export const D_END = '2027-03-01';
+export const D_END = '2027-02-22';
 export const COACH = entityId('person-nf-coach-d');
 const RIGHTS = [
   'propose',
@@ -161,7 +161,10 @@ export const commitAllocation = (proposalId: string, by = COACH) => ({
   evidenceClaimIds: [],
   rationale: { note: 'finite reps' },
 });
-export const adoptDevelopmentPlan = (r: Runner) => {
+export const adoptDevelopmentPlan = (
+  r: Runner,
+  objectives?: Record<string, unknown>[],
+) => {
   okResult(
     r.run({
       type: 'SubmitProposal',
@@ -177,7 +180,7 @@ export const adoptDevelopmentPlan = (r: Runner) => {
         ownerPersonId: NF.gm,
         effectiveAt: D_TODAY,
         horizon: { days: 14 },
-        objectives: [
+        objectives: objectives ?? [
           {
             key: 'prepare_backup',
             priority: 'high',

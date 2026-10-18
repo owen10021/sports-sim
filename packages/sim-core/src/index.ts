@@ -86,3 +86,4 @@ export * from './opportunity';
 export * from './developmentIntent';
 export * from './developmentCommands';
 export * from './roleLearning';
+export * from './developmentResolution';

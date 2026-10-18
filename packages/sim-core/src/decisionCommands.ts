@@ -212,7 +212,7 @@ const parseFields = (
     termsType,
     terms:
       termsType === OPPORTUNITY_ALLOCATION_TERMS_TYPE
-        ? canonicalOpportunityTerms(terms)
+        ? canonicalOpportunityTerms(terms, world)
         : terms,
     requiredApproverPersonIds: required,
     expiresAt,

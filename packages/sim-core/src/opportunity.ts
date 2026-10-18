@@ -18,9 +18,12 @@ const object = (
   typeof v === 'object' && v !== null && !Array.isArray(v);
 
 /** Order-insensitive allocation terms are canonical before approval and hashing. */
-export const canonicalOpportunityTerms = (terms: {
-  readonly [key: string]: CanonicalValue;
-}): { readonly [key: string]: CanonicalValue } => {
+export const canonicalOpportunityTerms = (
+  terms: {
+    readonly [key: string]: CanonicalValue;
+  },
+  world?: Pick<FootballWorld, 'plans'>,
+): { readonly [key: string]: CanonicalValue } => {
   if (!Array.isArray(terms.allocations)) return terms;
   return {
     ...terms,
@@ -29,6 +32,25 @@ export const canonicalOpportunityTerms = (terms: {
         if (!object(a)) return a;
         return {
           ...a,
+          ...(world === undefined
+            ? {}
+            : {
+                basisPlanRevisions: Array.isArray(a.basisPlanIds)
+                  ? a.basisPlanIds
+                      .map((id) => ({
+                        planId: id,
+                        revision:
+                          world.plans.plans.find((p) => p.id === id)
+                            ?.currentRevision ?? 0,
+                      }))
+                      .sort((a, b) =>
+                        byText(
+                          canonicalString(a.planId),
+                          canonicalString(b.planId),
+                        ),
+                      )
+                  : [],
+              }),
           ...(Array.isArray(a.responsibilityKeys)
             ? {
                 responsibilityKeys: [...a.responsibilityKeys].sort((a, b) =>
@@ -82,6 +104,7 @@ export const opportunityProblems = (
   world: Pick<FootballWorld, 'roster' | 'people' | 'plans' | 'development'>,
   window: OpportunityWindow,
   allocations: readonly OpportunityAllocation[],
+  options: { readonly committedHistory?: boolean } = {},
 ): readonly string[] => {
   const problems = new Set<string>();
   if (window.status !== 'open') problems.add('WINDOW_ALREADY_RESOLVED');
@@ -99,7 +122,10 @@ export const opportunityProblems = (
       a.playerId,
       a.committedAt,
     );
-    if (membership?.organizationId !== window.organizationId)
+    if (
+      !options.committedHistory &&
+      membership?.organizationId !== window.organizationId
+    )
       problems.add('ALLOCATION_WITHOUT_ROSTER_ACCESS');
     if (
       !window.pools.some(
@@ -108,6 +134,7 @@ export const opportunityProblems = (
     )
       problems.add('UNKNOWN_OPPORTUNITY_POOL');
     if (
+      !options.committedHistory &&
       a.teacherPersonId !== null &&
       !holdsRoleAt(
         world.people,
@@ -130,12 +157,15 @@ export const opportunityProblems = (
       problems.add('DUPLICATE_ALLOCATION_REFERENCE');
     for (const id of a.basisPlanIds) {
       const plan = world.plans.plans.find((p) => p.id === id);
+      const pinned = a.basisPlanRevisions?.find((r) => r.planId === id);
       const revision = plan?.revisions.find(
-        (r) => r.revision === plan.currentRevision,
+        (r) => r.revision === pinned?.revision,
       );
       if (
         plan?.organizationId !== window.organizationId ||
-        plan.status !== 'active' ||
+        (!options.committedHistory &&
+          (plan.status !== 'active' ||
+            pinned?.revision !== plan.currentRevision)) ||
         (plan.kind !== 'development' && plan.kind !== 'succession') ||
         revision === undefined ||
         revision.effectiveAt > a.committedAt
@@ -158,7 +188,7 @@ export const opportunityProblems = (
       remainingOpportunity(window, allocations, p.resourceKey, p.scopeKey) < 0
     )
       problems.add('OPPORTUNITY_OVERALLOCATED');
-  for (const problem of teachingProblems(world, allocations))
+  for (const problem of teachingProblems(world, allocations, options))
     problems.add(problem);
   return [...problems].sort(byText);
 };

@@ -95,14 +95,21 @@ export interface OpportunityAllocation {
   readonly teacherPersonId: EntityId | null;
   readonly responsibilityKeys: readonly string[];
   readonly basisPlanIds: readonly RecordId[];
+  /** Exact intent revisions bound into the approved proposal, never live plan pointers. */
+  readonly basisPlanRevisions?: readonly {
+    readonly planId: RecordId;
+    readonly revision: number;
+  }[];
   readonly sourceProposalId: RecordId;
   readonly committedAt: string;
 }
 
 export interface DevelopmentCheckpointRecord {
   readonly id: RecordId;
-  readonly organizationId: EntityId;
-  readonly windowId: RecordId;
+  /** Passive ticks own person-time; opportunity checkpoints own only committed work. */
+  readonly kind?: 'passive';
+  readonly organizationId: EntityId | null;
+  readonly windowId: RecordId | null;
   readonly fromDate: string;
   readonly toDate: string;
   readonly resolvedAt: string;

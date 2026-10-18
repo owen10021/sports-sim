@@ -170,6 +170,7 @@ type RoutableCommand =
   | ContractRoutedCommand;
 
 const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
+  ResolveDevelopmentCheckpoint: true,
   OpenOpportunityWindow: true,
   CommitOpportunityAllocationProposal: true,
   AdvanceDays: true,
@@ -286,6 +287,7 @@ const routeAdvanceDays = (
 export const routeCommand = (ctx: RouteContext): RouteOutcome => {
   const command = ctx.command as RoutableCommand;
   switch (command.type) {
+    case 'ResolveDevelopmentCheckpoint':
     case 'OpenOpportunityWindow':
     case 'CommitOpportunityAllocationProposal':
       return routeDevelopmentCommand(ctx, command);

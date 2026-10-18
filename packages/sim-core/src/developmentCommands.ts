@@ -1,4 +1,10 @@
 import type { CommandPayloadBase, CanonicalValue } from './audit';
+import { DeterministicRng } from './rng';
+import { SimDate } from './simDate';
+import {
+  DevelopmentResolutionError,
+  resolveDevelopmentWindow,
+} from './developmentResolution';
 import { validateMandateAt } from './authority';
 import type { RouteContext, RouteOutcome } from './commandRouter';
 import {
@@ -41,6 +47,7 @@ import { commitAuthorizedDomainChange } from './transactionCommit';
 export const DEVELOPMENT_COMMAND_TYPES = [
   'OpenOpportunityWindow',
   'CommitOpportunityAllocationProposal',
+  'ResolveDevelopmentCheckpoint',
 ] as const;
 export type DevelopmentCommandType = (typeof DEVELOPMENT_COMMAND_TYPES)[number];
 
@@ -70,6 +77,11 @@ const routeOpen = (ctx: RouteContext, c: Cmd): RouteOutcome => {
   )
     return bad('organization already has an overlapping opportunity window');
   const rules = requireDevelopmentRules(ctx.ruleset);
+  if (
+    SimDate.parse(to).daysSince(SimDate.parse(from)) !==
+    rules.checkpointCadenceDays
+  )
+    return bad('window duration must equal the ruleset checkpoint cadence');
   const minted = mintRecordId(ctx.world);
   const window: OpportunityWindow = {
     id: minted.id,
@@ -148,7 +160,7 @@ const parseAllocations = (
     if (
       !isPlainObject(a) ||
       Object.keys(a).sort().join(',') !==
-        'basisPlanIds,playerId,resourceKey,responsibilityKeys,scopeKey,teacherPersonId,units'
+        'basisPlanIds,basisPlanRevisions,playerId,resourceKey,responsibilityKeys,scopeKey,teacherPersonId,units'
     )
       return bad('allocation contains unsupported or missing fields');
     if (
@@ -185,6 +197,21 @@ const parseAllocations = (
       return bad(
         'responsibilityKeys and basisPlanIds must contain valid keys/IDs',
       );
+    const basisPlanIds = a.basisPlanIds;
+    if (
+      !Array.isArray(a.basisPlanRevisions) ||
+      a.basisPlanRevisions.length !== a.basisPlanIds.length ||
+      !a.basisPlanRevisions.every(
+        (pin) =>
+          isPlainObject(pin) &&
+          isValidId(pin.planId) &&
+          typeof pin.revision === 'number' &&
+          Number.isSafeInteger(pin.revision) &&
+          pin.revision > 0 &&
+          basisPlanIds.includes(pin.planId),
+      )
+    )
+      return bad('basis plan revisions must pin every referenced plan');
     allocations.push({
       id: minted.ids[i]!,
       windowId: window.id,
@@ -199,10 +226,26 @@ const parseAllocations = (
           : entityId(a.teacherPersonId as string),
       responsibilityKeys: a.responsibilityKeys as string[],
       basisPlanIds: (a.basisPlanIds as string[]).map(recordId),
+      basisPlanRevisions: a.basisPlanRevisions.map((pin) => {
+        const p = pin as { planId: string; revision: number };
+        return { planId: recordId(p.planId), revision: p.revision };
+      }),
       sourceProposalId: recordId(sourceProposalId),
       committedAt: ctx.world.simDate,
     });
   }
+  const maxLoad = requireDevelopmentRules(
+    ctx.ruleset,
+  ).maxPlayerLoadUnitsPerCheckpoint;
+  const playerLoads = new Map<string, number>();
+  for (const a of allocations)
+    playerLoads.set(a.playerId, (playerLoads.get(a.playerId) ?? 0) + a.units);
+  if (
+    [...playerLoads.values()].some(
+      (n) => !Number.isSafeInteger(n) || n > maxLoad,
+    )
+  )
+    return bad('player workload exceeds maxPlayerLoadUnitsPerCheckpoint');
   const problems = opportunityProblems(ctx.world, window, allocations);
   if (problems.length > 0) return bad(problems.join('; '));
   return {
@@ -338,13 +381,45 @@ export const routeDevelopmentCommand = (
 ): RouteOutcome => {
   try {
     switch (command.type) {
+      case 'ResolveDevelopmentCheckpoint': {
+        if (
+          !['system', 'commissioner', 'test_harness'].includes(ctx.actor.kind)
+        )
+          return {
+            ok: false,
+            stage: 'authorization',
+            code: 'UNAUTHORIZED_ACTOR',
+            message: 'Only simulation actors resolve development',
+          };
+        const c = command as Cmd;
+        if (!isValidId(c.windowId)) return bad('windowId must be valid');
+        const resolved = resolveDevelopmentWindow(
+          ctx.world,
+          ctx.ruleset,
+          c.windowId,
+          DeterministicRng.fromState(ctx.world.rng),
+        );
+        return {
+          ok: true,
+          authorizationDetail: 'simulation-owned development checkpoint',
+          resolution: {
+            nextWorld: resolved.world,
+            eventSpecs: resolved.eventSpecs,
+            detail: 'resolved development window ' + c.windowId,
+          },
+        };
+      }
       case 'OpenOpportunityWindow':
         return routeOpen(ctx, command as Cmd);
       case 'CommitOpportunityAllocationProposal':
         return routeCommit(ctx, command as Cmd);
     }
   } catch (e) {
-    if (e instanceof MissingDevelopmentRulesError) return bad(e.message);
+    if (
+      e instanceof MissingDevelopmentRulesError ||
+      e instanceof DevelopmentResolutionError
+    )
+      return bad(e.message);
     throw e;
   }
 };

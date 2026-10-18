@@ -169,3 +169,21 @@ describe('delegated opportunity execution checks actual allocation terms', () =>
     );
   });
 });
+
+describe('player load legality is enforced before a one-shot allocation commits', () => {
+  it('rejects combined-resource load above the declared player ceiling atomically', () => {
+    const r = dRunner(),
+      win = openWindow(r);
+    const p = submitAllocation(r, win, [
+      allocationTerms('player-nf-01', 100),
+      {
+        ...allocationTerms('player-nf-01', 60),
+        resourceKey: 'development_reps',
+      },
+    ]);
+    const before = snapshotOf(r.kernel);
+    expect(codeOf(r.run(commitAllocation(p)))).toBe('INVALID_PAYLOAD');
+    expect(snapshotOf(r.kernel)).toEqual(before);
+    expect(r.kernel.world.development.opportunityAllocations).toEqual([]);
+  });
+});
