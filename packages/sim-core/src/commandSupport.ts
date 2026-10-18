@@ -12,6 +12,7 @@ import type { DecisionsState } from './decisions';
 import type { InformationState } from './information';
 import type { PeopleState } from './people';
 import type { RelationshipsState } from './relationships';
+import type { RosterState } from './roster';
 import { SimDate } from './simDate';
 import type { FootballWorld } from './world';
 import type { DevelopmentState } from './development';
@@ -173,6 +174,7 @@ export interface Changes {
   readonly authority?: AuthorityState;
   readonly information?: InformationState;
   readonly relationships?: RelationshipsState;
+  readonly roster?: RosterState;
   readonly decisions?: DecisionsState;
   readonly nextRecord?: number;
 }
@@ -195,6 +197,7 @@ export const finish = (
       authority: changes.authority ?? ctx.world.authority,
       information: changes.information ?? ctx.world.information,
       relationships: changes.relationships ?? ctx.world.relationships,
+      roster: changes.roster ?? ctx.world.roster,
       decisions: changes.decisions ?? ctx.world.decisions,
       nextIds: {
         ...ctx.world.nextIds,

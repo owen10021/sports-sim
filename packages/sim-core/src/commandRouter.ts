@@ -189,6 +189,7 @@ const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   ResolveDevelopmentCheckpoint: true,
   OpenOpportunityWindow: true,
   CommitOpportunityAllocationProposal: true,
+  CommitRoleTransitionProposal: true,
   AdvanceDays: true,
   StartRoleEpisode: true,
   EndRoleEpisode: true,
@@ -335,6 +336,7 @@ export const routeCommand = (ctx: RouteContext): RouteOutcome => {
     case 'ResolveDevelopmentCheckpoint':
     case 'OpenOpportunityWindow':
     case 'CommitOpportunityAllocationProposal':
+    case 'CommitRoleTransitionProposal':
       return routeDevelopmentCommand(ctx, command);
     case 'AdvanceDays':
       return routeAdvanceDays(ctx, command);

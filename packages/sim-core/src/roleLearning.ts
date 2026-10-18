@@ -1,4 +1,5 @@
 import type {
+  DevelopmentState,
   OpportunityAllocation,
   RoleKnowledgeRecord,
   TeachingProfile,
@@ -79,6 +80,19 @@ export const teachingProblems = (
   return [...problems].sort(byText);
 };
 
+/** Person-owned learned football knowledge follows the person across organizations. */
+export const personOwnedRoleKnowledge = (
+  development: Pick<DevelopmentState, 'roleKnowledge'>,
+  playerId: EntityId,
+): readonly RoleKnowledgeRecord[] =>
+  development.roleKnowledge
+    .filter((knowledge) => knowledge.playerId === playerId)
+    .sort(
+      (a, b) =>
+        byText(a.schemeKey, b.schemeKey) ||
+        byText(a.responsibilityKey, b.responsibilityKey) ||
+        byText(a.transferFamilyKey, b.transferFamilyKey),
+    );
 /**
  * Read-only synthetic transfer projection for ONE person's existing knowledge.
  * Exact knowledge is retained. Analogous family credit uses the strongest source only,

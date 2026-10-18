@@ -168,6 +168,27 @@ export const seededRosterState = (
   };
 };
 
+/**
+ * Replace only a player's roster role labels. Capability is deliberately carried through
+ * byte-for-byte; development, medical and knowledge state live outside the roster domain.
+ */
+export const transitionPlayerRoleLabels = (
+  roster: RosterState,
+  playerId: EntityId,
+  primaryRole: string,
+  roleTags: readonly string[],
+): RosterState => ({
+  ...roster,
+  players: roster.players.map((player) =>
+    player.personId === playerId
+      ? {
+          ...player,
+          primaryRole,
+          roleTags: [...roleTags].sort(byText),
+        }
+      : player,
+  ),
+});
 // ---------------------------------------------------------------------------
 // Pure queries and invariants (derived, never stored)
 // ---------------------------------------------------------------------------

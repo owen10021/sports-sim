@@ -42,15 +42,260 @@ import {
   canonicalOpportunityTerms,
   opportunityProblems,
 } from './opportunity';
-import { commitAuthorizedDomainChange } from './transactionCommit';
+import { currentRosterMembership, transitionPlayerRoleLabels } from './roster';
+import {
+  commitAuthorizedDomainChange,
+  type DomainCommitRequest,
+} from './transactionCommit';
 
 export const DEVELOPMENT_COMMAND_TYPES = [
   'OpenOpportunityWindow',
   'CommitOpportunityAllocationProposal',
   'ResolveDevelopmentCheckpoint',
+  'CommitRoleTransitionProposal',
 ] as const;
 export type DevelopmentCommandType = (typeof DEVELOPMENT_COMMAND_TYPES)[number];
 
+export const ROLE_TRANSITION_TERMS_TYPE = 'role_transition_v1';
+export const ROLE_SCHEME_TRANSITION_TERMS_TYPE = 'role_scheme_transition_v1';
+
+const parseRoleReferenceIds = (
+  value: unknown,
+  label: string,
+): readonly string[] | Failure => {
+  if (
+    !Array.isArray(value) ||
+    !value.every((id) => typeof id === 'string' && isValidId(id))
+  )
+    return bad(`${label} must contain valid ids`);
+  if (new Set(value).size !== value.length)
+    return bad(`${label} contains a duplicate`);
+  return value as string[];
+};
+
+const roleCommitSide = (
+  ctx: RouteContext,
+  value: unknown,
+):
+  | {
+      readonly proposalId: string;
+      readonly expectedRevision: number;
+      readonly actorPersonId: ReturnType<typeof entityId>;
+      readonly beliefIds: readonly string[];
+      readonly evidenceClaimIds: readonly string[];
+      readonly rationale: CanonicalValue;
+    }
+  | Failure => {
+  if (
+    !isPlainObject(value) ||
+    Object.keys(value).sort().join(',') !==
+      'actingPersonId,beliefIds,evidenceClaimIds,expectedRevision,proposalId,rationale' ||
+    !isValidId(value.proposalId) ||
+    !isValidId(value.actingPersonId) ||
+    !hasKind(ctx.world, value.actingPersonId, 'person') ||
+    typeof value.expectedRevision !== 'number' ||
+    !Number.isSafeInteger(value.expectedRevision) ||
+    value.expectedRevision <= 0 ||
+    !isPlainObject(value.rationale)
+  )
+    return bad('schemeSide is malformed');
+  const beliefIds = parseRoleReferenceIds(
+    value.beliefIds,
+    'schemeSide.beliefIds',
+  );
+  if (isFailure(beliefIds)) return beliefIds;
+  const evidenceClaimIds = parseRoleReferenceIds(
+    value.evidenceClaimIds,
+    'schemeSide.evidenceClaimIds',
+  );
+  if (isFailure(evidenceClaimIds)) return evidenceClaimIds;
+  return {
+    proposalId: value.proposalId,
+    expectedRevision: value.expectedRevision,
+    actorPersonId: entityId(value.actingPersonId),
+    beliefIds,
+    evidenceClaimIds,
+    rationale: value.rationale,
+  };
+};
+
+const routeRoleTransition = (ctx: RouteContext, c: Cmd): RouteOutcome => {
+  const actor = parseActingPerson(ctx, c);
+  if (isFailure(actor)) return actor;
+  if (!isValidId(c.proposalId)) return bad('proposalId must be valid');
+  const proposal = latestProposal(ctx.world.decisions, c.proposalId);
+  if (proposal === undefined || proposal.state !== 'authorized')
+    return bad('role transition proposal must exist and be authorized');
+  if (
+    proposal.category !== 'roster' ||
+    proposal.termsType !== ROLE_TRANSITION_TERMS_TYPE
+  )
+    return bad('proposal must be roster role_transition_v1');
+  if (c.expectedRevision !== proposal.revision)
+    return bad('proposal revision is stale');
+  if (
+    !Array.isArray(c.beliefIds) ||
+    !Array.isArray(c.evidenceClaimIds) ||
+    !isPlainObject(c.rationale)
+  )
+    return bad('beliefIds, evidenceClaimIds and rationale are required');
+  const beliefIds = parseRoleReferenceIds(c.beliefIds, 'beliefIds');
+  if (isFailure(beliefIds)) return beliefIds;
+  const evidenceClaimIds = parseRoleReferenceIds(
+    c.evidenceClaimIds,
+    'evidenceClaimIds',
+  );
+  if (isFailure(evidenceClaimIds)) return evidenceClaimIds;
+
+  const terms = proposal.terms;
+  if (
+    !isPlainObject(terms) ||
+    Object.keys(terms).sort().join(',') !==
+      'playerId,primaryRole,roleTags,schemeProposalId' ||
+    !isValidId(terms.playerId) ||
+    !nonEmptyText(terms.primaryRole, 64) ||
+    !isValidId(terms.primaryRole) ||
+    !Array.isArray(terms.roleTags) ||
+    !terms.roleTags.every(
+      (tag) =>
+        typeof tag === 'string' && nonEmptyText(tag, 64) && isValidId(tag),
+    ) ||
+    new Set(terms.roleTags).size !== terms.roleTags.length ||
+    (terms.schemeProposalId !== null && !isValidId(terms.schemeProposalId))
+  )
+    return bad(
+      'role transition terms must be exactly { playerId, primaryRole, roleTags, schemeProposalId }',
+    );
+  const playerId = entityId(terms.playerId);
+  const player = ctx.world.roster.players.find((p) => p.personId === playerId);
+  if (player === undefined) return bad('playerId must name an existing player');
+  if (
+    currentRosterMembership(ctx.world.roster, playerId, ctx.world.simDate)
+      ?.organizationId !== proposal.organizationId
+  )
+    return bad(
+      'organization may transition only a player on its current roster',
+    );
+  if (
+    !proposal.subjects.some(
+      (subject) => subject.kind === 'entity' && subject.id === playerId,
+    )
+  )
+    return bad('role transition proposal must name the player as a subject');
+
+  const requests: DomainCommitRequest[] = [];
+
+  let schemeKey: string | null = null;
+  let responsibilityKeys: readonly string[] = [];
+  if (terms.schemeProposalId === null) {
+    if (c.schemeSide !== null)
+      return bad('schemeSide must be null when no scheme proposal is cited');
+  } else {
+    const side = roleCommitSide(ctx, c.schemeSide);
+    if (isFailure(side)) return side;
+    if (side.proposalId !== terms.schemeProposalId)
+      return bad(
+        'schemeSide must commit the scheme proposal cited by the role terms',
+      );
+    const schemeProposal = latestProposal(ctx.world.decisions, side.proposalId);
+    if (schemeProposal === undefined || schemeProposal.state !== 'authorized')
+      return bad('scheme proposal must exist and be currently authorized');
+    if (
+      schemeProposal.organizationId !== proposal.organizationId ||
+      schemeProposal.category !== 'scheme' ||
+      schemeProposal.termsType !== ROLE_SCHEME_TRANSITION_TERMS_TYPE ||
+      side.expectedRevision !== schemeProposal.revision
+    )
+      return bad('scheme proposal does not authorize this role transition');
+    if (
+      !isPlainObject(schemeProposal.terms) ||
+      Object.keys(schemeProposal.terms).sort().join(',') !==
+        'playerId,responsibilityKeys,schemeKey' ||
+      schemeProposal.terms.playerId !== playerId ||
+      !nonEmptyText(schemeProposal.terms.schemeKey, 64) ||
+      !isValidId(schemeProposal.terms.schemeKey) ||
+      !Array.isArray(schemeProposal.terms.responsibilityKeys) ||
+      schemeProposal.terms.responsibilityKeys.length === 0 ||
+      !schemeProposal.terms.responsibilityKeys.every(
+        (key) => typeof key === 'string' && isValidId(key),
+      ) ||
+      new Set(schemeProposal.terms.responsibilityKeys).size !==
+        schemeProposal.terms.responsibilityKeys.length ||
+      !schemeProposal.subjects.some(
+        (subject) => subject.kind === 'entity' && subject.id === playerId,
+      )
+    )
+      return bad(
+        'scheme transition terms are malformed or target another player',
+      );
+    schemeKey = schemeProposal.terms.schemeKey;
+    responsibilityKeys = [...schemeProposal.terms.responsibilityKeys].sort();
+    requests.push({
+      organizationId: schemeProposal.organizationId,
+      actorPersonId: side.actorPersonId,
+      proposalId: schemeProposal.id,
+      expectedRevision: side.expectedRevision,
+      expectedCategory: 'scheme',
+      executedTerms: {
+        termsType: schemeProposal.termsType,
+        terms: schemeProposal.terms,
+      },
+      beliefIds: side.beliefIds,
+      evidenceClaimIds: side.evidenceClaimIds,
+      rationale: side.rationale,
+    });
+  }
+
+  requests.push({
+    organizationId: proposal.organizationId,
+    actorPersonId: actor,
+    proposalId: proposal.id,
+    expectedRevision: proposal.revision,
+    expectedCategory: 'roster',
+    executedTerms: {
+      termsType: proposal.termsType,
+      terms: proposal.terms,
+    },
+    beliefIds,
+    evidenceClaimIds,
+    rationale: c.rationale,
+    protectedChange: {
+      subject: { kind: 'entity', id: playerId },
+      change: {
+        kind: 'role_transition',
+        primaryRole: terms.primaryRole,
+        roleTags: [...terms.roleTags].sort(),
+      },
+    },
+  });
+
+  return commitAuthorizedDomainChange(ctx, {
+    nextWorld: {
+      ...ctx.world,
+      roster: transitionPlayerRoleLabels(
+        ctx.world.roster,
+        playerId,
+        terms.primaryRole,
+        terms.roleTags,
+      ),
+    },
+    domainEvents: [
+      spec('PlayerRoleTransitionCommitted', {
+        playerId,
+        organizationId: proposal.organizationId,
+        sourceProposalId: proposal.id,
+        fromPrimaryRole: player.primaryRole,
+        fromRoleTags: [...player.roleTags],
+        toPrimaryRole: terms.primaryRole,
+        toRoleTags: [...terms.roleTags].sort(),
+        schemeProposalId: terms.schemeProposalId,
+        schemeKey,
+        responsibilityKeys: [...responsibilityKeys],
+      }),
+    ],
+    requests,
+  });
+};
 const routeOpen = (ctx: RouteContext, c: Cmd): RouteOutcome => {
   if (!['system', 'commissioner', 'test_harness'].includes(ctx.actor.kind))
     return {
@@ -413,6 +658,8 @@ export const routeDevelopmentCommand = (
         return routeOpen(ctx, command as Cmd);
       case 'CommitOpportunityAllocationProposal':
         return routeCommit(ctx, command as Cmd);
+      case 'CommitRoleTransitionProposal':
+        return routeRoleTransition(ctx, command as Cmd);
     }
   } catch (e) {
     if (
