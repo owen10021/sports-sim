@@ -10,6 +10,7 @@ import {
   commandId,
   worldRevision,
   entityId,
+  type CommandEnvelope,
 } from '../src/index';
 import {
   dRunner,
@@ -29,6 +30,33 @@ const resolve = (windowId: string) => ({
   windowId,
 });
 
+// Isolate the manual command boundary from Task 7's automatic calendar. This fixture
+// resumes at a due date; real time advancement is tested in developmentCalendar.test.
+const atDate = (
+  r: ReturnType<typeof dRunner>,
+  date: string,
+): ReturnType<typeof dRunner> => {
+  const kernel = WorldKernel.resume({
+    world: { ...r.kernel.world, simDate: date },
+    ruleset: SYNTHETIC_PACKAGE_D_RULESET,
+    chainHead: r.kernel.chainHead,
+    eventCount: r.kernel.eventCount,
+    knownCommandIds: r.kernel.knownCommandIds,
+  });
+  let n = 0;
+  return {
+    kernel,
+    run: (command, kind = 'test_harness', expectedRevision) =>
+      kernel.execute({
+        commandId: commandId('unit-checkpoint-' + ++n),
+        expectedRevision: worldRevision(
+          expectedRevision ?? Number(kernel.world.revision),
+        ),
+        actor: { kind, id: entityId('actor-1') },
+        command,
+      } as unknown as CommandEnvelope),
+  };
+};
 const prepared = (supervised = false) => {
   const r = dRunner(),
     windowId = openWindow(r);
@@ -42,8 +70,7 @@ const prepared = (supervised = false) => {
     : allocationTerms('player-nf-01', 50);
   const p = submitAllocation(r, windowId, [terms]);
   okResult(r.run(commitAllocation(p)));
-  okResult(r.run({ type: 'AdvanceDays', days: 7 }));
-  return { r, windowId };
+  return { r: atDate(r, D_END), windowId };
 };
 
 describe('atomic development checkpoints', () => {
@@ -178,7 +205,6 @@ describe('checkpoint learning cannot duplicate a finite lesson across schemes', 
       ]);
       okResult(r.run(commitAllocation(p)));
       okResult(r.run({ type: 'AdvanceDays', days: 7 }));
-      okResult(r.run(resolve(windowId)));
       return r.kernel.world.development.roleKnowledge
         .filter(
           (k) =>
@@ -260,7 +286,6 @@ describe('committed learning pins the approved plan revision', () => {
     okResult(r.run(commitAllocation(p)));
     revise(r, planId, [objective('original')], '2027-02-16');
     okResult(r.run({ type: 'AdvanceDays', days: 7 }));
-    okResult(r.run(resolve(win)));
     expect(
       r.kernel.world.development.checkpoints.filter((c) => c.windowId !== null),
     ).toHaveLength(1);
@@ -273,7 +298,6 @@ describe('committed learning pins the approved plan revision', () => {
     okResult(r.run(commitAllocation(p)));
     revise(r, planId, [objective('original'), objective('added')]);
     okResult(r.run({ type: 'AdvanceDays', days: 7 }));
-    okResult(r.run(resolve(win)));
     const knowledge = r.kernel.world.development.roleKnowledge;
     expect(
       knowledge.some(
@@ -369,7 +393,6 @@ describe('work checkpoints do not own biological time', () => {
           }),
         );
       okResult(r.run({ type: 'AdvanceDays', days: late ? 1 : 7 }));
-      okResult(r.run(resolve(windowId)));
       return r.kernel.world.development.roleKnowledge.find(
         (k) =>
           k.playerId === 'player-nf-01' && k.responsibilityKey === 'run_reads',
@@ -386,9 +409,8 @@ it('rejects overdue manual work before changing person-time or drawing RNG', () 
     win = openWindow(r);
   const p = submitAllocation(r, win, [allocationTerms()]);
   okResult(r.run(commitAllocation(p)));
-  okResult(r.run({ type: 'AdvanceDays', days: 7 }));
-  okResult(r.run({ type: 'AdvanceDays', days: 7 }));
-  const before = snapshotOf(r.kernel);
-  expect(codeOf(r.run(resolve(win)))).toBe('INVALID_PAYLOAD');
-  expect(snapshotOf(r.kernel)).toEqual(before);
+  const overdue = atDate(r, '2027-03-01');
+  const before = snapshotOf(overdue.kernel);
+  expect(codeOf(overdue.run(resolve(win)))).toBe('INVALID_PAYLOAD');
+  expect(snapshotOf(overdue.kernel)).toEqual(before);
 });

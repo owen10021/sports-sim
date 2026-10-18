@@ -91,9 +91,11 @@ describe('teaching legality and scarce attention', () => {
   });
   it('staff departure preserves capability and learned knowledge but removes future teaching legality', () => {
     const r = dRunner();
+    const control = dRunner();
+    okResult(control.run({ type: 'AdvanceDays', days: 1 }));
     const before = JSON.stringify({
-      players: r.kernel.world.roster.players,
-      knowledge: r.kernel.world.development.roleKnowledge,
+      players: control.kernel.world.roster.players,
+      knowledge: control.kernel.world.development.roleKnowledge,
     });
     okResult(
       r.run({

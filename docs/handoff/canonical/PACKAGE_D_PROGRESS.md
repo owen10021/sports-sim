@@ -81,3 +81,17 @@ A fresh-context review found four important defects; the earlier green CI was no
 - Review regression evidence: plan/load/time/exposure/overdue RED logs retained under `evidence/tmp/package-d`; latest focused run passes 31 tests across six files. Fresh full CI is required after these fixes.
 
 - Task 6 acceptance verification after the review corrections: full `npm run ci` exit 0, 79 files / 898 tests, typecheck, lint, formatting, A/B/C golden matches and iOS export. Log: `evidence/tmp/package-d/task6-review-ci.log`. No deferred review minors. Automatic daily integration remains Task 7.
+
+## Task 7: automatic logical-time development
+
+Base: `370e958`.
+
+- Added pure `advanceDevelopmentForDay` and called it inside the existing day loop, immediately after each legacy day roll. Due committed windows resolve chronologically, with organization/window IDs breaking same-day ties. No windows or allocations/defaults are invented.
+- D rules activate daily person-owned passive aging/recovery even without practice; work still requires an explicit authoritative allocation. Uncommitted windows remain open/undecided.
+- Rulesets without D remain an exact no-op at the hook. Tests pin A/B/C legacy day-roll vectors, unchanged D/medical/roster domains and one existing calendar event; full accepted goldens are also required.
+- Four new behavior regressions failed before implementation (unattended resolution, coarse/fine committed checkpoint, no-window passive time and RNG interleaving). They now pass, including identical D-domain projection/RNG for one 14-day and fourteen 1-day commands.
+- A production-command two-organization case opens windows in the opposite creation order and verifies same-day checkpoint order. Its resealed synthetic genesis adds only the second owner's ordinary workload rights; no authorization bypass is used.
+- Test adaptation: manual checkpoint boundary tests use an explicit resumed due-date fixture because normal `AdvanceDays` now resolves the window itself. The staff-departure continuity regression compares two careers with equal elapsed passive time so ordinary aging cannot be mistaken for a coach departure effect.
+- Focused verification: 30/30 tests across calendar, RNG, manual checkpoint and teaching-bandwidth files. Full CI pending.
+
+- Task 7 acceptance verification: full `npm run ci` exit 0, 80 files / 904 tests, typecheck, lint, formatting, all A/B/C goldens and iOS export. Log: `evidence/tmp/package-d/task7-ci.log`.

@@ -159,3 +159,48 @@ describe('DeterministicRng (xoshiro128ss-v1)', () => {
     }
   });
 });
+
+it('interleaves D capability draws after the due day roll and before the following day roll', async () => {
+  const {
+    dRunner,
+    openWindow,
+    submitAllocation,
+    allocationTerms,
+    commitAllocation,
+  } = await import('./support/packageDHarness');
+  const { okResult } = await import('./support/orgHarness');
+  const {
+    requireDevelopmentRules,
+    familyOfCapability,
+    SYNTHETIC_PACKAGE_D_RULESET,
+  } = await import('../src/index');
+  const r = dRunner(),
+    windowId = openWindow(r);
+  const proposal = submitAllocation(r, windowId, [
+    allocationTerms('player-nf-01', 50),
+  ]);
+  okResult(r.run(commitAllocation(proposal)));
+  const before = r.kernel.world;
+  const rules = requireDevelopmentRules(SYNTHETIC_PACKAGE_D_RULESET);
+  const count = before.roster.players
+    .find((p) => p.personId === 'player-nf-01')!
+    .capabilities.filter(
+      (c) => familyOfCapability(rules, c.key) !== undefined,
+    ).length;
+  const expected = DeterministicRng.fromState(before.rng),
+    rolls: number[] = [];
+  for (let day = 1; day <= 14; day++) {
+    rolls.push(expected.nextU32());
+    if (day === 7) for (let cap = 0; cap < count; cap++) expected.nextU32();
+  }
+  okResult(r.run({ type: 'AdvanceDays', days: 14 }));
+  expect(r.kernel.world.rng).toEqual(expected.snapshot());
+  const event = r.kernel.events.find((e) => e.type === 'DaysAdvanced')!;
+  const payload = event.payload as { dayRolls: { roll: number }[] };
+  expect(payload.dayRolls.map((d) => d.roll)).toEqual(rolls);
+  const checkpoint = r.kernel.world.development.checkpoints.find(
+    (c) => c.windowId === windowId,
+  )!;
+  expect(checkpoint.rngDrawStart).toBe(before.rng.draws + 7);
+  expect(checkpoint.rngDrawCount).toBe(count);
+});

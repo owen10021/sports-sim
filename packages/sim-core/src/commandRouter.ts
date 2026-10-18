@@ -2,6 +2,8 @@ import {
   routeDevelopmentCommand,
   type DevelopmentCommandType,
 } from './developmentCommands';
+import { advanceDevelopmentForDay } from './developmentCalendar';
+import { DevelopmentResolutionError } from './developmentResolution';
 import type { CanonicalValue, CommandPayloadBase } from './audit';
 import {
   routeAuthorityCommand,
@@ -258,20 +260,43 @@ const routeAdvanceDays = (
   const rng = DeterministicRng.fromState(world.rng);
   const start = SimDate.parse(world.simDate);
   const dayRolls: { date: string; roll: number }[] = [];
-  for (let i = 1; i <= days; i++) {
-    dayRolls.push({ date: start.addDays(i).toISO(), roll: rng.nextU32() });
+  let advancedWorld = world;
+  const developmentEvents: EventSpec[] = [];
+  try {
+    for (let i = 1; i <= days; i++) {
+      const date = start.addDays(i).toISO();
+      dayRolls.push({ date, roll: rng.nextU32() });
+      const advanced = advanceDevelopmentForDay(
+        advancedWorld,
+        ctx.ruleset,
+        date,
+        rng,
+      );
+      advancedWorld = { ...advanced.world, simDate: date, rng: rng.snapshot() };
+      developmentEvents.push(...advanced.eventSpecs);
+    }
+  } catch (e) {
+    if (e instanceof DevelopmentResolutionError)
+      return {
+        ok: false,
+        stage: 'validation',
+        code: 'INVALID_PAYLOAD',
+        message: e.message,
+      };
+    throw e;
   }
   const toDate = start.addDays(days).toISO();
   return {
     ok: true,
     authorizationDetail: `${ctx.actor.kind} may advance the calendar`,
     resolution: {
-      nextWorld: { ...world, simDate: toDate, rng: rng.snapshot() },
+      nextWorld: { ...advancedWorld, simDate: toDate, rng: rng.snapshot() },
       eventSpecs: [
         {
           type: 'DaysAdvanced',
           payload: { fromDate: world.simDate, toDate, days, dayRolls },
         },
+        ...developmentEvents,
       ],
       detail: `advanced ${days} day(s) to ${toDate}`,
     },
