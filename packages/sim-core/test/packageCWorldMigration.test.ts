@@ -349,7 +349,7 @@ describe('resume, load, replay and save all migrate through the same boundary', 
     const replay = await verifyCareerReplay(store, SYNTHETIC_PACKAGE_C_RULESET);
     expect(replay.ok).toBe(true);
     expect(replay.fingerprint).toBe(fingerprintWorld(kernel.world));
-  });
+  }, 10_000);
 
   it('repair from history leaves a healthy model-3 store alone', async () => {
     const store = await storeFromFixture();

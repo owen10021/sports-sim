@@ -151,3 +151,66 @@ export const seededMedicalState = (
       .sort((a, b) => byText(a.id, b.id)),
   };
 };
+
+const clampBp = (value: number): number =>
+  Math.max(0, Math.min(10000, Math.floor(value)));
+
+/** Latest private checkpoint truth for an episode, if it has been reassessed. */
+export const latestMedicalProgress = (
+  medical: MedicalState,
+  episodeId: RecordId,
+): MedicalProgressRecord | undefined =>
+  medical.progress
+    .filter((p) => p.episodeId === episodeId)
+    .sort((a, b) =>
+      a.assessedAt === b.assessedAt
+        ? a.id < b.id
+          ? -1
+          : a.id > b.id
+            ? 1
+            : 0
+        : a.assessedAt < b.assessedAt
+          ? -1
+          : 1,
+    )
+    .at(-1);
+
+/**
+ * Engine-facing functional readiness for one football action. This is intentionally not
+ * an organization knowledge view: exact readiness is derived from current conditioning,
+ * fatigue and active medical limitations. Structural healing and reinjury risk remain
+ * separate causal facts and are not collapsed into this value.
+ */
+export const functionalReadiness = (
+  world: import('./world').FootballWorld,
+  playerId: string,
+  actionKey: string,
+): number | undefined => {
+  const readiness = world.development.readiness.find(
+    (r) => r.playerId === playerId,
+  );
+  if (readiness === undefined) return undefined;
+
+  let limitationSeverityBp = 0;
+  for (const episode of world.medical.episodes) {
+    if (
+      episode.playerId !== playerId ||
+      episode.status !== 'open' ||
+      !episode.affectedActionKeys.includes(actionKey)
+    )
+      continue;
+    const progress = latestMedicalProgress(world.medical, episode.id);
+    const severity =
+      progress?.limitations.find((l) => l.actionKey === actionKey)
+        ?.severityBp ?? episode.initialStructuralSeverityBp;
+    limitationSeverityBp = Math.max(limitationSeverityBp, severity);
+  }
+
+  const afterFatigue = Math.floor(
+    (readiness.conditioningBp * (10000 - clampBp(readiness.acuteFatigueBp))) /
+      10000,
+  );
+  return clampBp(
+    Math.floor((afterFatigue * (10000 - limitationSeverityBp)) / 10000),
+  );
+};

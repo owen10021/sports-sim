@@ -15,6 +15,7 @@ import type { RelationshipsState } from './relationships';
 import { SimDate } from './simDate';
 import type { FootballWorld } from './world';
 import type { DevelopmentState } from './development';
+import type { MedicalState } from './medical';
 
 /** Shared plumbing for command routers: payload parsing, failures, id minting, resolution. */
 export type Cmd = CommandPayloadBase & { readonly [key: string]: unknown };
@@ -136,6 +137,12 @@ const takenRecordIds = (world: FootballWorld): Set<string> =>
     ...world.development.opportunityAllocations.map((x) => x.id),
     ...world.development.checkpoints.map((x) => x.id),
     ...world.development.events.map((x) => x.id),
+    ...world.medical.episodes.map((x) => x.id),
+    ...world.medical.progress.map((x) => x.id),
+    ...world.medical.reports.map((x) => x.id),
+    ...world.medical.preferences.map((x) => x.id),
+    ...world.medical.recommendations.map((x) => x.id),
+    ...world.medical.clearances.map((x) => x.id),
   ]);
 
 /**
@@ -161,6 +168,7 @@ export const mintRecordId = (world: FootballWorld) => {
 
 export interface Changes {
   readonly development?: DevelopmentState;
+  readonly medical?: MedicalState;
   readonly people?: PeopleState;
   readonly authority?: AuthorityState;
   readonly information?: InformationState;
@@ -182,6 +190,7 @@ export const finish = (
     nextWorld: {
       ...ctx.world,
       development: changes.development ?? ctx.world.development,
+      medical: changes.medical ?? ctx.world.medical,
       people: changes.people ?? ctx.world.people,
       authority: changes.authority ?? ctx.world.authority,
       information: changes.information ?? ctx.world.information,

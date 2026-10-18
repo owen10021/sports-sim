@@ -85,6 +85,7 @@ export { PACKAGE_C_EXPECTED } from './packageCGoldenExpected';
 export * from './opportunity';
 export * from './developmentIntent';
 export * from './developmentCommands';
+export * from './medicalCommands';
 export * from './roleLearning';
 export * from './developmentResolution';
 export * from './developmentCalendar';

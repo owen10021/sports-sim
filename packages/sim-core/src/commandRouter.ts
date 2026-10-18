@@ -4,6 +4,10 @@ import {
 } from './developmentCommands';
 import { advanceDevelopmentForDay } from './developmentCalendar';
 import { DevelopmentResolutionError } from './developmentResolution';
+import {
+  routeMedicalCommand,
+  type MedicalCommandType,
+} from './medicalCommands';
 import type { CanonicalValue, CommandPayloadBase } from './audit';
 import {
   routeAuthorityCommand,
@@ -154,7 +158,12 @@ interface DevelopmentRoutedCommand extends CommandPayloadBase {
   readonly type: DevelopmentCommandType;
 }
 
+interface MedicalRoutedCommand extends CommandPayloadBase {
+  readonly type: MedicalCommandType;
+}
+
 type RoutableCommand =
+  | MedicalRoutedCommand
   | DevelopmentRoutedCommand
   | AdvanceDaysCommand
   | TradeRoutedCommand
@@ -172,6 +181,8 @@ type RoutableCommand =
   | ContractRoutedCommand;
 
 const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
+  CreateMedicalEpisode: true,
+  ReassessMedicalEpisode: true,
   ResolveDevelopmentCheckpoint: true,
   OpenOpportunityWindow: true,
   CommitOpportunityAllocationProposal: true,
@@ -312,6 +323,9 @@ const routeAdvanceDays = (
 export const routeCommand = (ctx: RouteContext): RouteOutcome => {
   const command = ctx.command as RoutableCommand;
   switch (command.type) {
+    case 'CreateMedicalEpisode':
+    case 'ReassessMedicalEpisode':
+      return routeMedicalCommand(ctx, command);
     case 'ResolveDevelopmentCheckpoint':
     case 'OpenOpportunityWindow':
     case 'CommitOpportunityAllocationProposal':
