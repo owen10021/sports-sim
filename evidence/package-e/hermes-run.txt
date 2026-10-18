@@ -1,0 +1,32 @@
+Package E host Hermes second-pass verification
+Candidate: 3483e1208d5a173c6fe2e7ad5bb6dfc94edafcd9
+Started: 2026-10-18T15:56:00.5403847-04:00
+--- npm run hermes:package-d:check ---
+
+> sport-sim@0.0.0 hermes:package-d:check
+> node scripts/hermes-golden.mjs --scenario package-d
+
+npm.cmd : [BABEL] Note: The code generator has deoptimised the styling of undefined as it exceeds the max of 500KB.
+At line:1 char:386
++ ... " | Set-Content $log; npm.cmd run hermes:package-d:check 2>&1 | Tee-O ...
++                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([BABEL] Note: T...e max of 500KB.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+{"engine":"hermes","runtime":{"Bytecode Version":96,"Builtins Frozen":false,"VM Experiments":0,"Build":"Release","GC":"hades (concurrent)","OSS Release Version":"0.12.0","Debugger Enabled":false,"CommonJS Modules":"None"},"match":true,"diffs":[],"fingerprint":"e9cdfe38f624711fc4f5cb8395124f70101a17daa1eb90024270fb22e7eb03a9","eventChainHead":"e692b2516edefdaf1475e212cfe90b0d671d0cd77353fbba476afc443215e483","finalSimDate":"2027-03-31","revision":41,"eventCount":125,"rngDraws":82,"rngState":{"algorithm":"xoshiro128ss-v1","s0":1762549536,"s1":476738090,"s2":4158248179,"s3":1715999327,"draws":82},"keyRecordIds":{"youngSchemeProposal":"rec-000004","youngRoleProposal":"rec-000005","youngCapabilitiesBefore":"[{\"key\":\"agility\",\"valueBp\":6553},{\"key\":\"burst\",\"valueBp\":3824},{\"key\":\"hands\",\"valueBp\":6011},{\"key\":\"strength\",\"valueBp\":9282},{\"key\":\"vision\",\"valueBp\":8740}]","youngTargetKnowledgeBefore":"0","youngCapabilitiesAfterTransition":"[{\"key\":\"agility\",\"valueBp\":6553},{\"key\":\"burst\",\"valueBp\":3824},{\"key\":\"hands\",\"valueBp\":6011},{\"key\":\"strength\",\"valueBp\":9282},{\"key\":\"vision\",\"valueBp\":8740}]","youngRoleAfter":"quarterback","youngTargetKnowledgeAfterTransition":"0","lineSchemeProposal":"rec-000008","lineRoleProposal":"rec-000009","lineCapabilitiesBefore":"[{\"key\":\"agility\",\"valueBp\":6254},{\"key\":\"block_technique\",\"valueBp\":4067},{\"key\":\"processing\",\"valueBp\":3525},{\"key\":\"strength\",\"valueBp\":6796}]","lineSourceFamiliarity":"4984","lineTargetFamiliarityBefore":"0","lineCapabilitiesAfterTransition":"[{\"key\":\"agility\",\"valueBp\":6254},{\"key\":\"block_technique\",\"valueBp\":4067},{\"key\":\"processing\",\"valueBp\":3525},{\"key\":\"strength\",\"valueBp\":6796}]","planProposal":"rec-000012","planId":"rec-000013","planRevisionBefore":"1","medicalEpisode":"rec-000015","febWindow":"rec-000017","febWorkProposal":"rec-000018","lineTargetFamiliarityAfterWork":"150","firstMedicalReport":"rec-000757","firstMedicalUncertainty":"broad","secondMedicalReport":"rec-002384","secondMedicalUncertainty":"moderate","clearanceProposal":"rec-002386","marchWindow":"rec-002389","preAcquisitionWorkProposal":"rec-002390","squeezeBand":"low","veteranContractProposal":"rec-002395","veteranOffer":"rec-002396","reconcilePlanProposal":"rec-002403","planRevisionAfter":"2","successionWindow":"rec-003135","successionWorkProposal":"rec-003136","zeroWindow":"rec-003871","zeroWorkProposal":"rec-003872"}}
+package-d exit: 0
+--- npm run hermes:package-e:check ---
+
+> sport-sim@0.0.0 hermes:package-e:check
+> node scripts/hermes-golden.mjs --scenario package-e
+
+npm.cmd : [BABEL] Note: The code generator has deoptimised the styling of undefined as it exceeds the max of 500KB.
+At line:1 char:608
++ ... d -ne 0) { exit $d }; npm.cmd run hermes:package-e:check 2>&1 | Tee-O ...
++                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([BABEL] Note: T...e max of 500KB.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+{"engine":"hermes","runtime":{"Bytecode Version":96,"Builtins Frozen":false,"VM Experiments":0,"Build":"Release","GC":"hades (concurrent)","OSS Release Version":"0.12.0","Debugger Enabled":false,"CommonJS Modules":"None"},"match":true,"diffs":[],"fingerprint":"563a593956a1416cb563b84082ce2fb03693ac1a684834c29b16508f3d2bd19a","eventChainHead":"b4cdd56de7f67017051ddda965948d9b40a99baf2665f2e69ebca8735de6e2d7","finalSimDate":"2027-09-12","revision":17,"eventCount":344,"rngDraws":5452,"rngState":{"algorithm":"xoshiro128ss-v1","s0":1780057106,"s1":1601908654,"s2":2429168802,"s3":3919184808,"draws":5452},"game":{"id":"rec-000696","fixtureId":"fixture-2027-w01-southport-at-northfield","homeScore":7,"awayScore":33,"playCount":150,"ledgerHash":"960e6688b497790c2ddb6cd5f77fa95d5eac74b3865c71e0d89e322accb2b152"},"keyRecordIds":{"nfStrategyProposal":"rec-000001","nfStrategyPlan":"rec-000002","spStrategyProposal":"rec-000004","spStrategyPlan":"rec-000005","pregameMedicalEpisode":"rec-000007","pregameClearanceProposal":"rec-000008","pregameClearance":"rec-000009","nfActivationProposal":"rec-000011","nfGamePlanProposal":"rec-000068","nfGamePlan":"rec-000069","spActivationProposal":"rec-000071","spGamePlanProposal":"rec-000128","spGamePlan":"rec-000129","gameId":"rec-000696"}}
+package-e exit: 0
+Finished: 2026-10-18T15:58:12.4302353-04:00

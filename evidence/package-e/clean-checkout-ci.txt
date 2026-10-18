@@ -1,0 +1,437 @@
+Package E clean-checkout verification
+Candidate: 3483e1208d5a173c6fe2e7ad5bb6dfc94edafcd9
+Started: 2026-10-18T15:39:00.8238072-04:00
+
+--- npm ci ---
+npm.cmd : npm warn deprecated uuid@7.0.3: uuid@10 and below is no longer supported.  For ESM codebases, update to 
+uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+At line:1 char:522
++ ...  ci ---' | Tee-Object -FilePath $log -Append; npm.cmd ci 2>&1 | Tee-O ...
++                                                   ~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn deprec...cated in 2028).:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support 
+for other options.
+
+added 897 packages, and audited 901 packages in 4m
+
+173 packages are looking for funding
+  run `npm fund` for details
+
+28 vulnerabilities (10 moderate, 18 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm warn allow-scripts 2 packages have install scripts not yet covered by allowScripts:
+npm warn allow-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn allow-scripts   unrs-resolver@1.12.2 (postinstall: node postinstall.js)
+npm warn allow-scripts
+npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to 
+allow.
+npm ci exit: 0
+--- npm run ci ---
+
+> sport-sim@0.0.0 ci
+> npm run typecheck && npm test && npm run lint && npm run format:check && npm run golden:check && npm run golden:package-b:check && npm run golden:package-c:check && npm run golden:package-d:check && npm run golden:package-e:check && npm run hermes:package-d:check && npm run hermes:package-e:check && npm run export:ios
+
+
+> sport-sim@0.0.0 typecheck
+> npm run typecheck --workspaces --if-present
+
+
+> @sport-sim/mobile@0.0.0 typecheck
+> tsc -p tsconfig.json && tsc -p tsconfig.test.json
+
+
+> @sport-sim/headless@0.0.0 typecheck
+> tsc -p tsconfig.json
+
+
+> @sport-sim/sim-core@0.0.0 typecheck
+> tsc -p tsconfig.json && tsc -p tsconfig.test.json
+
+
+> sport-sim@0.0.0 test
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.5 [39m[90mC:/dev/sport-sim/.worktrees/package-e-clean-verify[39m
+
+ [32mΓ£ô[39m packages/sim-core/test/authority.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 237[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/decisionStateMachine.test.ts [2m([22m[2m30 tests[22m[2m)[22m[32m 157[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/gameState.test.ts [2m([22m[2m34 tests[22m[2m)[22m[32m 243[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageCSeed.test.ts [2m([22m[2m24 tests[22m[2m)[22m[33m 977[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/information.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 94[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/planDecisionIntegration.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 91[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/tradeCommands.test.ts [2m([22m[2m19 tests[22m[2m)[22m[33m 388[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/scouting.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 171[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageDSeed.test.ts [2m([22m[2m21 tests[22m[2m)[22m[33m 542[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/acquisitionExploits.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 518[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballSelection.test.ts [2m([22m[2m22 tests[22m[2m)[22m[33m 458[2mms[22m[39m
+   [32mΓ£ô[39m selectors [2m(9)[22m
+     [33m[2mΓ£ô[22m[39m lean toward the pass on long yardage and the run on short yardage[33m 370[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/transactionCommit.test.ts [2m([22m[2m21 tests[22m[2m)[22m[33m 379[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/freeAgency.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 274[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageCWorldMigration.test.ts [2m([22m[2m15 tests[22m[2m)[22m[33m 10011[2mms[22m[39m
+   [32mΓ£ô[39m the frozen Package C v3 fixture [2m(3)[22m
+     [33m[2mΓ£ô[22m[39m is a genuine model-3 career that verifies with model-3 fingerprint semantics[33m 1220[2mms[22m[39m
+   [32mΓ£ô[39m resume, load, replay and save all migrate through the same boundary [2m(7)[22m
+     [33m[2mΓ£ô[22m[39m loadCareer loads a model-3 store, verifies replay, and keeps the store untouched[33m 3076[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m a career loaded from a model-3 store continues, saves model-4 snapshots, reloads and replays[33m 2853[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m repair from history leaves a healthy model-3 store alone[33m 2565[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentCheckpoint.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 1077[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentAudit.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 502[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/organizationSeed.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 119[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentFootballUsage.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 1151[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/worldModelV4.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 72[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/draftBoards.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 185[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/waivers.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 317[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageBWorldMigration.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 395[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/playResolver.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 457[2mms[22m[39m
+   [32mΓ£ô[39m resolvePlay replay [2m(3)[22m
+     [33m[2mΓ£ô[22m[39m does not mutate its input and varies with the stream[33m 319[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballPenalties.test.ts [2m([22m[2m18 tests[22m[2m)[22m[33m 449[2mms[22m[39m
+   [32mΓ£ô[39m reconciliation sweep over every represented foul [2m(1)[22m
+     [33m[2mΓ£ô[22m[39m never leaves an impossible state and never scores on an accepted foul[33m 425[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/legacyWorldMigration.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 60[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/gameDayActivation.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 1729[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/relationships.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 56[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/rosterCommands.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 284[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/contracts.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageESeed.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 679[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/acquisitionAudit.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 178[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballRules.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 98[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentExploits.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 555[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/freeAgencyConcurrency.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 171[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/transactionRules.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/contractCommands.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 276[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballSelectionPrivacy.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32mΓ£ô[39m apps/mobile/test/sqliteCareerStore.test.ts [2m([22m[2m30 tests[22m[2m)[22m[32m 299[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/tradeReasoning.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 333[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/kernel.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentRules.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/gamePlan.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 1683[2mms[22m[39m
+   [32mΓ£ô[39m game-plan execution snapshot [2m(8)[22m
+     [33m[2mΓ£ô[22m[39m rejects unknown scheme, concept or personnel vocabulary and unknown staff[33m 549[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentView.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 115[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballAudit.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 7443[2mms[22m[39m
+   [32mΓ£ô[39m football world audit [2m(5)[22m
+     [33m[2mΓ£ô[22m[39m is clean for an authoritative resolved game[33m 1196[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m finds fixture/game/play identity corruption and duplicate football truth[33m 1837[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m finds illegal/undesignated participation, medical-cap bypass and bad game reconciliation[33m 1891[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m finds missing D usage, missing football medical truth and causal inputs that never entered the play[33m 1586[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m detects latent football evidence and rival private-plan leakage[33m 930[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballMechanism.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 10691[2mms[22m[39m
+   [32mΓ£ô[39m rushing mechanism (inside run into a zone shell) [2m(5)[22m
+     [33m[2mΓ£ô[22m[39m rises when the exact capabilities of the used actions rise[33m 1257[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m falls when the defense gets better at the same actions[33m 1054[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m rises with exact responsibility familiarity and falls below the floor[33m 1100[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m rises with functional readiness[33m 1015[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m follows the ruleset tactical matchup edge and nothing else[33m 1056[2mms[22m[39m
+   [32mΓ£ô[39m passing mechanism (quick pass into a zone shell) [2m(3)[22m
+     [33m[2mΓ£ô[22m[39m completes more passes when the offense is better and fewer when coverage is better[33m 2196[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m sacks more often against worse protection and a better rush[33m 1019[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m throws more interceptions into better coverage[33m 1000[2mms[22m[39m
+   [32mΓ£ô[39m no oracle [2m(1)[22m
+     [33m[2mΓ£ô[22m[39m uses no team-level strength: identical players on both sides give a fair contest[33m 989[2mms[22m[39m
+ [32mΓ£ô[39m apps/mobile/test/careerLifecycle.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 165[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/reasoning.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/tradeMarket.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 185[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/knowledgeView.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/assets.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 174[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/playerMarketView.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 174[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/worldModelV3.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/acquisitionImpact.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 141[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/liveDraft.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 227[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballActionInputs.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/readinessUsage.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 238[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballCalendar.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 5392[2mms[22m[39m
+   [32mΓ£ô[39m ResolveScheduledGame validation and progression [2m(4)[22m
+     [33m[2mΓ£ô[22m[39m takes the same validation path for every permitted actor kind[33m 648[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m produces the identical football world for every permitted progression actor[33m 4137[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/rng.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 243[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/acquisitionView.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 82[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/commandRouter.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/replay.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 170[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/gameDayAuthority.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 1309[2mms[22m[39m
+   [32mΓ£ô[39m game-day activation authority [2m(11)[22m
+     [33m[2mΓ£ô[22m[39m gives the GM identity no implicit activation authority[33m 395[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/worldModelV2.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentCalendar.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 302[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/playerMovementContinuity.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 84[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/rookieContract.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 161[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/roster.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 181[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/medicalAuthority.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 292[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageCScenario.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 25790[2mms[22m[39m
+   [32mΓ£ô[39m Package C golden scenario [2m(10)[22m
+     [33m[2mΓ£ô[22m[39m is deterministic and matches the recorded expectation[33m 2255[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m draws randomness only when days advance, and rejected steps change nothing[33m 1040[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m ends with a clean acquisition audit and conserved assets[33m 1015[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m shows previews agreeing with committed trades[33m 1002[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m records a competitive, deterministic free-agency outcome[33m 1031[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m diverges from the same seed when the variant changes, with a clean audit[33m 2094[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m save/reload at every command boundary yields the same final result[33m 7255[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m persists, reloads and replays to the identical fingerprint and chain head[33m 4753[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m recovers from a corrupt latest snapshot without rewriting history[33m 5330[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/provenance.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/opportunityCommands.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 324[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageBScenario.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 752[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/draftTrade.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 107[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentImpact.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 146[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/world.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/roleTransition.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 89[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/coherenceAudit.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageDScenario.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 25123[2mms[22m[39m
+   [32mΓ£ô[39m Package D integrated scenario RED gate [2m(5)[22m
+     [33m[2mΓ£ô[22m[39m matches the frozen fixture file and the recorded expectation[33m 2204[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m is deterministic and proves all six named Package D obligations from authoritative evidence[33m 4168[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m has at least one rejected stale/unauthorized D step that is byte-atomic and consumes no RNG[33m 2035[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m diverges under an alternate finite-rep allocation while remaining audit-clean[33m 4116[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m save/reload at every command boundary yields the identical final result[33m 12595[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/primitives.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/specialTeams.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballSubstitutions.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/medicalKnowledgeBoundary.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 134[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/roleLearning.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageDWorldMigration.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 8510[2mms[22m[39m
+   [32mΓ£ô[39m frozen Package D v4 career [2m(4)[22m
+     [33m[2mΓ£ô[22m[39m loadCareer and replay accept the legacy-D store without rewriting it[33m 8071[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/scoutingKnowledgeBoundary.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 113[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/teachingBandwidth.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 161[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/audit.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageEScenario.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 30209[2mms[22m[39m
+   [32mΓ£ô[39m Package E integrated authoritative football scenario RED gate [2m(5)[22m
+     [33m[2mΓ£ô[22m[39m matches the frozen Package E fixture and recorded expectation[33m 4146[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m is deterministic and proves the integrated football obligations from authoritative evidence[33m 7793[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m keeps every rejected E step byte-atomic and RNG-free[33m 3760[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m save/reload at every command boundary yields the identical final result[33m 6911[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m a legitimate alternate tactical plan changes football history without a hidden winner bonus[33m 7592[2mms[22m[39m
+ [32mΓ£ô[39m packages/headless/test/cli.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 211[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/playResolverRng.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 150[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/agents.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 140[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/sundayProof.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1716[2mms[22m[39m
+   [32mΓ£ô[39m Sunday Proof resolution-time causal ledger [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m links only receipts that actually backed the designation/game-plan path, never post-hoc same-team records[33m 937[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m records a mechanically traceable roster/designation/game-plan/rules chain for an actual play path[33m 777[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/playerTruthBoundary.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 77[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/worldModelV5.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballUsageTruthBoundary.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 152[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentTruthBoundary.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32mΓ£ô[39m packages/headless/test/golden.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 286[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/medicalReassessment.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 270[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/gameResolver.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 3919[2mms[22m[39m
+   [32mΓ£ô[39m resolveScheduledGameChange [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m resolves the due fixture to one legal final game deterministically[33m 1778[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m uses the fixture clubs only and produces a score for the same game[33m 833[2mms[22m[39m
+   [32mΓ£ô[39m ResolveScheduledGame command [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m resolves exactly once as one world revision[33m 1220[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/legacyFixtureIntegrity.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 73[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageEReplayRecovery.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 40418[2mms[22m[39m
+   [32mΓ£ô[39m Package E persistence / replay / recovery RED gate [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m persists, reloads and replays the identical football world, chain and RNG state[33m 13784[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m repairs a corrupt latest snapshot without rewriting accepted football facts, claims or receipts[33m 26629[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageDReplayRecovery.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 26874[2mms[22m[39m
+   [32mΓ£ô[39m Package D persistence / replay / recovery RED gate [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m persists, reloads and replays to the identical world, chain and RNG state[33m 11306[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m repairs a corrupt latest snapshot without rewriting D history, old claims or medical reports[33m 15565[2mms[22m[39m
+ [32mΓ£ô[39m apps/mobile/test/packageEDiagnostics.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 34726[2mms[22m[39m
+   [32mΓ£ô[39m Package E on-device diagnostic judgement [2m(3)[22m
+     [33m[2mΓ£ô[22m[39m reports MATCH for a clean direct run and a clean store run[33m 17428[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m reports MISMATCH for deterministic identity, RNG, replay, game, or record-ID drift[33m 13011[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m proves reading Fast Sim and GameCast cannot mutate the accepted identity[33m 4283[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/architecture.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 306[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/gameMedicalUsage.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 2607[2mms[22m[39m
+   [32mΓ£ô[39m complete-game medical workload enforcement [2m(3)[22m
+     [33m[2mΓ£ô[22m[39m never fields a zero-cap player and uses a legal backup[33m 953[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m keeps limited usage at or below the hard cap, then substitutes[33m 861[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m does not invent a cap for a full clearance[33m 790[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/sundayProofDisclosure.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1753[2mms[22m[39m
+   [32mΓ£ô[39m Sunday Proof organization disclosure [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m keeps factual own-chain segments while omitting rival/debug links and unexpected hidden payloads[33m 966[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m refuses an organization that did not participate in the game[33m 784[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/agingDevelopment.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballInjuryIngress.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 150[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/opportunity.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 155[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/memoryCareerStore.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballSymmetry.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 5700[2mms[22m[39m
+   [32mΓ£ô[39m football symmetry and insertion-order resistance [2m(3)[22m
+     [33m[2mΓ£ô[22m[39m produces identical accepted football facts for every permitted progression actor[33m 3442[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m does not let designation/game-plan insertion order choose the winner or draw stream[33m 1471[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m stores no team-strength/OVR/user-control winner oracle in authoritative football truth[33m 784[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentState.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 72[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballExploits.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 3817[2mms[22m[39m
+   [32mΓ£ô[39m football exploit graveyard [2m(3)[22m
+     [33m[2mΓ£ô[22m[39m rejects duplicate game resolution atomically with no reroll opportunity[33m 1482[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m cannot reroll presentation after serialization and detects supplied consumer divergence[33m 1149[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m does not silently repair deliberately corrupted football state[33m 1184[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/medicalState.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 77[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentSymmetry.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 102[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballView.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1694[2mms[22m[39m
+   [32mΓ£ô[39m knowledge-safe football decision/history view [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m shows own private football context plus public resolved facts, but never rival private state[33m 928[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m refuses a person who is not an active member of the requested organization[33m 764[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/gameReconciliation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 2485[2mms[22m[39m
+   [32mΓ£ô[39m final game reconciliation [2m(3)[22m
+     [33m[2mΓ£ô[22m[39m returns zero findings for an authoritative complete game[33m 945[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m flags deliberate score, statistics, participation and medical-summary drift[33m 795[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m flags broken sequence and pre/post transition joins[33m 742[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/gameUsageWriteback.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1891[2mms[22m[39m
+   [32mΓ£ô[39m complete-game Package D usage write-back [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m records every participant exposure exactly once through D and never grants snap XP[33m 1123[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m leaves players with actual game work more fatigued and loaded in D[33m 766[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballHistory.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1715[2mms[22m[39m
+   [32mΓ£ô[39m truthful football history retention [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m persists one compact observable fact for every resolved play with valid refs[33m 929[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m never persists private trace, latent capability/readiness values, or RNG rolls[33m 783[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballEvidence.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1728[2mms[22m[39m
+   [32mΓ£ô[39m legitimate football observation claims [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m rejects a synthetic/nonexistent source and a person outside the organization role path[33m 939[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m creates an immutable Package B claim from observable play facts only[33m 786[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/noDuplicateHealthTruth.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 81[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/gameCast.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1778[2mms[22m[39m
+   [32mΓ£ô[39m GameCast projects stored football facts without fabrication [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m ends at the authoritative game result and exposes only represented factual detail[33m 964[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m adds only organization-safe Sunday Proof links when an organization projection is requested[33m 812[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentPassive.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 100[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/persistenceContract.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 171[2mms[22m[39m
+ [32mΓ£ô[39m apps/mobile/test/packageDDiagnostics.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 23990[2mms[22m[39m
+   [32mΓ£ô[39m Package D on-device diagnostic judgement [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m reports MATCH for a clean direct run and a clean store run[33m 13174[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m reports MISMATCH for deterministic identity, RNG, replay, or record-ID drift[33m 10813[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballStats.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1720[2mms[22m[39m
+   [32mΓ£ô[39m football statistics are derived from the play ledger [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m derives the exact stored team/player summaries from persisted play facts[33m 940[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m counts only represented play facts rather than inventing hidden performance stats[33m 777[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballStorageMetrics.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 1743[2mms[22m[39m
+   [32mΓ£ô[39m football storage/ecology metrics [2m(1)[22m
+     [33m[2mΓ£ô[22m[39m is deterministic, useful to Package G, and read-only[33m 1741[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentResolution.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/presentationRng.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 1683[2mms[22m[39m
+   [32mΓ£ô[39m football presentation projections are read-only and RNG-free [2m(1)[22m
+     [33m[2mΓ£ô[22m[39m is byte-stable across repeated projections and serialized reload-shaped input[33m 1681[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/footballKnowledgeBoundary.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 969[2mms[22m[39m
+   [32mΓ£ô[39m football knowledge boundary [2m(1)[22m
+     [33m[2mΓ£ô[22m[39m is byte-identical when only latent capability/readiness truth changes[33m 966[2mms[22m[39m
+ [32mΓ£ô[39m apps/mobile/test/packageCDiagnostics.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 10851[2mms[22m[39m
+   [32mΓ£ô[39m Package C on-device diagnostic judgement [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m reports MATCH for a clean direct run and a clean store run[33m 6029[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m reports MISMATCH when any recorded value differs[33m 4820[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/packageEPresentationEquivalence.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 4659[2mms[22m[39m
+   [32mΓ£ô[39m Package E presentation equivalence RED gate [2m(1)[22m
+     [33m[2mΓ£ô[22m[39m Fast Sim, GameCast and replay project the same accepted ledger and consume no RNG[33m 4656[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/fastSimEquivalence.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 905[2mms[22m[39m
+   [32mΓ£ô[39m Fast Sim and replay use the authoritative football ledger [2m(1)[22m
+     [33m[2mΓ£ô[22m[39m projects the exact final score/statistics and exact stored play order[33m 903[2mms[22m[39m
+ [32mΓ£ô[39m apps/mobile/test/careerDiagnostics.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/syntheticFixtures.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/gameResolutionAtomicity.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 993[2mms[22m[39m
+   [32mΓ£ô[39m ResolveScheduledGame atomicity [2m(1)[22m
+     [33m[2mΓ£ô[22m[39m commits nothing when a late pre-commit fault occurs after full game resolution[33m 991[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/developmentIntent.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 66[2mms[22m[39m
+ [32mΓ£ô[39m packages/sim-core/test/recovery.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 97[2mms[22m[39m
+ [32mΓ£ô[39m apps/mobile/test/packageBDiagnostics.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 340[2mms[22m[39m
+ [32mΓ£ô[39m apps/mobile/test/sqliteRecovery.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 258[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m140 passed[39m[22m[90m (140)[39m
+[2m      Tests [22m [1m[32m1282 passed[39m[22m[90m (1282)[39m
+[2m   Start at [22m 15:43:09
+[2m   Duration [22m 426.82s[2m (tests 82%, import 16%, transform 1%)[22m
+
+[2m    Isolate [22m [33m140 workers spawned[39m[2m ┬╖ ~184ms startup each (spawn + environment, per file)[22m
+[2m            [22m [2mat least ~25.64s faster with [22m[33misolate: false[39m[2m ΓÇö reuses workers across files instead of one per file[22m
+
+
+> sport-sim@0.0.0 lint
+> eslint .
+
+
+> sport-sim@0.0.0 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> sport-sim@0.0.0 golden:check
+> tsx packages/headless/src/bin.ts golden
+
+{"match":true,"diffs":[],"fingerprint":"2ad83a4ad28561ea78cae3d0d98c12df226d225aecac3bb5a981dd27d968fec0","eventChainHead":"d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a","finalSimDate":"2026-10-30","revision":3,"eventCount":3,"commandDays":[1,6,7]}
+
+> sport-sim@0.0.0 golden:package-b:check
+> tsx packages/headless/src/bin.ts package-b-golden
+
+{"match":true,"diffs":[],"fingerprint":"e38048d01a6acc7a1ff3fe4fb492a1bcf384fce956b4ef6b23c97cb796dd0993","eventChainHead":"934b6d86fe79af00c6de40da67e64e1b4bdb7039701c7c45af1598a61ed4f9d0","finalSimDate":"2026-10-19","revision":20,"eventCount":33,"keyRecordIds":{"publicClaim":"rec-000001","nfClaim":"rec-000002","spClaim":"rec-000003","nfBelief":"rec-000004","spBelief":"rec-000005","nfProposal":"rec-000006","nfPlan":"rec-000008","nfReceipt":"rec-000009","spProposal":"rec-000010","spPlan":"rec-000011","spReceipt":"rec-000012","spNewClaim":"rec-000013","spNewBelief":"rec-000014","spRevisionProposal":"rec-000015","spRevisionReceipt":"rec-000016","nfPending":"rec-000018","spMandate":"rec-000019"}}
+
+> sport-sim@0.0.0 golden:package-c:check
+> tsx packages/headless/src/bin.ts package-c-golden
+
+{"match":true,"diffs":[],"fingerprint":"aa2cffda7e8e03b449d4e4bf5809744553072fdc908e95160e6c8ce955b3b6a6","eventChainHead":"3f847dec6c81e179bb285617a9d8ae9eadf7c5e7e6bea2dd0edf2f61e2424e76","finalSimDate":"2027-04-25","revision":100,"eventCount":199,"keyRecordIds":{"nfPlanProposal":"rec-000001","spPlanProposal":"rec-000004","ebPlanProposal":"rec-000007","wlPlanProposal":"rec-000010","nfClaimA":"rec-000013","nfClaimB":"rec-000014","ebClaimA":"rec-000015","ebClaimB":"rec-000016","nfQuestion":"rec-000017","nfAssignment":"rec-000018","ebQuestion":"rec-000019","ebAssignment":"rec-000020","nfReport":"rec-000022","nfBelief":"rec-000021","ebReport":"rec-000024","ebBelief":"rec-000023","nfBoardProposal":"rec-000025","nfBoard1":"rec-000026","ebBoardProposal":"rec-000028","ebBoard1":"rec-000029","nfBoardProposal2":"rec-000031","nfBoard2":"rec-000032","ebNoteClaim":"rec-000034","ebAvoidBelief":"rec-000035","shopEb":"rec-000036","shopWl":"rec-000038","dumpProposalA":"rec-000040","dumpOffer":"rec-000041","dumpDisposition":"reject","swapProposalA":"rec-000043","swapOffer":"rec-000044","swapProposalB":"rec-000045","swapPreviewA":"{\"preview\":{\"organizationId\":\"org-northfield\",\"capDeltaBySeason\":[{\"season\":2027,\"delta\":65000},{\"season\":2028,\"delta\":-205000}],\"activeSlotsBefore\":3,\"activeSlotsAfter\":2,\"reserveSlotsBefore\":1,\"reserveSlotsAfter\":2,\"practiceSquadSlotsBefore\":1,\"practiceSquadSlotsAfter\":1,\"incomingAssets\":[\"player_rights:player-eb-04:right-player-eb-04\"],\"outgoingAssets\":[\"player_rights:player-nf-01:right-player-nf-01\"],\"draftPickIdsGained\":[],\"draftPickIdsLost\":[],\"reservationIdsAffected\":[]},\"cap\":[1085000,800000,0,0],\"slots\":3}","swapPreviewB":"{\"preview\":{\"organizationId\":\"org-eastbrook\",\"capDeltaBySeason\":[{\"season\":2027,\"delta\":-65000},{\"season\":2028,\"delta\":205000}],\"activeSlotsBefore\":3,\"activeSlotsAfter\":4,\"reserveSlotsBefore\":1,\"reserveSlotsAfter\":0,\"practiceSquadSlotsBefore\":0,\"practiceSquadSlotsAfter\":0,\"incomingAssets\":[\"player_rights:player-nf-01:right-player-nf-01\"],\"outgoingAssets\":[\"player_rights:player-eb-04:right-player-eb-04\"],\"draftPickIdsGained\":[],\"draftPickIdsLost\":[],\"reservationIdsAffected\":[]},\"cap\":[1060000,800000,0,0],\"slots\":3}","releaseProposal":"rec-000056","waiver":"rec-000057","waiverWinner":"org-westlake","eb-fa01ContractProposal":"rec-000068","eb-fa01Offer":"rec-000069","eb-fa02ContractProposal":"rec-000071","eb-fa02Offer":"rec-000072","wl-fa01ContractProposal":"rec-000074","wl-fa01Offer":"rec-000075","status:eb-fa01":"rejected","status:eb-fa02":"accepted_pending_commit","status:wl-fa01":"accepted_pending_commit","eb-ext02ContractProposal":"rec-000088","eb-ext02Offer":"rec-000089","sp-ps04ContractProposal":"rec-000091","sp-ps04Offer":"rec-000092","draftSession":"rec-000104","picktradeProposalA":"rec-000105","picktradeOffer":"rec-000106","picktradeProposalB":"rec-000107","picktradePreviewA":"{\"preview\":{\"organizationId\":\"org-northfield\",\"capDeltaBySeason\":[],\"activeSlotsBefore\":2,\"activeSlotsAfter\":2,\"reserveSlotsBefore\":1,\"reserveSlotsAfter\":1,\"practiceSquadSlotsBefore\":1,\"practiceSquadSlotsAfter\":1,\"incomingAssets\":[\"draft_pick:pick-2027-r2-s2\"],\"outgoingAssets\":[\"draft_pick:pick-2027-r1-s4\"],\"draftPickIdsGained\":[\"pick-2027-r2-s2\"],\"draftPickIdsLost\":[\"pick-2027-r1-s4\"],\"reservationIdsAffected\":[]},\"cap\":[860000,595000,0,0],\"slots\":2}","picktradePreviewB":"{\"preview\":{\"organizationId\":\"org-eastbrook\",\"capDeltaBySeason\":[],\"activeSlotsBefore\":5,\"activeSlotsAfter\":5,\"reserveSlotsBefore\":0,\"reserveSlotsAfter\":0,\"practiceSquadSlotsBefore\":0,\"practiceSquadSlotsAfter\":0,\"incomingAssets\":[\"draft_pick:pick-2027-r1-s4\"],\"outgoingAssets\":[\"draft_pick:pick-2027-r2-s2\"],\"draftPickIdsGained\":[\"pick-2027-r1-s4\"],\"draftPickIdsLost\":[\"pick-2027-r2-s2\"],\"reservationIdsAffected\":[]},\"cap\":[1095000,1095000,200000,200000],\"slots\":5}","draftProposal01":"rec-000110","selection01":"rec-000111","draftProposal02":"rec-000114","selection02":"rec-000115","draftProposal03":"rec-000118","selection03":"rec-000119","draftProposal04":"rec-000122","selection04":"rec-000123","draftProposal05":"rec-000126","selection05":"rec-000127","draftProposal06":"rec-000130","selection06":"rec-000131","draftProposal07":"rec-000134","selection07":"rec-000135","draftProposal08":"rec-000138","selection08":"rec-000139","draftProposal09":"rec-000142","selection09":"rec-000143","draftProposal10":"rec-000146","selection10":"rec-000147","draftProposal11":"rec-000150","selection11":"rec-000151","draftProposal12":"rec-000154","selection12":"rec-000155","rookieContractProposal":"rec-000158","rookieOffer":"rec-000159","udfaPlayer":"player-pr-02","udfaContractProposal":"rec-000161","udfaOffer":"rec-000162"}}
+
+> sport-sim@0.0.0 golden:package-d:check
+> tsx packages/headless/src/bin.ts package-d-golden
+
+{"match":true,"diffs":[],"fingerprint":"e9cdfe38f624711fc4f5cb8395124f70101a17daa1eb90024270fb22e7eb03a9","eventChainHead":"e692b2516edefdaf1475e212cfe90b0d671d0cd77353fbba476afc443215e483","finalSimDate":"2027-03-31","revision":41,"eventCount":125,"keyRecordIds":{"youngSchemeProposal":"rec-000004","youngRoleProposal":"rec-000005","youngCapabilitiesBefore":"[{\"key\":\"agility\",\"valueBp\":6553},{\"key\":\"burst\",\"valueBp\":3824},{\"key\":\"hands\",\"valueBp\":6011},{\"key\":\"strength\",\"valueBp\":9282},{\"key\":\"vision\",\"valueBp\":8740}]","youngTargetKnowledgeBefore":"0","youngCapabilitiesAfterTransition":"[{\"key\":\"agility\",\"valueBp\":6553},{\"key\":\"burst\",\"valueBp\":3824},{\"key\":\"hands\",\"valueBp\":6011},{\"key\":\"strength\",\"valueBp\":9282},{\"key\":\"vision\",\"valueBp\":8740}]","youngRoleAfter":"quarterback","youngTargetKnowledgeAfterTransition":"0","lineSchemeProposal":"rec-000008","lineRoleProposal":"rec-000009","lineCapabilitiesBefore":"[{\"key\":\"agility\",\"valueBp\":6254},{\"key\":\"block_technique\",\"valueBp\":4067},{\"key\":\"processing\",\"valueBp\":3525},{\"key\":\"strength\",\"valueBp\":6796}]","lineSourceFamiliarity":"4984","lineTargetFamiliarityBefore":"0","lineCapabilitiesAfterTransition":"[{\"key\":\"agility\",\"valueBp\":6254},{\"key\":\"block_technique\",\"valueBp\":4067},{\"key\":\"processing\",\"valueBp\":3525},{\"key\":\"strength\",\"valueBp\":6796}]","planProposal":"rec-000012","planId":"rec-000013","planRevisionBefore":"1","medicalEpisode":"rec-000015","febWindow":"rec-000017","febWorkProposal":"rec-000018","lineTargetFamiliarityAfterWork":"150","firstMedicalReport":"rec-000757","firstMedicalUncertainty":"broad","secondMedicalReport":"rec-002384","secondMedicalUncertainty":"moderate","clearanceProposal":"rec-002386","marchWindow":"rec-002389","preAcquisitionWorkProposal":"rec-002390","squeezeBand":"low","veteranContractProposal":"rec-002395","veteranOffer":"rec-002396","reconcilePlanProposal":"rec-002403","planRevisionAfter":"2","successionWindow":"rec-003135","successionWorkProposal":"rec-003136","zeroWindow":"rec-003871","zeroWorkProposal":"rec-003872"}}
+
+> sport-sim@0.0.0 golden:package-e:check
+> tsx packages/headless/src/bin.ts package-e-golden
+
+{"match":true,"diffs":[],"fingerprint":"563a593956a1416cb563b84082ce2fb03693ac1a684834c29b16508f3d2bd19a","eventChainHead":"b4cdd56de7f67017051ddda965948d9b40a99baf2665f2e69ebca8735de6e2d7","finalSimDate":"2027-09-12","revision":17,"eventCount":344,"rngDraws":5452,"game":{"id":"rec-000696","fixtureId":"fixture-2027-w01-southport-at-northfield","homeScore":7,"awayScore":33,"playCount":150,"ledgerHash":"960e6688b497790c2ddb6cd5f77fa95d5eac74b3865c71e0d89e322accb2b152"},"keyRecordIds":{"nfStrategyProposal":"rec-000001","nfStrategyPlan":"rec-000002","spStrategyProposal":"rec-000004","spStrategyPlan":"rec-000005","pregameMedicalEpisode":"rec-000007","pregameClearanceProposal":"rec-000008","pregameClearance":"rec-000009","nfActivationProposal":"rec-000011","nfGamePlanProposal":"rec-000068","nfGamePlan":"rec-000069","spActivationProposal":"rec-000071","spGamePlanProposal":"rec-000128","spGamePlan":"rec-000129","gameId":"rec-000696"}}
+
+> sport-sim@0.0.0 hermes:package-d:check
+> node scripts/hermes-golden.mjs --scenario package-d
+
+npm.cmd : [BABEL] Note: The code generator has deoptimised the styling of undefined as it exceeds the max of 500KB.
+At line:1 char:814
++ ... ---' | Tee-Object -FilePath $log -Append; npm.cmd run ci 2>&1 | Tee-O ...
++                                               ~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([BABEL] Note: T...e max of 500KB.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+{"engine":"hermes","runtime":{"Bytecode Version":96,"Builtins Frozen":false,"VM Experiments":0,"Build":"Release","GC":"hades (concurrent)","OSS Release Version":"0.12.0","Debugger Enabled":false,"CommonJS Modules":"None"},"match":true,"diffs":[],"fingerprint":"e9cdfe38f624711fc4f5cb8395124f70101a17daa1eb90024270fb22e7eb03a9","eventChainHead":"e692b2516edefdaf1475e212cfe90b0d671d0cd77353fbba476afc443215e483","finalSimDate":"2027-03-31","revision":41,"eventCount":125,"rngDraws":82,"rngState":{"algorithm":"xoshiro128ss-v1","s0":1762549536,"s1":476738090,"s2":4158248179,"s3":1715999327,"draws":82},"keyRecordIds":{"youngSchemeProposal":"rec-000004","youngRoleProposal":"rec-000005","youngCapabilitiesBefore":"[{\"key\":\"agility\",\"valueBp\":6553},{\"key\":\"burst\",\"valueBp\":3824},{\"key\":\"hands\",\"valueBp\":6011},{\"key\":\"strength\",\"valueBp\":9282},{\"key\":\"vision\",\"valueBp\":8740}]","youngTargetKnowledgeBefore":"0","youngCapabilitiesAfterTransition":"[{\"key\":\"agility\",\"valueBp\":6553},{\"key\":\"burst\",\"valueBp\":3824},{\"key\":\"hands\",\"valueBp\":6011},{\"key\":\"strength\",\"valueBp\":9282},{\"key\":\"vision\",\"valueBp\":8740}]","youngRoleAfter":"quarterback","youngTargetKnowledgeAfterTransition":"0","lineSchemeProposal":"rec-000008","lineRoleProposal":"rec-000009","lineCapabilitiesBefore":"[{\"key\":\"agility\",\"valueBp\":6254},{\"key\":\"block_technique\",\"valueBp\":4067},{\"key\":\"processing\",\"valueBp\":3525},{\"key\":\"strength\",\"valueBp\":6796}]","lineSourceFamiliarity":"4984","lineTargetFamiliarityBefore":"0","lineCapabilitiesAfterTransition":"[{\"key\":\"agility\",\"valueBp\":6254},{\"key\":\"block_technique\",\"valueBp\":4067},{\"key\":\"processing\",\"valueBp\":3525},{\"key\":\"strength\",\"valueBp\":6796}]","planProposal":"rec-000012","planId":"rec-000013","planRevisionBefore":"1","medicalEpisode":"rec-000015","febWindow":"rec-000017","febWorkProposal":"rec-000018","lineTargetFamiliarityAfterWork":"150","firstMedicalReport":"rec-000757","firstMedicalUncertainty":"broad","secondMedicalReport":"rec-002384","secondMedicalUncertainty":"moderate","clearanceProposal":"rec-002386","marchWindow":"rec-002389","preAcquisitionWorkProposal":"rec-002390","squeezeBand":"low","veteranContractProposal":"rec-002395","veteranOffer":"rec-002396","reconcilePlanProposal":"rec-002403","planRevisionAfter":"2","successionWindow":"rec-003135","successionWorkProposal":"rec-003136","zeroWindow":"rec-003871","zeroWorkProposal":"rec-003872"}}
+
+> sport-sim@0.0.0 hermes:package-e:check
+> node scripts/hermes-golden.mjs --scenario package-e
+
+[BABEL] Note: The code generator has deoptimised the styling of undefined as it exceeds the max of 500KB.
+{"engine":"hermes","runtime":{"Bytecode Version":96,"Builtins Frozen":false,"VM Experiments":0,"Build":"Release","GC":"hades (concurrent)","OSS Release Version":"0.12.0","Debugger Enabled":false,"CommonJS Modules":"None"},"match":true,"diffs":[],"fingerprint":"563a593956a1416cb563b84082ce2fb03693ac1a684834c29b16508f3d2bd19a","eventChainHead":"b4cdd56de7f67017051ddda965948d9b40a99baf2665f2e69ebca8735de6e2d7","finalSimDate":"2027-09-12","revision":17,"eventCount":344,"rngDraws":5452,"rngState":{"algorithm":"xoshiro128ss-v1","s0":1780057106,"s1":1601908654,"s2":2429168802,"s3":3919184808,"draws":5452},"game":{"id":"rec-000696","fixtureId":"fixture-2027-w01-southport-at-northfield","homeScore":7,"awayScore":33,"playCount":150,"ledgerHash":"960e6688b497790c2ddb6cd5f77fa95d5eac74b3865c71e0d89e322accb2b152"},"keyRecordIds":{"nfStrategyProposal":"rec-000001","nfStrategyPlan":"rec-000002","spStrategyProposal":"rec-000004","spStrategyPlan":"rec-000005","pregameMedicalEpisode":"rec-000007","pregameClearanceProposal":"rec-000008","pregameClearance":"rec-000009","nfActivationProposal":"rec-000011","nfGamePlanProposal":"rec-000068","nfGamePlan":"rec-000069","spActivationProposal":"rec-000071","spGamePlanProposal":"rec-000128","spGamePlan":"rec-000129","gameId":"rec-000696"}}
+
+> sport-sim@0.0.0 export:ios
+> npm run export:ios --workspace apps/mobile
+
+
+> @sport-sim/mobile@0.0.0 export:ios
+> expo export --platform ios
+
+Expo Autolinking module resolution enabled
+Starting Metro Bundler
+
+iOS Bundled 19508ms node_modules\expo-router\entry.js (1278 modules)
+
+ΓÇ║ Assets (23):
+..\..\node_modules\expo-router\assets\arrow_down.png (9.5KB)
+..\..\node_modules\expo-router\assets\error.png (469B)
+..\..\node_modules\expo-router\assets\file.png (138B)
+..\..\node_modules\expo-router\assets\forward.png (188B)
+..\..\node_modules\expo-router\assets\pkg.png (364B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\back-icon-mask.png (653B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\back-icon.png (4 variations | 566B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\clear-icon.png (4 variations | 425B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\close-icon.png (4 variations | 235B)
+..\..\node_modules\expo-router\assets\react-navigation\elements\search-icon.png (3 variations | 582B)
+..\..\node_modules\expo-router\assets\sitemap.png (465B)
+..\..\node_modules\expo-router\assets\unmatched.png (4.8KB)
+
+ΓÇ║ ios bundles (1):
+_expo/static/js/ios/entry-54f3d8fab6e657abf63af8686f03e322.hbc (3.7MB)
+
+ΓÇ║ Files (1):
+metadata.json (1.6KB)
+
+Exported: dist
+npm run ci exit: 0
+Finished: 2026-10-18T15:55:03.4690277-04:00
