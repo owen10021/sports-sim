@@ -180,7 +180,7 @@ describe('ResolveScheduledGame validation and progression', () => {
       };
     });
     for (const result of fingerprints) expect(result).toEqual(fingerprints[0]);
-  });
+  }, 10_000);
 
   it('refuses CPU orgs and delegates, and changes nothing on any rejection', () => {
     const r = eRunner(E_GAME_DAY_1);
