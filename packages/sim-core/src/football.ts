@@ -331,8 +331,47 @@ export interface ResolvedPlayFact {
   readonly rngDrawCount: number;
   readonly traceHash: string;
 }
+export type FootballCausalRecordKind =
+  | 'decision_receipt'
+  | 'roster_membership'
+  | 'game_day_designation'
+  | 'game_plan_snapshot'
+  | 'medical_episode'
+  | 'medical_clearance';
+
+export type FootballCausalInputRef =
+  | {
+      readonly kind: 'record';
+      readonly recordKind: FootballCausalRecordKind;
+      readonly id: RecordId;
+    }
+  | {
+      readonly kind: 'role_knowledge';
+      readonly playerId: EntityId;
+      readonly schemeKey: string;
+      readonly responsibilityKey: string;
+    }
+  | {
+      readonly kind: 'ruleset_key';
+      readonly keyKind: 'concept' | 'action' | 'responsibility';
+      readonly key: string;
+    };
+
 export interface FootballCausalLink {
   readonly id: RecordId;
+  readonly fixtureId: RecordId;
+  readonly gameId: RecordId;
+  readonly playId: RecordId;
+  readonly organizationId: EntityId;
+  readonly participantPlayerIds: readonly EntityId[];
+  readonly visibility: 'public' | 'organization' | 'debug';
+  readonly inputRefs: readonly FootballCausalInputRef[];
+  readonly consequenceRef: {
+    readonly kind: 'play_fact';
+    readonly playId: RecordId;
+    readonly resultKind: FootballPlayResultKind;
+  };
+  readonly recordedAt: string;
 }
 
 export interface FootballState {

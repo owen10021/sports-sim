@@ -34,6 +34,7 @@ import { createMedicalEpisodeChange } from './medicalCommands';
 import { resolvePlay, type ResolvedPlayDraft } from './playResolver';
 import { DeterministicRng } from './rng';
 import type { LeagueRulesetManifest } from './ruleset';
+import { recordCausalLinksForPlay } from './sundayProof';
 import type { FootballWorld } from './world';
 
 export class FootballGameResolutionError extends Error {
@@ -317,6 +318,7 @@ export const resolveScheduledGameChange = (
         `game ${fixture.id} exceeded ${MAX_PLAYS} plays without reaching final`,
       );
     const preState = state;
+    const prePlayWorld = workingWorld;
     const football = footballForAvailablePlayers(workingWorld, state, rules);
     let resolved;
     try {
@@ -425,6 +427,16 @@ export const resolveScheduledGameChange = (
         },
       };
     }
+    const persistedPlay =
+      workingWorld.football.plays.find((p) => p.id === playId) ??
+      fail(`persisted play ${playId} disappeared before causal recording`);
+    const causal = recordCausalLinksForPlay(
+      prePlayWorld,
+      workingWorld,
+      persistedPlay,
+    );
+    workingWorld = causal.nextWorld;
+    eventSpecs.push(...causal.eventSpecs);
     plays.push({
       ...resolved.resolved,
       id: playId,
