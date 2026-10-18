@@ -1,20 +1,20 @@
-# Sport Sim â€” Package E Design Basis
+# Sport Sim - Package E Design Basis
 
-**Package:** E â€” Football Engine / Sunday Proof  
-**Date:** 2026-10-18  
-**Repository baseline:** `cc29f6ebb0c912a3d69d52a67aee8635e703d299` (`docs(package-d): record final acceptance`)  
-**Design status:** conversational architecture approved; this written specification requires review before an implementation plan may be written.  
+**Package:** E - Football Engine / Sunday Proof
+**Date:** 2026-10-18
+**Repository baseline:** `cc29f6ebb0c912a3d69d52a67aee8635e703d299` (`docs(package-d): record final acceptance`)
+**Design status:** conversational architecture approved; this written specification requires review before an implementation plan may be written.
 **Implementation status:** NOT STARTED.
 
 ## 1. Purpose
 
-Package E makes Sunday real. It must turn the people, roster, development, medical, authority, plans, contracts and information systems already accepted in Packages Aâ€“D into one deterministic football simulation whose actual causal inputs can be inspected later.
+Package E makes Sunday real. It must turn the people, roster, development, medical, authority, plans, contracts and information systems already accepted in Packages A-D into one deterministic football simulation whose actual causal inputs can be inspected later.
 
 Package E is not a presentation trick and not a second sports game bolted onto the GM simulation. It is the authoritative football resolver for Fast Sim, GameCast, CPU games, replay and headless QA.
 
-The product test is simple: a front-office decision changes who is available, what they know, what they can execute and how they are used; the football engine consumes those exact facts; the game produces consequences and evidence; the world remembers them without inventing a post-hoc â€œyour decision matteredâ€ modifier.
+The product test is simple: a front-office decision changes who is available, what they know, what they can execute and how they are used; the football engine consumes those exact facts; the game produces consequences and evidence; the world remembers them without inventing a post-hoc "your decision mattered" modifier.
 
-## 2. Non-negotiable inheritance from Aâ€“D
+## 2. Non-negotiable inheritance from A-D
 
 Package E MUST preserve all accepted architectural laws:
 
@@ -71,7 +71,7 @@ Package E bumps the current world model from 4 to 5 and adds one top-level autho
 The migration contract is additive and fail-closed:
 
 - model 4 becomes the recognized `LegacyPackageDWorld`;
-- D -> E migration adds an empty/seeded `football` domain and changes no prior Aâ€“D domain meaning;
+- D -> E migration adds an empty/seeded `football` domain and changes no prior A-D domain meaning;
 - chained A/B/C/D migrations remain supported;
 - current-model fingerprints move to version 5;
 - old event-chain heads remain unchanged because the event chain does not embed current-world fingerprints;
@@ -79,18 +79,18 @@ The migration contract is additive and fail-closed:
 - snapshot verification must recognize legacy D fingerprints explicitly;
 - future unknown model versions remain rejected rather than interpreted.
 
-The E domain must be structured so football state can be understood without reading presentation code and so no Aâ€“D truth is copied merely for convenience.
+The E domain must be structured so football state can be understood without reading presentation code and so no A-D truth is copied merely for convenience.
 
 ## 5. Football domain state
 
 The minimum authoritative `football` state contains these conceptual record families:
 
-1. **Competition/fixture records** â€” logical date, participants, status, rules profile and final-result reference.
-2. **Game-day designation records** â€” fixture-scoped active/inactive state and football unit/role assignment for players who already have valid C roster membership.
-3. **Game-plan execution snapshot** â€” the exact plan revisions, authorized staff, scheme/concept profile, constraints and intent that entered the game.
-4. **Game record** â€” immutable final score/result, possession/clock reconciliation data, statistics, participant summary, RNG identity and play-ledger references.
-5. **Resolved play facts** â€” compact authoritative facts sufficient to support honest GameCast and later football queries.
-6. **Causal-link records/references** â€” resolution-time links from actual upstream decision/plan/designation/medical/development inputs to the football moments they entered.
+1. **Competition/fixture records** - logical date, participants, status, rules profile and final-result reference.
+2. **Game-day designation records** - fixture-scoped active/inactive state and football unit/role assignment for players who already have valid C roster membership.
+3. **Game-plan execution snapshot** - the exact plan revisions, authorized staff, scheme/concept profile, constraints and intent that entered the game.
+4. **Game record** - immutable final score/result, possession/clock reconciliation data, statistics, participant summary, RNG identity and play-ledger references.
+5. **Resolved play facts** - compact authoritative facts sufficient to support honest GameCast and later football queries.
+6. **Causal-link records/references** - resolution-time links from actual upstream decision/plan/designation/medical/development inputs to the football moments they entered.
 
 Game-day designation is NOT roster membership. A player must first be legitimately rostered by Package C. E only records whether and how that player is available for this fixture.
 
@@ -190,7 +190,7 @@ A **GamePlanExecutionSnapshot** freezes the exact authorized plan revisions, sta
 
 Per-play coaching calls do not create a new proposal record for every snap. They are operational decisions executed under authority already validated for that fixture. The game record must retain enough references to prove which authority/plan snapshot governed those calls.
 
-CPU organizations and the user organization follow the same path. No special â€œplayer teamâ€ football authority is implied by UI control.
+CPU organizations and the user organization follow the same path. No special "player team" football authority is implied by UI control.
 
 ## 11. Game-day designation and eligibility
 
@@ -226,7 +226,7 @@ The contract is:
 
 This preserves accepted Package D daily RNG ordering and creates an explicit save/reload boundary before kickoff.
 
-Package F/G may orchestrate these primitives into a seamless user action such as â€œadvance to next meaningful event,â€ but the lower-level simulation semantics remain explicit.
+Package F/G may orchestrate these primitives into a seamless user action such as "advance to next meaningful event," but the lower-level simulation semantics remain explicit.
 
 ## 13. Game command and atomicity
 
@@ -300,7 +300,7 @@ Rules:
 
 - E never directly edits `development.readiness` or D development events.
 - E never creates a second snap-count-derived fatigue field in `football`.
-- `maxPlayerLoadUnitsPerCheckpoint` is not silently redefined as â€œsnaps.â€
+- `maxPlayerLoadUnitsPerCheckpoint` is not silently redefined as "snaps."
 - `FootballRulesV1` defines deterministic conversion from represented football exposure to D workload units.
 - D remains the authority for how those units affect conditioning, acute fatigue, accumulated load and development/learning.
 - postgame D state must be derivable only through the explicit ingress, so the boundary can be independently tested.
@@ -372,9 +372,9 @@ Sunday Proof records causality at resolution time from inputs that truly partici
 
 The system has three disclosure layers:
 
-1. **Private engine trace** â€” exact internal resolver inputs/derived values/trace references; debug/test only.
-2. **Football fact layer** â€” what actually happened and may be safely stored as game history.
-3. **Organization-facing explanation layer** â€” only facts/claims/causal links the organization can legitimately know or infer.
+1. **Private engine trace** - exact internal resolver inputs/derived values/trace references; debug/test only.
+2. **Football fact layer** - what actually happened and may be safely stored as game history.
+3. **Organization-facing explanation layer** - only facts/claims/causal links the organization can legitimately know or infer.
 
 A valid causal chain may link, for example:
 
@@ -643,7 +643,7 @@ These are later evidence/calibration problems, not unspecified holes in the Pack
 
 A programmer is safe to implement Package E only if they can answer all of these without guessing:
 
-- What state does E own, and what Aâ€“D truth must it never duplicate?
+- What state does E own, and what A-D truth must it never duplicate?
 - What blocks `AdvanceDays` at kickoff?
 - How do offense and defense commit without call leakage?
 - Where do action keys and capability bindings come from?
@@ -656,4 +656,4 @@ A programmer is safe to implement Package E only if they can answer all of these
 - Which numeric policies are synthetic versus empirically calibrated?
 - What does Package E explicitly defer to F and G?
 
-If any answer conflicts with this document or accepted Aâ€“D architecture, implementation stops at the conflict rather than inventing a local workaround.
+If any answer conflicts with this document or accepted A-D architecture, implementation stops at the conflict rather than inventing a local workaround.
