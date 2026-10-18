@@ -1,0 +1,42 @@
+Package D local Windows CI evidence
+
+Primary successful full run
+Date: 2026-10-17 America/New_York
+Repository: C:\dev\sport-sim equivalent implementation state at main a0b73566182c824d956d6b683f084ca27d3c6de6
+Command: npm run ci
+Result: PASS (exit code 0)
+
+Canonical command expansion:
+  npm run typecheck
+  npm test
+  npm run lint
+  npm run format:check
+  npm run golden:check
+  npm run golden:package-b:check
+  npm run golden:package-c:check
+  npm run golden:package-d:check
+  npm run export:ios
+
+Results:
+  typecheck: PASS
+  test files: 95 passed / 95
+  tests: 974 passed / 974
+  ESLint: PASS
+  Prettier: PASS
+  Package A golden: match=true, diffs=[]
+  Package B golden: match=true, diffs=[]
+  Package C golden: match=true, diffs=[]
+  Package D golden: match=true, diffs=[]
+  iOS Expo/Hermes export: PASS, exported to dist
+
+Package D identity from the successful run:
+  fingerprint: 30406fda343b9d8f4c25d560b12033a8bb27eb11de58cb8d5ce14989a2da3849
+  eventChainHead: e692b2516edefdaf1475e212cfe90b0d671d0cd77353fbba476afc443215e483
+  finalSimDate: 2027-03-31
+  revision: 41
+  eventCount: 125
+
+Acceptance-document verification note
+After the acceptance-only Markdown/evidence files were added, a local full rerun first found only a Prettier issue in the new acceptance Markdown; the file was formatted and passed Prettier. A subsequent full rerun reached 973/974 tests with one failure: `packageCWorldMigration.test.ts` -> `loadCareer loads a model-3 store, verifies replay, and keeps the store untouched` exceeded Vitest's 5000 ms default timeout and completed at about 5678 ms on the 4 GB Surface. There was no assertion/state mismatch. The exact test was immediately rerun alone with unchanged code and passed in 3919 ms. The remaining current-state gates were then rerun sequentially and all passed: ESLint, Prettier, A/B/C/D goldens, and iOS export.
+
+The authoritative exact-commit clean-checkout/full-suite proof is the GitHub-hosted Windows CI recorded in `clean-checkout-ci.txt`; the local timeout above is retained here as an environment-performance observation rather than hidden or normalized away.

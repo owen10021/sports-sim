@@ -1,0 +1,50 @@
+Package D clean-checkout CI — final accepted proof
+
+Date: 2026-10-17 America/New_York
+Repository: owen10021/sports-sim
+Candidate commit: a0b73566182c824d956d6b683f084ca27d3c6de6
+GitHub Actions run: #68
+Run ID: 39093040111
+Job ID: 117573624903
+Runner: GitHub-hosted Microsoft Windows Server 2025 (windows-2025-vs2026)
+Checkout: clean fresh checkout, fetch-depth 1, exact commit a0b73566182c824d956d6b683f084ca27d3c6de6
+Node: v24.21.0
+npm: 11.19.0
+
+Fresh install gate:
+  command: npm ci
+  result: SUCCESS
+  added 897 packages, audited 901 packages in 37s
+
+Canonical full gate:
+  command: npm run ci
+  expansion: npm run typecheck && npm test && npm run lint && npm run format:check && npm run golden:check && npm run golden:package-b:check && npm run golden:package-c:check && npm run golden:package-d:check && npm run export:ios
+  result: SUCCESS
+
+Fresh test count:
+  test files: 95 passed / 95
+  tests: 974 passed / 974
+
+Other gates:
+  typecheck: PASS
+  eslint: PASS
+  prettier format check: PASS
+  Package A golden: match=true, diffs=[]
+  Package B golden: match=true, diffs=[]
+  Package C golden: match=true, diffs=[]
+  Package D golden: match=true, diffs=[]
+  iOS Expo export: PASS; Hermes bundle exported to dist
+
+Package D identity from this clean run:
+  fingerprint: 30406fda343b9d8f4c25d560b12033a8bb27eb11de58cb8d5ce14989a2da3849
+  eventChainHead: e692b2516edefdaf1475e212cfe90b0d671d0cd77353fbba476afc443215e483
+  finalSimDate: 2027-03-31
+  revision: 41
+  eventCount: 125
+
+Warnings observed but not acceptance mismatches:
+  npm audit reported 28 dependency vulnerabilities (10 moderate, 18 high).
+  npm also warned that esbuild@0.28.2 and unrs-resolver@1.12.2 install scripts are not yet covered by allowScripts.
+  These are dependency-maintenance/security follow-up items; npm ci and the complete canonical CI gate both completed successfully without modifying the lockfile.
+
+Source of truth: completed GitHub Actions job log for run 39093040111.
