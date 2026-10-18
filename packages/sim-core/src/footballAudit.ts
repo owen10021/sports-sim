@@ -1,9 +1,5 @@
 import { canonicalString } from './canonical';
-import type {
-  FootballCausalInputRef,
-  FootballGameRecord,
-  ResolvedPlayFact,
-} from './football';
+import type { FootballCausalInputRef, ResolvedPlayFact } from './football';
 import {
   fastSimSummary,
   footballReplayFacts,

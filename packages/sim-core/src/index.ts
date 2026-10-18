@@ -116,4 +116,6 @@ export * from './footballView';
 export * from './sundayProof';
 export * from './gameCast';
 export * from './footballAudit';
-export * from './footballAudit';
+export * from './packageEScenario';
+export * from './packageEScenarioRun';
+export * from './packageEGoldenExpected';
