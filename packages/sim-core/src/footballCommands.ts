@@ -21,11 +21,20 @@ import {
   gameDayProblems,
   parseGameDayTerms,
 } from './gameDay';
+import { scheduledGameProblems } from './footballCalendar';
+import {
+  GAME_PLAN_EXECUTION_TERMS_TYPE,
+  buildGamePlanExecutionSnapshot,
+  isGamePlanFailure,
+  parseGamePlanTerms,
+} from './gamePlan';
 import { entityId, isValidId, recordId } from './ids';
 import { commitAuthorizedDomainChange } from './transactionCommit';
 
 export const FOOTBALL_COMMAND_TYPES = [
   'CommitGameDayActivationProposal',
+  'CommitGamePlanProposal',
+  'ResolveScheduledGame',
 ] as const;
 export type FootballCommandType = (typeof FOOTBALL_COMMAND_TYPES)[number];
 
@@ -141,6 +150,126 @@ const routeCommitActivation = (ctx: RouteContext, c: Cmd): RouteOutcome => {
   });
 };
 
+/**
+ * Commits an authorized game-plan proposal: the club's plan for one fixture becomes an
+ * immutable execution snapshot pinned to the exact strategy-plan revisions and proposal
+ * revision/terms hash. Later plan revisions or newer proposals never change it.
+ */
+const routeCommitGamePlan = (ctx: RouteContext, c: Cmd): RouteOutcome => {
+  let rules;
+  try {
+    rules = requireFootballRules(ctx.ruleset);
+  } catch (e) {
+    if (e instanceof MissingFootballRulesError)
+      return bad('the ruleset has no football rules');
+    throw e;
+  }
+  const actor = parseActingPerson(ctx, c);
+  if (isFailure(actor)) return actor;
+  if (!isValidId(c.proposalId)) return bad('proposalId must be valid');
+  const p = latestProposal(ctx.world.decisions, c.proposalId);
+  if (p === undefined || p.state !== 'authorized')
+    return bad('proposal must exist and be authorized');
+  if (p.category !== 'scheme' || p.termsType !== GAME_PLAN_EXECUTION_TERMS_TYPE)
+    return bad(`proposal must be scheme ${GAME_PLAN_EXECUTION_TERMS_TYPE}`);
+  if (c.expectedRevision !== p.revision)
+    return bad('proposal revision is stale');
+  if (
+    !Array.isArray(c.beliefIds) ||
+    !Array.isArray(c.evidenceClaimIds) ||
+    !isPlainObject(c.rationale)
+  )
+    return bad('beliefIds, evidenceClaimIds and rationale are required');
+  const parsed = parseGamePlanTerms(p.terms);
+  if (typeof parsed === 'string') return bad(parsed);
+  const built = buildGamePlanExecutionSnapshot(
+    ctx.world,
+    rules,
+    parsed.fixtureId,
+    parsed.organizationId,
+    p,
+  );
+  if (isGamePlanFailure(built)) return bad(built.failure);
+  return commitAuthorizedDomainChange(ctx, {
+    nextWorld: {
+      ...ctx.world,
+      football: {
+        ...ctx.world.football,
+        gamePlans: [...ctx.world.football.gamePlans, built.snapshot].sort(byId),
+      },
+      nextIds: { ...ctx.world.nextIds, record: built.nextRecord },
+    },
+    domainEvents: [
+      spec('GamePlanCommitted', {
+        snapshotId: built.snapshot.id,
+        fixtureId: built.snapshot.fixtureId,
+        organizationId: built.snapshot.organizationId,
+        sourceProposalId: p.id,
+      }),
+    ],
+    requests: [
+      {
+        organizationId: p.organizationId,
+        actorPersonId: actor,
+        proposalId: p.id,
+        expectedRevision: p.revision,
+        expectedCategory: 'scheme',
+        executedTerms: {
+          termsType: GAME_PLAN_EXECUTION_TERMS_TYPE,
+          terms: p.terms,
+        },
+        beliefIds: c.beliefIds as string[],
+        evidenceClaimIds: c.evidenceClaimIds as string[],
+        rationale: c.rationale,
+        protectedChange: {
+          subject: { kind: 'entity', id: p.organizationId },
+          change: {
+            kind: 'game_plan_execution',
+            fixtureId: built.snapshot.fixtureId,
+          },
+        },
+      },
+    ],
+  });
+};
+
+/** Actors that may ask for a scheduled game to be resolved. CPU orgs and delegates may not. */
+const GAME_RESOLUTION_AUTHORITY: ReadonlySet<string> = new Set([
+  'human_gm',
+  'commissioner',
+  'system',
+  'test_harness',
+]);
+
+/**
+ * Skeleton: validates that a game is due and fully prepared, then rejects until the
+ * resolver exists. The actor kind is checked once and is never an input to validation.
+ */
+const routeResolveScheduledGame = (ctx: RouteContext, c: Cmd): RouteOutcome => {
+  if (!GAME_RESOLUTION_AUTHORITY.has(ctx.actor.kind))
+    return {
+      ok: false,
+      stage: 'authorization',
+      code: 'UNAUTHORIZED_ACTOR',
+      message: `${ctx.actor.kind} cannot resolve scheduled games`,
+    };
+  try {
+    requireFootballRules(ctx.ruleset);
+  } catch (e) {
+    if (e instanceof MissingFootballRulesError)
+      return bad('the ruleset has no football rules');
+    throw e;
+  }
+  if (
+    Object.keys(c).sort().join(',') !== 'fixtureId,type' ||
+    !isValidId(c.fixtureId)
+  )
+    return bad('ResolveScheduledGame needs exactly { fixtureId }');
+  const problems = scheduledGameProblems(ctx.world, c.fixtureId);
+  if (problems.length > 0) return bad(problems.join('; '));
+  return bad('game resolution is not available yet');
+};
+
 export const routeFootballCommand = (
   ctx: RouteContext,
   command: CommandPayloadBase & { readonly type: FootballCommandType },
@@ -148,6 +277,10 @@ export const routeFootballCommand = (
   switch (command.type) {
     case 'CommitGameDayActivationProposal':
       return routeCommitActivation(ctx, command as Cmd);
+    case 'CommitGamePlanProposal':
+      return routeCommitGamePlan(ctx, command as Cmd);
+    case 'ResolveScheduledGame':
+      return routeResolveScheduledGame(ctx, command as Cmd);
     default: {
       const unreachable: never = command.type;
       throw new Error(`unroutable football command: ${String(unreachable)}`);

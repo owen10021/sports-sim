@@ -4,6 +4,7 @@ import {
 } from './developmentCommands';
 import { advanceDevelopmentForDay } from './developmentCalendar';
 import { DevelopmentResolutionError } from './developmentResolution';
+import { nextBlockingFootballFixture } from './footballCalendar';
 import {
   routeFootballCommand,
   type FootballCommandType,
@@ -191,6 +192,8 @@ type RoutableCommand =
 
 const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   CommitGameDayActivationProposal: true,
+  CommitGamePlanProposal: true,
+  ResolveScheduledGame: true,
   CreateMedicalEpisode: true,
   ReassessMedicalEpisode: true,
   RecordParticipationPreference: true,
@@ -282,6 +285,19 @@ const routeAdvanceDays = (
   }
 
   const world = ctx.world;
+  // Time may stop at, but never pass, an unresolved scheduled game. Checked before any RNG
+  // is created so a refused advance consumes nothing and legacy worlds are unaffected.
+  const blocking = nextBlockingFootballFixture(
+    world,
+    SimDate.parse(world.simDate).addDays(days).toISO(),
+  );
+  if (blocking !== null)
+    return {
+      ok: false,
+      stage: 'validation',
+      code: 'INVALID_PAYLOAD',
+      message: `scheduled game ${blocking.id} on ${blocking.fixtureDate} must be resolved before time advances past it`,
+    };
   const rng = DeterministicRng.fromState(world.rng);
   const start = SimDate.parse(world.simDate);
   const dayRolls: { date: string; roll: number }[] = [];
@@ -338,6 +354,8 @@ export const routeCommand = (ctx: RouteContext): RouteOutcome => {
   const command = ctx.command as RoutableCommand;
   switch (command.type) {
     case 'CommitGameDayActivationProposal':
+    case 'CommitGamePlanProposal':
+    case 'ResolveScheduledGame':
       return routeFootballCommand(ctx, command);
     case 'CreateMedicalEpisode':
     case 'ReassessMedicalEpisode':

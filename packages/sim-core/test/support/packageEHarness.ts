@@ -231,3 +231,161 @@ export const nf = (n: number): string =>
   `player-nf-e${String(n).padStart(2, '0')}`;
 export const sp = (n: number): string =>
   `player-sp-e${String(n).padStart(2, '0')}`;
+
+export const GAME_PLAN_TERMS_TYPE = 'game_plan_execution_v1';
+
+/** Adopts an active strategy plan for Northfield and returns its id (revision 1). */
+export const adoptStrategyPlan = (r: Runner): string => {
+  okResult(
+    r.run({
+      type: 'SubmitProposal',
+      organizationId: NF.org,
+      actingPersonId: NF.gm,
+      category: 'organizational_plan',
+      subjects: [{ kind: 'entity', id: NF.org }],
+      termsType: 'organization_plan_v1',
+      terms: strategyPlanTerms(null, r.kernel.world.simDate, [
+        { key: 'win_now', priority: 'high', target: { window: 'now' } },
+      ]),
+      requiredApproverPersonIds: [],
+      expiresAt: null,
+      contingencies: {},
+    }),
+  );
+  okResult(
+    r.run({
+      type: 'CommitPlanProposal',
+      proposalId: r.kernel.world.decisions.proposals.at(-1)!.id,
+      actingPersonId: NF.gm,
+      expectedRevision: 1,
+      beliefIds: [],
+      evidenceClaimIds: [],
+      rationale: { note: 'strategy' },
+    }),
+  );
+  return r.kernel.world.plans.plans.at(-1)!.id;
+};
+
+const strategyPlanTerms = (
+  planId: string | null,
+  effectiveAt: string,
+  objectives: Record<string, unknown>[],
+) => ({
+  planId,
+  kind: 'strategy',
+  scopeKey: 'franchise',
+  ownerPersonId: NF.gm,
+  effectiveAt,
+  horizon: { seasons: 1 },
+  objectives,
+  constraints: [],
+  triggerRefs: [],
+  fallbackPlanIds: [],
+  changeReasonRefs: [],
+});
+
+/** Revises the strategy plan to its next revision by adding an objective. */
+export const reviseStrategyPlan = (r: Runner, planId: string): void => {
+  okResult(
+    r.run({
+      type: 'SubmitProposal',
+      organizationId: NF.org,
+      actingPersonId: NF.gm,
+      category: 'organizational_plan',
+      subjects: [{ kind: 'entity', id: NF.org }],
+      termsType: 'organization_plan_v1',
+      terms: strategyPlanTerms(planId, r.kernel.world.simDate, [
+        { key: 'win_now', priority: 'high', target: { window: 'now' } },
+        { key: 'protect_qb', priority: 'medium', target: { qb: 'healthy' } },
+      ]),
+      requiredApproverPersonIds: [],
+      expiresAt: null,
+      contingencies: {},
+    }),
+  );
+  okResult(
+    r.run({
+      type: 'CommitPlanProposal',
+      proposalId: r.kernel.world.decisions.proposals.at(-1)!.id,
+      actingPersonId: NF.gm,
+      expectedRevision: 1,
+      beliefIds: [],
+      evidenceClaimIds: [],
+      rationale: { note: 'revise strategy' },
+    }),
+  );
+};
+
+export const gamePlanTerms = (
+  over: Record<string, unknown> = {},
+  fixtureId = E_FIXTURE_1,
+  organizationId: string = NF.org,
+  coach: string = NF_COACH,
+) => ({
+  fixtureId,
+  organizationId,
+  strategyPlanRefs: [],
+  authorizedStaffPersonIds: [coach],
+  schemeKey: 'base_offense',
+  conceptKeys: ['inside_run', 'quick_pass', 'zone_shell'],
+  personnelPreferenceKeys: ['personnel_11'],
+  constraints: { maxBlitzRateBp: 2500 },
+  ...over,
+});
+
+/** Submits a game-plan proposal (category scheme) as the club GM; returns the proposal id. */
+export const submitGamePlan = (
+  r: Runner,
+  terms: Record<string, unknown>,
+  by: string = NF.gm,
+  organizationId: string = NF.org,
+): string => {
+  okResult(
+    r.run({
+      type: 'SubmitProposal',
+      organizationId,
+      actingPersonId: by,
+      category: 'scheme',
+      subjects: [{ kind: 'entity', id: organizationId }],
+      termsType: GAME_PLAN_TERMS_TYPE,
+      terms,
+      requiredApproverPersonIds: [],
+      expiresAt: null,
+      contingencies: {},
+    }),
+  );
+  return r.kernel.world.decisions.proposals.at(-1)!.id;
+};
+
+export const commitGamePlan = (
+  proposalId: string,
+  by: string = NF_COACH,
+  extra: Record<string, unknown> = {},
+) => ({
+  type: 'CommitGamePlanProposal',
+  proposalId,
+  actingPersonId: by,
+  expectedRevision: 1,
+  beliefIds: [],
+  evidenceClaimIds: [],
+  rationale: { note: 'game plan' },
+  ...extra,
+});
+
+/** Commits a valid game plan for both clubs for the first fixture. */
+export const commitBothGamePlans = (r: Runner): void => {
+  okResult(r.run(commitGamePlan(submitGamePlan(r, gamePlanTerms()))));
+  okResult(
+    r.run(
+      commitGamePlan(
+        submitGamePlan(
+          r,
+          gamePlanTerms({}, E_FIXTURE_1, SP.org, SP_COACH),
+          SP.gm,
+          SP.org,
+        ),
+        SP_COACH,
+      ),
+    ),
+  );
+};

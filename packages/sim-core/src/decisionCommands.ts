@@ -1,4 +1,8 @@
 import {
+  GAME_PLAN_EXECUTION_TERMS_TYPE,
+  canonicalGamePlanTerms,
+} from './gamePlan';
+import {
   GAME_DAY_ACTIVATION_TERMS_TYPE,
   canonicalGameDayTerms,
 } from './gameDay';
@@ -223,7 +227,9 @@ const parseFields = (
         ? canonicalOpportunityTerms(terms, world)
         : termsType === GAME_DAY_ACTIVATION_TERMS_TYPE
           ? canonicalGameDayTerms(terms)
-          : terms,
+          : termsType === GAME_PLAN_EXECUTION_TERMS_TYPE
+            ? canonicalGamePlanTerms(terms)
+            : terms,
     requiredApproverPersonIds: required,
     expiresAt,
     contingencies,

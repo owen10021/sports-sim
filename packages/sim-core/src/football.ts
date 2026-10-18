@@ -1,3 +1,4 @@
+import type { CanonicalValue } from './audit';
 import { entityId, recordId, type EntityId, type RecordId } from './ids';
 import type { PackageESubstrateSeed } from './packageESeedParse';
 
@@ -43,8 +44,31 @@ export interface GameDayDesignation {
   readonly sourceProposalId: RecordId;
   readonly committedAt: string;
 }
+/**
+ * One club's immutable, committed game plan for one fixture. It pins the exact strategy-plan
+ * revisions and the exact proposal revision and terms hash that authorized it, so it never
+ * follows later plan revisions or newer proposals.
+ */
 export interface GamePlanExecutionSnapshot {
   readonly id: RecordId;
+  readonly fixtureId: RecordId;
+  readonly organizationId: EntityId;
+  readonly capturedAt: string;
+  readonly strategyPlanRefs: readonly {
+    readonly planId: RecordId;
+    readonly revision: number;
+  }[];
+  readonly schemeProposalRef: {
+    readonly proposalId: RecordId;
+    readonly revision: number;
+    readonly termsHash: string;
+  };
+  readonly authorizedStaffPersonIds: readonly EntityId[];
+  readonly schemeKey: string;
+  readonly conceptKeys: readonly string[];
+  readonly personnelPreferenceKeys: readonly string[];
+  readonly constraints: { readonly [key: string]: CanonicalValue };
+  readonly sourceProposalId: RecordId;
 }
 export interface FootballGameRecord {
   readonly id: RecordId;
