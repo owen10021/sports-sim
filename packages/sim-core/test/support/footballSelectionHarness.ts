@@ -1,0 +1,154 @@
+import {
+  SYNTHETIC_PACKAGE_E_RULESET,
+  entityId,
+  recordId,
+  type EntityId,
+  type FootballSelectionSituation,
+  type FootballWorld,
+  type GameDayDesignation,
+  type GamePlanExecutionSnapshot,
+} from '../../src/index';
+import {
+  E_FIXTURE_1,
+  E_GAME_DAY_1,
+  NF,
+  SP,
+  eWorld,
+  nf,
+  sp,
+} from './packageEHarness';
+
+export const RULESET = SYNTHETIC_PACKAGE_E_RULESET;
+
+/** Position layout shared by both synthetic clubs: ids 1..34. */
+const LAYOUT: readonly {
+  readonly role: string;
+  readonly unit: string;
+  readonly count: number;
+}[] = [
+  { role: 'quarterback', unit: 'offense', count: 2 },
+  { role: 'running_back', unit: 'offense', count: 2 },
+  { role: 'wide_receiver', unit: 'offense', count: 4 },
+  { role: 'tight_end', unit: 'offense', count: 2 },
+  { role: 'offensive_line', unit: 'offense', count: 7 },
+  { role: 'defensive_line', unit: 'defense', count: 5 },
+  { role: 'linebacker', unit: 'defense', count: 4 },
+  { role: 'cornerback', unit: 'defense', count: 3 },
+  { role: 'safety', unit: 'defense', count: 3 },
+  { role: 'kicker', unit: 'kicking', count: 1 },
+  { role: 'punter', unit: 'kicking', count: 1 },
+];
+
+export const OFFENSE_CONCEPTS = [
+  'inside_run',
+  'outside_run',
+  'quick_pass',
+  'deep_pass',
+];
+export const DEFENSE_CONCEPTS = ['zone_shell', 'man_press', 'run_commit_front'];
+
+export const designationsFor = (
+  organizationId: string,
+  playerOf: (n: number) => string,
+): GameDayDesignation[] => {
+  let n = 0;
+  return LAYOUT.flatMap(({ role, unit, count }) =>
+    Array.from({ length: count }, (_, i) => {
+      n += 1;
+      return {
+        id: recordId(`designation-${organizationId}-${n}`),
+        fixtureId: recordId(E_FIXTURE_1),
+        organizationId: entityId(organizationId),
+        playerId: entityId(playerOf(n)),
+        status: 'active' as const,
+        unitKey: unit,
+        roleKey: role,
+        depthOrder: i + 1,
+        sourceProposalId: recordId(`proposal-${organizationId}`),
+        committedAt: E_GAME_DAY_1,
+      };
+    }),
+  );
+};
+
+export const planFor = (
+  organizationId: string,
+  over: Partial<GamePlanExecutionSnapshot> = {},
+): GamePlanExecutionSnapshot => ({
+  id: recordId(`gameplan-${organizationId}`),
+  fixtureId: recordId(E_FIXTURE_1),
+  organizationId: entityId(organizationId),
+  capturedAt: E_GAME_DAY_1,
+  strategyPlanRefs: [],
+  schemeProposalRef: {
+    proposalId: recordId(`proposal-${organizationId}`),
+    revision: 1,
+    termsHash: 'hash',
+  },
+  authorizedStaffPersonIds: [],
+  schemeKey: 'base_offense',
+  conceptKeys: [...OFFENSE_CONCEPTS, ...DEFENSE_CONCEPTS],
+  personnelPreferenceKeys: ['personnel_11'],
+  constraints: { maxBlitzRateBp: 2500 },
+  sourceProposalId: recordId(`proposal-${organizationId}`),
+  ...over,
+});
+
+/** The Package E world on game day with full active designations and a game plan per club. */
+export const selectionWorld = (): FootballWorld => {
+  const base = eWorld(E_GAME_DAY_1);
+  return {
+    ...base,
+    football: {
+      ...base.football,
+      designations: [
+        ...designationsFor(NF.org, nf),
+        ...designationsFor(SP.org, sp),
+      ],
+      gamePlans: [planFor(NF.org), planFor(SP.org)],
+    },
+  };
+};
+
+export const fixtureOrgs = (
+  world: Pick<FootballWorld, 'football'>,
+): { readonly home: EntityId; readonly away: EntityId } => {
+  const f = world.football.fixtures.find((x) => x.id === E_FIXTURE_1)!;
+  return { home: f.homeOrganizationId, away: f.awayOrganizationId };
+};
+
+export const situationFor = (
+  possession: EntityId,
+  over: Partial<FootballSelectionSituation> = {},
+): FootballSelectionSituation => ({
+  possessionOrganizationId: possession,
+  period: 1,
+  clockSecondsRemaining: 900,
+  down: 1,
+  yardsToGo: 10,
+  yardLine: 25,
+  homeScore: 0,
+  awayScore: 0,
+  homeTimeoutsRemaining: 3,
+  awayTimeoutsRemaining: 3,
+  resolvedCalls: [],
+  ...over,
+});
+
+/** `n` well-spread unsigned 32-bit rolls, deterministic and RNG-free. */
+export const spreadRolls = (n: number): number[] =>
+  Array.from({ length: n }, (_, i) => Math.imul(i + 1, 2654435761) >>> 0);
+
+/** Every key of every object reachable from a value, for structural leak checks. */
+export const allKeys = (
+  value: unknown,
+  out = new Set<string>(),
+): Set<string> => {
+  if (Array.isArray(value)) value.forEach((v) => allKeys(v, out));
+  else if (value !== null && typeof value === 'object')
+    Object.entries(value).forEach(([k, v]) => {
+      out.add(k);
+      allKeys(v, out);
+    });
+  return out;
+};

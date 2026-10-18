@@ -70,6 +70,40 @@ export interface GamePlanExecutionSnapshot {
   readonly constraints: { readonly [key: string]: CanonicalValue };
   readonly sourceProposalId: RecordId;
 }
+/**
+ * The publicly observable situation of a game in progress: everything both sidelines can
+ * see on the scoreboard and in the play-by-play, and nothing else. Selection reads only
+ * this. The authoritative `GameState` (Task 8) must stay assignable to it, so the caller
+ * can pass the real state; selection views copy these fields one by one and never retain
+ * the object they were given.
+ */
+export interface FootballSelectionSituation {
+  /** The organization that has the ball on the next play. */
+  readonly possessionOrganizationId: EntityId;
+  readonly period: number;
+  readonly clockSecondsRemaining: number;
+  readonly down: number;
+  readonly yardsToGo: number;
+  /** Yards the possessing team has advanced from its own goal line (0..100). */
+  readonly yardLine: number;
+  readonly homeScore: number;
+  readonly awayScore: number;
+  readonly homeTimeoutsRemaining: number;
+  readonly awayTimeoutsRemaining: number;
+  /**
+   * The concepts both sides committed on the plays already resolved in this game. Once a
+   * play has been run both calls are public, so this is legitimate observed tendency.
+   * CONTRACT: only plays whose resolution is complete may appear here. The complete-game
+   * resolver derives this list from its own authoritative play history, never from a
+   * call that has been selected but not yet resolved. Each entry needs BOTH concepts, so
+   * a half-committed play cannot be expressed.
+   */
+  readonly resolvedCalls: readonly {
+    readonly offenseConceptKey: string;
+    readonly defenseConceptKey: string;
+  }[];
+}
+
 export interface FootballGameRecord {
   readonly id: RecordId;
 }

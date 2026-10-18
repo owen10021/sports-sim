@@ -34,6 +34,8 @@ export * from './gameDay';
 export * from './footballCommands';
 export * from './gamePlan';
 export * from './footballCalendar';
+export * from './footballSelection';
+export * from './footballActions';
 export * from './footballRules';
 export * from './footballSynthetic';
 export * from './packageESeedParse';
