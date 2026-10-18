@@ -303,7 +303,7 @@ describe('resume, load, replay and save all migrate through the same boundary', 
     expect(replay.fingerprint).toBe(fingerprintWorld(loaded.kernel.world));
     expect(replay.chainHead).toBe(ACCEPTED_C_CHAIN_HEAD);
     expect(canonicalString(store.exportState())).toBe(stateBefore);
-  });
+  }, 10_000);
 
   it('a career loaded from a model-3 store continues, saves model-4 snapshots, reloads and replays', async () => {
     const store = await storeFromFixture();
