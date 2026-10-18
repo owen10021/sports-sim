@@ -31,7 +31,7 @@ import { createWorld, fingerprintWorld } from './world';
  * stay byte-identical. A revoked execute right makes a pending commit fail, and an ended
  * delegate role retires its mandate while history remains.
  */
-export const PACKAGE_B_SCENARIO_ID = 'package-b-golden-v3';
+export const PACKAGE_B_SCENARIO_ID = 'package-b-golden-v4';
 export const PACKAGE_B_WORLD_ID = 'world-package-b-1';
 
 const NF = {

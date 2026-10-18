@@ -26,7 +26,7 @@ describe('golden scenario (Node)', () => {
   it('matches the committed fixture file', () => {
     const fixture = JSON.parse(
       readFileSync(
-        join(root, 'fixtures/golden/package-a-golden-v4.json'),
+        join(root, 'fixtures/golden/package-a-golden-v5.json'),
         'utf8',
       ),
     );

@@ -79,3 +79,25 @@ describe('frozen Package C v3 fixture', () => {
     expect(sums).toContain(`${sha}  package-c-world-v3-snapshot.json`);
   });
 });
+
+describe('frozen Package D v4 fixture', () => {
+  it('matches its recorded SHA-256 and size and the checked-in manifest', () => {
+    const p = join(
+      root,
+      'fixtures',
+      'legacy',
+      'package-d-world-v4-snapshot.json',
+    );
+    const bytes = readFileSync(p);
+    expect(bytes.length).toBe(20607643);
+    const sha = createHash('sha256').update(bytes).digest('hex');
+    expect(sha).toBe(
+      '8c7a96f497a097736def54cd9c8de117ce0ebc5571559095e4845f88208809df',
+    );
+    const sums = readFileSync(
+      join(root, 'fixtures', 'legacy', 'SHA256SUMS.txt'),
+      'utf8',
+    );
+    expect(sums).toContain(`${sha}  package-d-world-v4-snapshot.json`);
+  });
+});

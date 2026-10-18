@@ -33,7 +33,7 @@ describe('Package D integrated scenario RED gate', () => {
           '..',
           'fixtures',
           'golden',
-          'package-d-golden-v1.json',
+          'package-d-golden-v2.json',
         ),
         'utf8',
       ),

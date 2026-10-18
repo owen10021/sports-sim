@@ -140,7 +140,7 @@ describe('Package C accepted history is preserved, not overwritten', () => {
   });
 
   it('gives the current-model Package C golden a new scenario id and fingerprint, same audit chain', () => {
-    expect(PACKAGE_C_EXPECTED.scenario).toBe('package-c-golden-v2');
+    expect(PACKAGE_C_EXPECTED.scenario).toBe('package-c-golden-v3');
     expect(PACKAGE_C_EXPECTED.fingerprint).not.toBe(ACCEPTED_C_FINGERPRINT);
     expect(PACKAGE_C_EXPECTED.eventChainHead).toBe(ACCEPTED_C_CHAIN_HEAD);
     expect(PACKAGE_C_EXPECTED.rngDraws).toBe(fixture.goldenExpected.rngDraws);
@@ -158,7 +158,7 @@ describe('migrateLegacyPackageCWorld on the real Package C bytes', () => {
     const migrated = migrateLegacyPackageCWorld(legacy);
     expect(canonicalString(legacy)).toBe(before);
     expect(worldModelProblems(migrated)).toEqual([]);
-    expect(migrated.worldModelVersion).toBe(4);
+    expect(migrated.worldModelVersion).toBe(5);
     expect(migrated.worldId).toBe(legacy.worldId);
     expect(migrated.simDate).toBe(legacy.simDate);
     expect(migrated.revision).toBe(legacy.revision);
@@ -190,9 +190,19 @@ describe('migrateLegacyPackageCWorld on the real Package C bytes', () => {
       const state = (
         migrated as unknown as Record<string, Record<string, unknown>>
       )[domain]!;
-      expect(Object.keys(state)).toEqual([...DOMAIN_STATE_KEYS[domain]]);
+      expect(Object.keys(state).sort()).toEqual(
+        [...DOMAIN_STATE_KEYS[domain]].sort(),
+      );
       for (const c of DOMAIN_STATE_KEYS[domain]) expect(state[c]).toEqual([]);
     }
+    expect(migrated.football).toEqual({
+      fixtures: [],
+      designations: [],
+      gamePlans: [],
+      games: [],
+      plays: [],
+      causalLinks: [],
+    });
     expect(Object.isFrozen(migrated)).toBe(true);
   });
 
@@ -237,7 +247,7 @@ describe('resume, load, replay and save all migrate through the same boundary', 
   it('WorldKernel.resume migrates without RNG draws, events or identity change', () => {
     const fin = finalSnapshot();
     const kernel = resume();
-    expect(kernel.world.worldModelVersion).toBe(4);
+    expect(kernel.world.worldModelVersion).toBe(5);
     expect(kernel.world.worldId).toBe(fin.worldId);
     expect(kernel.world.revision).toBe(fin.revision);
     expect(kernel.world.rng).toEqual(modelThree(fin).rng);
@@ -296,7 +306,7 @@ describe('resume, load, replay and save all migrate through the same boundary', 
     });
     expect(loaded.status).toBe('loaded');
     if (loaded.status !== 'loaded') return;
-    expect(loaded.kernel.world.worldModelVersion).toBe(4);
+    expect(loaded.kernel.world.worldModelVersion).toBe(5);
     expect(loaded.kernel.chainHead).toBe(ACCEPTED_C_CHAIN_HEAD);
     const replay = await verifyCareerReplay(store, SYNTHETIC_PACKAGE_C_RULESET);
     expect(replay.ok).toBe(true);
@@ -336,7 +346,7 @@ describe('resume, load, replay and save all migrate through the same boundary', 
     const latest = await store.loadLatest();
     expect(
       (latest!.world as { worldModelVersion?: number }).worldModelVersion,
-    ).toBe(4);
+    ).toBe(5);
     const again = await loadCareer(store, {
       ruleset: SYNTHETIC_PACKAGE_C_RULESET,
       seed: PACKAGE_C_SEED,
@@ -368,7 +378,7 @@ describe('resume, load, replay and save all migrate through the same boundary', 
     };
     const verdict = verifySnapshot(tampered);
     expect(verdict.ok).toBe(false);
-    const future = { ...fin, world: { ...fin.world, worldModelVersion: 5 } };
+    const future = { ...fin, world: { ...fin.world, worldModelVersion: 6 } };
     expect(() => verifySnapshot(future)).toThrow();
     expect(() =>
       WorldKernel.resume({

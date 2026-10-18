@@ -3,8 +3,9 @@ import { deepFreeze } from './freeze';
 import { hashCanonical } from './hash';
 import { emptyAuthorityState, type AuthorityState } from './authority';
 import { emptyContractsState, type ContractsState } from './contracts';
-import { emptyDevelopmentState } from './development';
-import { emptyMedicalState } from './medical';
+import { emptyDevelopmentState, type DevelopmentState } from './development';
+import { emptyMedicalState, type MedicalState } from './medical';
+import { emptyFootballState } from './football';
 import { emptyDecisionsState, type DecisionsState } from './decisions';
 import { emptyDraftState, type DraftState } from './draft';
 import { emptyInformationState, type InformationState } from './information';
@@ -32,9 +33,9 @@ import { SCHEMA_VERSION } from './provenance';
  * Version of the AUTHORITATIVE WORLD REPRESENTATION. It is independent of the
  * manifest/persistence `SCHEMA_VERSION`: schema 1 snapshots can carry a world model 1
  * (Package A, no marker field), world model 2 (Package B), world model 3 (Package C) or
- * world model 4 (Package D).
+ * world model 4 (Package D) or world model 5 (Package E).
  */
-export const WORLD_MODEL_VERSION = 4 as const;
+export const WORLD_MODEL_VERSION = 5 as const;
 
 /** The authoritative Package B collections (world model 2), in canonical order. */
 export const PACKAGE_B_DOMAIN_STATE_KEYS = {
@@ -94,10 +95,23 @@ export const PACKAGE_D_DOMAIN_STATE_KEYS = {
   ],
 } as const;
 
-/** The authoritative collections of the current model: Package B's, C's, then D's. */
+/** The collections Package E adds in world model 5. */
+export const PACKAGE_E_DOMAIN_STATE_KEYS = {
+  football: [
+    'fixtures',
+    'designations',
+    'gamePlans',
+    'games',
+    'plays',
+    'causalLinks',
+  ],
+} as const;
+
+/** The authoritative collections of the current model: Package B's, C's, D's, then E's. */
 export const DOMAIN_STATE_KEYS = {
   ...PACKAGE_C_DOMAIN_STATE_KEYS,
   ...PACKAGE_D_DOMAIN_STATE_KEYS,
+  ...PACKAGE_E_DOMAIN_STATE_KEYS,
 } as const;
 
 type DomainKeys = Readonly<Record<string, readonly string[]>>;
@@ -108,6 +122,9 @@ const PACKAGE_B_DOMAIN_NAMES = Object.keys(
 ) as readonly string[];
 const PACKAGE_C_DOMAIN_NAMES = Object.keys(
   PACKAGE_C_DOMAIN_STATE_KEYS,
+) as readonly string[];
+const PACKAGE_D_DOMAIN_NAMES = Object.keys(
+  PACKAGE_D_DOMAIN_STATE_KEYS,
 ) as readonly string[];
 
 /** Package A world (model 1): exactly these fields, no `worldModelVersion`. */
@@ -170,12 +187,41 @@ export interface LegacyPackageCWorld {
   readonly draft: DraftState;
 }
 
-/** A world exactly as stored: Package A, B or C (legacy) or current. */
+/** Package D world (model 4): Package B/C/D domains and no Package E football domain. */
+export interface LegacyPackageDWorld {
+  readonly schemaVersion: typeof SCHEMA_VERSION;
+  readonly worldModelVersion: 4;
+  readonly worldId: WorldId;
+  readonly ruleset: RulesetRef;
+  readonly seed: SeedRef;
+  readonly simDate: string;
+  readonly revision: FootballWorld['revision'];
+  readonly rng: RngState;
+  readonly nextIds: { readonly event: number; readonly record: number };
+  readonly entities: readonly Entity[];
+  readonly people: PeopleState;
+  readonly organizations: OrganizationsState;
+  readonly authority: AuthorityState;
+  readonly information: InformationState;
+  readonly relationships: RelationshipsState;
+  readonly plans: PlansState;
+  readonly decisions: DecisionsState;
+  readonly roster: RosterState;
+  readonly contracts: ContractsState;
+  readonly market: MarketState;
+  readonly scouting: ScoutingState;
+  readonly draft: DraftState;
+  readonly development: DevelopmentState;
+  readonly medical: MedicalState;
+}
+
+/** A world exactly as stored: Package A/B/C/D legacy or current. */
 export type StoredWorld =
   | FootballWorld
   | LegacyPackageAWorld
   | LegacyPackageBWorld
-  | LegacyPackageCWorld;
+  | LegacyPackageCWorld
+  | LegacyPackageDWorld;
 
 const LEGACY_KEYS: readonly string[] = [
   'schemaVersion',
@@ -212,6 +258,12 @@ const LEGACY_C_KEYS: readonly string[] = [
   ...PACKAGE_C_DOMAIN_NAMES,
 ];
 
+const LEGACY_D_KEYS: readonly string[] = [
+  ...MODEL_KEYS,
+  ...PACKAGE_C_DOMAIN_NAMES,
+  ...PACKAGE_D_DOMAIN_NAMES,
+];
+
 const CURRENT_KEYS: readonly string[] = [...MODEL_KEYS, ...DOMAIN_NAMES];
 
 /** A world model newer than this build understands. We never guess; we fail explicitly. */
@@ -219,7 +271,7 @@ export class UnsupportedWorldModelVersionError extends Error {
   readonly found: unknown;
   constructor(what: string, found: unknown) {
     super(
-      `Unsupported ${what} world model version ${String(found)}; this build supports only world model ${WORLD_MODEL_VERSION} (and migrates Package A world model 1, Package B world model 2 and Package C world model 3)`,
+      `Unsupported ${what} world model version ${String(found)}; this build supports only world model ${WORLD_MODEL_VERSION} (and migrates Package A world model 1, Package B world model 2, Package C world model 3 and Package D world model 4)`,
     );
     this.name = 'UnsupportedWorldModelVersionError';
     this.found = found;
@@ -337,6 +389,17 @@ export const isLegacyPackageCWorld = (
   shapeProblems(value, 3, LEGACY_C_KEYS, PACKAGE_C_DOMAIN_STATE_KEYS).length ===
     0;
 
+/** Genuine Package D world: model marker 4, exactly the Package B/C/D domains. */
+export const isLegacyPackageDWorld = (
+  value: unknown,
+): value is LegacyPackageDWorld =>
+  isPlain(value) &&
+  value.worldModelVersion === 4 &&
+  shapeProblems(value, 4, LEGACY_D_KEYS, {
+    ...PACKAGE_C_DOMAIN_STATE_KEYS,
+    ...PACKAGE_D_DOMAIN_STATE_KEYS,
+  }).length === 0;
+
 /** Everything wrong with `value` as a current-model world (empty when it is valid). */
 export const worldModelProblems = (value: unknown): readonly string[] => {
   if (!isPlain(value)) return ['world is not an object'];
@@ -435,13 +498,11 @@ export const migrateLegacyPackageBWorldToModel3 = (
 
 /**
  * Package C (model 3) -> Package D (model 4). Pure, deterministic, RNG-free and
- * event-free: it adds only EMPTY Package D domain state (development, medical). Every
- * pre-D byte (world id, date, revision, RNG, counters, Package B and C domains, history
- * meaning) is preserved.
+ * event-free: it adds only EMPTY Package D domain state.
  */
-export const migrateLegacyPackageCWorld = (
+export const migrateLegacyPackageCWorldToModel4 = (
   world: LegacyPackageCWorld,
-): FootballWorld => {
+): LegacyPackageDWorld => {
   if (!isLegacyPackageCWorld(world))
     throw new InvalidWorldModelError([
       'only a genuine Package C world model 3 can be migrated',
@@ -449,7 +510,7 @@ export const migrateLegacyPackageCWorld = (
   const w = JSON.parse(canonicalString(world)) as LegacyPackageCWorld;
   return deepFreeze({
     schemaVersion: w.schemaVersion,
-    worldModelVersion: WORLD_MODEL_VERSION,
+    worldModelVersion: 4 as const,
     worldId: w.worldId,
     ruleset: w.ruleset,
     seed: w.seed,
@@ -475,6 +536,28 @@ export const migrateLegacyPackageCWorld = (
   });
 };
 
+/** Package D (model 4) -> Package E (model 5): add only empty football state. */
+export const migrateLegacyPackageDWorld = (
+  world: LegacyPackageDWorld,
+): FootballWorld => {
+  if (!isLegacyPackageDWorld(world))
+    throw new InvalidWorldModelError([
+      'only a genuine Package D world model 4 can be migrated',
+    ]);
+  const w = JSON.parse(canonicalString(world)) as LegacyPackageDWorld;
+  return deepFreeze({
+    ...w,
+    worldModelVersion: WORLD_MODEL_VERSION,
+    football: emptyFootballState(),
+  });
+};
+
+/** Package C world -> current model, chaining C -> D -> E explicitly. */
+export const migrateLegacyPackageCWorld = (
+  world: LegacyPackageCWorld,
+): FootballWorld =>
+  migrateLegacyPackageDWorld(migrateLegacyPackageCWorldToModel4(world));
+
 /** Package B world -> current model, chaining B -> C -> D through the explicit steps. */
 export const migrateLegacyPackageBWorld = (
   world: LegacyPackageBWorld,
@@ -489,13 +572,14 @@ export const migrateLegacyPackageAWorld = (
 
 /**
  * THE boundary every load/resume/replay path goes through: a current world is validated
- * and returned, a Package A, B or C world is migrated, a future model throws,
+ * and returned, a Package A, B, C or D world is migrated, a future model throws,
  * anything else is rejected. Nothing structurally incomplete is ever accepted as current.
  */
 export const requireCurrentWorld = (value: unknown): FootballWorld => {
   if (isLegacyPackageAWorld(value)) return migrateLegacyPackageAWorld(value);
   if (isLegacyPackageBWorld(value)) return migrateLegacyPackageBWorld(value);
   if (isLegacyPackageCWorld(value)) return migrateLegacyPackageCWorld(value);
+  if (isLegacyPackageDWorld(value)) return migrateLegacyPackageDWorld(value);
   return assertCurrentWorld(value);
 };
 
@@ -516,3 +600,9 @@ export const fingerprintLegacyPackageCWorld = (
   world: LegacyPackageCWorld,
 ): string =>
   hashCanonical({ domain: 'sport-sim/world-fingerprint', version: 3, world });
+
+/** Fingerprint with Package D (world model 4) semantics. Kept byte-identical to Package D. */
+export const fingerprintLegacyPackageDWorld = (
+  world: LegacyPackageDWorld,
+): string =>
+  hashCanonical({ domain: 'sport-sim/world-fingerprint', version: 4, world });

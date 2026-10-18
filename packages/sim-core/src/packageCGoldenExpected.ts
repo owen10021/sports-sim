@@ -14,7 +14,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
   eventCount: 199,
   rngDraws: 69,
   fingerprint:
-    'cf56661e2d6e3de1b24bfda02694bc79459a81f44b24fe575636fa2b8a6375be',
+    'aa2cffda7e8e03b449d4e4bf5809744553072fdc908e95160e6c8ce955b3b6a6',
   eventChainHead:
     '3f847dec6c81e179bb285617a9d8ae9eadf7c5e7e6bea2dd0edf2f61e2424e76',
   organizations: [
@@ -196,7 +196,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 1,
       rngDraws: 0,
       fingerprint:
-        'fa6181528e0da5c89604c3635c2a800d3d46301364498005709e1ba76c472f8f',
+        'e5a277258991e48cf132eb47c1ca4afddfae1f57ec36f077835f854866a589f2',
       chainHead:
         '5acf62248c5e509920f45c8b00839360616b71ad1c489d426b31353a928eea5b',
     },
@@ -206,7 +206,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 2,
       rngDraws: 0,
       fingerprint:
-        'edff124d364e4c997376654812d5ff3e3adc46f81d5a455314422ae912a7c080',
+        '0e85adeaada7da0b7d529a7fac215845e9515b3a0a6c2b495801b3ac420b3c4d',
       chainHead:
         'e1dc88c72469e19b27577111574e7f514b55895f7cc1a867da050eb89f0a8e02',
     },
@@ -216,7 +216,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 3,
       rngDraws: 0,
       fingerprint:
-        '8cc91334fb162ef8007b8f692f401e7bef4d7e937ebeff11ca736720708027f6',
+        'e66e62be74bc6510f33896396e707991b4cb8a3513daf1ddf55cdf5012772487',
       chainHead:
         '39412fc8f071cd679df48dc9465afee6f8cb105aeebaa60be3891e3cf1c7cf7d',
     },
@@ -226,7 +226,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 4,
       rngDraws: 0,
       fingerprint:
-        '57fc01ab90dabcb27e452e991da12f0543a1dfedccd9b9905390ae42194d4f9e',
+        '1ac3d4cf5bd9e224c1bbe0251860d7fce539b98d4ce350d1961392be3b5ef1a4',
       chainHead:
         '4c4cbacbcdccee0282007d5a58b3716a01003f5c8eb850445033558abb1ae89f',
     },
@@ -236,7 +236,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 5,
       rngDraws: 0,
       fingerprint:
-        '663749ad308b065a1bdf03d5bcabf16bf93001b4980d7da44c1c7dbf84c620f8',
+        'c6350a196e11b31ae3a8ed82c194c14eee59d3f33c3cb2167320f6bed668ec0c',
       chainHead:
         '8b5956d9c60b1b645247f251de4c4ac1c356188a52bb00b52f680c90f93b29e4',
     },
@@ -246,7 +246,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 6,
       rngDraws: 0,
       fingerprint:
-        'fc996a63aed4dffb5aed5cbd5ae0a66b167d5d24d5d1c4212d0d887f74611b73',
+        '030273431010d9cb2a5fff1e70c2438a6b6f2e7a21bb779396a20cc46c0a40c7',
       chainHead:
         '0b700bdbb5ff0d873da3da16e040bec3486e932c1919dbb177877e8db1848d2c',
     },
@@ -256,7 +256,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 7,
       rngDraws: 0,
       fingerprint:
-        '9b5da3ab7db31c1eb685fb37dbebf4c7d2f8137f8745014dc97c892cd22eec53',
+        '1282964aa7e559372ec501ec9d9a9fe816f637647b8859380619dc27c87a1cb4',
       chainHead:
         '71a1886f68d07c2c81815cceea3661943348805391391f91ce6cbef872a69375',
     },
@@ -266,7 +266,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 8,
       rngDraws: 0,
       fingerprint:
-        'eb35c3caf751cf6ffbaf8cdb644207a3a0836a8aec13c063a120a69a982f76e2',
+        '7cceebfddd56a0d92e393ddf6a8133cae79d0285d05efffc2c9b5ac810035a83',
       chainHead:
         '178676649172936eb54a7f04ce756891954a200a89bb95cbf85cea26c928c45b',
     },
@@ -276,7 +276,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 9,
       rngDraws: 0,
       fingerprint:
-        '889a2452366c1497fb776c67635e8c2b6d103508d1e0f5688bfe2da56459a5b8',
+        '27f5d89c21769a5022cda0b31b347ecf1bcceb32121854c53d30adb0e0b2a728',
       chainHead:
         '304518d2cd76ddeed1c68cb2cf0cd57fd82e06cc4d5321dfca6cfbb38f3454e3',
     },
@@ -286,7 +286,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 10,
       rngDraws: 0,
       fingerprint:
-        '8976793a03165f92a7d1d1549926f6792ed31f12ed936d2d6b39fa7090ae906c',
+        'adfb46d46e2482efc21a94db3f29c8f19ee7b78176c854e47ea5856386cfff30',
       chainHead:
         '814d1778ebf7222df4b03f257da6d6e3d6d3c8108a3e2f51295973804079d5f5',
     },
@@ -296,7 +296,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 11,
       rngDraws: 0,
       fingerprint:
-        '2f7ffea9a9abda90ec229d3b5d239a4d4f012dbe3c2e21c3db52c21f8044547d',
+        '28db7436967642ae57f2e6c43d0d731c2dccbb16c4771ab9b28db3b1439c6537',
       chainHead:
         '33156ebce6c21ed7f2d3d6cff77ed0426403c80510f04ebb0d235ef96ea1520a',
     },
@@ -306,7 +306,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 12,
       rngDraws: 0,
       fingerprint:
-        '6db67931ee6aba319ddff273aa1d963aa8c91a3002cbfbcf8ffcc5a39fa03757',
+        '321a98188ebb3ca1419fe40f0437dc9e05645c8f995e671902d10c11ca996d0a',
       chainHead:
         '288477f61180822fed67f99ab75c2d518b36fbeaae2197137042d10fb667e8e7',
     },
@@ -316,7 +316,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 13,
       rngDraws: 0,
       fingerprint:
-        'ab858c865ea7f8d3dd4b43cd944615e4c59ed6e64eabf0dbd8117c092e2e8a31',
+        'c0e23df74fb79f81073d1afbd6701731f9c02e04cd4bf7dd87d4766bb4527b83',
       chainHead:
         '2f7daa7cf56c55ecd98018d3ee65ced728e10b09400606ca5aaa46791b35eea6',
     },
@@ -326,7 +326,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 14,
       rngDraws: 0,
       fingerprint:
-        'cc0b2d321c0ad1d151a4f958b023bdf6692841843b9fc354be3e9fd261b564ff',
+        '11c67e27f3992d5276f553c3b63b1cff748f189682f03ddc6d709f596a1ea88f',
       chainHead:
         'a6ea23d849476c3db1bf49335cbf337d60fcb5774c7e68e02f6eb37b1485a4fb',
     },
@@ -336,7 +336,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 15,
       rngDraws: 0,
       fingerprint:
-        'de2672726aa8a7d206c6c85379340c938a639ee389b64221953e763a79d21521',
+        'd7978dc86e28cbab149696e0ce503f309fb88e815dc6d4ec8c7c4482e502e18d',
       chainHead:
         '333cbaaaf4dbee71a5e0bc7504c904444e9426bfff24e07b636ef53d7cf16c31',
     },
@@ -346,7 +346,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 16,
       rngDraws: 0,
       fingerprint:
-        'fea592dfe2ce55c946983af38a6067de82b73f4af4fedf6a8cba4c5c6761da67',
+        '751b1095775d9ac0ad8b2f9df890e009c5dcaf439828e3b5f6d29bd4235300b7',
       chainHead:
         '033760854723a564c210c5b6f27a71aba88afdd8ac05f10957e05c7585acf1ac',
     },
@@ -356,7 +356,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 17,
       rngDraws: 1,
       fingerprint:
-        '0193aad835747dbee7a2a3e54550bd33b6977507f55e751752e97ca35c1fb11c',
+        'cbef600cd79254fc05480933f124622b931cea9fdd1157526f11cea3c7864d8a',
       chainHead:
         '5723a4abf415de7fa51578d235154750a158f6bfb0087eef7c543b0dbc8e469a',
     },
@@ -366,7 +366,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 18,
       rngDraws: 1,
       fingerprint:
-        '605b561290e7b652b7ca8a7a65386c4757e845eba65ec822aba6d3e64d594675',
+        '6778e95d5edc00909993462fa4b6fbc4d74ca6af2f0f8c58a2bf6dd7c4caadf9',
       chainHead:
         'e807b93099bf27d5e9f4d781380f5f5f6509a55be18ae5224f70c1ef9b06dd65',
     },
@@ -376,7 +376,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 19,
       rngDraws: 1,
       fingerprint:
-        'b5f9df0788fe8cae10e7a905966f4f451cbc444f4a3df01cf75f6dd3574827a9',
+        '6743883457fb982e4fe5a7e220fcb730a2bdebb39d5964fd6019c080c6ff7d6a',
       chainHead:
         '5cebb9402a06ed65926383ddf771056025d7ee9e56a79ef8e795db131f558f74',
     },
@@ -386,7 +386,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 20,
       rngDraws: 1,
       fingerprint:
-        'a0864c927723d23e751e926415538b9cd03ca86af99eb2cc5d316f749d61e562',
+        '7295c10c55e1299b80d145a85a5d126398cea114d3fda0cfe2101dc48f290aed',
       chainHead:
         '21b15f64e89abe34bd531d94a897055d5e07762e84777c7175ba57e579a01733',
     },
@@ -396,7 +396,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 21,
       rngDraws: 1,
       fingerprint:
-        'a80aaca2a799c0a89fc2330e155d6e489d47ae15837fc9ddb14e1759633a3da4',
+        '94b2aa61b9e403a698ad0169d7ce78cb450440f3413a86f934aeef29cbc1d8fb',
       chainHead:
         'f795307f4f5c103911abc8f6529ce21b3f1627a2a86b2f2150df58f402fc5507',
     },
@@ -406,7 +406,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 22,
       rngDraws: 1,
       fingerprint:
-        'e4009fabf406d271bab65f502c85a369cd032d16f34559094f576a30444ac6c9',
+        'e6ac0fe32869949c3c3715d2b168c7ca43cbd2e2c58d4e59ca85c0e7f044c8ab',
       chainHead:
         'c624833b0f9eff1c9f291b627b6e9d933d9ff5ddf7f17a5fc49f54163e1628f8',
     },
@@ -416,7 +416,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 23,
       rngDraws: 1,
       fingerprint:
-        'ac9b4b553bee88eea96057c47b5119b3edf1a84e0c294dc4a42d9886a4491fd0',
+        '5ea131cc0f6fa85c9e609f4a0be031aac864cd1da88cab376eff02e0252ab0d2',
       chainHead:
         '5f507705f10fd3eebd528837395a8d187a4fd3ae3eafe0fbed9c9f6b24e61573',
     },
@@ -426,7 +426,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 24,
       rngDraws: 1,
       fingerprint:
-        '470ddb4492efe21252b34fc1473b9ff99c55dadfc9bd64f81aa1ba2960766e50',
+        'fc30f1bb2fde0164fbd9bc83bc75972e62ff81a88fed046129422ef8d9dbd543',
       chainHead:
         '817462651b102f3698ddd09f6af7af9d87fe31536719726411e228d623db6b96',
     },
@@ -436,7 +436,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 25,
       rngDraws: 1,
       fingerprint:
-        'fca195f399d0c769ca4b0b06483d3016b012a0c79424264f96dc258be9f92bbf',
+        '5e33d648c452d86c73afcf25780f044be32667632bcddf64874baae975d0c74f',
       chainHead:
         '69578ada4a0611c794d6b22e9e1ea118ea165ccd7cae005507accc370043813c',
     },
@@ -446,7 +446,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 26,
       rngDraws: 1,
       fingerprint:
-        'a3cb63785fa4100297c1db762b1f7f38fdcc5eaeeea5b1550de4b149127f8e33',
+        '745705d9b4b3b1d46a8cb82d658d93df588d3ed89a2a4c66abe67ee9668601dc',
       chainHead:
         'c36f715376d5d534ff327370cacf70be558428e85a5a9a84f2fedf895d4d6356',
     },
@@ -456,7 +456,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 27,
       rngDraws: 1,
       fingerprint:
-        'a0481d81fd140bc34adbc72f982112fa0374a7e910899c37be115ce6b552e5b6',
+        '3d03875dbceec65c337934f4486b9412be10e9576bfe43b9f065b47174486d56',
       chainHead:
         '37fdb3eeca7c5418652e26f1e1eda639469768269327a041e661e67f2559d02c',
     },
@@ -466,7 +466,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 28,
       rngDraws: 1,
       fingerprint:
-        '8d0c37313ce0a4a39d325a4aa72ef653f3d47753ab5edb63ad6878709c162419',
+        'ae26171d5d6f4e7baaa0f1ee3397b8ab48cdb1a2bd258f7275960fc4b1db9106',
       chainHead:
         '4e2d7982e3814a75133f90cfed2e917998b87fb5d0a92f17a1ce84b21292425c',
     },
@@ -476,7 +476,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 29,
       rngDraws: 1,
       fingerprint:
-        '9287ec97fb87c84e3eb500d6e6cf0a7dfad2f66050fa38dbe5495ead3fd7b861',
+        '63c78f9e30b179ee6719d0f3a9fdd963fb3b6f5cf237dcd0d21bf9ff2c018ffd',
       chainHead:
         '671b1f197c5b23c466a7bc864525804455738de2cdb836bd7cd117396d049ed1',
     },
@@ -486,7 +486,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 30,
       rngDraws: 1,
       fingerprint:
-        '9322b8c7da7a15a6f21a247c750f80e73a177aa4524f3e621a3e7cc251075c1b',
+        '4bbc67adb05220d730bdb694a7ac4f494da74c2789dd0b0f51f02598d77442fb',
       chainHead:
         'f5e81a65bb825f2b0a0a427b3627cae59a9289a6a538c59e736766b62efc36f8',
     },
@@ -496,7 +496,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 31,
       rngDraws: 1,
       fingerprint:
-        '98207718ea99d77edee3aa329fffcc71bea5522793aa5a7aa90cf23a6a2193a6',
+        '95e5f7ea6c025827f66edc7d5c3634ad7d8f4b467a8792d84335946738c0d1c4',
       chainHead:
         'b05fbceadde3327673d180518fbb739e1d628d73102ca68b50e807bb39b069c1',
     },
@@ -506,7 +506,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 32,
       rngDraws: 1,
       fingerprint:
-        '285a12b05f38f423c537ef8b3646ca1eeab8148207cc2b6800425067dc864d11',
+        '6c5d9f4feb59a27a3ce53435fe28a8097cbae625d359f4ae657b564e6e9c59e2',
       chainHead:
         'd977ba7d294d4030e1d604f23f861d8d806cedf114121947440e8cff8c6ad9da',
     },
@@ -516,7 +516,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 33,
       rngDraws: 1,
       fingerprint:
-        'f6b83aec1ecbab7681159b288987a02f23b477117d1623b1b1a23f41ca07b5ee',
+        'c6b5edccc7a75e50ca8e8e233dfbe92ebe92856048a6ad2b3b6e72148b5cc6ab',
       chainHead:
         'fbd981f304954acb2bcfd2cd761c7533d83da1ec425c2b0c61b49cf63520612f',
     },
@@ -526,7 +526,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 34,
       rngDraws: 1,
       fingerprint:
-        'cf8dc2a22ce35212350395ba13d0763af83e9f73c542b8d33de5e2218bf8117b',
+        '5310017a0d29b22b5660475b6a2121f5c9372ec9a30bd9b6f7872b6a11c912f4',
       chainHead:
         'e69396f1ff78fbb5e8e53559f8bcf766dc97065b4fcc131135bf3458331af059',
     },
@@ -536,7 +536,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 35,
       rngDraws: 1,
       fingerprint:
-        '81927d1baaaf06bbdaf7c044380a66cf52fcd19674ba924517ad26ccc84d143f',
+        'b25ca2d23e996b0eea5c0da50a8ec156f0bf831b42b25b3b558efea9f1df49ac',
       chainHead:
         'dfe983381e83ab1b647e8b33331061870da59729686907358a9114532fe16d4b',
     },
@@ -546,7 +546,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 36,
       rngDraws: 1,
       fingerprint:
-        '0322669d6d0b6c81ba8ef01df72a1618809f689fe0f50f88885dc9597a3e4898',
+        '1fea462958be8b8e938e77728f293c8914064b7d1087e36805a971b49bded4b5',
       chainHead:
         'f664193074f1b5ad08da6df666734dcc47d20e25119ed9e290f500b1b3dfd731',
     },
@@ -556,7 +556,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 37,
       rngDraws: 1,
       fingerprint:
-        'e2c5b98a92a587d240f77452cc93cdd5a97cd11d676ffaf5b994a5af46930b7e',
+        '03291edefb20f88cdcc6d288ae6c604134d349607b5c560539a9a31fd77b639d',
       chainHead:
         '56ffcc689264eb2c7ca3b9d726ea39929d1cf7ecd6fc53176761e15f378ac52b',
     },
@@ -566,7 +566,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 38,
       rngDraws: 1,
       fingerprint:
-        '201a7e4ca0511f326f01729251c9f702b8aff1ba072c0ec85a19083345c94a53',
+        'acbad8c64fbc3c42f030889486d6cc97d63682b0554ee88feb6b8c877a9d2bc8',
       chainHead:
         'cbcc754de0fffa2a9c7384170857970284d47075bcf061a091c9c029f052010d',
     },
@@ -576,7 +576,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 39,
       rngDraws: 1,
       fingerprint:
-        'bf0b211df218736855754fbccde0d4a41ad1ee5a9ce23bb9e1c4c2eb7d466fd8',
+        'd9063aef05f0e9d2cd44e639871872d612d80f7dc21d6d67d3deba8fea583454',
       chainHead:
         '3fb4807add9a2d080ad620836848b09ebf71c0f8f1ad47b5d204546fcfccdb78',
     },
@@ -586,7 +586,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 40,
       rngDraws: 1,
       fingerprint:
-        '07d1eadc7442556e2b47c17d1e11729e63051516faea0b2a89caf9e6c02fb38f',
+        'e7388e5ccce7c4f3f57c1b69aa701f7a7730ba23569b166cf332a113de896bb5',
       chainHead:
         '9cad39c02b2b8695ff203b6de5eeb48d8b0c81ae747f989e9eaf62277b036149',
     },
@@ -596,7 +596,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 41,
       rngDraws: 1,
       fingerprint:
-        'f1379c21fda3b7ad910ea7a98db60fac44454f981fa8942587f914a03bf37d29',
+        '085905908e3cd1884bc828f461508c3d178694af09d9c06ca7d2e51a2c1a35d1',
       chainHead:
         'f2d7d4cf7914e2a112e6888997f82c26c3bb3818bd9968960efbd9ca008dd349',
     },
@@ -606,7 +606,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 42,
       rngDraws: 1,
       fingerprint:
-        '4dc2c80f76a4b6fd535e7555b03b7507efa77ec62e3abff2d108cdf188ad6f3b',
+        '3ee0959a0faebe3590d1754245fdcadccd29cc814a5c945997ecb06724218bbe',
       chainHead:
         '0d3ffbbd2067120c5bec0cb30934e1e08b1f2f64ecd904a59fd236221379b827',
     },
@@ -616,7 +616,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 43,
       rngDraws: 2,
       fingerprint:
-        '38c1d5d1e0c54d20d4b3207c60d0ec51b12b98ad90ace0d447b4a84218b0097d',
+        '6de427843ab232918b91c65c6d0b1fc7ce24836205da9807b0ef7ac67504f655',
       chainHead:
         '3b4c960b80cacf7badc0f1cedd199af7635c6faad1c4fc9a3af5ed50da602035',
     },
@@ -626,7 +626,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 44,
       rngDraws: 2,
       fingerprint:
-        'ceac277ae77531ffaf1faf9069c7d79273f66b1fffb6fa84a70d1d619e1eff02',
+        '29877189ed322489d039325c04c081f0bacbde450b2cd595856b91fcef375871',
       chainHead:
         '995101e8d037af042bbe0856b35d6efdd423a5af39dafc5c5c78059439613c54',
     },
@@ -636,7 +636,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 45,
       rngDraws: 23,
       fingerprint:
-        '25daa0f2def6553e5f6bb97a5224b7b878f0efc5686b7bb766ad9640f9e4c915',
+        '7fb8e57e300c7a67b69d752e714c2261bbe08b15b2225d64afeb2c5f0b63575f',
       chainHead:
         '485cf2da2eacef3274ec18ed6fc73e663b7e4dfe941114a44347ccab91b0232e',
     },
@@ -646,7 +646,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 46,
       rngDraws: 23,
       fingerprint:
-        '32b57f801e3c04ca790220e59a9478c8014ede39fc3129ce184f18a6c25a3bd2',
+        '1c677f7f9ec6a19b3b553e8486da54003fb5ee7e24b5e2bc806c12a24b21fb9f',
       chainHead:
         '616b62f08a9cbf92811e150e134e75df35fdef85a6a59007f1844f30e5c54088',
     },
@@ -656,7 +656,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 47,
       rngDraws: 23,
       fingerprint:
-        'b32008caa459d04d551145276d6f1a1974d9ec9dc48bd598455cb0d1c7d3d312',
+        'f4ad91ff2ce6df7cec0aeb4262c4a563b34a0b1073227945e9b20ddbd1a728fa',
       chainHead:
         '2beaff6456306b25c82922e3c3f6e418a4fe6c6556bffcfaa8e92d45c540b1dc',
     },
@@ -666,7 +666,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 48,
       rngDraws: 23,
       fingerprint:
-        'd077356cc82aa66a2e6faeda712a1399e2dff8237f52580a6815bf3f1eb2a0a4',
+        'a913628aa94d6d6bee860ab841aa5fa03d4ad5660858725fabec416681ad8870',
       chainHead:
         '2976efa45b3082adb00e865709f25dff895e899d75be04504db253a685e82f22',
     },
@@ -676,7 +676,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 49,
       rngDraws: 23,
       fingerprint:
-        'f4c68a9e3a4307208dde7d0bc3a9ebdea7f4500167d88ea36d924e42f223e0bd',
+        '16889d896daf4a7ec5c0622000711f283e58803236f1fb18bb7f171acfd4babd',
       chainHead:
         '08394ccefc05a236851a896126eee6f048f0d4b5f4718060326f347672434bca',
     },
@@ -686,7 +686,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 50,
       rngDraws: 23,
       fingerprint:
-        'b8cfcd76b2ae9fadb9ab1de951718cde217f7103fd24acbb01838060afcf6648',
+        '06bfd6d3aa979d01d1b9561a68a46b1c7aaeb178eeaab718a0458203446a278c',
       chainHead:
         '49a8bff8eb03e5cf9fd4fb9bc7a5ebbf9315a994e7f46de641ce864f69d5cb7f',
     },
@@ -696,7 +696,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 51,
       rngDraws: 23,
       fingerprint:
-        '8c8150a442487f4033f8afbb1381d4af0b78f91403938288cbae382419474d76',
+        '8ca68e6b1f395c8dba06be0d29f160c38175a008c35b9690c94d9c28d7723225',
       chainHead:
         'd7ce2fef2fdc652c56c37485066a2d9769e3c2b23c88757840dcd8d83b9981f1',
     },
@@ -706,7 +706,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 52,
       rngDraws: 23,
       fingerprint:
-        'dfaaaa7e85c49144c1ec6eb75d69c985aa630887f9aa43ec1829b61a6c793452',
+        '7f2e2d10f194e43991523515c0733a0dbadeb46d445e03387988035667b2ca3d',
       chainHead:
         '780f12fab6f9701734c9b4153d555d4659ae60c1108be0942e25191109a46ab4',
     },
@@ -716,7 +716,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 53,
       rngDraws: 23,
       fingerprint:
-        'edb922956cf433495f573eda7b67b3649d5352977139cc3af0700e826bc373ac',
+        '4292897c2e10f26090e64e50687a43791c76be18b36b5d00cd2deb696c5270fb',
       chainHead:
         '4ed6ca0fdfdbdf0174e52cacab588fd43be46e1951a448280002b85d7afddfea',
     },
@@ -726,7 +726,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 54,
       rngDraws: 23,
       fingerprint:
-        'c4a513d21ec66c88eaddb7107bf829dee312e33e2d4d26e3a2ea08c6ef8f4836',
+        '97d16395b20dfceb787203024825085b397bd63b9dc4af484f38fdcd2b2a9d6a',
       chainHead:
         '2e9a844bc71489deaa51b06cd4b036407e5b408984b07f0b5855fd66961e2e8e',
     },
@@ -736,7 +736,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 55,
       rngDraws: 23,
       fingerprint:
-        'f3ae6a796ce070e594cedb3168f827d64088de8f9c5f20ced8410d8f28d822a3',
+        '2c9541e07321e920d2dd9e3591aa2a995a6014183acb31ea7c1b50498bd37a27',
       chainHead:
         '5906cdfaf961f4da685af825f3fc11d8291b1404440fe351954a0c728d5ea5ee',
     },
@@ -746,7 +746,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 56,
       rngDraws: 23,
       fingerprint:
-        '4527d13c869c0b301ac10e59e0a54c4ce47939d8cf344aeb7cabc89dde528c33',
+        '9e1fa6fcb2924f85ba538288ff2927cb5b6bbc0491db309e1d341b77f924e376',
       chainHead:
         'a5008742c257a26dd26e39812eae752e2e2b26a82cd848053c6c1c7ca04ffc4f',
     },
@@ -756,7 +756,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 57,
       rngDraws: 23,
       fingerprint:
-        'a4e8d73ca5d2edd89200e9bd18660caef99c6d9c388a667ab908da326f890afa',
+        '20f786696606b0e35d8276e7f4101f41e38fe956c04efa1772cce51b4ede42d1',
       chainHead:
         '062e97f6f53f35a6f85be5e9ef1ea7333a8a21936bb9aeaf1086e3977e13a06c',
     },
@@ -766,7 +766,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 58,
       rngDraws: 23,
       fingerprint:
-        'ffdcdf53b9b512d254e494490257b02743265bdf68dd875ca47785ae9d3a7a7a',
+        'afd186d64c6c3e3477ce55d930f99423f63f66126a4ad5e5a461debbeb1d4622',
       chainHead:
         'a583a9c7342176eb1f41dd901851f0cc2a01805fbc2492df77f3c79efc4f1d0e',
     },
@@ -776,7 +776,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 59,
       rngDraws: 23,
       fingerprint:
-        '9ad4ef13bed4471ffdae444053cdbedc161cc03e74d30bde01892808b7f983ba',
+        'e9a648de7db4210971b0746e7ee30161766e6faa52e6f25f07f2c23b60c28b2d',
       chainHead:
         'd5cadab3190516fa3429f2a00cffaf207b21be0ffdc14e4edd87530784998826',
     },
@@ -786,7 +786,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 60,
       rngDraws: 23,
       fingerprint:
-        '78fd758799946fce4248dfd2d1532f121823ae06bab46fd1a761bc012e54c3a8',
+        'aa709fe25ebb85e1f9af9e11ba43b3a07e66503b47511f85c2439819ee1033bb',
       chainHead:
         '4e09368ce14e4c5dd1ae2854993fa6e9e49a1de5ed4870014b2b0ce1741ce44e',
     },
@@ -796,7 +796,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 61,
       rngDraws: 23,
       fingerprint:
-        'aef2db954f00fa812662862988497a387bd3c500cd67c1bb446202470529855c',
+        '1576996ff6eeb4999bc7334c1087533e96f7dcb8607f60ddf03563819d4e26e3',
       chainHead:
         '5b29be260ab9168a5f5265fab4dac9e64415654fbd4448c42de01ec6cfabd947',
     },
@@ -806,7 +806,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 62,
       rngDraws: 53,
       fingerprint:
-        '69bc2712c274797a4f0d7258857ab2daec47e52606f6961fbac5c31cf18a097d',
+        'a8c9724cf9d37cfd5f32a107fb1da263e775d80dbc8ad6cff5c4f403f76e3d60',
       chainHead:
         '5c2b6692184ffd6ffca98f375cb649293e621041e897d6ce7e23b18e3d896764',
     },
@@ -816,7 +816,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 63,
       rngDraws: 69,
       fingerprint:
-        '3bb1ca88e1c32ec77b6ddfdf37d608c0c4ece2a9c7b09118ce299259165c454f',
+        '1109d16a71a6b20d53c92431d6988dd981b049bbe2a810cbfa1b230bbdfe81d4',
       chainHead:
         '88ca2d629c49f2e5602ce5ba7b7e8895c620cec6c85fb6c711ae2040b84db2a9',
     },
@@ -826,7 +826,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 64,
       rngDraws: 69,
       fingerprint:
-        '5d02138f1d874cdbdf1d8eb8db4734bc32ba92afaa3b7ab9e6067e5bd9f98d9a',
+        'e16396c639637e1b0df3f73becbffc81c40d866c89e64a67b3265703afc5e5a6',
       chainHead:
         '7826f4e42174418a2183ff9a1431e9e26c2698ec7f144a1f8c82350638ddc202',
     },
@@ -836,7 +836,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 65,
       rngDraws: 69,
       fingerprint:
-        'a87b0c96b37f0217756b8429bb3195d9ec871583f7ad0ff50bea1ca36588664f',
+        '92d74f55d395d4053b2fb457a542e853e2b8bdd4b6a4a4665d63ba4cd71dfbf0',
       chainHead:
         '52218a1485f92db9d4b8a0037d4873250abbc68a566b140e7eaf5fe5aab1fb70',
     },
@@ -846,7 +846,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 66,
       rngDraws: 69,
       fingerprint:
-        '41f248538c8b772c04220dda131d02ff38d2fd0a80e34b76677502456c7ba6a2',
+        'a0c7b98931a974861844bd63a2f7b775b0f1e7be15244216130f6ccee08a88e0',
       chainHead:
         '81de647d80f9790d65aa158a3e269f35902f62fb9f0044f9f41deb19480e3af7',
     },
@@ -856,7 +856,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 67,
       rngDraws: 69,
       fingerprint:
-        '188200d067ad95740047de6aa1fb89cd944bc4438416c0d0a30abe3c1a5a4d1f',
+        'f4f5068946636d6f67eedfb20033664edb242418652dc10ac663dd57bce8bde7',
       chainHead:
         '71959863ad837e9d19f96504d091a3000c18bf7b44c0a7939f1fbd3313e90abb',
     },
@@ -866,7 +866,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 68,
       rngDraws: 69,
       fingerprint:
-        '438c29d25fd5ce02542affe6bb39ecb88776a13ed41e11f13a6ae21352bcd120',
+        'aca6b7b6255ea1379a12a41d682180343c72e16b12055874c92faacfae904191',
       chainHead:
         '83956ccd90ef0871347c9077574104fcfc6953ab33cd653f5838a1392e53f506',
     },
@@ -876,7 +876,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 69,
       rngDraws: 69,
       fingerprint:
-        'dd459dda4289191580797c20e6d8677b693a045b3ce971a503456204458ec365',
+        'e1dc5571f7af8765b7b5eed463b00618854e244e916b24ede73ea86f2504caf2',
       chainHead:
         'be64ad7c250b1a41b80c5065f5c0332fe5bd2c5816d6ec4115ef1583b404dac1',
     },
@@ -886,7 +886,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 70,
       rngDraws: 69,
       fingerprint:
-        '017e7fc71c37166fc20a1c49c9256f807d52d988d60bfaa40abd4c3039f75292',
+        '1a6f880e9a5f1503532f2faf2b1014cf8d6b551813dac345a5c355021694456c',
       chainHead:
         '5cd1e73994cf994f4ee4a135e27f7b77d10473bff22464136a75afa7f6b122cc',
     },
@@ -896,7 +896,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 71,
       rngDraws: 69,
       fingerprint:
-        'ecde61a14b325889f8895bf36dc121ae6bf5176e78c15eec89d9f8b1ec8ca7eb',
+        '85ee7deceb6f37ffec06b00b8ae2f46e7bb9a48fde4081d54ef5f65dded8d1e3',
       chainHead:
         'bd583d57cc6a98cb1fa60555a09f9bd6b6132c0f2d5b308562d8aa8b826e0437',
     },
@@ -906,7 +906,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 72,
       rngDraws: 69,
       fingerprint:
-        'd8e1099abf76255bc0e7f25ad1a38d120a5a8f5495b141097fee60528d45e6d5',
+        '84826340451b657bb6c86f071643dabeef488554ed139956300850952526b00e',
       chainHead:
         '3229c3c5dd631440848db76094c29d1d48977ccb453281f9dd02401a6cf8b95b',
     },
@@ -916,7 +916,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 73,
       rngDraws: 69,
       fingerprint:
-        '244bf4fd62f24368a2674cb317c07bc07169c7797c4ebdb2c955a7017b6203f5',
+        '94be13ceebefd81ea151ea186c8b9981a27b0ec1689ebfadd08fcb084c362abc',
       chainHead:
         'bb94327a04674efe658f31e430a7cc1207a5379bc20874b80ec7a4067872c6d3',
     },
@@ -926,7 +926,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 74,
       rngDraws: 69,
       fingerprint:
-        'c54e2425e379f97dc2edf8c110fe7fea3f6218e468d0bee69749582e0051c1f2',
+        'eba0d4829ce4d59b8043665c07826b1752c9786483d612efa30f412c212d5e60',
       chainHead:
         '1353d945ca69bf7ff96b89a45f7fd6266c9c34c2f7b99680a9c10babdb9ab15b',
     },
@@ -936,7 +936,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 75,
       rngDraws: 69,
       fingerprint:
-        '50681f50a555df831f7381c3c05d33becf9a3f3ae52d7f7754b732533255df11',
+        'ec2aff2dfd318da9ff4e3c3254d45a408fd66996d173730ab972728783afa9c9',
       chainHead:
         'a3654dd5baf67e7824702ab612ccb9649d7194ab7dbc5612187a6e36a1547f84',
     },
@@ -946,7 +946,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 76,
       rngDraws: 69,
       fingerprint:
-        'be7ac9623f9bda70f0eedf3162e6f3cea9904b6eaffaf13630c29d7464c61047',
+        'afb4d5915f1f096d5bd39dddda178224d5edb561f314a5347954129e7d166cf8',
       chainHead:
         'b2bb35bfb4774de7ab76e5f9ca317fe6d437a684bcdcb653d9d7d489a89c4a60',
     },
@@ -956,7 +956,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 77,
       rngDraws: 69,
       fingerprint:
-        '0d5f679bd31af1427245b3bbc12a07eb1094a4fee386a7796d2cfb98b789a92e',
+        '13205df9b00c7e118bf8c0c6faace42af4f65b36d5c1fd8c56b807b342c8094a',
       chainHead:
         '7293efbb58d3d495b4e960915072da866b26c2cea00445147338718ea629c8c9',
     },
@@ -966,7 +966,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 78,
       rngDraws: 69,
       fingerprint:
-        '29e65494027957b1b3f2c3c66f1a497e3a87ec070e7b2febebb822d390c15881',
+        'b69056797fc7878009375686d5bd1923c6fc34891fac6c91687fd398f8e7ebc9',
       chainHead:
         'b1cfd6cab92e9a8cdc71a9c40e136155b2b22a395eb5d68dceb4e3c69ad98cd6',
     },
@@ -976,7 +976,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 79,
       rngDraws: 69,
       fingerprint:
-        '929dc1dad64e740eb08a8f0163031ac9d9d8bfcfabb4edb0b02bdf3befdb1ef0',
+        '313737f1ba354fdad5b3e38a11ec89aedfbff6ad4b7fb2070cb9c65ceb45c35a',
       chainHead:
         'fd687e585d6e2c5ef8a7f7d8b349c71e09e750642cc2c3a2b8282ce6b1723def',
     },
@@ -986,7 +986,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 80,
       rngDraws: 69,
       fingerprint:
-        '6a1ab3e9e572e916744e7df64c4fa82104e14938c05476bf5708ce6f6ac2d049',
+        'c6e08a07d6128c97dc211eadbf4a094df02c64cba81bf8300f18287cfd2c99e3',
       chainHead:
         'b15788c08e3b218dcf0551fd19ffee67d0afb14a0a08e985904fa47df9b3b56f',
     },
@@ -996,7 +996,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 81,
       rngDraws: 69,
       fingerprint:
-        'b488ca7fc97555dbc1b194306a740040fdb1c6ca0c186f1ef1a262552b08bde6',
+        'ee46c730913d6156edc88ee94bd5ec188955014675bc9d326a1bf5fc524a6f8e',
       chainHead:
         'e13b5135c794f84978956faa5141747eb1b20651cce461b2a88df14c57312fd6',
     },
@@ -1006,7 +1006,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 82,
       rngDraws: 69,
       fingerprint:
-        '9217214afcc192439a60b791529828634fe56ce9d951d56bf929ec46bd51b754',
+        '30d8c8d44d7edcffc876fe518cdf69fd40e53abab372c9fd9fcb026b3a0c372b',
       chainHead:
         '4241a27b2f9b46b39913cfa24a3e1e27f144b620f335238ab45bdbb44756a92a',
     },
@@ -1016,7 +1016,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 83,
       rngDraws: 69,
       fingerprint:
-        '85969fbc3fb263bd787a5aaf4a86947f25364aca7eab7a587c83a3fe91a70a2d',
+        '8a7c9c30dacf64e72727136da646295e5ab0dd379e296c3166ab35d92d7b8268',
       chainHead:
         '4eb2111182a51e6d275dfd636dc5b3f7759146a25d9a3c0a94d19a9fcb5f2dab',
     },
@@ -1026,7 +1026,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 84,
       rngDraws: 69,
       fingerprint:
-        '8bc8af14cf5aa499efacff700a693ff8785147e7e8e211a58416d2381c8ea511',
+        '5e570d58dc9ae4cf3d0bdaddc89b3eb9d8ef18be06b43362327c9ac032c8958f',
       chainHead:
         '4a00fe1517f626b5d1ff61875fbb94d665680c37996c305043c913d913f85e0d',
     },
@@ -1036,7 +1036,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 85,
       rngDraws: 69,
       fingerprint:
-        '00ae4eddabcd2b5792ed9cebbe23e0be352967b3f6399a1c2406f297830afdaa',
+        '6e9c097a35b1e9c10edfb545b542e101b9e0a2805d92e37870f7a7e6dcc4d001',
       chainHead:
         'b6077566206ebd161d04edc61166aa4e8305f1a872aba88ce8cbd85eb7a7491f',
     },
@@ -1046,7 +1046,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 86,
       rngDraws: 69,
       fingerprint:
-        'd0204fa19a7179550dcd393de385d17f6fa16a6bffad72eb06ae34f58d269689',
+        '5dafac419561a9ede5e559c8538f06854ea897d2153d33d5b519efc8cbcb1f4f',
       chainHead:
         'ad050306598562aa3f8f0520fdc63ac0f9df9ae8fc1bb37dc97edd62d839fa02',
     },
@@ -1056,7 +1056,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 87,
       rngDraws: 69,
       fingerprint:
-        'dc5fbafcf574992a99851727af7c2842e35a137abb3bd749b15e4450c35613cd',
+        '12be16b50c49e0501e750a0c20dbb0c8edafbe5dfe154529f079a2b2f9e01653',
       chainHead:
         '359e733cb18d8eade6a7f341bc72612e3325a7ca94b51416733c5d8ffda2e549',
     },
@@ -1066,7 +1066,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 88,
       rngDraws: 69,
       fingerprint:
-        '3333a6c101cd67e9926bb57633b1eca9e6b95889a61a091eea790c41aee3333e',
+        '39940061004a992fdd2eac9681c077efbb3735cd48847e94cfaf79e92b823713',
       chainHead:
         'f6289e650e8251f821d62dd62df98d3eab51f7ddcd9b3cc564e290f64bcaa8b7',
     },
@@ -1076,7 +1076,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 89,
       rngDraws: 69,
       fingerprint:
-        '80c17fb5f86bed70feea1e7d8d9c56e342ca6cedc92f2a0f62bdc5e14f336716',
+        '1f28d114d5489348b6edf0f925b2cfd4d605c6cd028ac72cbe785f20773df756',
       chainHead:
         '70b9500f8ca4dde5033ae3ce41055e5cb26a58f2b006cd65af28acc2484a1c2f',
     },
@@ -1086,7 +1086,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 90,
       rngDraws: 69,
       fingerprint:
-        '5fe39d13df4e4f36c4bdb46bab0d231a7acc282ed07de070dacdf6a71fc65b06',
+        '0d9986145a2cb4eaafaae2a005323c6972dd30caeb970803e5d791458dbd9e63',
       chainHead:
         '481ece60201b0b9c19c7d4f7d6aa737bb5cd760a9006b1d62cd1146339dff78d',
     },
@@ -1096,7 +1096,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 91,
       rngDraws: 69,
       fingerprint:
-        '532ec7418dc70cfdb2bb402e5dfd26b75f989c21c13efb6bb1733b6105c6ee14',
+        '2c7491df39090e667cedc135cce217b241c23b5a5d839b495bf91e7c0be2699e',
       chainHead:
         'ef114c86b12d142df87201a5b67e67c3521afbdb04af4d3cfd1cd98ee5e063d6',
     },
@@ -1106,7 +1106,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 92,
       rngDraws: 69,
       fingerprint:
-        'e84a232d7100d5a108af148c48e2198b0405f630b4bdc93b8a4bf4049636c5ce',
+        '9fb2ac7c4e72fbb4a3f88c3c92dcf8cc9df22116b68759d32e7fc7adbc616d99',
       chainHead:
         'ec2d9a2b1ac76be5f93b20ab4b034cf945382fa9d7366131fedf414bfa2a28ef',
     },
@@ -1116,7 +1116,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 93,
       rngDraws: 69,
       fingerprint:
-        '9674d8296637669a72c61c322472ea77eef06de8ee2d786c11a536f2a03eb53f',
+        'e46897a3a0c2820f073dec57634a7b3aec6d25572d2494db1d20264aea3a23a9',
       chainHead:
         'b40f3639d2158302cb26475d393897b0d623b58d95d5b37ef38f40675765698f',
     },
@@ -1126,7 +1126,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 94,
       rngDraws: 69,
       fingerprint:
-        'f90d3252bea90564eebc05c0a5599e714b41e41663fd8d71a25be53ebfcdeadd',
+        '7399941a866fcc0a5f0b17f056a12c85da3793e366168506527d630ae82aa043',
       chainHead:
         'de687bd23d6f7c36071d4b0172da8a9ea0e4a8e4f66454d90400499fcf4cea2c',
     },
@@ -1136,7 +1136,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 95,
       rngDraws: 69,
       fingerprint:
-        '70daa7a513c671a756c13a87654198bbdad7a9e84217d37480906bb845caedf9',
+        '3cebf2525c40379e0446e0129c5028ff4f00969bdc156ebb920a680f93e3adf8',
       chainHead:
         '2e0975691700b6645cbc321abd8cdf67c63b825debb7d54744ba194fff50b7c7',
     },
@@ -1146,7 +1146,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 96,
       rngDraws: 69,
       fingerprint:
-        'd8b74a264c6c3a8248b413d3d4e775ae2efaa21bdc7f33120cd6ecd01548b004',
+        'f5822cdb557604d1c7cdb16139e439822fac6fd6032d9f2603bd1266433aa7af',
       chainHead:
         'ac5bdc2667861ae450e063023e64220c96cc823f4c62e02c363f28fe52a73616',
     },
@@ -1156,7 +1156,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 97,
       rngDraws: 69,
       fingerprint:
-        'd736503e0feea0de53bb6db1e78d5aae629f66652af426a8312cf22d1334652a',
+        '0bab44a45675a9181992fabdd6460797395df80cba94111095244b317241bd06',
       chainHead:
         '4f4357d142ca1e36b2b0fe81971d06193034ad4f1afa14a77ef49087f28c0f82',
     },
@@ -1166,7 +1166,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 98,
       rngDraws: 69,
       fingerprint:
-        'efce2f8977441c1ba5b6615f14a9ef4804506a1bd48499990f5eb3b950ec8181',
+        '32d1e78c09f2602901ccb75862c21653cd334e4b6305deeda71d5eceb6d575cf',
       chainHead:
         '99a159310565ce07e28d85634e2c768398a2520b55b008a9b15560a7b743e209',
     },
@@ -1176,7 +1176,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 99,
       rngDraws: 69,
       fingerprint:
-        '21a866468f8c48444de9d4e38ce5320eb210d2f3263923ae3763c4bb6d56ade1',
+        'a76242fa3e523e0bc63a7c5e690a11a451456f1467c4c94f1a5994bafbfb634e',
       chainHead:
         'c301b888ea09eed59b457d7d4b0eae98214fd145f614e2a49266b040d65c0a5e',
     },
@@ -1186,7 +1186,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 100,
       rngDraws: 69,
       fingerprint:
-        'cf56661e2d6e3de1b24bfda02694bc79459a81f44b24fe575636fa2b8a6375be',
+        'aa2cffda7e8e03b449d4e4bf5809744553072fdc908e95160e6c8ce955b3b6a6',
       chainHead:
         '3f847dec6c81e179bb285617a9d8ae9eadf7c5e7e6bea2dd0edf2f61e2424e76',
     },
@@ -1196,7 +1196,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 100,
       rngDraws: 69,
       fingerprint:
-        'cf56661e2d6e3de1b24bfda02694bc79459a81f44b24fe575636fa2b8a6375be',
+        'aa2cffda7e8e03b449d4e4bf5809744553072fdc908e95160e6c8ce955b3b6a6',
       chainHead:
         '3f847dec6c81e179bb285617a9d8ae9eadf7c5e7e6bea2dd0edf2f61e2424e76',
     },
@@ -1206,7 +1206,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 100,
       rngDraws: 69,
       fingerprint:
-        'cf56661e2d6e3de1b24bfda02694bc79459a81f44b24fe575636fa2b8a6375be',
+        'aa2cffda7e8e03b449d4e4bf5809744553072fdc908e95160e6c8ce955b3b6a6',
       chainHead:
         '3f847dec6c81e179bb285617a9d8ae9eadf7c5e7e6bea2dd0edf2f61e2424e76',
     },
@@ -1216,7 +1216,7 @@ export const PACKAGE_C_EXPECTED: PackageCResult = {
       revision: 100,
       rngDraws: 69,
       fingerprint:
-        'cf56661e2d6e3de1b24bfda02694bc79459a81f44b24fe575636fa2b8a6375be',
+        'aa2cffda7e8e03b449d4e4bf5809744553072fdc908e95160e6c8ce955b3b6a6',
       chainHead:
         '3f847dec6c81e179bb285617a9d8ae9eadf7c5e7e6bea2dd0edf2f61e2424e76',
     },

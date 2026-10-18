@@ -45,8 +45,8 @@ const C_DOMAINS = ['roster', 'contracts', 'market', 'scouting', 'draft'];
 
 describe('current world model (v3)', () => {
   it('declares world model version 3', () => {
-    expect(WORLD_MODEL_VERSION).toBe(4);
-    expect(build().worldModelVersion).toBe(4);
+    expect(WORLD_MODEL_VERSION).toBe(5);
+    expect(build().worldModelVersion).toBe(5);
   });
 
   it('keeps Package B domains first and adds the five Package C domains in canonical order', () => {
@@ -151,7 +151,7 @@ describe('world model validation (fail closed)', () => {
 
   it('refuses a future world model version instead of guessing', () => {
     const w = clone(build());
-    w.worldModelVersion = 5;
+    w.worldModelVersion = 6;
     expect(() => requireCurrentWorld(w)).toThrow(
       UnsupportedWorldModelVersionError,
     );
@@ -220,7 +220,7 @@ describe('migration functions', () => {
     expect(isLegacyPackageAWorld(legacyA)).toBe(true);
     const migrated = migrateLegacyPackageAWorld(legacyA as never);
     expect(canonicalString(migrated)).toBe(canonicalString(current));
-    expect(migrated.worldModelVersion).toBe(4);
+    expect(migrated.worldModelVersion).toBe(5);
     expect(requireCurrentWorld(legacyA)).toEqual(migrated);
   });
 });
@@ -236,7 +236,7 @@ describe('snapshot boundary', () => {
     });
     expect(verifySnapshot(m3)).toEqual({ ok: true });
     expect(m3.worldFingerprint).toBe(fingerprintWorld(current));
-    const future = { ...m3, world: { ...m3.world, worldModelVersion: 5 } };
+    const future = { ...m3, world: { ...m3.world, worldModelVersion: 6 } };
     expect(() => verifySnapshot(future)).toThrow(
       UnsupportedWorldModelVersionError,
     );

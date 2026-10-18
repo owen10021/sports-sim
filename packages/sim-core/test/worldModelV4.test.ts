@@ -10,6 +10,8 @@ import {
   PACKAGE_B_EXPECTED,
   PACKAGE_C_DOMAIN_STATE_KEYS,
   PACKAGE_C_EXPECTED,
+  PACKAGE_D_DOMAIN_STATE_KEYS,
+  PACKAGE_D_EXPECTED,
   UnsupportedWorldModelVersionError,
   WORLD_MODEL_VERSION,
   WorldKernel,
@@ -47,6 +49,7 @@ const asModel3 = (w: FootballWorld): Record<string, unknown> => {
   const copy = clone(w);
   copy.worldModelVersion = 3;
   for (const d of D_DOMAINS) delete copy[d];
+  delete copy.football;
   return copy;
 };
 
@@ -61,15 +64,12 @@ const asModel2 = (w: FootballWorld): Record<string, unknown> => {
 
 describe('current world model (v4)', () => {
   it('declares world model version 4', () => {
-    expect(WORLD_MODEL_VERSION).toBe(4);
-    expect(build().worldModelVersion).toBe(4);
+    expect(WORLD_MODEL_VERSION).toBe(5);
+    expect(build().worldModelVersion).toBe(5);
   });
 
   it('keeps Package B and C domains first and adds development then medical', () => {
-    expect(Object.keys(DOMAIN_STATE_KEYS)).toEqual([
-      ...Object.keys(PACKAGE_C_DOMAIN_STATE_KEYS),
-      ...D_DOMAINS,
-    ]);
+    expect(Object.keys(PACKAGE_D_DOMAIN_STATE_KEYS)).toEqual(D_DOMAINS);
     expect(Object.keys(PACKAGE_C_DOMAIN_STATE_KEYS)).toEqual([
       'people',
       'organizations',
@@ -184,7 +184,7 @@ describe('world model validation (fail closed)', () => {
 
   it('refuses a future world model version instead of guessing', () => {
     const w = clone(build());
-    w.worldModelVersion = 5;
+    w.worldModelVersion = 6;
     expect(() => requireCurrentWorld(w)).toThrow(
       UnsupportedWorldModelVersionError,
     );
@@ -254,7 +254,7 @@ describe('migration functions', () => {
     const m2 = asModel2(current);
     const migrated = migrateLegacyPackageBWorld(m2 as never);
     expect(canonicalString(migrated)).toBe(canonicalString(current));
-    expect(migrated.worldModelVersion).toBe(4);
+    expect(migrated.worldModelVersion).toBe(5);
     expect(requireCurrentWorld(m2)).toEqual(migrated);
   });
 
@@ -267,7 +267,7 @@ describe('migration functions', () => {
     expect(isLegacyPackageAWorld(legacyA)).toBe(true);
     const migrated = migrateLegacyPackageAWorld(legacyA as never);
     expect(canonicalString(migrated)).toBe(canonicalString(current));
-    expect(migrated.worldModelVersion).toBe(4);
+    expect(migrated.worldModelVersion).toBe(5);
     expect(requireCurrentWorld(legacyA)).toEqual(migrated);
   });
 });
@@ -283,7 +283,7 @@ describe('snapshot boundary', () => {
     });
     expect(verifySnapshot(m4)).toEqual({ ok: true });
     expect(m4.worldFingerprint).toBe(fingerprintWorld(current));
-    const future = { ...m4, world: { ...m4.world, worldModelVersion: 5 } };
+    const future = { ...m4, world: { ...m4.world, worldModelVersion: 6 } };
     expect(() => verifySnapshot(future)).toThrow(
       UnsupportedWorldModelVersionError,
     );
@@ -335,32 +335,41 @@ describe('golden versioning on the model bump (history immutable, current model 
   });
 
   it('new current-model files are the active expected constants', () => {
-    expect(GOLDEN_EXPECTED.scenario).toBe('package-a-golden-v4');
-    expect(PACKAGE_B_EXPECTED.scenario).toBe('package-b-golden-v3');
-    expect(PACKAGE_C_EXPECTED.scenario).toBe('package-c-golden-v2');
-    expect(read('package-a-golden-v4.json')).toEqual(
+    expect(GOLDEN_EXPECTED.scenario).toBe('package-a-golden-v5');
+    expect(PACKAGE_B_EXPECTED.scenario).toBe('package-b-golden-v4');
+    expect(PACKAGE_C_EXPECTED.scenario).toBe('package-c-golden-v3');
+    expect(PACKAGE_D_EXPECTED.scenario).toBe('package-d-golden-v2');
+    expect(read('package-a-golden-v5.json')).toEqual(
       JSON.parse(JSON.stringify(GOLDEN_EXPECTED)),
     );
-    expect(read('package-b-golden-v3.json')).toEqual(
+    expect(read('package-b-golden-v4.json')).toEqual(
       JSON.parse(JSON.stringify(PACKAGE_B_EXPECTED)),
     );
-    expect(read('package-c-golden-v2.json')).toEqual(
+    expect(read('package-c-golden-v3.json')).toEqual(
       JSON.parse(JSON.stringify(PACKAGE_C_EXPECTED)),
+    );
+    expect(read('package-d-golden-v2.json')).toEqual(
+      JSON.parse(JSON.stringify(PACKAGE_D_EXPECTED)),
     );
   });
 
   it('each new version differs from its predecessor only in world fingerprints', () => {
     const pairs: [string, string, { fingerprint: string }][] = [
-      ['package-a-golden-v3.json', 'package-a-golden-v4.json', GOLDEN_EXPECTED],
+      ['package-a-golden-v4.json', 'package-a-golden-v5.json', GOLDEN_EXPECTED],
       [
-        'package-b-golden-v2.json',
         'package-b-golden-v3.json',
+        'package-b-golden-v4.json',
         PACKAGE_B_EXPECTED,
       ],
       [
-        'package-c-golden-v1.json',
         'package-c-golden-v2.json',
+        'package-c-golden-v3.json',
         PACKAGE_C_EXPECTED,
+      ],
+      [
+        'package-d-golden-v1.json',
+        'package-d-golden-v2.json',
+        PACKAGE_D_EXPECTED,
       ],
     ];
     for (const [oldName, newName, current] of pairs) {

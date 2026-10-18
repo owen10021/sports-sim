@@ -12,10 +12,12 @@ import {
   fingerprintLegacyPackageAWorld,
   fingerprintLegacyPackageBWorld,
   fingerprintLegacyPackageCWorld,
+  fingerprintLegacyPackageDWorld,
   futureWorldModelVersion,
   isLegacyPackageAWorld,
   isLegacyPackageBWorld,
   isLegacyPackageCWorld,
+  isLegacyPackageDWorld,
   worldModelProblems,
   type StoredWorld,
 } from './worldModel';
@@ -207,8 +209,9 @@ export const verifySnapshot = (value: unknown): SnapshotVerification => {
   const legacyA = isLegacyPackageAWorld(world);
   const legacyB = isLegacyPackageBWorld(world);
   const legacyC = isLegacyPackageCWorld(world);
+  const legacyD = isLegacyPackageDWorld(world);
   const modelProblems =
-    legacyA || legacyB || legacyC ? [] : worldModelProblems(world);
+    legacyA || legacyB || legacyC || legacyD ? [] : worldModelProblems(world);
   if (modelProblems.length > 0) {
     return {
       ok: false,
@@ -236,7 +239,9 @@ export const verifySnapshot = (value: unknown): SnapshotVerification => {
         ? fingerprintLegacyPackageBWorld(world)
         : legacyC
           ? fingerprintLegacyPackageCWorld(world)
-          : fingerprintWorld(world as FootballWorld);
+          : legacyD
+            ? fingerprintLegacyPackageDWorld(world)
+            : fingerprintWorld(world as FootballWorld);
     if (fingerprint !== s.worldFingerprint)
       reasons.push('worldFingerprint mismatch');
   } catch (e) {

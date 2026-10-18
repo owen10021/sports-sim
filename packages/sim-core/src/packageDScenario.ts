@@ -15,7 +15,7 @@ import {
   type OpportunityImpactBand,
 } from './developmentImpact';
 
-export const PACKAGE_D_SCENARIO_ID = 'package-d-golden-v1';
+export const PACKAGE_D_SCENARIO_ID = 'package-d-golden-v2';
 
 export const NF_ORG = entityId('org-northfield');
 export const NF_OWNER = entityId('person-nf-owner');

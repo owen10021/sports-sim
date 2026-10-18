@@ -18,7 +18,7 @@ export const GOLDEN_EXPECTED: GoldenResult = {
     6,
     7
   ],
-  "fingerprint": "9ce46ac057750837e51f78206671d0a734b2bc8569144e8577d7b42b5e693725",
+  "fingerprint": "2ad83a4ad28561ea78cae3d0d98c12df226d225aecac3bb5a981dd27d968fec0",
   "eventChainHead": "d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a",
   "steps": [
     {
@@ -26,7 +26,7 @@ export const GOLDEN_EXPECTED: GoldenResult = {
       "outcome": "committed",
       "revision": 1,
       "rngDraws": 1,
-      "fingerprint": "215af9b1f8e6194ecb7839ec57c99166cc90e96b83e5ffd38f8bc584f323c2fc",
+      "fingerprint": "8e2f12415f87d13bf8c66a9f58c378167318c63a883a424659a39ffbf473e6cd",
       "chainHead": "88527b7579aff9d4dead44d04099536268aacbbbf42a1d0fd256964f5d6078d1"
     },
     {
@@ -34,7 +34,7 @@ export const GOLDEN_EXPECTED: GoldenResult = {
       "outcome": "committed",
       "revision": 2,
       "rngDraws": 7,
-      "fingerprint": "a2affa262a3517b194e1a14828354170516f9cecd0b0e4dba4566fd54fa8304b",
+      "fingerprint": "41afcda39f522f145ac2b509c49e2651d2395556bfead5a2ca6971ce58d7e538",
       "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77"
     },
     {
@@ -42,7 +42,7 @@ export const GOLDEN_EXPECTED: GoldenResult = {
       "outcome": "DUPLICATE_COMMAND",
       "revision": 2,
       "rngDraws": 7,
-      "fingerprint": "a2affa262a3517b194e1a14828354170516f9cecd0b0e4dba4566fd54fa8304b",
+      "fingerprint": "41afcda39f522f145ac2b509c49e2651d2395556bfead5a2ca6971ce58d7e538",
       "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77"
     },
     {
@@ -50,7 +50,7 @@ export const GOLDEN_EXPECTED: GoldenResult = {
       "outcome": "STALE_REVISION",
       "revision": 2,
       "rngDraws": 7,
-      "fingerprint": "a2affa262a3517b194e1a14828354170516f9cecd0b0e4dba4566fd54fa8304b",
+      "fingerprint": "41afcda39f522f145ac2b509c49e2651d2395556bfead5a2ca6971ce58d7e538",
       "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77"
     },
     {
@@ -58,7 +58,7 @@ export const GOLDEN_EXPECTED: GoldenResult = {
       "outcome": "INVALID_PAYLOAD",
       "revision": 2,
       "rngDraws": 7,
-      "fingerprint": "a2affa262a3517b194e1a14828354170516f9cecd0b0e4dba4566fd54fa8304b",
+      "fingerprint": "41afcda39f522f145ac2b509c49e2651d2395556bfead5a2ca6971ce58d7e538",
       "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77"
     },
     {
@@ -66,7 +66,7 @@ export const GOLDEN_EXPECTED: GoldenResult = {
       "outcome": "UNAUTHORIZED_ACTOR",
       "revision": 2,
       "rngDraws": 7,
-      "fingerprint": "a2affa262a3517b194e1a14828354170516f9cecd0b0e4dba4566fd54fa8304b",
+      "fingerprint": "41afcda39f522f145ac2b509c49e2651d2395556bfead5a2ca6971ce58d7e538",
       "chainHead": "34b10c517f54ed5415408f6e8da4f6df175c529add900ec78c659e1836099a77"
     },
     {
@@ -74,7 +74,7 @@ export const GOLDEN_EXPECTED: GoldenResult = {
       "outcome": "committed",
       "revision": 3,
       "rngDraws": 14,
-      "fingerprint": "9ce46ac057750837e51f78206671d0a734b2bc8569144e8577d7b42b5e693725",
+      "fingerprint": "2ad83a4ad28561ea78cae3d0d98c12df226d225aecac3bb5a981dd27d968fec0",
       "chainHead": "d9c18cb91bcfe9f09afe2cbd58f154ceaea9cb65f7c0606c3c5a8e9729ff897a"
     }
   ]

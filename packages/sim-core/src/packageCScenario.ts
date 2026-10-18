@@ -30,7 +30,7 @@ import type { AcquisitionAssetRef, TradePackageV1 } from './assets';
  * and a rookie and an undrafted player sign through the shared market path. Every step
  * goes through the real command router; nothing writes world state directly.
  */
-export const PACKAGE_C_SCENARIO_ID = 'package-c-golden-v2';
+export const PACKAGE_C_SCENARIO_ID = 'package-c-golden-v3';
 export const PACKAGE_C_WORLD_ID = 'world-package-c-1';
 
 const ORGS = {

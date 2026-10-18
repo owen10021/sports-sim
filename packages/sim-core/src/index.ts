@@ -25,6 +25,7 @@ export * from './scouting';
 export * from './draft';
 export * from './development';
 export * from './medical';
+export * from './football';
 export * from './developmentRules';
 export * from './packageDSeedParse';
 export * from './packageDWorldSeed';

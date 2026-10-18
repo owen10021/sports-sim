@@ -60,9 +60,9 @@ describe('Package B golden scenario', () => {
         ),
       ) as { scenario: string; fingerprint: string; eventChainHead: string };
     const accepted = read('package-b-golden-v1.json');
-    const current = read('package-b-golden-v3.json');
+    const current = read('package-b-golden-v4.json');
     expect(accepted.scenario).toBe('package-b-golden-v1');
-    expect(current.scenario).toBe('package-b-golden-v3');
+    expect(current.scenario).toBe('package-b-golden-v4');
     expect(current).toEqual(JSON.parse(JSON.stringify(PACKAGE_B_EXPECTED)));
     expect(current.fingerprint).not.toBe(accepted.fingerprint);
     expect(current.eventChainHead).toBe(accepted.eventChainHead);

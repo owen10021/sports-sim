@@ -21,7 +21,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
     draws: 82,
   },
   fingerprint:
-    '30406fda343b9d8f4c25d560b12033a8bb27eb11de58cb8d5ce14989a2da3849',
+    'e9cdfe38f624711fc4f5cb8395124f70101a17daa1eb90024270fb22e7eb03a9',
   eventChainHead:
     'e692b2516edefdaf1475e212cfe90b0d671d0cd77353fbba476afc443215e483',
   auditErrorFindings: {
@@ -131,7 +131,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 1,
       rngDraws: 0,
       fingerprint:
-        'cea7aed2c6cea5eb487f9d0c3bb4f7ae183a9b18115bdc601390bbe3eb77de55',
+        'f954cd8aa7c01561fab28716a1f71eb97053d013d69efb61f4278c4fed93f1d1',
       chainHead:
         'cb7b6b57fdbf8601ec83ffe42ebded39941dd8740ecd88f4e7339486ab4de030',
       stateUnchanged: false,
@@ -143,7 +143,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 2,
       rngDraws: 0,
       fingerprint:
-        'c2b5c8e4f195af0659c40a15b1bedd6ebb4d99efdec7210f1436b421265050d0',
+        '12bf258633e81d25a47a67c2855ca5a74eb1107cb85eb2722b0c9ce2a1019cc3',
       chainHead:
         'af6bf1f5747fb7b77725ddaee6292637a32591decacf91cf6ab385171380a543',
       stateUnchanged: false,
@@ -155,7 +155,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 3,
       rngDraws: 0,
       fingerprint:
-        '0e7c849a6207b939e20439bc761a846649b04ae924cbbd7bae78e8f66470df8e',
+        '90b92c1be9d0c98e3eed9e11e11c73766539ff75e0670a0a094f016cb7f33378',
       chainHead:
         'de0de5c63691d7805a0d7ff882b22ad5e648affd29f514f9abd511b59b7e6f19',
       stateUnchanged: false,
@@ -167,7 +167,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 3,
       rngDraws: 0,
       fingerprint:
-        '0e7c849a6207b939e20439bc761a846649b04ae924cbbd7bae78e8f66470df8e',
+        '90b92c1be9d0c98e3eed9e11e11c73766539ff75e0670a0a094f016cb7f33378',
       chainHead:
         'de0de5c63691d7805a0d7ff882b22ad5e648affd29f514f9abd511b59b7e6f19',
       stateUnchanged: true,
@@ -179,7 +179,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 4,
       rngDraws: 0,
       fingerprint:
-        '263bbb4550904f4f89336e164571c020cec2835ca92c397a8a45363502b919ed',
+        '1344ea648dd644df4e78b6826a82bd78c94ccfdb748b9c25cfab02b1a5e6d5d7',
       chainHead:
         '1e106aee8aa310b7aa99992608ad90af9dd17789727fd1042455cdb7f185762b',
       stateUnchanged: false,
@@ -191,7 +191,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 5,
       rngDraws: 0,
       fingerprint:
-        '259def6fb69544bff71b817c8b5322147694743b0b9068364dd59771aa9e9519',
+        '21d40c61e0868c6d5718373a81826697aa2cb49c157ce9041902f37591817597',
       chainHead:
         '492aa78c1949c49d46e3f80ee55ed1b90024bed3386beb6bbab7f148218575f6',
       stateUnchanged: false,
@@ -203,7 +203,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 6,
       rngDraws: 0,
       fingerprint:
-        'c98d9c21d55652f931506e2225cd780081e4c09f68ebdb02aaaa1e2961305943',
+        '80e14b011ee5e55d2073b6a895c84cd202d975aea3503ab95ea1a5fc459336f6',
       chainHead:
         'd4ab302ded821d0bc7bf5e47148ccc28fa7f6a973fea4c6eab904b6364f5c2d4',
       stateUnchanged: false,
@@ -215,7 +215,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 7,
       rngDraws: 0,
       fingerprint:
-        'a3ff62f0ea5f09b5fd39add1ce5825ac44b5ce2e090179264c4cfa3df8fca8ca',
+        '076bf4bceec9929c1c471f6ecfa4cf20a00eae1d92d66809ef1f2398e42cc1d2',
       chainHead:
         '39eb093e7729da28dd33cb2ab8d866f1642ae00cebbc0600e04a5be6ffa3b168',
       stateUnchanged: false,
@@ -227,7 +227,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 8,
       rngDraws: 0,
       fingerprint:
-        '7070eaa0c2e471e261eaa4d8f7c84fc0a94115e30988a4528708fdb6129ad839',
+        '8393aadc9bf8842992de24a418857d284b5d59977b455647f644200ddc366b45',
       chainHead:
         '4fabdf7c67bb76cf6eba3f682c6c390870ba823561fe7b02916200674244fc36',
       stateUnchanged: false,
@@ -239,7 +239,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 9,
       rngDraws: 0,
       fingerprint:
-        'c79c7d4183c65d3bf4df4ca9f9271714e7bf8862c35fb0099d5d8a4a959bf6b1',
+        '51797250e0b804bd3311b37c45bcc396e66be572dbd4c5fabadd0910670954fa',
       chainHead:
         'daa5e05d542017dbd7b7663e61e43fdcb8dee804e0dc66db8038f54f6bf43ec3',
       stateUnchanged: false,
@@ -251,7 +251,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 10,
       rngDraws: 0,
       fingerprint:
-        '92eafc941c84328f2e0c3817c490a63069243b48247669abd206c082c5c79f34',
+        '3290b3213f0bcb8f2e2707a98b60ab0b0e88077b90502ef5a915533898ff7d1b',
       chainHead:
         '09034a1aa2a4e86e9f79c3c924d4753b68acc03644d3d6ee566c8e0af1750345',
       stateUnchanged: false,
@@ -263,7 +263,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 11,
       rngDraws: 0,
       fingerprint:
-        '1810434b8a2e53fb2d8d717c36137f378dd7fe48b83e40b68133b81d3262f2b3',
+        'e49e8008f307b7417d10e65dced3ce91c1e4d91b249e87c52046736da2f6bae2',
       chainHead:
         '479e0b979a4b8e430c504598e11538b6bd3eae28b8aad8ba3b48c8ecd8db1d7d',
       stateUnchanged: false,
@@ -275,7 +275,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 12,
       rngDraws: 0,
       fingerprint:
-        '4a6d8bb559f00438454797cb888c50a01fe65e7555a6ec997be645e08ed7600a',
+        '7c91be676555441d8721f5b93bddfd1a04b173474d2a6cd65bf5000b698b7f25',
       chainHead:
         'f809c293932810b5ab4de8b1f9e3126cc607aabdc8440768b06481f3d2dad01c',
       stateUnchanged: false,
@@ -287,7 +287,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 13,
       rngDraws: 0,
       fingerprint:
-        '428a4ffff73c9c4d8462e5653b6c2032cc849ced2259b8fb0881d47e10122105',
+        'd29e1b5f79c4f4e8232ef2781c335730955550e06b9997050db688c8d9dd2469',
       chainHead:
         '9155f8703dad1808933a2fc6e74cb34c57105dc5e7d92223d48da5474af2b530',
       stateUnchanged: false,
@@ -299,7 +299,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 14,
       rngDraws: 0,
       fingerprint:
-        '1178b66377fa8438c26470f0db2b17f1ee69e1f45dff10ea31d6473a2b77b504',
+        '61e86c004a6b19ff4cf85418d7f8a0e730e095e473294d586a0e9fd2ac1ecc79',
       chainHead:
         '6857609a881848c1774cf163feeb1b669c687cf9bc47a775e0ce59748478bd27',
       stateUnchanged: false,
@@ -311,7 +311,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 15,
       rngDraws: 0,
       fingerprint:
-        'a9f6f51290414fa2d33eaaedea4c95848b51b75391c890aa0f047be19a234800',
+        'a1d4994903ec06493ede8451109e87c7982ac135f9a188892cca6d1ebbe2b159',
       chainHead:
         '2e7a07ecbeca1fc7e108fd7e083f50396b8cd703d8fa327cf127e077951acc6f',
       stateUnchanged: false,
@@ -323,7 +323,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 16,
       rngDraws: 0,
       fingerprint:
-        '95d22df29eff01564457db64ea281a711b2df70dae58aa2f89938bca2c1de368',
+        'b58ccd0aea61082a31c81734d43a8e3ef682937cdd0b73c740a27ad8e7ecd233',
       chainHead:
         'f7d4e5440039493b93466a95cf2d3711f89119e8c5c3d02961bc3527f4fbeb81',
       stateUnchanged: false,
@@ -335,7 +335,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 17,
       rngDraws: 16,
       fingerprint:
-        '54894ad26d5a9859b75070fc9abd258e474b235450c289c34137298910d0cf17',
+        'd7f8e9848a8ce28bae953076943b72e6019426f7d8062ee3c2acc60d367f6a3d',
       chainHead:
         '0e03aceb8cf2751e036e0c4bb28e66d0f929c868c39d960d1989483bdcc9a535',
       stateUnchanged: false,
@@ -347,7 +347,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 18,
       rngDraws: 18,
       fingerprint:
-        '33971608336ba5a561cbc6d8df19dc527fdd210e8b709c2f0343578849717b88',
+        '161247dbce24c7ba8f6247cf24495ab1a4ea2756bfea04aeb1172f5b79fd7672',
       chainHead:
         '1213f97afbb2a4ebbab2c2ba288af0e449b4d23bbe50e0d8193d95cf929ac804',
       stateUnchanged: false,
@@ -359,7 +359,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 19,
       rngDraws: 34,
       fingerprint:
-        'ecc2c5571463439243facbbe17f8d1398d0e232ed9c8a38bac8e77745785b009',
+        'd4a0591f8e5a309402f3be003c3fa1e1237118891e6f8010f5fc1b90a191ffa6',
       chainHead:
         '5f5e1ab5af064aeafab7b40e27895134919f45bbbeea0c9c397773f738e985d7',
       stateUnchanged: false,
@@ -371,7 +371,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 20,
       rngDraws: 36,
       fingerprint:
-        '6ce9c622e2d30d6fad755d1152454dc5a05fb493f3ce36544fa5fc0332ab2075',
+        '6f6296c2b8eae809512c1d66d7fff1849c74c5e01dc142ebdaec6f0af194b46e',
       chainHead:
         'f3c27112deff6c668c442372d9fcf9b7ee4c99d0f9bd49c2716401f2d6e7e0e8',
       stateUnchanged: false,
@@ -383,7 +383,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 21,
       rngDraws: 36,
       fingerprint:
-        '2f30c7e7e5fb01eb64ff947d2db6f8b17a396121275a648897b8b2905654a682',
+        '9efcec4095679d4c8d0c1580d97b1391cac96062253413a5956f285ad333d32e',
       chainHead:
         '99c42c82bb498375d8153254704424fe77762522c21a8e2e0e208c61e994b9f0',
       stateUnchanged: false,
@@ -395,7 +395,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 22,
       rngDraws: 36,
       fingerprint:
-        '0937463ab3824e9882e8a2cb574832f90a686a92b14c3cbb2a5b03a95416276b',
+        '72f8d39e69b2448d19bad69a46600a931937e0c0c96894d6b9b68f3356954d84',
       chainHead:
         'd13cb7e21de041db79985c9a811438e08c65b2174bc0a15db0a2beeb8490a1e5',
       stateUnchanged: false,
@@ -407,7 +407,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 23,
       rngDraws: 36,
       fingerprint:
-        'f90be1c4985fe4c04203203e15062d56595c5c314a73587839c33f4a30a5d4d0',
+        '7e44fe0180b33f9d4ddb8eb23e7ec991ea01f52ae0f6b53637da878c6d1a8a0f',
       chainHead:
         '98f8af96f3f5fd212fa54811d4e94cfcdfc5abb3f6b0aaf083d5833618ad1fc4',
       stateUnchanged: false,
@@ -419,7 +419,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 24,
       rngDraws: 36,
       fingerprint:
-        '775473ca8c807c488fbe99607daaa88bdf680c68948a6a42d22bdc3062e1b5a9',
+        'a0592d7ecc7b46e78bbac0bb72f533a4632a1cce604bc3df17fb14dbae7198b9',
       chainHead:
         '664667528d8059c203f2a3e5a03efa92d6f3cdcfc2327500738ef79bc4ed37a6',
       stateUnchanged: false,
@@ -431,7 +431,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 25,
       rngDraws: 36,
       fingerprint:
-        '56a6a2a3225251df98da53204f86776c0b08e9ab3fab3c9dd8dc6cb0776b0664',
+        '45656eda61db46d8a161c554bb5a794328115144023f5e744c040ddbccee0e31',
       chainHead:
         'b6b7538efee01fbbcd09979ed1044a3d04a12125a43f008117261d00d2ec50ef',
       stateUnchanged: false,
@@ -443,7 +443,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 26,
       rngDraws: 36,
       fingerprint:
-        'bb562857d142cfc1908bb0c4cb4abb8293457fe29efd22464f1da530bef3eb8e',
+        '9a86dada9826437ebcd0f47e0ff57ec802c363ec361e7ba57b7dee6e4cc53219',
       chainHead:
         '7c383ae42a721efe48aff0f2433595659e1e300a2732dc0a729f41badd4663fb',
       stateUnchanged: false,
@@ -455,7 +455,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 27,
       rngDraws: 36,
       fingerprint:
-        'a4afb7a16f3fae8e5d56a23e60bdf24da0d38031ace8ca8d885792268a124ec4',
+        '654e461bbde19f62c9f8d6911ccf9c791921c79b72b44d80fd6fe9bfc964f2fd',
       chainHead:
         '3f400b278bdab523e62e0eedc055686c3dbae220ef8d613b5dcf758cdab84ef8',
       stateUnchanged: false,
@@ -467,7 +467,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 28,
       rngDraws: 36,
       fingerprint:
-        '521379b65360b0fd703e8be703b55e0c02e913a0d7b6526627c5cd0c4c004dee',
+        'abedc54c6ae1b1bc7df51f6818ead3b7a34dba7d5311e8c5f3ce777a36c074bd',
       chainHead:
         '48c836184420f155673a58f792b1920dd49ec775e2c7a50c4db0b982eedf71d4',
       stateUnchanged: false,
@@ -479,7 +479,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 29,
       rngDraws: 36,
       fingerprint:
-        'ed3aff5cd32f839559832eefc88bc5329491a5550eff40fe7bad17ea524290dd',
+        '23548a05ebeb1165960bd54aac4a04b7b1422b442795933e83f6b4e026d6c467',
       chainHead:
         '8f3bf69c5728f3eb9615059c0b5d2bd488f433725fce2c42110bd944b274371a',
       stateUnchanged: false,
@@ -491,7 +491,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 30,
       rngDraws: 36,
       fingerprint:
-        'd2f8417696b33025159183c316a01accf175a8d371b7f21e89b575ba7daafd5b',
+        'd9e265fba03a15a42f07a4eadd89c4167410c882e2f5ac7fc7ff00fcf9ca4607',
       chainHead:
         '2ccb1e41697524e026c3e68c906f725ba085a8b7dcf836961e6cbed12297ffa6',
       stateUnchanged: false,
@@ -503,7 +503,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 31,
       rngDraws: 36,
       fingerprint:
-        '653c99fc473362da99134393cbc662cbeff357f0cecb1c2044a346b8a1ba1d31',
+        'e721341e5216d1bb8978892c72966038a923966d1acddd817038d517c2b71d78',
       chainHead:
         'eda59a779808e33f20dd93cf490e2082ed80d4823061ef2f76eb2488c171767d',
       stateUnchanged: false,
@@ -515,7 +515,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 32,
       rngDraws: 36,
       fingerprint:
-        '08542f47fa85d32afe9d4eb028687f7d1b875fd1715905ff8d7bafbe64602fec',
+        '298448c3c82ddb958bc01fabdd83598b4d46b4f1bfbdb7a81585502774027a70',
       chainHead:
         '5a5cd88e48fb74c87f241bfd78aa485854ac94f406f70ae941ec6535382b78bd',
       stateUnchanged: false,
@@ -527,7 +527,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 33,
       rngDraws: 53,
       fingerprint:
-        '04851f135612f4469eb4144d5d1110017c01094ab9039732611aed5e051f349e',
+        'd544b2879cd69fbef268abe6291f41f0c589717e754174f6bd29e3044b78c4d7',
       chainHead:
         'f50905a2c2cd5d40ee776093b2637a61529565dcd0ae2416ec847eb46cb86d44',
       stateUnchanged: false,
@@ -539,7 +539,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 34,
       rngDraws: 53,
       fingerprint:
-        'fea89d8c36c41ea5bacbe27af1a3b5ce072119274b756074ede4b2ab8c563ac1',
+        '91be4628771c5e7436301f55edceb2442abf104e025a6929860991afa521c597',
       chainHead:
         '9813146a4bec7c4a112b3125e5a08504f99139a95c5ddc0e38637dd5ee62b7bf',
       stateUnchanged: false,
@@ -551,7 +551,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 35,
       rngDraws: 53,
       fingerprint:
-        'f144ae06ac4452f5d6b4c09fe67bce5d80f3b82ea2d6cbe0033594d5c4608227',
+        '8ebe89672f77e7ac4bf2a06a6ac40fac5b1e7fd30389832844515326629e64f4',
       chainHead:
         '2e1a494d9818145a21d5dec9106ee44e3dde1217b40a03f1664c9549b8532a64',
       stateUnchanged: false,
@@ -563,7 +563,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 36,
       rngDraws: 53,
       fingerprint:
-        'e9ac899259e868e6ee1b5271abefdd62a7c04eec6eab8525cda53553857b6719',
+        'f917a70d882afcc7e9ebd95a259b933a77ee1c8ac65c9ee1637b712f4fac14f2',
       chainHead:
         'eb392ac7f72bd016917b96dabd5bc4b88df292dab888a75e2c4ac96463a30534',
       stateUnchanged: false,
@@ -575,7 +575,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 37,
       rngDraws: 70,
       fingerprint:
-        '0f5a74c2e4d19e3595b2454a250d5d3f15912c81987fa05c251f8554abf81558',
+        'e4faddcfb45d6e33447daf558ba982e63015d7da94ba053668f23875778f9381',
       chainHead:
         'bfa34f87994fb549242e04d9b756899308d45ac34256b0b9b141e58c4d2312a5',
       stateUnchanged: false,
@@ -587,7 +587,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 38,
       rngDraws: 70,
       fingerprint:
-        '00a72f83e37bde444779de90c599609c9c3fad7dbd6d43112e8836f9bf3e058b',
+        '6eeb5408679c983d314d40cb50633049fa3abe32070e19f06dc7961314004356',
       chainHead:
         'f426f1a019753891c83055335e3b5116a02291a9f3250e38ee737ca4556c2ce0',
       stateUnchanged: false,
@@ -599,7 +599,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 39,
       rngDraws: 70,
       fingerprint:
-        '58cb8a59026a414df5d25afa70b31cf5d88f4b1e6f6052eaadc6bf0b66d153a9',
+        '4eca7780c08bf8f505d8aed9121f81aa5538c330a1166700f3a54c031e70e0e1',
       chainHead:
         '0377f442cbd2953b8e231378dffb858b9938039f5260db6284405c191fa4831b',
       stateUnchanged: false,
@@ -611,7 +611,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 40,
       rngDraws: 70,
       fingerprint:
-        '1b927492f49f0639e2d9ec0fe335a13d5ce756c2de25e4750f44167b6be8ca42',
+        '6c898d914f3f4eadd344fee60dd8d384f19e3ec450f542480ab98534982a283c',
       chainHead:
         'ff12fafe34524e088c5cc76b2268992acf0da91282b35012d09bc250c6f34821',
       stateUnchanged: false,
@@ -623,7 +623,7 @@ export const PACKAGE_D_EXPECTED: PackageDResult = {
       revision: 41,
       rngDraws: 82,
       fingerprint:
-        '30406fda343b9d8f4c25d560b12033a8bb27eb11de58cb8d5ce14989a2da3849',
+        'e9cdfe38f624711fc4f5cb8395124f70101a17daa1eb90024270fb22e7eb03a9',
       chainHead:
         'e692b2516edefdaf1475e212cfe90b0d671d0cd77353fbba476afc443215e483',
       stateUnchanged: false,

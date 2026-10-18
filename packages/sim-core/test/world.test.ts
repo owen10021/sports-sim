@@ -140,6 +140,7 @@ describe('fingerprintWorld', () => {
   it('does not depend on object key insertion order', () => {
     const w = build();
     const reordered = {
+      football: w.football,
       medical: w.medical,
       development: w.development,
       draft: w.draft,

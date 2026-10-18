@@ -34,6 +34,7 @@ import { emptyPlansState, type PlansState } from './plans';
 import { seededContractsState, type ContractsState } from './contracts';
 import { seededDevelopmentState, type DevelopmentState } from './development';
 import { seededMedicalState, type MedicalState } from './medical';
+import { emptyFootballState, type FootballState } from './football';
 import { seededDraftState, type DraftState } from './draft';
 import { seededMarketState, type MarketState } from './market';
 import { seededRosterState, type RosterState } from './roster';
@@ -100,6 +101,7 @@ export interface FootballWorld {
   readonly draft: DraftState;
   readonly development: DevelopmentState;
   readonly medical: MedicalState;
+  readonly football: FootballState;
 }
 
 /** Platform-supplied identity source (the only impure input to world creation). */
@@ -162,18 +164,19 @@ export const createWorld = (
     draft: seededDraftState(seed.packageCSubstrate),
     development: seededDevelopmentState(seed.packageDSubstrate, seed.startDate),
     medical: seededMedicalState(seed.packageDSubstrate),
+    football: emptyFootballState(),
   });
 };
 
 /**
  * SHA-256 over the canonical bytes of the ENTIRE current-model authoritative world
- * (domain-separated; version 4 = world model 4). Package A worlds use
+ * (domain-separated; version 5 = world model 5). Package A worlds use
  * `fingerprintLegacyPackageAWorld` (version 1), Package B worlds
  * `fingerprintLegacyPackageBWorld` (version 2) and Package C worlds
  * `fingerprintLegacyPackageCWorld` (version 3); all are migrated before comparison.
  */
 export const fingerprintWorld = (world: FootballWorld): string =>
-  hashCanonical({ domain: 'sport-sim/world-fingerprint', version: 4, world });
+  hashCanonical({ domain: 'sport-sim/world-fingerprint', version: 5, world });
 
 /**
  * Fingerprint of a stored world in the CURRENT model: a Package A, B or C world is migrated

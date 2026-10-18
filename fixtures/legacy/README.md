@@ -39,3 +39,19 @@ commits of the `package-c-golden-v1` scenario, with the accepted Package C golde
   `packages/sim-core/test/legacyFixtureIntegrity.test.ts`).
 - It must NEVER be regenerated with newer code.
 - The Package C golden values are also preserved in `evidence/package-c/golden-expected-world-model-v3.json`.
+## package-d-world-v4-snapshot.json
+
+A genuine Package D career (world model v4): the genesis snapshot plus all 41 committed
+commits of the `package-d-golden-v1` scenario, with the accepted Package D golden values embedded.
+
+- Generated on 2026-10-18 from product code identical to accepted Package D commit
+  `cc29f6ebb0c912a3d69d52a67aee8635e703d299`, tag `package-d-acceptance-20261017`,
+  BEFORE the Package E world-model change.
+- Size 20607643 bytes (compact JSON, one line), SHA-256
+  `8c7a96f497a097736def54cd9c8de117ce0ebc5571559095e4845f88208809df`
+  (see `SHA256SUMS.txt`; pinned by migration/integrity tests).
+- It must NEVER be regenerated with newer code.
+- Accepted Package D identity: fingerprint
+  `30406fda343b9d8f4c25d560b12033a8bb27eb11de58cb8d5ce14989a2da3849`,
+  chain head `e692b2516edefdaf1475e212cfe90b0d671d0cd77353fbba476afc443215e483`,
+  revision 41, event count 125, RNG draws 82.
