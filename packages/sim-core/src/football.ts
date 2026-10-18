@@ -1,6 +1,7 @@
 import type { CanonicalValue } from './audit';
 import { entityId, recordId, type EntityId, type RecordId } from './ids';
 import type { PackageESubstrateSeed } from './packageESeedParse';
+import type { PlayCategory } from './footballRules';
 
 /**
  * Package E football state (world model 5).
@@ -142,6 +143,135 @@ export interface GameState extends FootballSelectionSituation {
   }[];
 }
 
+export interface FootballPlayStateFact {
+  readonly possessionOrganizationId: EntityId;
+  readonly period: number;
+  readonly clockSecondsRemaining: number;
+  readonly down: number;
+  readonly yardsToGo: number;
+  readonly yardLine: number;
+  readonly homeScore: number;
+  readonly awayScore: number;
+  readonly nextSnap: 'scrimmage' | 'extra_point' | 'kickoff';
+  readonly status: 'in_progress' | 'final';
+}
+
+export interface FootballPlayCallFact {
+  readonly conceptKey: string;
+  readonly formationKey: string;
+  readonly personnelKey: string;
+  readonly lineup: readonly {
+    readonly slotKey: string;
+    readonly playerId: EntityId;
+  }[];
+}
+
+export interface FootballPlayParticipationFact {
+  readonly organizationId: EntityId;
+  readonly side: 'offense' | 'defense' | 'kicking' | 'returning';
+  readonly slotKey: string;
+  readonly playerId: EntityId;
+  readonly contactClass: string;
+  readonly workloadUnits: number;
+  readonly actionExposures: readonly {
+    readonly actionKey: string;
+    readonly attempts: number;
+  }[];
+  readonly responsibilityExposures: readonly {
+    readonly schemeKey: string;
+    readonly responsibilityKey: string;
+    readonly meaningfulReps: number;
+  }[];
+}
+
+export interface FootballPlayPrincipalsFact {
+  readonly passerPlayerId: EntityId | null;
+  readonly ballCarrierPlayerId: EntityId | null;
+  readonly targetPlayerId: EntityId | null;
+  readonly defenderPlayerId: EntityId | null;
+  readonly tacklerPlayerId: EntityId | null;
+  readonly pressurePlayerId: EntityId | null;
+  readonly kickerPlayerId: EntityId | null;
+  readonly returnerPlayerId: EntityId | null;
+}
+
+export interface FootballPlayKickFact {
+  readonly kickYards: number;
+  readonly landingYardLine: number | null;
+  readonly touchback: boolean;
+  readonly returnYards: number;
+  readonly good: boolean | null;
+}
+
+export interface FootballPlayPenaltyFact {
+  readonly penaltyKey: string;
+  readonly against: 'offense' | 'defense';
+  readonly againstOrganizationId: EntityId;
+  readonly yards: number;
+  readonly automaticFirstDown: boolean;
+  readonly lossOfDown: boolean;
+  readonly enforcement: 'dead_ball' | 'spot' | 'previous_spot';
+}
+
+export type FootballPlayResultKind =
+  | 'rush'
+  | 'completion'
+  | 'incompletion'
+  | 'sack'
+  | 'interception'
+  | 'fumble_lost'
+  | 'kickoff'
+  | 'punt'
+  | 'field_goal_good'
+  | 'field_goal_missed'
+  | 'extra_point_good'
+  | 'extra_point_missed';
+
+export interface FootballTeamStatistics {
+  readonly organizationId: EntityId;
+  readonly points: number;
+  readonly scrimmagePlays: number;
+  readonly rushAttempts: number;
+  readonly rushingYards: number;
+  readonly passAttempts: number;
+  readonly completions: number;
+  readonly passingYards: number;
+  readonly turnovers: number;
+}
+
+export interface FootballPlayerStatistics {
+  readonly playerId: EntityId;
+  readonly organizationId: EntityId;
+  readonly participationPlays: number;
+  readonly workloadUnits: number;
+  readonly passAttempts: number;
+  readonly completions: number;
+  readonly passingYards: number;
+  readonly rushAttempts: number;
+  readonly rushingYards: number;
+  readonly targets: number;
+  readonly receptions: number;
+  readonly tackles: number;
+}
+
+export interface GameStatistics {
+  readonly teams: readonly FootballTeamStatistics[];
+  readonly players: readonly FootballPlayerStatistics[];
+}
+
+export interface FootballReconciliationFinding {
+  readonly code:
+    | 'score_mismatch'
+    | 'sequence_mismatch'
+    | 'transition_mismatch'
+    | 'statistics_mismatch'
+    | 'participation_mismatch'
+    | 'play_reference_mismatch'
+    | 'medical_reference_mismatch'
+    | 'reconciliation_counter_mismatch';
+  readonly message: string;
+}
+
 export interface FootballGameRecord {
   readonly id: RecordId;
   readonly fixtureId: RecordId;
@@ -153,15 +283,12 @@ export interface FootballGameRecord {
   readonly gamePlanSnapshotIds: readonly [RecordId, RecordId];
   readonly playIds: readonly RecordId[];
   readonly participationSummary: readonly {
-    readonly playerId: string;
+    readonly playerId: EntityId;
     readonly organizationId: EntityId;
     readonly plays: number;
     readonly workloadUnits: number;
   }[];
-  readonly teamStatSummary: {
-    readonly homeOffensivePlays: number;
-    readonly awayOffensivePlays: number;
-  };
+  readonly statistics: GameStatistics;
   readonly medicalEpisodeIds: readonly RecordId[];
   readonly rngDrawStart: number;
   readonly rngDrawCount: number;
@@ -172,12 +299,37 @@ export interface FootballGameRecord {
     readonly hash: string;
   };
 }
+
 export interface ResolvedPlayFact {
   readonly id: RecordId;
   readonly gameId: RecordId;
   readonly fixtureId: RecordId;
   readonly sequence: number;
+  readonly homeOrganizationId: EntityId;
+  readonly awayOrganizationId: EntityId;
+  readonly offenseOrganizationId: EntityId;
+  readonly defenseOrganizationId: EntityId;
+  readonly pre: FootballPlayStateFact;
+  readonly post: FootballPlayStateFact;
+  readonly offense: FootballPlayCallFact;
+  readonly defense: FootballPlayCallFact;
+  readonly playCategory: PlayCategory;
+  readonly resultKind: FootballPlayResultKind;
+  readonly yardsGained: number;
+  readonly turnover: 'interception' | 'fumble' | null;
+  readonly touchdown: boolean;
+  readonly safety: boolean;
+  readonly kick: FootballPlayKickFact | null;
+  readonly penalty: FootballPlayPenaltyFact | null;
+  readonly penaltyAccepted: boolean | null;
+  readonly playStands: boolean;
+  readonly clockSecondsUsed: number;
+  readonly principals: FootballPlayPrincipalsFact;
+  readonly participation: readonly FootballPlayParticipationFact[];
   readonly medicalEpisodeIds: readonly RecordId[];
+  readonly rngDrawStart: number;
+  readonly rngDrawCount: number;
+  readonly traceHash: string;
 }
 export interface FootballCausalLink {
   readonly id: RecordId;

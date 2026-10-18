@@ -12,6 +12,7 @@ import {
 } from './gameState';
 import {
   type FootballGameRecord,
+  type FootballPlayStateFact,
   type FootballState,
   type GameDayDesignation,
   type GameState,
@@ -20,8 +21,9 @@ import {
 import { scheduledGameProblems } from './footballCalendar';
 import { resolveFootballInjuryOccurrence } from './footballInjuries';
 import { requireFootballRules, type FootballRulesV1 } from './footballRules';
+import { deriveGameStatistics, reconcileFinalGame } from './footballStats';
 import { hashCanonical } from './hash';
-import type { RecordId } from './ids';
+import type { EntityId, RecordId } from './ids';
 import { medicalWorkloadCap } from './medical';
 import { createMedicalEpisodeChange } from './medicalCommands';
 import { resolvePlay, type ResolvedPlayDraft } from './playResolver';
@@ -170,9 +172,63 @@ const createdEpisodeId = (
   return created[0]!.id;
 };
 
+const stateFact = (state: GameState): FootballPlayStateFact => ({
+  possessionOrganizationId: state.possessionOrganizationId,
+  period: state.period,
+  clockSecondsRemaining: state.clockSecondsRemaining,
+  down: state.down,
+  yardsToGo: state.yardsToGo,
+  yardLine: state.yardLine,
+  homeScore: state.homeScore,
+  awayScore: state.awayScore,
+  nextSnap: state.nextSnap,
+  status: state.status,
+});
+
+const persistedPlayFact = (input: {
+  readonly id: RecordId;
+  readonly gameId: RecordId;
+  readonly homeOrganizationId: ResolvedPlayDraft['offenseOrganizationId'];
+  readonly awayOrganizationId: ResolvedPlayDraft['offenseOrganizationId'];
+  readonly preState: GameState;
+  readonly postState: GameState;
+  readonly draft: ResolvedPlayDraft;
+  readonly medicalEpisodeIds: readonly RecordId[];
+}): ResolvedPlayFact => ({
+  id: input.id,
+  gameId: input.gameId,
+  fixtureId: input.draft.fixtureId,
+  sequence: input.draft.sequence,
+  homeOrganizationId: input.homeOrganizationId,
+  awayOrganizationId: input.awayOrganizationId,
+  offenseOrganizationId: input.draft.offenseOrganizationId,
+  defenseOrganizationId: input.draft.defenseOrganizationId,
+  pre: stateFact(input.preState),
+  post: stateFact(input.postState),
+  offense: input.draft.offense,
+  defense: input.draft.defense,
+  playCategory: input.draft.playCategory,
+  resultKind: input.draft.resultKind,
+  yardsGained: input.draft.yardsGained,
+  turnover: input.draft.turnover,
+  touchdown: input.draft.touchdown,
+  safety: input.draft.safety,
+  kick: input.draft.kick,
+  penalty: input.draft.penalty,
+  penaltyAccepted: input.draft.penaltyAccepted,
+  playStands: input.draft.playStands,
+  clockSecondsUsed: input.draft.clockSecondsUsed,
+  principals: input.draft.principals,
+  participation: input.draft.participation,
+  medicalEpisodeIds: input.medicalEpisodeIds,
+  rngDrawStart: input.draft.rngDrawStart,
+  rngDrawCount: input.draft.rngDrawCount,
+  traceHash: input.draft.traceHash,
+});
+
 const participationSummary = (plays: readonly CompleteGamePlayDraft[]) => {
   const byPlayer = new Map<
-    string,
+    EntityId,
     {
       organizationId: ResolvedPlayDraft['offenseOrganizationId'];
       plays: number;
@@ -255,6 +311,7 @@ export const resolveScheduledGameChange = (
       fail(
         `game ${fixture.id} exceeded ${MAX_PLAYS} plays without reaching final`,
       );
+    const preState = state;
     const football = footballForAvailablePlayers(workingWorld, state, rules);
     let resolved;
     try {
@@ -280,13 +337,16 @@ export const resolveScheduledGameChange = (
 
     const playMint = mintRecordId(workingWorld);
     const playId = playMint.id;
-    const provisional: ResolvedPlayFact = {
+    const provisional = persistedPlayFact({
       id: playId,
       gameId,
-      fixtureId: fixture.id,
-      sequence: resolved.resolved.sequence,
+      homeOrganizationId: fixture.homeOrganizationId,
+      awayOrganizationId: fixture.awayOrganizationId,
+      preState,
+      postState: state,
+      draft: resolved.resolved,
       medicalEpisodeIds: [],
-    };
+    });
     workingWorld = {
       ...workingWorld,
       rng: rng.snapshot(),
@@ -368,6 +428,10 @@ export const resolveScheduledGameChange = (
   }
 
   const playIds = plays.map((p) => p.id);
+  const finalGamePlays = workingWorld.football.plays
+    .filter((p) => p.gameId === gameId)
+    .sort((a, b) => a.sequence - b.sequence);
+  const statistics = deriveGameStatistics(finalGamePlays);
   const rngDrawCount = rng.snapshot().draws - rngDrawStart;
   const summary = participationSummary(plays);
   const gameRecord: FootballGameRecord = {
@@ -381,14 +445,7 @@ export const resolveScheduledGameChange = (
     gamePlanSnapshotIds: [homePlan.id, awayPlan.id],
     playIds,
     participationSummary: summary,
-    teamStatSummary: {
-      homeOffensivePlays: plays.filter(
-        (p) => p.offenseOrganizationId === fixture.homeOrganizationId,
-      ).length,
-      awayOffensivePlays: plays.filter(
-        (p) => p.offenseOrganizationId === fixture.awayOrganizationId,
-      ).length,
-    },
+    statistics,
     medicalEpisodeIds: [...medicalEpisodeIds],
     rngDrawStart,
     rngDrawCount,
@@ -405,6 +462,13 @@ export const resolveScheduledGameChange = (
       }),
     },
   };
+  const reconciliationFindings = reconcileFinalGame(gameRecord, finalGamePlays);
+  if (reconciliationFindings.length > 0)
+    fail(
+      `final game reconciliation failed: ${reconciliationFindings
+        .map((finding) => finding.code)
+        .join(', ')}`,
+    );
 
   const nextFootball: FootballState = {
     ...workingWorld.football,

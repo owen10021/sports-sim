@@ -110,3 +110,4 @@ export * from './playResolver';
 export * from './gameState';
 export * from './gameResolver';
 export * from './footballInjuries';
+export * from './footballStats';
