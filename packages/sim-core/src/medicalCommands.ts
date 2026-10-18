@@ -1,4 +1,4 @@
-import type { CommandPayloadBase } from './audit';
+import type { CanonicalValue, CommandPayloadBase } from './audit';
 import { effectiveRightsAt } from './authority';
 import type { EventSpec, RouteContext, RouteOutcome } from './commandRouter';
 import {
@@ -9,37 +9,56 @@ import {
   isFailure,
   mintRecordId,
   mintRecordIds,
+  parseActingPerson,
   parseDate,
   parseOrganization,
+  isPlainObject,
   spec,
   type Cmd,
   type Failure,
 } from './commandSupport';
 import { requireDevelopmentRules } from './developmentRules';
-import { entityId, isValidId } from './ids';
+import { latestProposal } from './decisions';
+import { entityId, isValidId, recordId, type RecordId } from './ids';
 import type { BeliefRecord, ClaimRecord, ConfidenceBand } from './information';
+import { findVisibleClaim, isBeliefVisibleTo } from './knowledgeView';
 import {
+  MEDICAL_CLEARANCE_TERMS_TYPE,
+  MEDICAL_PARTICIPATION_LEVELS,
+  PARTICIPATION_PREFERENCES,
+  latestMedicalClearance,
   MEDICAL_EPISODE_SOURCE_KINDS,
   latestMedicalProgress,
   type MedicalEpisode,
+  type MedicalClearanceRecord,
   type MedicalEpisodeSourceKind,
   type MedicalLimitation,
   type MedicalProgressRecord,
   type MedicalReport,
+  type MedicalRecommendationRecord,
+  type ParticipationPreferenceRecord,
 } from './medical';
 import { DeterministicRng } from './rng';
 import { SimDate } from './simDate';
+import { commitAuthorizedDomainChange } from './transactionCommit';
 import type { FootballWorld } from './world';
 
 export const MEDICAL_COMMAND_TYPES = [
   'CreateMedicalEpisode',
   'ReassessMedicalEpisode',
+  'RecordParticipationPreference',
+  'RecordMedicalRecommendation',
+  'CommitMedicalClearanceProposal',
 ] as const;
 export type MedicalCommandType = (typeof MEDICAL_COMMAND_TYPES)[number];
 
 const SIMULATION_ACTORS: ReadonlySet<string> = new Set([
   'system',
   'commissioner',
+  'test_harness',
+]);
+const PREFERENCE_INPUT_ACTORS: ReadonlySet<string> = new Set([
+  'system',
   'test_harness',
 ]);
 
@@ -528,6 +547,358 @@ const routeReassess = (ctx: RouteContext, c: Cmd): RouteOutcome => {
   };
 };
 
+const parseRecordIds = (
+  value: unknown,
+  name: string,
+): readonly RecordId[] | Failure => {
+  if (
+    !Array.isArray(value) ||
+    !value.every((id) => typeof id === 'string' && isValidId(id)) ||
+    new Set(value).size !== value.length
+  )
+    return bad(`${name} must contain unique valid ids`);
+  return (value as string[]).map(recordId);
+};
+
+const parseParticipationAndLoad = (
+  participation: unknown,
+  maxLoadUnits: unknown,
+  maxAllowed: number,
+):
+  | {
+      readonly participation: (typeof MEDICAL_PARTICIPATION_LEVELS)[number];
+      readonly maxLoadUnits: number | null;
+    }
+  | Failure => {
+  if (
+    !(MEDICAL_PARTICIPATION_LEVELS as readonly unknown[]).includes(
+      participation,
+    )
+  )
+    return bad('participation is not recognized');
+  if (participation === 'out') {
+    if (maxLoadUnits !== 0)
+      return bad('out participation requires maxLoadUnits 0');
+    return { participation: 'out', maxLoadUnits: 0 };
+  }
+  if (participation === 'limited') {
+    if (
+      !Number.isSafeInteger(maxLoadUnits) ||
+      (maxLoadUnits as number) <= 0 ||
+      (maxLoadUnits as number) > maxAllowed
+    )
+      return bad(
+        'limited participation requires a positive integer maxLoadUnits',
+      );
+    return { participation: 'limited', maxLoadUnits: maxLoadUnits as number };
+  }
+  if (maxLoadUnits !== null)
+    return bad('full participation requires maxLoadUnits null');
+  return { participation: 'full', maxLoadUnits: null };
+};
+
+const routeRecordParticipationPreference = (
+  ctx: RouteContext,
+  c: Cmd,
+): RouteOutcome => {
+  if (!PREFERENCE_INPUT_ACTORS.has(ctx.actor.kind))
+    return {
+      ok: false,
+      stage: 'authorization',
+      code: 'UNAUTHORIZED_ACTOR',
+      message: `${ctx.actor.kind} cannot record participation preference`,
+    };
+  if (
+    !isValidId(c.playerId) ||
+    !ctx.world.roster.players.some((p) => p.personId === c.playerId)
+  )
+    return bad('playerId must name an existing player');
+  const playerId = entityId(c.playerId);
+  let episodeId = null;
+  if (c.episodeId !== null) {
+    if (!isValidId(c.episodeId)) return bad('episodeId must be null or valid');
+    const episode = ctx.world.medical.episodes.find(
+      (e) => e.id === c.episodeId,
+    );
+    if (episode === undefined || episode.playerId !== playerId)
+      return bad('episodeId must belong to playerId');
+    episodeId = episode.id;
+  }
+  if (!(PARTICIPATION_PREFERENCES as readonly unknown[]).includes(c.preference))
+    return bad('preference is not recognized');
+  const sourceClaimIds = parseRecordIds(c.sourceClaimIds, 'sourceClaimIds');
+  if (isFailure(sourceClaimIds)) return sourceClaimIds;
+  if (
+    sourceClaimIds.some((id) => {
+      const claim = ctx.world.information.claims.find(
+        (entry) => entry.id === id,
+      );
+      return (
+        claim === undefined ||
+        claim.subject.kind !== 'entity' ||
+        claim.subject.id !== playerId
+      );
+    })
+  )
+    return bad('sourceClaimIds must name existing claims about the player');
+
+  const minted = mintRecordId(ctx.world);
+  const preference: ParticipationPreferenceRecord = {
+    id: minted.id,
+    playerId,
+    episodeId,
+    preference: c.preference as ParticipationPreferenceRecord['preference'],
+    recordedAt: ctx.world.simDate,
+    sourceClaimIds,
+  };
+  return {
+    ok: true,
+    authorizationDetail:
+      'simulation-owned factual player communication ingress',
+    resolution: {
+      nextWorld: {
+        ...ctx.world,
+        medical: {
+          ...ctx.world.medical,
+          preferences: [...ctx.world.medical.preferences, preference].sort(
+            byId,
+          ),
+        },
+        nextIds: { ...ctx.world.nextIds, record: minted.next },
+      },
+      eventSpecs: [
+        spec('ParticipationPreferenceRecorded', {
+          preferenceId: preference.id,
+          playerId,
+          episodeId,
+          preference: preference.preference,
+          sourceClaimIds,
+        }),
+      ],
+      detail: `recorded participation preference ${preference.id}`,
+    },
+  };
+};
+
+const routeRecordMedicalRecommendation = (
+  ctx: RouteContext,
+  c: Cmd,
+): RouteOutcome => {
+  const organizationId = parseOrganization(ctx, c.organizationId);
+  if (isFailure(organizationId)) return organizationId;
+  const actingPersonId = parseActingPerson(ctx, c);
+  if (isFailure(actingPersonId)) return actingPersonId;
+  if (!isValidId(c.episodeId)) return bad('episodeId must be valid');
+  const episode = ctx.world.medical.episodes.find((e) => e.id === c.episodeId);
+  if (episode === undefined || episode.status !== 'open')
+    return bad('episodeId must name an open medical episode');
+  const rights = new Set(
+    effectiveRightsAt(
+      ctx.world,
+      organizationId,
+      actingPersonId,
+      'medical_clearance',
+      ctx.world.simDate,
+    ).rights,
+  );
+  if (!rights.has('advise') || !rights.has('communicate'))
+    return denied(
+      `${actingPersonId} needs advise and communicate on medical_clearance in ${organizationId}`,
+    );
+  const participation = parseParticipationAndLoad(
+    c.participation,
+    c.maxLoadUnits,
+    requireDevelopmentRules(ctx.ruleset).maxPlayerLoadUnitsPerCheckpoint,
+  );
+  if (isFailure(participation)) return participation;
+  const basisClaimIds = parseRecordIds(c.basisClaimIds, 'basisClaimIds');
+  if (isFailure(basisClaimIds)) return basisClaimIds;
+  const basisBeliefIds = parseRecordIds(c.basisBeliefIds, 'basisBeliefIds');
+  if (isFailure(basisBeliefIds)) return basisBeliefIds;
+  if (basisClaimIds.length + basisBeliefIds.length === 0)
+    return bad('medical recommendation requires legitimate evidence');
+  for (const id of basisClaimIds) {
+    const claim = findVisibleClaim(
+      ctx.world,
+      organizationId,
+      actingPersonId,
+      id,
+    );
+    if (
+      claim === undefined ||
+      claim.subject.kind !== 'entity' ||
+      claim.subject.id !== episode.playerId
+    )
+      return bad('basisClaimIds must name visible evidence about this player');
+  }
+  for (const id of basisBeliefIds) {
+    const belief = ctx.world.information.beliefs.find((b) => b.id === id);
+    if (
+      belief === undefined ||
+      !isBeliefVisibleTo(ctx.world, organizationId, actingPersonId, belief) ||
+      belief.subject.kind !== 'entity' ||
+      belief.subject.id !== episode.playerId
+    )
+      return bad('basisBeliefIds must name visible beliefs about this player');
+  }
+
+  const minted = mintRecordId(ctx.world);
+  const recommendation: MedicalRecommendationRecord = {
+    id: minted.id,
+    episodeId: episode.id,
+    medicalPersonId: actingPersonId,
+    participation: participation.participation,
+    maxLoadUnits: participation.maxLoadUnits,
+    basisClaimIds,
+    basisBeliefIds,
+    issuedAt: ctx.world.simDate,
+  };
+  return {
+    ok: true,
+    authorizationDetail: `${actingPersonId} may advise and communicate on medical_clearance in ${organizationId}`,
+    resolution: {
+      nextWorld: {
+        ...ctx.world,
+        medical: {
+          ...ctx.world.medical,
+          recommendations: [
+            ...ctx.world.medical.recommendations,
+            recommendation,
+          ].sort(byId),
+        },
+        nextIds: { ...ctx.world.nextIds, record: minted.next },
+      },
+      eventSpecs: [
+        spec('MedicalRecommendationRecorded', {
+          recommendationId: recommendation.id,
+          episodeId: episode.id,
+          medicalPersonId: actingPersonId,
+          participation: recommendation.participation,
+          maxLoadUnits: recommendation.maxLoadUnits,
+          basisClaimIds,
+          basisBeliefIds,
+        }),
+      ],
+      detail: `recorded medical recommendation ${recommendation.id}`,
+    },
+  };
+};
+
+const routeCommitMedicalClearance = (
+  ctx: RouteContext,
+  c: Cmd,
+): RouteOutcome => {
+  const actingPersonId = parseActingPerson(ctx, c);
+  if (isFailure(actingPersonId)) return actingPersonId;
+  if (!isValidId(c.proposalId)) return bad('proposalId must be valid');
+  const proposal = latestProposal(ctx.world.decisions, c.proposalId);
+  if (proposal === undefined) return bad('proposalId must name a proposal');
+  if (
+    proposal.category !== 'medical_clearance' ||
+    proposal.termsType !== MEDICAL_CLEARANCE_TERMS_TYPE
+  )
+    return bad('proposal must be a medical_clearance_v1 proposal');
+  if (!isPlainObject(proposal.terms))
+    return bad('medical clearance terms must be an object');
+  const terms = proposal.terms;
+  if (
+    Object.keys(terms).sort().join(',') !==
+    'episodeId,maxLoadUnits,participation,playerId'
+  )
+    return bad('medical clearance terms contain unsupported or missing fields');
+  if (!isValidId(terms.episodeId) || !isValidId(terms.playerId))
+    return bad('medical clearance terms require valid episodeId and playerId');
+  const episode = ctx.world.medical.episodes.find(
+    (e) => e.id === terms.episodeId,
+  );
+  if (episode === undefined || episode.status !== 'open')
+    return bad('clearance episode must be open');
+  if (episode.playerId !== terms.playerId)
+    return bad('clearance playerId must match the episode player');
+  if (
+    !proposal.subjects.some(
+      (subject) => subject.kind === 'entity' && subject.id === episode.playerId,
+    )
+  )
+    return bad('medical clearance proposal must name the player as a subject');
+  const participation = parseParticipationAndLoad(
+    terms.participation,
+    terms.maxLoadUnits,
+    requireDevelopmentRules(ctx.ruleset).maxPlayerLoadUnitsPerCheckpoint,
+  );
+  if (isFailure(participation)) return participation;
+  if (
+    !Number.isSafeInteger(c.expectedRevision) ||
+    (c.expectedRevision as number) <= 0
+  )
+    return bad('expectedRevision must be a positive integer');
+  const beliefIds = parseRecordIds(c.beliefIds, 'beliefIds');
+  if (isFailure(beliefIds)) return beliefIds;
+  const evidenceClaimIds = parseRecordIds(
+    c.evidenceClaimIds,
+    'evidenceClaimIds',
+  );
+  if (isFailure(evidenceClaimIds)) return evidenceClaimIds;
+  if (!isPlainObject(c.rationale)) return bad('rationale must be an object');
+
+  const supersedes = latestMedicalClearance(
+    ctx.world.medical,
+    episode.id,
+    proposal.organizationId,
+  );
+  const minted = mintRecordId(ctx.world);
+  const clearance: MedicalClearanceRecord = {
+    id: minted.id,
+    episodeId: episode.id,
+    organizationId: proposal.organizationId,
+    playerId: episode.playerId,
+    participation: participation.participation,
+    maxLoadUnits: participation.maxLoadUnits,
+    sourceProposalId: proposal.id,
+    committedAt: ctx.world.simDate,
+    supersedesClearanceId: supersedes?.id ?? null,
+  };
+  const nextWorld: FootballWorld = {
+    ...ctx.world,
+    medical: {
+      ...ctx.world.medical,
+      clearances: [...ctx.world.medical.clearances, clearance].sort(byId),
+    },
+    nextIds: { ...ctx.world.nextIds, record: minted.next },
+  };
+  return commitAuthorizedDomainChange(ctx, {
+    nextWorld,
+    domainEvents: [
+      spec('MedicalClearanceCommitted', {
+        clearanceId: clearance.id,
+        episodeId: episode.id,
+        organizationId: proposal.organizationId,
+        playerId: episode.playerId,
+        participation: clearance.participation,
+        maxLoadUnits: clearance.maxLoadUnits,
+        sourceProposalId: proposal.id,
+        supersedesClearanceId: clearance.supersedesClearanceId,
+      }),
+    ],
+    requests: [
+      {
+        organizationId: proposal.organizationId,
+        actorPersonId: actingPersonId,
+        proposalId: proposal.id,
+        expectedRevision: c.expectedRevision as number,
+        expectedCategory: 'medical_clearance',
+        executedTerms: {
+          termsType: MEDICAL_CLEARANCE_TERMS_TYPE,
+          terms: proposal.terms,
+        },
+        beliefIds,
+        evidenceClaimIds,
+        rationale: c.rationale as CanonicalValue,
+      },
+    ],
+  });
+};
+
 export const routeMedicalCommand = (
   ctx: RouteContext,
   command: CommandPayloadBase & { readonly type: MedicalCommandType },
@@ -538,6 +909,12 @@ export const routeMedicalCommand = (
       return routeCreateEpisode(ctx, c);
     case 'ReassessMedicalEpisode':
       return routeReassess(ctx, c);
+    case 'RecordParticipationPreference':
+      return routeRecordParticipationPreference(ctx, c);
+    case 'RecordMedicalRecommendation':
+      return routeRecordMedicalRecommendation(ctx, c);
+    case 'CommitMedicalClearanceProposal':
+      return routeCommitMedicalClearance(ctx, c);
     default: {
       const unreachable: never = command.type;
       throw new Error(`unroutable medical command: ${String(unreachable)}`);

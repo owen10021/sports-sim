@@ -6,6 +6,7 @@ import type {
   OpportunityResourceKey,
   OpportunityWindow,
 } from './development';
+import { medicalWorkloadCap } from './medical';
 import { holdsRoleAt } from './people';
 import { currentRosterMembership } from './roster';
 import type { FootballWorld } from './world';
@@ -101,7 +102,10 @@ export const remainingOpportunity = (
  * Reads no latent player capability, responsiveness or medical recovery state.
  */
 export const opportunityProblems = (
-  world: Pick<FootballWorld, 'roster' | 'people' | 'plans' | 'development'>,
+  world: Pick<
+    FootballWorld,
+    'roster' | 'people' | 'plans' | 'development' | 'medical'
+  >,
   window: OpportunityWindow,
   allocations: readonly OpportunityAllocation[],
   options: { readonly committedHistory?: boolean } = {},
@@ -188,6 +192,23 @@ export const opportunityProblems = (
       remainingOpportunity(window, allocations, p.resourceKey, p.scopeKey) < 0
     )
       problems.add('OPPORTUNITY_OVERALLOCATED');
+  if (!options.committedHistory) {
+    const playerLoads = new Map<string, number>();
+    for (const allocation of allocations)
+      playerLoads.set(
+        allocation.playerId,
+        (playerLoads.get(allocation.playerId) ?? 0) + allocation.units,
+      );
+    for (const [playerId, units] of playerLoads) {
+      const cap = medicalWorkloadCap(
+        world,
+        window.organizationId,
+        playerId as OpportunityAllocation['playerId'],
+      );
+      if (cap !== null && units > cap)
+        problems.add('MEDICAL_CLEARANCE_LOAD_EXCEEDED');
+    }
+  }
   for (const problem of teachingProblems(world, allocations, options))
     problems.add(problem);
   return [...problems].sort(byText);

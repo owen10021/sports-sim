@@ -78,6 +78,8 @@ export interface ParticipationPreferenceRecord {
   readonly sourceClaimIds: readonly RecordId[];
 }
 
+export const MEDICAL_CLEARANCE_TERMS_TYPE = 'medical_clearance_v1';
+
 export const MEDICAL_PARTICIPATION_LEVELS = ['out', 'limited', 'full'] as const;
 export type MedicalParticipation =
   (typeof MEDICAL_PARTICIPATION_LEVELS)[number];
@@ -213,4 +215,47 @@ export const functionalReadiness = (
   return clampBp(
     Math.floor((afterFatigue * (10000 - limitationSeverityBp)) / 10000),
   );
+};
+
+/** Latest immutable clearance for one episode and organization. */
+export const latestMedicalClearance = (
+  medical: MedicalState,
+  episodeId: RecordId,
+  organizationId: EntityId,
+): MedicalClearanceRecord | undefined =>
+  medical.clearances
+    .filter(
+      (c) => c.episodeId === episodeId && c.organizationId === organizationId,
+    )
+    .sort((a, b) =>
+      a.committedAt === b.committedAt
+        ? byText(a.id, b.id)
+        : byText(a.committedAt, b.committedAt),
+    )
+    .at(-1);
+
+/**
+ * Hard workload cap from current legal clearance only. Advice and player preference are
+ * intentionally not vetoes. `null` means no medical clearance cap applies.
+ */
+export const medicalWorkloadCap = (
+  world: Pick<import('./world').FootballWorld, 'medical'>,
+  organizationId: EntityId,
+  playerId: EntityId,
+): number | null => {
+  let cap: number | null = null;
+  for (const episode of world.medical.episodes) {
+    if (episode.playerId !== playerId || episode.status !== 'open') continue;
+    const clearance = latestMedicalClearance(
+      world.medical,
+      episode.id,
+      organizationId,
+    );
+    if (clearance === undefined || clearance.participation === 'full') continue;
+    const episodeCap =
+      clearance.participation === 'out' ? 0 : clearance.maxLoadUnits;
+    if (episodeCap === null) continue;
+    cap = cap === null ? episodeCap : Math.min(cap, episodeCap);
+  }
+  return cap;
 };

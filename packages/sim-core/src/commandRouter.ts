@@ -183,6 +183,9 @@ type RoutableCommand =
 const ROUTABLE_TYPES: Readonly<Record<RoutableCommand['type'], true>> = {
   CreateMedicalEpisode: true,
   ReassessMedicalEpisode: true,
+  RecordParticipationPreference: true,
+  RecordMedicalRecommendation: true,
+  CommitMedicalClearanceProposal: true,
   ResolveDevelopmentCheckpoint: true,
   OpenOpportunityWindow: true,
   CommitOpportunityAllocationProposal: true,
@@ -325,6 +328,9 @@ export const routeCommand = (ctx: RouteContext): RouteOutcome => {
   switch (command.type) {
     case 'CreateMedicalEpisode':
     case 'ReassessMedicalEpisode':
+    case 'RecordParticipationPreference':
+    case 'RecordMedicalRecommendation':
+    case 'CommitMedicalClearanceProposal':
       return routeMedicalCommand(ctx, command);
     case 'ResolveDevelopmentCheckpoint':
     case 'OpenOpportunityWindow':
