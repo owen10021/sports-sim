@@ -1,7 +1,7 @@
 # Sport Sim — Package F Product/UI Design Specification
 
 **Date:** 2026-10-18
-**Status:** DRAFT FOR USER REVIEW
+**Status:** APPROVED — Owen approved the written Package F design on 2026-10-18
 **Authoring baseline:** `package-e-implementation` at `041856c5353937fc153c7d0ffced2c295364fa0f`
 **Purpose:** Define the polished iPhone-first product shell, decision surfaces, onboarding, information architecture, GameCast presentation, history surfaces, accessibility/performance contract, and long-save UX rules that sit on top of accepted Packages A–E without creating a second simulation authority.
 
