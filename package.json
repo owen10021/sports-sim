@@ -22,6 +22,7 @@
     "golden:package-c:write": "tsx packages/headless/src/bin.ts package-c-golden --write",
     "golden:package-d:check": "tsx packages/headless/src/bin.ts package-d-golden",
     "golden:package-d:write": "tsx packages/headless/src/bin.ts package-d-golden --write",
+    "hermes:package-d:check": "node scripts/hermes-golden.mjs --scenario package-d",
     "export:ios": "npm run export:ios --workspace apps/mobile",
     "ci": "npm run typecheck && npm test && npm run lint && npm run format:check && npm run golden:check && npm run golden:package-b:check && npm run golden:package-c:check && npm run golden:package-d:check && npm run export:ios",
     "lint": "eslint .",
@@ -29,14 +30,16 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@babel/core": "7.29.7",
+    "@babel/plugin-transform-classes": "7.29.7",
     "@types/node": "26.6.5",
     "eslint": "9.39.5",
     "eslint-config-expo": "57.0.2",
     "eslint-config-prettier": "10.1.8",
+    "eslint-import-resolver-typescript": "3.10.1",
     "prettier": "3.9.10",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
-    "vitest": "5.0.5",
-    "eslint-import-resolver-typescript": "3.10.1"
+    "vitest": "5.0.5"
   }
 }

@@ -1,0 +1,44 @@
+Package D cross-runtime golden proof (standalone Hermes)
+
+Source engine artifact: official facebook/hermes v0.13.0 Windows CLI release asset:
+  https://github.com/facebook/hermes/releases/download/v0.13.0/hermes-cli-windows.tar.gz
+Hermes runtime report from hermes.exe:
+  OSS Release Version 0.12.0, Bytecode Version 96, Build Release, GC hades (concurrent)
+Purpose: independent standalone-Hermes semantic proof. The physical iPhone diagnostic is the exact current RN/Hermes runtime gate.
+
+Bundle: evidence/tmp/package-d-golden.hermes.js
+Bundle construction: esbuild bundle target es2015, then Babel @babel/plugin-transform-classes syntax-only lowering because the latest official prebuilt standalone CLI rejects ES2015 class expressions before execution.
+Bundle sha256: 848cbdb8ceace2c7ad77f9cf0f8bd40c3466344f92341f4b520bf992739ca25d
+
+Node Package D golden run twice:
+  run1 sha256: 8c112f0504d6e13293235bc03da71c21c847bf6a4a17611ee1a27e2b7dec4c12
+  run2 sha256: 8c112f0504d6e13293235bc03da71c21c847bf6a4a17611ee1a27e2b7dec4c12
+  byte-identical: True
+
+Standalone Hermes Package D run twice:
+  run1 sha256: 7e1c0ffce3184bbcdbcb1612133ff9ff440552a0fa2677338379fb9be2f80c97
+  run2 sha256: 7e1c0ffce3184bbcdbcb1612133ff9ff440552a0fa2677338379fb9be2f80c97
+  byte-identical: True
+  match=true, diffs=[] on both runs
+
+Node / Hermes / accepted fixture identity:
+  fingerprint: 30406fda343b9d8f4c25d560b12033a8bb27eb11de58cb8d5ce14989a2da3849
+  eventChainHead: e692b2516edefdaf1475e212cfe90b0d671d0cd77353fbba476afc443215e483
+  finalSimDate: 2027-03-31
+  revision: 41
+  eventCount: 125
+  rngDraws: 82
+  rngState: {"algorithm":"xoshiro128ss-v1","s0":1762549536,"s1":476738090,"s2":4158248179,"s3":1715999327,"draws":82}
+  keyRecordIds: {"youngSchemeProposal":"rec-000004","youngRoleProposal":"rec-000005","youngCapabilitiesBefore":"[{\"key\":\"agility\",\"valueBp\":6553},{\"key\":\"burst\",\"valueBp\":3824},{\"key\":\"hands\",\"valueBp\":6011},{\"key\":\"strength\",\"valueBp\":9282},{\"key\":\"vision\",\"valueBp\":8740}]","youngTargetKnowledgeBefore":"0","youngCapabilitiesAfterTransition":"[{\"key\":\"agility\",\"valueBp\":6553},{\"key\":\"burst\",\"valueBp\":3824},{\"key\":\"hands\",\"valueBp\":6011},{\"key\":\"strength\",\"valueBp\":9282},{\"key\":\"vision\",\"valueBp\":8740}]","youngRoleAfter":"quarterback","youngTargetKnowledgeAfterTransition":"0","lineSchemeProposal":"rec-000008","lineRoleProposal":"rec-000009","lineCapabilitiesBefore":"[{\"key\":\"agility\",\"valueBp\":6254},{\"key\":\"block_technique\",\"valueBp\":4067},{\"key\":\"processing\",\"valueBp\":3525},{\"key\":\"strength\",\"valueBp\":6796}]","lineSourceFamiliarity":"4984","lineTargetFamiliarityBefore":"0","lineCapabilitiesAfterTransition":"[{\"key\":\"agility\",\"valueBp\":6254},{\"key\":\"block_technique\",\"valueBp\":4067},{\"key\":\"processing\",\"valueBp\":3525},{\"key\":\"strength\",\"valueBp\":6796}]","planProposal":"rec-000012","planId":"rec-000013","planRevisionBefore":"1","medicalEpisode":"rec-000015","febWindow":"rec-000017","febWorkProposal":"rec-000018","lineTargetFamiliarityAfterWork":"150","firstMedicalReport":"rec-000757","firstMedicalUncertainty":"broad","secondMedicalReport":"rec-002384","secondMedicalUncertainty":"moderate","clearanceProposal":"rec-002386","marchWindow":"rec-002389","preAcquisitionWorkProposal":"rec-002390","squeezeBand":"low","veteranContractProposal":"rec-002395","veteranOffer":"rec-002396","reconcilePlanProposal":"rec-002403","planRevisionAfter":"2","successionWindow":"rec-003135","successionWorkProposal":"rec-003136","zeroWindow":"rec-003871","zeroWorkProposal":"rec-003872"}
+
+Field checks:
+  fingerprint=true
+  eventChainHead=true
+  revision=true
+  eventCount=true
+  rngDraws=true
+  rngState=true
+  keyRecordIds=true
+
+Interpretation:
+  The initial official CLI attempt with the ES2015 bundle failed at parse time on class expressions; no scenario code executed. Lowering class syntax only made the same source executable on the standalone CLI. The resulting Hermes state identity matches the Node golden exactly. No mismatch was normalized or ignored.

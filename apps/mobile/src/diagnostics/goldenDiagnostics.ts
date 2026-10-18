@@ -9,8 +9,11 @@ import {
   runPackageBThroughStore,
   runPackageCScenario,
   runPackageCThroughStore,
+  runPackageDScenario,
+  runPackageDThroughStore,
   type PackageBResult,
   type PackageCResult,
+  type PackageDResult,
 } from '@sport-sim/sim-core';
 import {
   disposeScratchDatabases,
@@ -23,6 +26,10 @@ import {
   judgePackageCDirectRun,
   judgePackageCStoreRun,
 } from './packageCJudgement';
+import {
+  judgePackageDDirectRun,
+  judgePackageDStoreRun,
+} from './packageDJudgement';
 
 export interface GoldenDiagnostics {
   readonly kernel: DiagnosticLine;
@@ -139,6 +146,39 @@ export const runPackageCOnDevice = async (): Promise<PackageCDiagnostics> => {
     store: judgePackageCStoreRun(run),
     fingerprint: direct.fingerprint,
     chainHead: direct.eventChainHead,
+    keyRecordIds: direct.keyRecordIds,
+  };
+};
+
+export interface PackageDDiagnostics {
+  readonly kernel: DiagnosticLine;
+  readonly store: DiagnosticLine;
+  readonly fingerprint: string;
+  readonly chainHead: string;
+  readonly rngDraws: number;
+  readonly keyRecordIds: PackageDResult['keyRecordIds'];
+}
+
+/**
+ * Run the Package D development/medical ecology scenario in THIS runtime (Hermes in the app),
+ * straight through the kernel and through the real expo-sqlite store, and compare both with
+ * the accepted Node/Hermes deterministic identity.
+ */
+export const runPackageDOnDevice = async (): Promise<PackageDDiagnostics> => {
+  const direct = runPackageDScenario();
+  let run;
+  try {
+    const db = await openScratchDatabase();
+    run = await runPackageDThroughStore(new SqliteCareerStore(db));
+  } finally {
+    await disposeScratchDatabases();
+  }
+  return {
+    kernel: judgePackageDDirectRun(direct),
+    store: judgePackageDStoreRun(run),
+    fingerprint: direct.fingerprint,
+    chainHead: direct.eventChainHead,
+    rngDraws: direct.rngDraws,
     keyRecordIds: direct.keyRecordIds,
   };
 };
